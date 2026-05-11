@@ -3,431 +3,467 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SiomJourney | Mini+ Streaming</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<title>SiomJourney | Premium Streaming</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--red:#e50914;--dark:#080808;--card:#141414;--card2:#1a1a1a;--sub:#b3b3b3;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--dark);color:#fff;font-family:'Outfit',sans-serif;overflow-x:hidden;}
+/* =========================================
+   1. RESET & DEĞİŞKENLER
+   ========================================= */
+:root {
+  --bg-dark: #030303;
+  --bg-card: #0f0f0f;
+  --text-main: #f5f5f5;
+  --text-muted: #a3a3a3;
+  --primary: #e50914; 
+  --accent: #ff0f23;
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
+body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:9000;padding:18px 60px;background:linear-gradient(to bottom,rgba(0,0,0,0.9),transparent);display:flex;align-items:center;gap:36px;transition:.3s;}
-nav.solid{background:rgba(8,8,8,0.97);box-shadow:0 2px 20px rgba(0,0,0,.5);}
-.logo{font-size:28px;font-weight:800;cursor:pointer;letter-spacing:-1px;}
-.logo em{color:var(--red);font-style:normal;}
-.nav-links{display:flex;gap:20px;flex:1;}
-.nav-links a{color:#ccc;text-decoration:none;font-size:14px;font-weight:500;cursor:pointer;transition:.2s;padding:4px 0;border-bottom:2px solid transparent;}
-.nav-links a:hover,.nav-links a.active{color:#fff;border-bottom-color:var(--red);}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:16px;}
-.search-box{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:8px 14px;}
-.search-box input{background:none;border:none;color:#fff;font-size:14px;width:180px;font-family:'Outfit',sans-serif;}
-.search-box input:focus{outline:none;}
-.search-box input::placeholder{color:#888;}
+/* =========================================
+   2. NAVBAR
+   ========================================= */
+nav {
+  position: fixed; top: 0; width: 100%; padding: 25px 60px;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 100; transition: all 0.4s ease;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+}
+nav.scrolled {
+  background: rgba(3, 3, 3, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 15px 60px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.logo { font-size: 32px; font-weight: 900; letter-spacing: -1.5px; color: #fff; cursor:pointer;}
+.logo span { background: linear-gradient(90deg, #ff0f23, #ff5722); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.nav-links { display: flex; gap: 30px; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 15px; font-weight: 500; transition: 0.3s; cursor:pointer; }
+.nav-links a:hover, .nav-links a.active { color: #fff; }
 
-/* HERO */
-.hero{height:88vh;position:relative;display:flex;align-items:flex-end;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d0005 0%,#05000d 40%,#000a0d 100%);}
-.hero-particles{position:absolute;inset:0;overflow:hidden;}
-.particle{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:float linear infinite;}
-@keyframes float{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:.6;}90%{opacity:.3;}100%{transform:translateY(-10vh) scale(1);opacity:0;}}
-.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 30% 60%,rgba(229,9,20,.12) 0%,transparent 70%);}
-.hero-grad{position:absolute;inset:0;background:linear-gradient(to top,#080808 0%,transparent 55%),linear-gradient(to right,rgba(0,0,0,.85) 0%,transparent 55%);}
-.hero-content{position:relative;padding:0 80px 80px;max-width:620px;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(229,9,20,.15);border:1px solid rgba(229,9,20,.4);color:var(--red);font-size:12px;font-weight:700;letter-spacing:2px;padding:6px 14px;border-radius:20px;margin-bottom:18px;}
-.hero-title{font-size:76px;font-weight:800;line-height:.95;margin-bottom:18px;letter-spacing:-2px;}
-.hero-title span{color:var(--red);}
-.hero-meta{display:flex;gap:14px;font-size:13px;color:var(--sub);margin-bottom:18px;align-items:center;}
-.hero-meta .match{color:#46d369;font-weight:700;}
-.hero-desc{font-size:16px;color:#ccc;line-height:1.7;margin-bottom:32px;max-width:480px;}
-.hero-btns{display:flex;gap:12px;}
-.btn{padding:14px 30px;border-radius:6px;font-weight:700;font-size:15px;cursor:pointer;border:none;display:flex;align-items:center;gap:8px;font-family:'Outfit',sans-serif;transition:.2s;letter-spacing:.3px;}
-.btn-play{background:#fff;color:#000;}
-.btn-play:hover{background:rgba(255,255,255,.85);}
-.btn-info{background:rgba(109,109,110,.6);color:#fff;}
-.btn-info:hover{background:rgba(109,109,110,.35);}
+/* =========================================
+   3. HERO (ANA VİTRİN)
+   ========================================= */
+.hero {
+  position: relative; height: 90vh; width: 100vw;
+  display: flex; align-items: flex-end; padding: 100px 60px;
+}
+.hero-video-container {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -2;
+}
+.hero-video {
+  width: 100%; height: 100%; object-fit: cover; opacity: 0.5;
+}
+.hero-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+  background: linear-gradient(to top, var(--bg-dark) 0%, transparent 60%, rgba(0,0,0,0.5) 100%),
+              linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%);
+}
+.hero-content {
+  max-width: 650px; z-index: 10;
+}
+.hero-badge {
+  display: inline-block; padding: 6px 16px; background: rgba(255,15,35,0.15);
+  border: 1px solid rgba(255,15,35,0.3); border-radius: 50px;
+  color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;
+  backdrop-filter: blur(5px);
+}
+.hero-title {
+  font-size: 85px; font-weight: 900; line-height: 1; margin-bottom: 25px; letter-spacing: -2px;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+.hero-meta {
+  display: flex; gap: 15px; align-items: center; margin-bottom: 25px;
+  font-size: 15px; font-weight: 500; color: #ccc;
+}
+.match-score { color: #46d369; font-weight: 700; }
+.hero-desc {
+  font-size: 18px; line-height: 1.6; color: var(--text-muted); margin-bottom: 35px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+.hero-btns { display: flex; gap: 15px; }
+.btn {
+  padding: 16px 36px; border-radius: 12px; font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: none; display: flex; align-items: center; gap: 10px;
+}
+.btn-play { background: #fff; color: #000; }
+.btn-play:hover { background: #e6e6e6; transform: scale(1.05); box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
+.btn-info { background: rgba(80,80,80,0.6); color: #fff; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.btn-info:hover { background: rgba(100,100,100,0.8); transform: scale(1.05); }
 
-/* SECTIONS */
-.section{padding:0 60px 50px;}
-.row-title{font-size:20px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
-.row-title a{font-size:13px;color:var(--red);cursor:pointer;font-weight:600;letter-spacing:.5px;}
-.cards-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+/* =========================================
+   4. SECTIONS & 3D KARTLAR (PREMIUM UI)
+   ========================================= */
+.content-section {
+  padding: 0 60px 60px; position: relative; z-index: 5; margin-top: -60px;
+}
+.section-title {
+  font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #fff;
+  display: flex; align-items: center; gap: 10px; z-index: 10; position: relative;
+}
+.section-title span {
+  font-size: 14px; font-weight: 600; color: var(--text-muted); margin-left: auto; cursor: pointer; transition: 0.2s;
+}
+.section-title span:hover { color: #fff; }
 
-/* EPISODE CARDS with Cinematic Posters */
-.ep-card{border-radius:12px;overflow:hidden;cursor:pointer;position:relative;aspect-ratio:16/9;transition:transform .35s,box-shadow .35s;}
-.ep-card:hover{transform:scale(1.04) translateY(-4px);box-shadow:0 30px 80px rgba(0,0,0,.9);}
+.cards-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px;
+}
 
-/* POSTER DESIGNS */
-.poster-1{background:linear-gradient(160deg,#0a001a 0%,#050020 30%,#000810 70%,#0a0500 100%);}
-.poster-2{background:linear-gradient(160deg,#1a0a00 0%,#200500 30%,#000815 70%,#001510 100%);}
+.card-wrapper { perspective: 1000px; }
+.card {
+  position: relative; border-radius: 16px; overflow: hidden;
+  aspect-ratio: 16/9; cursor: pointer;
+  background: var(--bg-card);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
+.card::before {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+  transition: opacity 0.3s; opacity: 0.8;
+}
+.card:hover {
+  transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
+  box-shadow: -10px 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(255,15,35,0.2);
+}
+.card:hover::before { opacity: 1; }
 
-.poster-art{position:absolute;inset:0;overflow:hidden;}
-.poster-art .moon{position:absolute;top:12%;right:18%;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#fffde7,#fff9c4,#f9a825);box-shadow:0 0 60px 20px rgba(255,235,59,.3),0 0 120px 40px rgba(255,193,7,.15);animation:moonpulse 4s ease-in-out infinite;}
-@keyframes moonpulse{0%,100%{box-shadow:0 0 60px 20px rgba(255,235,59,.3),0 0 120px 40px rgba(255,193,7,.15);}50%{box-shadow:0 0 80px 30px rgba(255,235,59,.5),0 0 160px 60px rgba(255,193,7,.25);}}
-.poster-art .tree{position:absolute;bottom:0;width:4px;border-radius:2px 2px 0 0;}
-.poster-art .light-beam{position:absolute;width:2px;background:linear-gradient(to bottom,rgba(255,235,59,.8),rgba(255,193,7,0));animation:beam 2s ease-in-out infinite alternate;}
-@keyframes beam{from{opacity:.4;height:120px;}to{opacity:1;height:180px;}}
-.poster-art .stars{position:absolute;inset:0;}
-.poster-art .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle ease-in-out infinite;}
-@keyframes twinkle{0%,100%{opacity:.2;}50%{opacity:1;}}
-.poster-art .forest-floor{position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(to top,rgba(0,8,0,.95),transparent);}
-.poster-art .glow-orb{position:absolute;border-radius:50%;animation:orbglow 3s ease-in-out infinite;}
-@keyframes orbglow{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.3);opacity:1;}}
+.poster-art { position: absolute; inset: 0; background-size: cover; background-position: center; transition: 0.5s; z-index: 1;}
+.card:hover .poster-art { transform: scale(1.08); }
 
-.poster-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.1) 100%);}
-.poster-content{position:absolute;bottom:0;left:0;right:0;padding:20px;}
-.ep-num{color:var(--red);font-size:11px;font-weight:700;letter-spacing:3px;margin-bottom:6px;}
-.ep-name{font-size:18px;font-weight:800;margin-bottom:6px;line-height:1.2;}
-.ep-desc{font-size:12px;color:#aaa;line-height:1.5;}
-.play-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);display:flex;justify-content:center;align-items:center;font-size:22px;opacity:0;transition:.3s;padding-left:4px;backdrop-filter:blur(8px);}
-.ep-card:hover .play-ring{opacity:1;}
-.dl-btn{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;opacity:0;transition:.2s;backdrop-filter:blur(8px);text-decoration:none;display:flex;align-items:center;gap:5px;z-index:10;}
-.ep-card:hover .dl-btn{opacity:1;}
-.dl-btn:hover{background:rgba(229,9,20,.8);border-color:var(--red);}
+/* Saf CSS Arka Planlar (Görsel eksikliğini kapatmak için şık gradientler) */
+.poster-bg-1 { background: radial-gradient(circle at 30% 70%, #1a0b2e 0%, #080012 100%); }
+.poster-bg-2 { background: radial-gradient(circle at 70% 30%, #2e1a0b 0%, #120500 100%); }
+.poster-bg-movie { background: radial-gradient(circle at 50% 50%, #002d5c 0%, #000814 100%); } /* Sinematik Mavi */
 
-/* FILTER TABS */
-.filter-tabs{display:flex;gap:8px;padding:0 60px 28px;flex-wrap:wrap;}
-.ftab{padding:8px 20px;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:transparent;color:#ccc;cursor:pointer;font-size:13px;font-family:'Outfit',sans-serif;transition:.2s;}
-.ftab:hover,.ftab.active{background:#fff;color:#000;border-color:#fff;}
+.card-content {
+  position: absolute; bottom: 0; left: 0; width: 100%; padding: 25px; z-index: 3;
+  transform: translateZ(30px);
+}
+.card-meta {
+  font-size: 11px; font-weight: 800; color: var(--accent); letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.card-meta.movie-badge {
+  color: #4dacff; /* Film için özel mavi renk */
+}
+.card-title {
+  font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; line-height: 1.2;
+}
+.card-desc {
+  font-size: 13px; color: #bbb; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.play-icon {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translateZ(40px) scale(0.8);
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.8);
+  display: flex; justify-content: center; align-items: center; z-index: 4;
+  backdrop-filter: blur(10px); opacity: 0; transition: all 0.4s ease;
+}
+.play-icon svg { width: 24px; height: 24px; fill: #fff; margin-left: 4px; }
+.card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) translateZ(50px) scale(1); }
 
-/* VIEWS */
-.view{display:none;}
-.view.active{display:block;}
-.page-header{padding:110px 60px 30px;}
-.page-header h2{font-size:36px;font-weight:800;margin-bottom:8px;}
-.page-header p{color:var(--sub);font-size:15px;}
+/* =========================================
+   5. PLAYER MODAL (SİNEMATİK OYNATICI)
+   ========================================= */
+#player-modal {
+  position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.98);
+  display: flex; justify-content: center; align-items: center;
+  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+}
+#player-modal.active { opacity: 1; pointer-events: all; }
 
-/* MODAL PLAYER */
-#modal{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.97);display:none;justify-content:center;align-items:center;backdrop-filter:blur(20px);}
-#modal.open{display:flex;}
-.modal-wrap{position:relative;}
-.close-btn{position:absolute;top:-48px;right:0;background:none;border:none;color:rgba(255,255,255,.6);font-size:26px;cursor:pointer;transition:.2s;}
-.close-btn:hover{color:#fff;}
-.phone{width:400px;height:750px;border-radius:44px;overflow:hidden;border:3px solid #222;position:relative;background:#000;box-shadow:0 0 0 1px #333,0 50px 150px rgba(0,0,0,.9);}
-#player{width:100%;height:100%;object-fit:cover;}
-#sub-box{position:absolute;bottom:90px;left:16px;right:16px;text-align:center;pointer-events:none;}
-.sub-text{display:inline-block;background:rgba(0,0,0,.75);color:#fff;font-size:17px;font-weight:600;padding:8px 18px;border-radius:8px;backdrop-filter:blur(4px);max-width:100%;line-height:1.4;}
-.p-controls{position:absolute;bottom:20px;left:16px;right:16px;display:flex;gap:10px;}
-.p-btn{flex:1;background:rgba(255,255,255,.12);color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Outfit',sans-serif;transition:.2s;}
-.p-btn:hover{background:rgba(255,255,255,.22);}
-.p-btn.red{background:var(--red);}
+.player-container {
+  width: 90%; max-width: 1400px; aspect-ratio: 16/9; position: relative;
+  background: #000; border-radius: 24px; overflow: hidden;
+  box-shadow: 0 30px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+  transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+#player-modal.active .player-container { transform: scale(1); }
+
+.close-btn {
+  position: absolute; top: 30px; right: 40px; color: #fff; font-size: 30px; cursor: pointer;
+  opacity: 0.6; transition: 0.3s; z-index: 10000;
+  width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.5);
+  display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.2);
+}
+.close-btn:hover { opacity: 1; transform: rotate(90deg); background: rgba(255,255,255,0.1); }
+
+#video-player, #yt-player {
+  width: 100%; height: 100%; object-fit: cover; border: none; position: absolute; inset: 0;
+}
+.player-controls {
+  position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 30px 30px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  display: flex; justify-content: space-between; align-items: flex-end; z-index: 10;
+  opacity: 0; transition: opacity 0.3s;
+}
+.player-container:hover .player-controls { opacity: 1; }
+.sub-text {
+  position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.75); color: #fff; padding: 12px 24px; border-radius: 12px;
+  font-size: 22px; font-weight: 600; text-align: center; max-width: 80%; display: none;
+  backdrop-filter: blur(8px); text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.ctrl-btn {
+  background: rgba(255,255,255,0.15); border: none; color: #fff;
+  padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700;
+  cursor: pointer; backdrop-filter: blur(10px); transition: 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.ctrl-btn:hover { background: rgba(255,255,255,0.25); }
 
 /* FOOTER */
-footer{padding:50px 80px;border-top:1px solid #1a1a1a;color:var(--sub);font-size:13px;}
-footer .f-links{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:16px;}
-footer .f-links a{color:var(--sub);cursor:pointer;text-decoration:none;transition:.2s;}
-footer .f-links a:hover{color:#fff;}
+footer { padding: 60px; text-align: center; color: var(--text-muted); font-size: 14px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px; }
 </style>
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav id="navbar">
-  <div class="logo" onclick="showView('home')">Siom<em>Journey</em></div>
+  <div class="logo">Siom<span>Journey</span></div>
   <div class="nav-links">
-    <a onclick="showView('home')" class="active" id="nav-home">Ana Sayfa</a>
-    <a onclick="showView('series')" id="nav-series">Diziler</a>
-    <a onclick="showView('movies')" id="nav-movies">Filmler</a>
-    <a onclick="showView('new')" id="nav-new">Yeni & Popüler</a>
-    <a onclick="showView('list')" id="nav-list">Listem</a>
-  </div>
-  <div class="nav-right">
-    <div class="search-box">
-      <span>🔍</span>
-      <input type="text" placeholder="Ara..." oninput="doSearch(this.value)" id="searchInput"/>
-    </div>
+    <a href="#" class="active">Ana Sayfa</a>
+    <a href="#diziler">Diziler</a>
+    <a href="#filmler">Filmler</a>
+    <a href="#">Listem</a>
   </div>
 </nav>
 
-<!-- HOME -->
-<div id="view-home" class="view active">
-  <!-- HERO SECTION WITH VIDEO BACKGROUND -->
+<!-- HERO -->
 <div class="hero">
-  <video autoplay muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-    <source src="bolum1.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  <div class="hero-grad"></div>
+  <div class="hero-video-container">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="bolum1.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+  </div>
+  
   <div class="hero-content">
-    <div class="hero-badge">🎬 SiomJourney Premium</div>
-    <h1 class="hero-title">Mini: <span>The Journey</span></h1>
+    <div class="hero-badge">🎬 SİOMJOURNEY ORİJİNAL</div>
+    <h1 class="hero-title">Mini: The Journey</h1>
     <div class="hero-meta">
-      <span class="match">98% Eşleşme</span>
-      <span>2025</span>
-      <span style="border:1px solid #555;padding:1px 7px;border-radius:3px;font-size:12px">HD</span>
-      <span>2 Bölüm</span>
+      <span class="match-score">98% Eşleşme</span>
+      <span>2026</span>
+      <span style="border:1px solid rgba(255,255,255,0.3); padding:2px 8px; border-radius:4px; font-size:12px;">4K HDR</span>
+      <span>Orijinal Dizi</span>
     </div>
-    <p class="hero-desc">Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürür.</p>
+    <p class="hero-desc">Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.</p>
     <div class="hero-btns">
-      <button class="btn btn-play" onclick="openPlayer(0)">▶ Oynat</button>
-      <button class="btn btn-info" onclick="openPlayer(1)">ℹ️ Bölüm 2</button>
+      <button class="btn btn-play" onclick="openPlayer(0)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Hemen İzle
+      </button>
+      <button class="btn btn-info">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" fill="none"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Daha Fazla Bilgi
+      </button>
     </div>
   </div>
 </div>
 
-<!-- TOP TRENDING SECTION -->
-<div class="section">
-  <div class="row-title">Bu Hafta En Çok İzlenenler <a href="#">Tümünü Gör →</a></div>
-  <div class="cards-row" id="trending-row">
-    <!-- Cards will be injected via JS (reuse existing CONTENT data) -->
+<!-- DİZİLER BÖLÜMÜ -->
+<div class="content-section" id="diziler">
+  <div class="section-title">Orijinal Diziler <span>Tümünü Gör ❯</span></div>
+  <div class="cards-grid" id="series-grid">
+    <!-- JS ile Doldurulacak -->
   </div>
 </div>
 
-<!-- CONTINUE WATCHING SECTION -->
-<div class="section">
-  <div class="row-title">Devam Et <a href="#">Tümünü Gör →</a></div>
-  <div class="cards-row" id="continue-row">
-    <!-- Placeholder cards, will be populated via JS based on localStorage -->
-  </div>
-</div>
-
-<!-- ORIGINAL CONTENT START (retained) -->
-    <div class="hero-bg"></div>
-    <div class="hero-particles" id="particles"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-grad"></div>
-    <div class="hero-content">
-      <div class="hero-badge">🎬 SiomJourney Orijinal</div>
-      <h1 class="hero-title">Mini: <span>The</span><br>Journey</h1>
-      <div class="hero-meta">
-        <span class="match">98% Eşleşme</span>
-        <span>2025</span>
-        <span style="border:1px solid #555;padding:1px 7px;border-radius:3px;font-size:12px">HD</span>
-        <span>2 Bölüm</span>
-      </div>
-      <p class="hero-desc">Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.</p>
-      <div class="hero-btns">
-        <button class="btn btn-play" onclick="openPlayer(0)">▶ &nbsp;Oynat</button>
-        <button class="btn btn-info" onclick="openPlayer(1)">ℹ️ &nbsp;Bölüm 2</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="section" style="margin-top:-50px;">
-    <div class="row-title">Trend <a>Tümünü Gör →</a></div>
-    <div class="cards-row" id="home-trending"></div>
-  </div>
-  <div class="section">
-    <div class="row-title">Mini Evreni <a>Tümünü Gör →</a></div>
-    <div class="cards-row" id="home-series"></div>
-  </div>
-</div>
-
-<!-- SERIES VIEW -->
-<div id="view-series" class="view">
-  <div class="page-header"><h2>Diziler</h2><p>Mini evreninin tüm bölümleri</p></div>
-  <div class="filter-tabs">
-    <button class="ftab active" onclick="filterGenre(this,'all')">Tümü</button>
-    <button class="ftab" onclick="filterGenre(this,'macera')">Macera</button>
-    <button class="ftab" onclick="filterGenre(this,'animasyon')">Animasyon</button>
-    <button class="ftab" onclick="filterGenre(this,'aile')">Aile</button>
-  </div>
-  <div class="section"><div class="cards-row" id="series-row"></div></div>
-</div>
-
-<!-- MOVIES VIEW -->
-<div id="view-movies" class="view">
-  <div class="page-header"><h2>Filmler</h2><p>SiomJourney özel yapımları</p></div>
-  <div class="section">
-    <div style="text-align:center;padding:80px 0;color:var(--sub);">
-      <div style="font-size:64px;margin-bottom:20px">🎬</div>
-      <p style="font-size:20px;font-weight:600;margin-bottom:8px">Filmler Yakında!</p>
-      <p style="font-size:14px">Yeni yapımlar için takipte kalın.</p>
-    </div>
-  </div>
-</div>
-
-<!-- NEW VIEW -->
-<div id="view-new" class="view">
-  <div class="page-header"><h2>Yeni & Popüler</h2><p>Bu hafta öne çıkanlar</p></div>
-  <div class="section"><div class="cards-row" id="new-row"></div></div>
-</div>
-
-<!-- LIST VIEW -->
-<div id="view-list" class="view">
-  <div class="page-header"><h2>Listem</h2><p>Kaydettiğiniz içerikler</p></div>
-  <div class="section" style="text-align:center;padding:80px 0;color:var(--sub);">
-    <div style="font-size:64px;margin-bottom:20px">📌</div>
-    <p style="font-size:20px;font-weight:600;margin-bottom:8px">Listeniz Boş</p>
-    <p style="font-size:14px">İçeriklere ❤️ yaparak buraya ekleyebilirsiniz.</p>
+<!-- FİLMLER BÖLÜMÜ -->
+<div class="content-section" id="filmler" style="margin-top: 20px;">
+  <div class="section-title">Popüler Animasyon Filmleri <span>Tümünü Gör ❯</span></div>
+  <div class="cards-grid" id="movies-grid">
+    <!-- JS ile Doldurulacak -->
   </div>
 </div>
 
 <!-- PLAYER MODAL -->
-<div id="modal">
-  <div class="modal-wrap">
-    <button class="close-btn" onclick="closePlayer()">✕</button>
-    <div class="phone">
-      <video id="player" playsinline webkit-playsinline></video>
-      <div id="sub-box"><span class="sub-text" id="sub-text" style="display:none"></span></div>
-      <div class="p-controls">
-        <button class="p-btn" onclick="togglePlay()" id="play-btn">⏸ Duraklat</button>
-        <a class="p-btn" id="dl-player-btn" href="#" download style="text-align:center;text-decoration:none;">⬇ İndir</a>
-        <button class="p-btn red" onclick="closePlayer()">✕ Kapat</button>
-      </div>
+<div id="player-modal">
+  <div class="close-btn" onclick="closePlayer()">✕</div>
+  <div class="player-container">
+    <video id="video-player" playsinline webkit-playsinline></video>
+    <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen style="display:none;"></iframe>
+    
+    <div class="sub-text" id="sub-text"></div>
+    
+    <div class="player-controls" id="player-controls-ui">
+      <button class="ctrl-btn" onclick="togglePlay()" id="play-pause-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> Duraklat
+      </button>
+      <a class="ctrl-btn" id="dl-btn" href="#" download style="text-decoration: none;">
+        ⬇ İndir
+      </a>
     </div>
   </div>
 </div>
 
 <footer>
-  <div class="f-links">
-    <a>Yardım Merkezi</a><a>Kullanım Koşulları</a><a>Gizlilik</a><a>İletişim</a><a>Hakkımızda</a>
-  </div>
-  <p>© 2025 SiomJourney | Tüm hakları saklıdır.</p>
+  <p>© 2026 SiomJourney | Netflix'ten Daha İyiyiz.</p>
 </footer>
 
 <script>
+/* =========================================
+   VERİ TABANI (DİZİLER VE FİLMLER AYRILDI)
+   ========================================= */
 const CONTENT = [
+  // --- DİZİLER ---
   {
-    id:0, type:'series', genres:['macera','animasyon','aile'],
-    title:'Mini: The Journey',
-    ep:'BÖLÜM 1', epFull:'Bölüm 1 · Karanlık Ormana Giriş',
-    desc:'Mini karanlık ormanda yürür. Uzakta gizemli bir ışık görür ve peşine düşer.',
-    file:'bolum1.mp4', poster:'poster-1',
-    subs:[
+    id: 0, type: 'series',
+    title: 'Mini: The Journey', epFull: '1. Bölüm',
+    desc: 'Mini karanlık ormanda yürür. Uzakta gizemli bir ışık görür ve peşine düşer.',
+    file: 'bolum1.mp4', posterClass: 'poster-bg-1', isYoutube: false, badgeClass: '',
+    subs: [
       {from:0,to:5,text:'Mini karanlık ormanda yürür.'},
       {from:5,to:10,text:'Uzakta küçük bir ışık görür.'},
-      {from:10,to:15,text:'Ay ışığı yüzüne vurur.'},
-      {from:15,to:20,text:'Mini durur. Işık onu çağırıyor.'},
-      {from:20,to:26,text:'Mini ışığa doğru yaklaşır.'}
+      {from:10,to:15,text:'Ay ışığı yüzüne vurur.'}
     ]
   },
   {
-    id:1, type:'series', genres:['macera','animasyon'],
-    title:'Mini: The Journey',
-    ep:'BÖLÜM 2', epFull:'Bölüm 2 · Işığın Gizemi',
-    desc:'Işığın gizemi derinleşir. Mini ormanın kalbindeki büyük kütüphaneye ulaşır.',
-    file:'bolum2.mp4', poster:'poster-2',
-    subs:[
+    id: 1, type: 'series',
+    title: 'Mini: The Journey', epFull: '2. Bölüm',
+    desc: 'Işığın gizemi derinleşir. Mini ormanın kalbindeki büyük kütüphaneye ulaşır.',
+    file: 'bolum2.mp4', posterClass: 'poster-bg-2', isYoutube: false, badgeClass: '',
+    subs: [
       {from:0,to:6,text:'Mini ışığın peşinden ormana ilerler.'},
-      {from:6,to:11,text:'Mini elini uzatır. Işık ona doğru gelir.'},
-      {from:11,to:16,text:'Işık parlayan bir yol oluşturur.'},
-      {from:16,to:21,text:'Işık ilerler ve Mini onu takip eder.'},
-      {from:21,to:27,text:'Mini ışık yolu boyunca ilerler.'}
+      {from:6,to:11,text:'Mini elini uzatır. Işık ona doğru gelir.'}
     ]
+  },
+  // --- FİLMLER ---
+  {
+    id: 2, type: 'movie',
+    title: 'Hoplayanlar (Hoppers)', epFull: 'Animasyon Filmi',
+    desc: 'Eşsiz bir animasyon macerası. Netflix kalitesini geride bırakan muhteşem bir yapım.',
+    file: 'https://www.youtube.com/embed/xXMDQVOCXmE?autoplay=1&rel=0&modestbranding=1&controls=1',
+    posterClass: 'poster-bg-movie', isYoutube: true, badgeClass: 'movie-badge',
+    subs: []
   }
 ];
 
-// Generate particles
-(function(){
-  const p=document.getElementById('particles');
-  for(let i=0;i<40;i++){
-    const d=document.createElement('div');
-    d.className='particle';
-    const sz=Math.random()*2+1;
-    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*10}s;`;
-    p.appendChild(d);
-  }
-})();
-
-// Card HTML with cinematic CSS poster
-function cardHTML(c){
-  const stars = Array.from({length:20},(_,i)=>`<div class="star" style="left:${Math.random()*100}%;top:${Math.random()*60}%;width:${Math.random()*2+1}px;height:${Math.random()*2+1}px;animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*3}s;"></div>`).join('');
-  
-  const art = c.id===0 ? `
-    <div class="stars">${stars}</div>
-    <div class="moon"></div>
-    <div class="tree" style="left:15%;height:55%;bottom:0;background:linear-gradient(to top,#0a1a08,#041004);width:6px;"></div>
-    <div class="tree" style="left:25%;height:70%;bottom:0;background:linear-gradient(to top,#0a1a08,#041004);width:8px;"></div>
-    <div class="tree" style="left:70%;height:60%;bottom:0;background:linear-gradient(to top,#0a1a08,#041004);width:7px;"></div>
-    <div class="tree" style="left:80%;height:50%;bottom:0;background:linear-gradient(to top,#0a1a08,#041004);width:5px;"></div>
-    <div class="light-beam" style="left:42%;bottom:38%;background:linear-gradient(to bottom,rgba(255,235,59,.7),rgba(255,193,7,0));"></div>
-    <div class="glow-orb" style="left:40%;bottom:35%;width:12px;height:12px;background:radial-gradient(circle,#fff9c4,#f9a825);box-shadow:0 0 20px 8px rgba(255,235,59,.6);"></div>
-    <div class="forest-floor"></div>` : `
-    <div class="stars">${stars}</div>
-    <div class="glow-orb" style="left:20%;top:25%;width:100px;height:100px;background:radial-gradient(circle,rgba(255,165,0,.3),transparent);box-shadow:0 0 80px 40px rgba(255,140,0,.2);border-radius:50%;"></div>
-    <div class="tree" style="left:10%;height:75%;bottom:0;background:linear-gradient(to top,#1a0800,#0a0300);width:8px;border-radius:4px 4px 0 0;"></div>
-    <div class="tree" style="left:20%;height:65%;bottom:0;background:linear-gradient(to top,#1a0800,#0a0300);width:6px;border-radius:3px 3px 0 0;"></div>
-    <div class="tree" style="right:15%;height:70%;bottom:0;background:linear-gradient(to top,#1a0800,#0a0300);width:7px;border-radius:3px 3px 0 0;"></div>
-    <div class="glow-orb" style="left:45%;bottom:30%;width:16px;height:16px;background:radial-gradient(circle,#fff,#ffcc02);box-shadow:0 0 30px 12px rgba(255,200,0,.7);border-radius:50%;"></div>
-    <div class="forest-floor" style="background:linear-gradient(to top,rgba(10,3,0,.95),transparent);"></div>`;
-
+/* =========================================
+   UI OLUŞTURMA
+   ========================================= */
+function generateCardHTML(c) {
   return `
-  <div class="ep-card ${c.poster}" onclick="openPlayer(${c.id})">
-    <div class="poster-art">${art}</div>
-    <div class="poster-overlay"></div>
-    <a class="dl-btn" href="${c.file}" download onclick="event.stopPropagation()">⬇ İndir</a>
-    <div class="poster-content">
-      <div class="ep-num">${c.epFull.toUpperCase()}</div>
-      <div class="ep-name">${c.title}</div>
-      <div class="ep-desc">${c.desc}</div>
+  <div class="card-wrapper">
+    <div class="card" onclick="openPlayer(${c.id})">
+      <div class="poster-art ${c.posterClass}"></div>
+      <div class="card-content">
+        <div class="card-meta ${c.badgeClass}">${c.epFull}</div>
+        <div class="card-title">${c.title}</div>
+        <div class="card-desc">${c.desc}</div>
+      </div>
+      <div class="play-icon">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
     </div>
-    <div class="play-ring">▶</div>
   </div>`;
 }
 
-function renderAll(){
-  ['home-trending','home-series','new-row'].forEach(id=>{
-    document.getElementById(id).innerHTML=CONTENT.map(cardHTML).join('');
-  });
-  document.getElementById('series-row').innerHTML=CONTENT.filter(c=>c.type==='series').map(cardHTML).join('');
-}
-renderAll();
-
-// Navigation
-function showView(name){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  document.getElementById('view-'+name).classList.add('active');
-  const el=document.getElementById('nav-'+name);
-  if(el) el.classList.add('active');
-  window.scrollTo(0,0);
+function renderContent() {
+  const seriesHTML = CONTENT.filter(c => c.type === 'series').map(generateCardHTML).join('');
+  const moviesHTML = CONTENT.filter(c => c.type === 'movie').map(generateCardHTML).join('');
+  
+  document.getElementById('series-grid').innerHTML = seriesHTML;
+  document.getElementById('movies-grid').innerHTML = moviesHTML;
 }
 
-window.addEventListener('scroll',()=>{
-  document.getElementById('navbar').classList.toggle('solid',window.scrollY>60);
+renderContent();
+
+/* =========================================
+   SCROLL VE NAVBAR EFEKTİ
+   ========================================= */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 50) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
 });
 
-function filterGenre(btn,genre){
-  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const filtered=genre==='all'?CONTENT:CONTENT.filter(c=>c.genres.includes(genre));
-  document.getElementById('series-row').innerHTML=filtered.length?filtered.map(cardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--sub)">Bu kategoride içerik bulunamadı.</div>';
+/* =========================================
+   PLAYER MANTIĞI
+   ========================================= */
+const modal = document.getElementById('player-modal');
+const videoPlayer = document.getElementById('video-player');
+const ytPlayer = document.getElementById('yt-player');
+const subText = document.getElementById('sub-text');
+const controlsUI = document.getElementById('player-controls-ui');
+const dlBtn = document.getElementById('dl-btn');
+
+let activeSubs = [];
+let subTimer = null;
+let currentIsYt = false;
+
+function openPlayer(id) {
+  const c = CONTENT[id];
+  currentIsYt = c.isYoutube;
+  activeSubs = c.subs || [];
+  
+  modal.classList.add('active');
+  
+  if (currentIsYt) {
+    // YouTube Modu
+    videoPlayer.style.display = 'none';
+    ytPlayer.style.display = 'block';
+    ytPlayer.src = c.file;
+    controlsUI.style.display = 'none'; // YT'nin kendi kontrolleri var
+  } else {
+    // Standart Video Modu
+    ytPlayer.style.display = 'none';
+    videoPlayer.style.display = 'block';
+    videoPlayer.src = c.file;
+    controlsUI.style.display = 'flex';
+    dlBtn.href = c.file;
+    dlBtn.download = c.epFull + '.mp4';
+    videoPlayer.play();
+    
+    // Altyazı sistemi
+    if(subTimer) clearInterval(subTimer);
+    subTimer = setInterval(() => {
+      const t = videoPlayer.currentTime;
+      const s = activeSubs.find(x => t >= x.from && t < x.to);
+      if(s) { subText.textContent = s.text; subText.style.display = 'block'; }
+      else { subText.style.display = 'none'; }
+    }, 100);
+  }
 }
 
-function doSearch(val){
-  const v=val.toLowerCase();
-  const filtered=CONTENT.filter(c=>c.title.toLowerCase().includes(v)||c.desc.toLowerCase().includes(v)||c.epFull.toLowerCase().includes(v));
-  document.getElementById('home-trending').innerHTML=filtered.map(cardHTML).join('');
-}
-
-// PLAYER
-const player=document.getElementById('player');
-const subText=document.getElementById('sub-text');
-let activeSubs=[];
-let subTimer=null;
-
-function openPlayer(id){
-  const c=CONTENT[id];
-  player.src=c.file;
-  activeSubs=c.subs;
-  document.getElementById('modal').classList.add('open');
-  document.getElementById('play-btn').textContent='⏸ Duraklat';
-  // Player indirme butonunu güncelle
-  const dlBtn=document.getElementById('dl-player-btn');
-  dlBtn.href=c.file;
-  dlBtn.download=c.epFull+'.mp4';
-  player.play();
+function closePlayer() {
+  modal.classList.remove('active');
+  subText.style.display = 'none';
   if(subTimer) clearInterval(subTimer);
-  subTimer=setInterval(()=>{
-    const t=player.currentTime;
-    const s=activeSubs.find(x=>t>=x.from&&t<x.to);
-    if(s){subText.textContent=s.text;subText.style.display='inline-block';}
-    else{subText.style.display='none';}
-  },100);
+  
+  if (currentIsYt) {
+    ytPlayer.src = ''; // Iframe'i durdur
+  } else {
+    videoPlayer.pause();
+    videoPlayer.src = '';
+  }
 }
 
-function closePlayer(){
-  player.pause();player.src='';
-  document.getElementById('modal').classList.remove('open');
-  subText.style.display='none';
-  if(subTimer) clearInterval(subTimer);
+function togglePlay() {
+  if (currentIsYt) return;
+  const btn = document.getElementById('play-pause-btn');
+  if (videoPlayer.paused) {
+    videoPlayer.play();
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> Duraklat';
+  } else {
+    videoPlayer.pause();
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Oynat';
+  }
 }
 
-function togglePlay(){
-  if(player.paused){player.play();document.getElementById('play-btn').textContent='⏸ Duraklat';}
-  else{player.pause();document.getElementById('play-btn').textContent='▶ Oynat';}
-}
-
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closePlayer();});
+// Modal dışına tıklayınca kapatma
+modal.addEventListener('click', (e) => {
+  if (e.target === modal) closePlayer();
+});
 </script>
 </body>
 </html>
