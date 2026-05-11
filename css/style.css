@@ -93,6 +93,16 @@ nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-ba
 /* iOS TAB BAR (MOBILE ONLY) */
 .ios-tab-bar { display: none; }
 
+/* SEARCH MODAL */
+#search-modal { position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.85); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 100px 60px; overflow-y: auto; }
+#search-modal.active { opacity: 1; pointer-events: all; }
+.search-container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+#search-input { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(255,255,255,0.2); color: #fff; font-size: 60px; font-weight: 800; padding-bottom: 10px; outline: none; transition: border-color 0.3s; font-family: 'Outfit', -apple-system, sans-serif;}
+#search-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 400;}
+#search-input:focus { border-bottom-color: var(--accent); }
+.search-results { display: flex; flex-wrap: wrap; gap: 24px; padding: 0; justify-content: flex-start;}
+.search-results .card-wrapper { flex: 0 0 240px; margin-bottom: 20px;}
+
 @media (max-width: 768px) { 
   body { padding-bottom: 90px; } /* Tab bar height */
   nav { padding: 20px; background: transparent; border: none; backdrop-filter: none;} 
@@ -119,6 +129,12 @@ nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-ba
   .close-btn { top: 15px; right: 15px; width: 36px; height: 36px; background: rgba(255,255,255,0.1);} 
   .custom-controls { padding: 20px 15px 15px; }
 
+  .search-results .card-wrapper { flex: 0 0 160px; }
+  
+  #search-modal { padding: 60px 20px; padding-bottom: 100px; }
+  #search-input { font-size: 36px; }
+  .search-results { justify-content: center; }
+  
   /* SHOW TAB BAR */
   .ios-tab-bar {
     display: flex; justify-content: space-around; align-items: center;

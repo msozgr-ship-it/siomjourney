@@ -17,6 +17,9 @@
     <a href="#" class="active">Ana Sayfa</a>
     <a href="#diziler">Orijinaller</a>
     <a href="#filmler">Filmler</a>
+    <a href="javascript:void(0)" onclick="openSearch()" title="Ara" style="display:flex; align-items:center;">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+    </a>
   </div>
 </nav>
 
@@ -89,17 +92,26 @@
 
 <!-- iOS STYLE BOTTOM TAB BAR (Sadece mobilde görünür) -->
 <div class="ios-tab-bar" id="ios-tab-bar">
-  <div class="tab-item active">
+  <div class="tab-item active" onclick="closeSearch(); window.scrollTo(0,0);">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     <span>Ana Sayfa</span>
   </div>
-  <div class="tab-item">
+  <div class="tab-item" onclick="openSearch()">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
     <span>Ara</span>
   </div>
   <div class="tab-item">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
     <span>Arşiv</span>
+  </div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div id="search-modal">
+  <div class="close-btn" onclick="closeSearch()" style="position:fixed; top:30px; right:40px; z-index:10002;">✕</div>
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Film veya dizi ara..." autocomplete="off">
+    <div class="search-results cards-row" id="search-results" style="flex-wrap: wrap;"></div>
   </div>
 </div>
 

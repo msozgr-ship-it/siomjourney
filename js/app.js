@@ -125,6 +125,35 @@ function closePlayer() {
   playerModal.classList.remove('active'); ytPlayer.src = ''; videoPlayer.pause(); videoPlayer.src = '';
   if(currentHeroId) updateHero(currentHeroId, DB.series.find(x=>x.id===currentHeroId)?'series':'movie');
 }
+
+/* SEARCH LOGIC */
+const searchModal = document.getElementById('search-modal');
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
+
+function openSearch() {
+  searchModal.classList.add('active');
+  searchInput.value = ''; searchResults.innerHTML = '';
+  setTimeout(() => searchInput.focus(), 100);
+}
+function closeSearch() { searchModal.classList.remove('active'); }
+
+searchInput.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  if (query.length < 2) { searchResults.innerHTML = ''; return; }
+  
+  const results = [];
+  DB.series.forEach(s => { if(s.title.toLowerCase().includes(query)) results.push({item: s, type: 'series'}); });
+  DB.movies.forEach(m => { if(m.title.toLowerCase().includes(query)) results.push({item: m, type: 'movie'}); });
+  
+  if (results.length === 0) {
+    searchResults.innerHTML = '<div style="width:100%; text-align:center; color:#888; font-size:20px; padding: 40px;">Sonuç bulunamadı...</div>';
+  } else {
+    searchResults.innerHTML = results.map(r => generateCardHTML(r.item, r.type)).join('');
+  }
+});
+
 seriesModal.addEventListener('click', (e) => { if (e.target === seriesModal) closeSeriesModal(); });
 playerModal.addEventListener('click', (e) => { if (e.target === playerModal) closePlayer(); });
+searchModal.addEventListener('click', (e) => { if (e.target === searchModal) closeSearch(); });
 window.addEventListener('scroll', () => { const nav = document.getElementById('navbar'); if (window.scrollY > 50) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); });
