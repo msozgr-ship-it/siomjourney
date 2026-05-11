@@ -8,8 +8,6 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<!-- NAVBAR -->
 <nav id="navbar">
   <div class="logo">Siom<span>Journey</span></div>
   <div class="nav-links">
@@ -20,7 +18,6 @@
   </div>
 </nav>
 
-<!-- DİNAMİK HERO -->
 <div class="hero">
   <div class="hero-bg-container">
     <video class="hero-media" id="hero-video" autoplay muted loop playsinline></video>
@@ -31,38 +28,25 @@
   <div class="hero-content">
     <div class="hero-badge">🎬 <span id="hero-type">Orijinal Dizi</span></div>
     <h1 class="hero-title" id="hero-title">Yükleniyor...</h1>
-    <div class="hero-meta">
-      <span class="match-score" id="hero-match"></span>
-      <span id="hero-year"></span>
-      <span style="border:1px solid rgba(255,255,255,0.3); padding:2px 8px; border-radius:4px; font-size:12px;" id="hero-meta"></span>
-    </div>
     <p class="hero-desc" id="hero-desc"></p>
     <div class="hero-btns">
       <button class="btn btn-play" id="hero-play-btn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        Hemen İzle
-      </button>
-      <button class="btn btn-info">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" fill="none"/><path d="M12 16v-4M12 8h.01"/></svg>
-        Daha Fazla Bilgi
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Hemen İzle
       </button>
     </div>
   </div>
 </div>
 
-<!-- DİZİLER BÖLÜMÜ -->
 <div class="content-section" id="diziler">
   <div class="section-title">Orijinal Diziler</div>
-  <div class="cards-grid" id="series-grid"></div>
+  <div class="cards-row" id="series-row"></div>
 </div>
 
-<!-- FİLMLER BÖLÜMÜ -->
 <div class="content-section" id="filmler" style="margin-top: 20px;">
   <div class="section-title">Popüler Animasyon Filmleri</div>
-  <div class="cards-grid" id="movies-grid"></div>
+  <div class="cards-row" id="movies-row"></div>
 </div>
 
-<!-- SERIES MODAL (BÖLÜMLERİ LİSTELEME EKRANI) -->
 <div id="series-modal">
   <div class="close-btn" onclick="closeSeriesModal()" style="position:fixed;">✕</div>
   <div class="series-modal-content">
@@ -73,32 +57,20 @@
         <p id="sm-desc"></p>
       </div>
     </div>
-    <div class="episodes-list" id="sm-episodes">
-      <!-- JS Dolduracak -->
-    </div>
+    <div class="episodes-list" id="sm-episodes"></div>
   </div>
 </div>
 
-<!-- PLAYER MODAL -->
 <div id="player-modal">
   <div class="close-btn" onclick="closePlayer()">✕</div>
   <div class="player-container">
     <video id="video-player" playsinline webkit-playsinline></video>
     <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen style="display:none;"></iframe>
     <div class="sub-text" id="sub-text"></div>
-    <div class="player-controls" id="player-controls-ui">
-      <button class="ctrl-btn" onclick="togglePlay()" id="play-pause-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> Duraklat
-      </button>
-      <a class="ctrl-btn" id="dl-btn" href="#" download style="text-decoration: none;">⬇ İndir</a>
-    </div>
   </div>
 </div>
 
-<footer>
-  <p>© 2026 SiomJourney | Yeni Mimari</p>
-</footer>
-
+<footer><p>© 2026 SiomJourney</p></footer>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 </body>

@@ -43,7 +43,7 @@ const DB = {
       id: 'm1',
       title: 'Hoplayanlar (Hoppers)',
       desc: 'Eşsiz bir animasyon macerası. Disney ve Pixar\'ın en yeni başyapıtı.',
-            poster: 'https://image.tmdb.org/t/p/original/eYjLQ3ULyr3nWj218Cu7YYU0Z8x.jpg',
+      poster: 'https://image.tmdb.org/t/p/original/eYjLQ3ULyr3nWj218Cu7YYU0Z8x.jpg',
       trailer: 'https://drive.google.com/file/d/17UTHsOennIW1tT9dhK8d9K7pOOppMn9q/preview',
       file: 'https://drive.google.com/file/d/17UTHsOennIW1tT9dhK8d9K7pOOppMn9q/preview',
       isYoutube: true,
