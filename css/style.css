@@ -99,6 +99,26 @@ nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-ba
 .card-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card-meta { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
+/* MOBILE RESPONSIVE FIXES */
+@media (max-width: 1100px) {
+  .movie-grid { grid-template-columns: repeat(2, 1fr); padding: 0 30px; }
+  .hero-brand { top: 15%; }
+}
+
+@media (max-width: 600px) {
+  .movie-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 15px; }
+  .section-title { font-size: 20px; padding-left: 0; }
+  .content-section { padding: 0 15px 100px; margin-top: -30px; }
+  .logo-text { font-size: 16px; }
+  .s-img-small { height: 32px; }
+  .cf-item { width: 220px; height: 220px; }
+  .coverflow-container { height: 300px; }
+  .oval-iom { font-size: 60px; }
+  .brand-journey { font-size: 14px; letter-spacing: 12px; margin-left: 15px; }
+  .brand-siom { margin-bottom: -15px; }
+  .s-img-big { height: 100px; }
+}
+
 .card-glass-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; justify-content: center; align-items: center; opacity: 0; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border: 1px solid rgba(255,255,255,0.4); z-index: 5; pointer-events: none; }
 .card-glass-play svg { width: 28px; height: 28px; margin-left: 4px; pointer-events: none; }
 
