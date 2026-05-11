@@ -42,7 +42,9 @@ function initCoverFlow() {
   container.innerHTML = cfItems.map((item, i) => `
     <div class="cf-item" id="cf-item-${i}" style="background-image: url('${item.poster}')" onclick="clickCoverflow(${i})">
       <div class="play-overlay">
-        <svg viewBox="0 0 24 24" fill="white" width="60" height="60"><path d="M8 5v14l11-7z"/></svg>
+        <div class="play-glass-btn">
+          <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+        </div>
       </div>
     </div>
   `).join('');

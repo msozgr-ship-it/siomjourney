@@ -37,10 +37,11 @@ nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-ba
 .cf-item.next-2 { transform: translateX(340px) translateZ(-150px) rotateY(-35deg); z-index: 2; opacity: 0.4; }
 .cf-item.hidden { transform: translateX(0) translateZ(-400px); z-index: 1; opacity: 0; pointer-events: none; }
 
-.play-overlay { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.4); opacity: 0; transition: 0.3s; border-radius: 16px; }
-.cf-item.active:hover .play-overlay { opacity: 1; }
-.play-overlay svg { transition: 0.3s; transform: scale(0.8); }
-.cf-item.active:hover .play-overlay svg { transform: scale(1.1); }
+.play-overlay { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; border-radius: 16px; pointer-events: none; }
+.cf-item.active .play-overlay { opacity: 1; }
+.play-glass-btn { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.4); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+.play-glass-btn svg { width: 30px; height: 30px; margin-left: 4px; }
+.cf-item.active:hover .play-glass-btn { transform: scale(1.15); background: rgba(255,255,255,0.4); }
 
 .coverflow-title-container { position: absolute; bottom: 50px; text-align: center; z-index: 100; pointer-events: none; transition: 0.3s opacity; }
 #cf-title { font-size: 42px; font-weight: 800; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.8); margin-bottom: 8px; letter-spacing: -1px;}
