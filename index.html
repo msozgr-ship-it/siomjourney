@@ -139,7 +139,47 @@ footer .f-links a:hover{color:#fff;}
 
 <!-- HOME -->
 <div id="view-home" class="view active">
-  <div class="hero">
+  <!-- HERO SECTION WITH VIDEO BACKGROUND -->
+<div class="hero">
+  <video autoplay muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+    <source src="bolum1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="hero-grad"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🎬 SiomJourney Premium</div>
+    <h1 class="hero-title">Mini: <span>The Journey</span></h1>
+    <div class="hero-meta">
+      <span class="match">98% Eşleşme</span>
+      <span>2025</span>
+      <span style="border:1px solid #555;padding:1px 7px;border-radius:3px;font-size:12px">HD</span>
+      <span>2 Bölüm</span>
+    </div>
+    <p class="hero-desc">Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürür.</p>
+    <div class="hero-btns">
+      <button class="btn btn-play" onclick="openPlayer(0)">▶ Oynat</button>
+      <button class="btn btn-info" onclick="openPlayer(1)">ℹ️ Bölüm 2</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOP TRENDING SECTION -->
+<div class="section">
+  <div class="row-title">Bu Hafta En Çok İzlenenler <a href="#">Tümünü Gör →</a></div>
+  <div class="cards-row" id="trending-row">
+    <!-- Cards will be injected via JS (reuse existing CONTENT data) -->
+  </div>
+</div>
+
+<!-- CONTINUE WATCHING SECTION -->
+<div class="section">
+  <div class="row-title">Devam Et <a href="#">Tümünü Gör →</a></div>
+  <div class="cards-row" id="continue-row">
+    <!-- Placeholder cards, will be populated via JS based on localStorage -->
+  </div>
+</div>
+
+<!-- ORIGINAL CONTENT START (retained) -->
     <div class="hero-bg"></div>
     <div class="hero-particles" id="particles"></div>
     <div class="hero-glow"></div>
