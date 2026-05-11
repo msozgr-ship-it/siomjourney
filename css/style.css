@@ -17,8 +17,9 @@ body { background: linear-gradient(135deg, #000000, #0a0005, #110000, #000000); 
 
 nav { position: fixed; top: 0; width: 100%; padding: 25px 60px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; transition: all 0.4s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); }
 nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); padding: 15px 60px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-.logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; color: #fff; cursor:pointer;}
-.logo span { font-weight: 400; opacity: 0.8; }
+.logo { font-size: 24px; font-weight: 900; letter-spacing: 2px; color: #fff; cursor:pointer; display: flex; align-items: center; }
+.logo span { font-weight: 300; opacity: 0.4; margin-left: 2px; }
+.s-fancy-small { color: #ff0f23 !important; font-size: 32px; margin-right: -2px; font-style: italic; font-family: 'Georgia', serif; filter: drop-shadow(0 0 10px rgba(255, 15, 35, 0.6)); transform: rotate(-5deg); display: inline-block; }
 .nav-links { display: flex; gap: 30px; }
 .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 15px; font-weight: 500; transition: 0.3s; cursor:pointer; }
 .nav-links a:hover, .nav-links a.active { color: #fff; }
