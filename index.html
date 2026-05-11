@@ -80,6 +80,9 @@ nav.solid{background:rgba(8,8,8,0.97);box-shadow:0 2px 20px rgba(0,0,0,.5);}
 .ep-desc{font-size:12px;color:#aaa;line-height:1.5;}
 .play-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);display:flex;justify-content:center;align-items:center;font-size:22px;opacity:0;transition:.3s;padding-left:4px;backdrop-filter:blur(8px);}
 .ep-card:hover .play-ring{opacity:1;}
+.dl-btn{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;opacity:0;transition:.2s;backdrop-filter:blur(8px);text-decoration:none;display:flex;align-items:center;gap:5px;z-index:10;}
+.ep-card:hover .dl-btn{opacity:1;}
+.dl-btn:hover{background:rgba(229,9,20,.8);border-color:var(--red);}
 
 /* FILTER TABS */
 .filter-tabs{display:flex;gap:8px;padding:0 60px 28px;flex-wrap:wrap;}
@@ -217,6 +220,7 @@ footer .f-links a:hover{color:#fff;}
       <div id="sub-box"><span class="sub-text" id="sub-text" style="display:none"></span></div>
       <div class="p-controls">
         <button class="p-btn" onclick="togglePlay()" id="play-btn">⏸ Duraklat</button>
+        <a class="p-btn" id="dl-player-btn" href="#" download style="text-align:center;text-decoration:none;">⬇ İndir</a>
         <button class="p-btn red" onclick="closePlayer()">✕ Kapat</button>
       </div>
     </div>
@@ -300,6 +304,7 @@ function cardHTML(c){
   <div class="ep-card ${c.poster}" onclick="openPlayer(${c.id})">
     <div class="poster-art">${art}</div>
     <div class="poster-overlay"></div>
+    <a class="dl-btn" href="${c.file}" download onclick="event.stopPropagation()">⬇ İndir</a>
     <div class="poster-content">
       <div class="ep-num">${c.epFull.toUpperCase()}</div>
       <div class="ep-name">${c.title}</div>
@@ -356,6 +361,10 @@ function openPlayer(id){
   activeSubs=c.subs;
   document.getElementById('modal').classList.add('open');
   document.getElementById('play-btn').textContent='⏸ Duraklat';
+  // Player indirme butonunu güncelle
+  const dlBtn=document.getElementById('dl-player-btn');
+  dlBtn.href=c.file;
+  dlBtn.download=c.epFull+'.mp4';
   player.play();
   if(subTimer) clearInterval(subTimer);
   subTimer=setInterval(()=>{
