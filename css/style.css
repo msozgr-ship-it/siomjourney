@@ -26,7 +26,7 @@ nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-ba
 /* 3D COVERFLOW HERO */
 .coverflow-hero { position: relative; height: 92vh; min-height: 650px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; overflow: hidden; background: #000; margin-bottom: 20px; padding-bottom: 60px;}
 
-.hero-brand { position: absolute; top: 12%; text-align: center; z-index: 10; font-size: 82px; font-weight: 900; letter-spacing: 12px; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.5); pointer-events: none; animation: brandFadeIn 1.5s ease; font-family: 'Outfit', sans-serif; }
+.hero-brand { position: absolute; top: 8%; text-align: center; z-index: 10; font-size: clamp(40px, 8vw, 82px); font-weight: 900; letter-spacing: clamp(4px, 1.5vw, 12px); color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.5); pointer-events: none; animation: brandFadeIn 1.5s ease; font-family: 'Outfit', sans-serif; width: 100%; padding: 0 20px; box-sizing: border-box; }
 .hero-brand span { color: rgba(255,255,255,0.4); font-weight: 400; }
 .s-fancy { color: var(--accent) !important; font-size: 104px; margin-right: -15px; display: inline-block; filter: drop-shadow(0 0 20px rgba(255, 15, 35, 0.6)); font-style: italic; font-family: serif; position: relative; top: 5px; }
 @keyframes brandFadeIn { from { opacity: 0; transform: scale(0.9) translateY(-20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
