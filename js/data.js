@@ -135,6 +135,17 @@ const DB = {
           isYoutube: false
         }
       ]
+    {
+      id: 'm5',
+      title: 'Elio',
+      searchTags: 'elio, disney, pixar, uzay, animasyon, 2025',
+      desc: 'Evrenin elçisi seçilen küçük bir çocuğun komik ve heyecan dolu macerası.',
+      poster: 'assets/img/elio.jpg',
+      year: '2025',
+      match: '98%',
+      meta: '4K Ultra HD',
+      file: '',
+      isYoutube: false
     }
   ]
 };
