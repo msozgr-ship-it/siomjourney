@@ -24,60 +24,76 @@ function renderContent() {
 }
 renderContent();
 
-const heroTitle = document.getElementById('hero-title');
-const heroDesc = document.getElementById('hero-desc');
-const heroType = document.getElementById('hero-type');
-const heroImg = document.getElementById('hero-img');
-const heroPlayBtn = document.getElementById('hero-play-btn');
-const heroIndicators = document.getElementById('hero-indicators');
+let cfItems = [];
+let cfActiveIndex = 0;
+let cfInterval = null;
 
-let heroItems = [];
-let currentHeroIndex = 0;
-let carouselInterval = null;
-
-function initHeroCarousel() {
+function initCoverFlow() {
   const allItems = [...DB.series.map(s => ({...s, type: 'series'})), ...DB.movies.map(m => ({...m, type: 'movie'}))];
   allItems.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
-  heroItems = allItems.slice(0, 3);
   
-  heroIndicators.innerHTML = heroItems.map((_, i) => `<div class="indicator" onclick="setHero(${i})"></div>`).join('');
-  if(heroItems.length > 0) setHero(0);
+  cfItems = [...allItems];
+  while(cfItems.length < 5 && cfItems.length > 0) cfItems = cfItems.concat(allItems);
+  
+  const container = document.getElementById('coverflow-container');
+  container.innerHTML = cfItems.map((item, i) => `
+    <div class="cf-item" id="cf-item-${i}" style="background-image: url('${item.poster}')" onclick="clickCoverflow(${i})">
+      <div class="play-overlay">
+        <svg viewBox="0 0 24 24" fill="white" width="60" height="60"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  `).join('');
+  
+  updateCoverFlow();
+  startCoverflowAuto();
 }
 
-function startCarousel() {
-  if(carouselInterval) clearInterval(carouselInterval);
-  carouselInterval = setInterval(() => {
-    setHero((currentHeroIndex + 1) % heroItems.length);
-  }, 10000);
+function updateCoverFlow() {
+  if(cfItems.length === 0) return;
+  const len = cfItems.length;
+  for(let i = 0; i < len; i++) {
+    const el = document.getElementById(`cf-item-${i}`);
+    el.className = 'cf-item';
+    
+    let offset = i - cfActiveIndex;
+    if (offset < -Math.floor(len/2)) offset += len;
+    if (offset > Math.floor(len/2)) offset -= len;
+    
+    if (offset === 0) el.classList.add('active');
+    else if (offset === -1) el.classList.add('prev-1');
+    else if (offset === 1) el.classList.add('next-1');
+    else if (offset === -2) el.classList.add('prev-2');
+    else if (offset === 2) el.classList.add('next-2');
+    else el.classList.add('hidden');
+  }
+  
+  const activeItem = cfItems[cfActiveIndex];
+  document.getElementById('cf-title').innerText = activeItem.title;
+  document.getElementById('cf-meta').innerText = `${activeItem.year} • ${activeItem.meta}`;
 }
 
-function setHero(index) {
-  currentHeroIndex = index;
-  const item = heroItems[index];
-  
-  document.querySelectorAll('.indicator').forEach((ind, i) => ind.classList.toggle('active', i === index));
-  
-  heroTitle.innerText = item.title; 
-  heroDesc.innerText = item.desc;
-  heroType.innerText = item.type === 'series' ? 'Orijinal Dizi' : (item.isCollection ? 'Orijinal Seri' : 'Orijinal Film');
-  
-  const playType = item.isCollection ? 'collection' : item.type;
-  heroPlayBtn.onclick = () => { 
+function clickCoverflow(index) {
+  if (index === cfActiveIndex) {
+    const item = cfItems[index];
+    const playType = item.isCollection ? 'collection' : item.type;
     if(playType === 'series' || playType === 'collection') openDetailsModal(item.id, playType); 
     else openPlayerMovie(item.id); 
-  };
-  document.getElementById('hero-info-btn').onclick = heroPlayBtn.onclick;
-  
-  heroImg.classList.remove('active');
-  setTimeout(() => {
-    heroImg.src = item.poster;
-    heroImg.onload = () => heroImg.classList.add('active');
-  }, 400);
-  
-  startCarousel();
+  } else {
+    cfActiveIndex = index;
+    updateCoverFlow();
+    startCoverflowAuto();
+  }
 }
 
-initHeroCarousel();
+function startCoverflowAuto() {
+  if(cfInterval) clearInterval(cfInterval);
+  cfInterval = setInterval(() => {
+    cfActiveIndex = (cfActiveIndex + 1) % cfItems.length;
+    updateCoverFlow();
+  }, 5000);
+}
+
+initCoverFlow();
 
 const seriesModal = document.getElementById('series-modal');
 const playerModal = document.getElementById('player-modal');
