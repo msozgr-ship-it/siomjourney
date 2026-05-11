@@ -5,222 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SiomJourney | Premium Streaming</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-<style>
-/* =========================================
-   1. RESET & DEĞİŞKENLER
-   ========================================= */
-:root {
-  --bg-dark: #030303;
-  --bg-card: #0f0f0f;
-  --text-main: #f5f5f5;
-  --text-muted: #a3a3a3;
-  --primary: #e50914; 
-  --accent: #ff0f23;
-}
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', sans-serif; }
-body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
-
-/* =========================================
-   2. NAVBAR
-   ========================================= */
-nav {
-  position: fixed; top: 0; width: 100%; padding: 25px 60px;
-  display: flex; justify-content: space-between; align-items: center;
-  z-index: 100; transition: all 0.4s ease;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-}
-nav.scrolled {
-  background: rgba(3, 3, 3, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 15px 60px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-.logo { font-size: 32px; font-weight: 900; letter-spacing: -1.5px; color: #fff; cursor:pointer;}
-.logo span { background: linear-gradient(90deg, #ff0f23, #ff5722); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.nav-links { display: flex; gap: 30px; }
-.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 15px; font-weight: 500; transition: 0.3s; cursor:pointer; }
-.nav-links a:hover, .nav-links a.active { color: #fff; }
-
-/* =========================================
-   3. HERO (ANA VİTRİN)
-   ========================================= */
-.hero {
-  position: relative; height: 90vh; width: 100vw;
-  display: flex; align-items: flex-end; padding: 100px 60px;
-}
-.hero-video-container {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -2;
-}
-.hero-video {
-  width: 100%; height: 100%; object-fit: cover; opacity: 0.5;
-}
-.hero-overlay {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-  background: linear-gradient(to top, var(--bg-dark) 0%, transparent 60%, rgba(0,0,0,0.5) 100%),
-              linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%);
-}
-.hero-content {
-  max-width: 650px; z-index: 10;
-}
-.hero-badge {
-  display: inline-block; padding: 6px 16px; background: rgba(255,15,35,0.15);
-  border: 1px solid rgba(255,15,35,0.3); border-radius: 50px;
-  color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px;
-  backdrop-filter: blur(5px);
-}
-.hero-title {
-  font-size: 85px; font-weight: 900; line-height: 1; margin-bottom: 25px; letter-spacing: -2px;
-  text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-}
-.hero-meta {
-  display: flex; gap: 15px; align-items: center; margin-bottom: 25px;
-  font-size: 15px; font-weight: 500; color: #ccc;
-}
-.match-score { color: #46d369; font-weight: 700; }
-.hero-desc {
-  font-size: 18px; line-height: 1.6; color: var(--text-muted); margin-bottom: 35px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-}
-.hero-btns { display: flex; gap: 15px; }
-.btn {
-  padding: 16px 36px; border-radius: 12px; font-size: 16px; font-weight: 700;
-  cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  border: none; display: flex; align-items: center; gap: 10px;
-}
-.btn-play { background: #fff; color: #000; }
-.btn-play:hover { background: #e6e6e6; transform: scale(1.05); box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
-.btn-info { background: rgba(80,80,80,0.6); color: #fff; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-.btn-info:hover { background: rgba(100,100,100,0.8); transform: scale(1.05); }
-
-/* =========================================
-   4. SECTIONS & 3D KARTLAR (PREMIUM UI)
-   ========================================= */
-.content-section {
-  padding: 0 60px 60px; position: relative; z-index: 5; margin-top: -60px;
-}
-.section-title {
-  font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #fff;
-  display: flex; align-items: center; gap: 10px; z-index: 10; position: relative;
-}
-.section-title span {
-  font-size: 14px; font-weight: 600; color: var(--text-muted); margin-left: auto; cursor: pointer; transition: 0.2s;
-}
-.section-title span:hover { color: #fff; }
-
-.cards-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px;
-}
-
-.card-wrapper { perspective: 1000px; }
-.card {
-  position: relative; border-radius: 16px; overflow: hidden;
-  aspect-ratio: 16/9; cursor: pointer;
-  background: var(--bg-card);
-  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform-style: preserve-3d;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-}
-.card::before {
-  content: ''; position: absolute; inset: 0; z-index: 2;
-  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
-  transition: opacity 0.3s; opacity: 0.8;
-}
-.card:hover {
-  transform: translateY(-10px) rotateX(2deg) rotateY(2deg);
-  box-shadow: -10px 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(255,15,35,0.2);
-}
-.card:hover::before { opacity: 1; }
-
-.poster-art { position: absolute; inset: 0; background-size: cover; background-position: center; transition: 0.5s; z-index: 1;}
-.card:hover .poster-art { transform: scale(1.08); }
-
-/* Saf CSS Arka Planlar (Görsel eksikliğini kapatmak için şık gradientler) */
-.poster-bg-1 { background: radial-gradient(circle at 30% 70%, #1a0b2e 0%, #080012 100%); }
-.poster-bg-2 { background: radial-gradient(circle at 70% 30%, #2e1a0b 0%, #120500 100%); }
-.poster-bg-movie { background: radial-gradient(circle at 50% 50%, #002d5c 0%, #000814 100%); } /* Sinematik Mavi */
-
-.card-content {
-  position: absolute; bottom: 0; left: 0; width: 100%; padding: 25px; z-index: 3;
-  transform: translateZ(30px);
-}
-.card-meta {
-  font-size: 11px; font-weight: 800; color: var(--accent); letter-spacing: 1.5px;
-  text-transform: uppercase; margin-bottom: 8px;
-}
-.card-meta.movie-badge {
-  color: #4dacff; /* Film için özel mavi renk */
-}
-.card-title {
-  font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; line-height: 1.2;
-}
-.card-desc {
-  font-size: 13px; color: #bbb; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.play-icon {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translateZ(40px) scale(0.8);
-  width: 64px; height: 64px; border-radius: 50%;
-  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.8);
-  display: flex; justify-content: center; align-items: center; z-index: 4;
-  backdrop-filter: blur(10px); opacity: 0; transition: all 0.4s ease;
-}
-.play-icon svg { width: 24px; height: 24px; fill: #fff; margin-left: 4px; }
-.card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) translateZ(50px) scale(1); }
-
-/* =========================================
-   5. PLAYER MODAL (SİNEMATİK OYNATICI)
-   ========================================= */
-#player-modal {
-  position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.98);
-  display: flex; justify-content: center; align-items: center;
-  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-  opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-}
-#player-modal.active { opacity: 1; pointer-events: all; }
-
-.player-container {
-  width: 90%; max-width: 1400px; aspect-ratio: 16/9; position: relative;
-  background: #000; border-radius: 24px; overflow: hidden;
-  box-shadow: 0 30px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
-  transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-#player-modal.active .player-container { transform: scale(1); }
-
-.close-btn {
-  position: absolute; top: 30px; right: 40px; color: #fff; font-size: 30px; cursor: pointer;
-  opacity: 0.6; transition: 0.3s; z-index: 10000;
-  width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.5);
-  display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.2);
-}
-.close-btn:hover { opacity: 1; transform: rotate(90deg); background: rgba(255,255,255,0.1); }
-
-#video-player, #yt-player {
-  width: 100%; height: 100%; object-fit: cover; border: none; position: absolute; inset: 0;
-}
-.player-controls {
-  position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 30px 30px;
-  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-  display: flex; justify-content: space-between; align-items: flex-end; z-index: 10;
-  opacity: 0; transition: opacity 0.3s;
-}
-.player-container:hover .player-controls { opacity: 1; }
-.sub-text {
-  position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
-  background: rgba(0,0,0,0.75); color: #fff; padding: 12px 24px; border-radius: 12px;
-  font-size: 22px; font-weight: 600; text-align: center; max-width: 80%; display: none;
-  backdrop-filter: blur(8px); text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-.ctrl-btn {
-  background: rgba(255,255,255,0.15); border: none; color: #fff;
-  padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 700;
-  cursor: pointer; backdrop-filter: blur(10px); transition: 0.2s;
-  display: flex; align-items: center; gap: 8px;
-}
-.ctrl-btn:hover { background: rgba(255,255,255,0.25); }
-
-/* FOOTER */
-footer { padding: 60px; text-align: center; color: var(--text-muted); font-size: 14px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 40px; }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -235,27 +20,25 @@ footer { padding: 60px; text-align: center; color: var(--text-muted); font-size:
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- DİNAMİK HERO -->
 <div class="hero">
-  <div class="hero-video-container">
-    <video class="hero-video" autoplay muted loop playsinline>
-      <source src="bolum1.mp4" type="video/mp4">
-    </video>
+  <div class="hero-bg-container">
+    <video class="hero-media" id="hero-video" autoplay muted loop playsinline></video>
+    <iframe class="hero-media" id="hero-yt" style="display:none; pointer-events:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
     <div class="hero-overlay"></div>
   </div>
   
   <div class="hero-content">
-    <div class="hero-badge">🎬 SİOMJOURNEY ORİJİNAL</div>
-    <h1 class="hero-title">Mini: The Journey</h1>
+    <div class="hero-badge">🎬 <span id="hero-type">Orijinal Dizi</span></div>
+    <h1 class="hero-title" id="hero-title">Yükleniyor...</h1>
     <div class="hero-meta">
-      <span class="match-score">98% Eşleşme</span>
-      <span>2026</span>
-      <span style="border:1px solid rgba(255,255,255,0.3); padding:2px 8px; border-radius:4px; font-size:12px;">4K HDR</span>
-      <span>Orijinal Dizi</span>
+      <span class="match-score" id="hero-match"></span>
+      <span id="hero-year"></span>
+      <span style="border:1px solid rgba(255,255,255,0.3); padding:2px 8px; border-radius:4px; font-size:12px;" id="hero-meta"></span>
     </div>
-    <p class="hero-desc">Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.</p>
+    <p class="hero-desc" id="hero-desc"></p>
     <div class="hero-btns">
-      <button class="btn btn-play" onclick="openPlayer(0)">
+      <button class="btn btn-play" id="hero-play-btn">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         Hemen İzle
       </button>
@@ -269,17 +52,30 @@ footer { padding: 60px; text-align: center; color: var(--text-muted); font-size:
 
 <!-- DİZİLER BÖLÜMÜ -->
 <div class="content-section" id="diziler">
-  <div class="section-title">Orijinal Diziler <span>Tümünü Gör ❯</span></div>
-  <div class="cards-grid" id="series-grid">
-    <!-- JS ile Doldurulacak -->
-  </div>
+  <div class="section-title">Orijinal Diziler</div>
+  <div class="cards-grid" id="series-grid"></div>
 </div>
 
 <!-- FİLMLER BÖLÜMÜ -->
 <div class="content-section" id="filmler" style="margin-top: 20px;">
-  <div class="section-title">Popüler Animasyon Filmleri <span>Tümünü Gör ❯</span></div>
-  <div class="cards-grid" id="movies-grid">
-    <!-- JS ile Doldurulacak -->
+  <div class="section-title">Popüler Animasyon Filmleri</div>
+  <div class="cards-grid" id="movies-grid"></div>
+</div>
+
+<!-- SERIES MODAL (BÖLÜMLERİ LİSTELEME EKRANI) -->
+<div id="series-modal">
+  <div class="close-btn" onclick="closeSeriesModal()" style="position:fixed;">✕</div>
+  <div class="series-modal-content">
+    <div class="series-header">
+      <img id="sm-poster" class="series-poster" src="" alt="Poster">
+      <div class="series-info">
+        <h2 id="sm-title"></h2>
+        <p id="sm-desc"></p>
+      </div>
+    </div>
+    <div class="episodes-list" id="sm-episodes">
+      <!-- JS Dolduracak -->
+    </div>
   </div>
 </div>
 
@@ -289,181 +85,21 @@ footer { padding: 60px; text-align: center; color: var(--text-muted); font-size:
   <div class="player-container">
     <video id="video-player" playsinline webkit-playsinline></video>
     <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen style="display:none;"></iframe>
-    
     <div class="sub-text" id="sub-text"></div>
-    
     <div class="player-controls" id="player-controls-ui">
       <button class="ctrl-btn" onclick="togglePlay()" id="play-pause-btn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> Duraklat
       </button>
-      <a class="ctrl-btn" id="dl-btn" href="#" download style="text-decoration: none;">
-        ⬇ İndir
-      </a>
+      <a class="ctrl-btn" id="dl-btn" href="#" download style="text-decoration: none;">⬇ İndir</a>
     </div>
   </div>
 </div>
 
 <footer>
-  <p>© 2026 SiomJourney | Netflix'ten Daha İyiyiz.</p>
+  <p>© 2026 SiomJourney | Yeni Mimari</p>
 </footer>
 
-<script>
-/* =========================================
-   VERİ TABANI (DİZİLER VE FİLMLER AYRILDI)
-   ========================================= */
-const CONTENT = [
-  // --- DİZİLER ---
-  {
-    id: 0, type: 'series',
-    title: 'Mini: The Journey', epFull: '1. Bölüm',
-    desc: 'Mini karanlık ormanda yürür. Uzakta gizemli bir ışık görür ve peşine düşer.',
-    file: 'bolum1.mp4', posterClass: 'poster-bg-1', isYoutube: false, badgeClass: '',
-    subs: [
-      {from:0,to:5,text:'Mini karanlık ormanda yürür.'},
-      {from:5,to:10,text:'Uzakta küçük bir ışık görür.'},
-      {from:10,to:15,text:'Ay ışığı yüzüne vurur.'}
-    ]
-  },
-  {
-    id: 1, type: 'series',
-    title: 'Mini: The Journey', epFull: '2. Bölüm',
-    desc: 'Işığın gizemi derinleşir. Mini ormanın kalbindeki büyük kütüphaneye ulaşır.',
-    file: 'bolum2.mp4', posterClass: 'poster-bg-2', isYoutube: false, badgeClass: '',
-    subs: [
-      {from:0,to:6,text:'Mini ışığın peşinden ormana ilerler.'},
-      {from:6,to:11,text:'Mini elini uzatır. Işık ona doğru gelir.'}
-    ]
-  },
-  // --- FİLMLER ---
-  {
-    id: 2, type: 'movie',
-    title: 'Hoplayanlar (Hoppers)', epFull: 'Animasyon Filmi',
-    desc: 'Eşsiz bir animasyon macerası. Netflix kalitesini geride bırakan muhteşem bir yapım.',
-    file: 'https://www.youtube.com/embed/xXMDQVOCXmE?autoplay=1&rel=0&modestbranding=1&controls=1',
-    posterClass: 'poster-bg-movie', isYoutube: true, badgeClass: 'movie-badge',
-    subs: []
-  }
-];
-
-/* =========================================
-   UI OLUŞTURMA
-   ========================================= */
-function generateCardHTML(c) {
-  return `
-  <div class="card-wrapper">
-    <div class="card" onclick="openPlayer(${c.id})">
-      <div class="poster-art ${c.posterClass}"></div>
-      <div class="card-content">
-        <div class="card-meta ${c.badgeClass}">${c.epFull}</div>
-        <div class="card-title">${c.title}</div>
-        <div class="card-desc">${c.desc}</div>
-      </div>
-      <div class="play-icon">
-        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderContent() {
-  const seriesHTML = CONTENT.filter(c => c.type === 'series').map(generateCardHTML).join('');
-  const moviesHTML = CONTENT.filter(c => c.type === 'movie').map(generateCardHTML).join('');
-  
-  document.getElementById('series-grid').innerHTML = seriesHTML;
-  document.getElementById('movies-grid').innerHTML = moviesHTML;
-}
-
-renderContent();
-
-/* =========================================
-   SCROLL VE NAVBAR EFEKTİ
-   ========================================= */
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('navbar');
-  if (window.scrollY > 50) {
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.remove('scrolled');
-  }
-});
-
-/* =========================================
-   PLAYER MANTIĞI
-   ========================================= */
-const modal = document.getElementById('player-modal');
-const videoPlayer = document.getElementById('video-player');
-const ytPlayer = document.getElementById('yt-player');
-const subText = document.getElementById('sub-text');
-const controlsUI = document.getElementById('player-controls-ui');
-const dlBtn = document.getElementById('dl-btn');
-
-let activeSubs = [];
-let subTimer = null;
-let currentIsYt = false;
-
-function openPlayer(id) {
-  const c = CONTENT[id];
-  currentIsYt = c.isYoutube;
-  activeSubs = c.subs || [];
-  
-  modal.classList.add('active');
-  
-  if (currentIsYt) {
-    // YouTube Modu
-    videoPlayer.style.display = 'none';
-    ytPlayer.style.display = 'block';
-    ytPlayer.src = c.file;
-    controlsUI.style.display = 'none'; // YT'nin kendi kontrolleri var
-  } else {
-    // Standart Video Modu
-    ytPlayer.style.display = 'none';
-    videoPlayer.style.display = 'block';
-    videoPlayer.src = c.file;
-    controlsUI.style.display = 'flex';
-    dlBtn.href = c.file;
-    dlBtn.download = c.epFull + '.mp4';
-    videoPlayer.play();
-    
-    // Altyazı sistemi
-    if(subTimer) clearInterval(subTimer);
-    subTimer = setInterval(() => {
-      const t = videoPlayer.currentTime;
-      const s = activeSubs.find(x => t >= x.from && t < x.to);
-      if(s) { subText.textContent = s.text; subText.style.display = 'block'; }
-      else { subText.style.display = 'none'; }
-    }, 100);
-  }
-}
-
-function closePlayer() {
-  modal.classList.remove('active');
-  subText.style.display = 'none';
-  if(subTimer) clearInterval(subTimer);
-  
-  if (currentIsYt) {
-    ytPlayer.src = ''; // Iframe'i durdur
-  } else {
-    videoPlayer.pause();
-    videoPlayer.src = '';
-  }
-}
-
-function togglePlay() {
-  if (currentIsYt) return;
-  const btn = document.getElementById('play-pause-btn');
-  if (videoPlayer.paused) {
-    videoPlayer.play();
-    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> Duraklat';
-  } else {
-    videoPlayer.pause();
-    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Oynat';
-  }
-}
-
-// Modal dışına tıklayınca kapatma
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) closePlayer();
-});
-</script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
