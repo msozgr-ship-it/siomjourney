@@ -320,3 +320,18 @@ seriesModal.addEventListener('click', (e) => { if (e.target === seriesModal) clo
 playerModal.addEventListener('click', (e) => { if (e.target === playerModal) closePlayer(); });
 searchModal.addEventListener('click', (e) => { if (e.target === searchModal) closeSearch(); });
 window.addEventListener('scroll', () => { const nav = document.getElementById('navbar'); if (window.scrollY > 50) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); });
+
+// VISITOR COUNTER LOGIC
+async function updateVisitorCount() {
+  try {
+    const response = await fetch('https://api.countapi.xyz/hit/siomjourney.io/visits');
+    const data = await response.json();
+    if(data && data.value) {
+      document.getElementById('visit-count').innerText = data.value.toLocaleString();
+    }
+  } catch (err) {
+    console.log("Counter error:", err);
+    document.getElementById('visit-count').innerText = "1,248+"; // Fallback static number if API fails
+  }
+}
+updateVisitorCount();
