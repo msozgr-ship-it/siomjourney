@@ -79,7 +79,7 @@ const DB = {
           title: 'Zootopia 2 (2025)',
           desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
           poster: 'assets/img/zootopia2.jpg',
-          file: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/view?usp=sharing',
+          file: 'https://archive.org/embed/zootropolis-2-izle-hdfilmcehennemi-film-izle-hd-film-izle',
           isYoutube: true
         }
       ]
