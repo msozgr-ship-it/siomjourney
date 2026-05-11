@@ -209,16 +209,18 @@ function openDetailsModal(id, type) {
   document.getElementById('sm-title').innerText = s.title; 
   document.getElementById('sm-desc').innerText = s.desc;
   
-  document.getElementById('sm-episodes').innerHTML = listArr.map(ep => `
+  document.getElementById('sm-episodes').innerHTML = listArr.map(ep => {
+    const thumbUrl = ep.poster ? (ep.poster.startsWith('assets') ? ep.poster : `https://wsrv.nl/?url=${encodeURIComponent(ep.poster)}&w=300&output=webp`) : s.poster;
+    return `
     <div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}', '${type}')">
       <div class="ep-number">${ep.epNum}</div>
-      <div class="ep-thumb"><video src="${ep.file}#t=2" preload="metadata"></video></div>
+      <div class="ep-thumb"><img src="${encodeURI(thumbUrl)}" alt="${ep.title}" loading="lazy"></div>
       <div class="ep-details">
         <div class="ep-title">${ep.title}</div>
         <div class="ep-desc">${ep.desc}</div>
       </div>
     </div>
-  `).join('');
+  `; }).join('');
   seriesModal.classList.add('active');
 }
 

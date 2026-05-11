@@ -58,7 +58,7 @@ const DB = {
       title: 'Zootopia Serisi',
       searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
       desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk (iOS Klasörü).',
-      poster: 'assets/img/zootopia1.jpg',
+      poster: 'https://m.media-amazon.com/images/M/MV5BOTMyMjEyNzIzMV5BMl5BanBnXkFtZTgwNzMzNjgzNzE@._V1_FMjpg_UX1000_.jpg',
       isCollection: true,
       year: 'Koleksiyon',
       match: '99%',
@@ -69,6 +69,7 @@ const DB = {
           epNum: 1,
           title: 'Zootropolis: Hayvanlar Şehri (2016)',
           desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. Nick Wilde ile unutulmaz bir macera başlar.',
+          poster: 'assets/img/zootopia1.jpg',
           file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
           isYoutube: true
         },
@@ -77,6 +78,7 @@ const DB = {
           epNum: 2,
           title: 'Zootopia 2 (2025)',
           desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
+          poster: 'assets/img/zootopia2.jpg',
           file: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/view?usp=sharing',
           isYoutube: true
         }
@@ -99,7 +101,7 @@ const DB = {
       title: 'Ejderhanı Nasıl Eğitirsin Serisi',
       searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
       desc: 'Hıçkıdık ve Dişsiz\'in Berk adasındaki efsanevi dostluk hikayesi (iOS Klasörü).',
-      poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
+      poster: 'https://m.media-amazon.com/images/M/MV5BMjA5NDQyMjc2NF5BMl5BanBnXkFtZTcwMjg5ODcyMw@@._V1_FMjpg_UX1000_.jpg',
       isCollection: true,
       year: '2010-2019',
       match: '99%',
@@ -109,7 +111,8 @@ const DB = {
           id: 'm4f1',
           epNum: 1,
           title: 'Ejderhanı Nasıl Eğitirsin 1',
-          desc: 'Bir Viking genci ve yaralı bir gece öfkesi ejderhası arasındaki bağ.',
+          desc: 'Genç bir Viking olan Hıçkıdık ve yaralı bir ejderhanın dostluğu.',
+          poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
           file: '',
           isYoutube: false
         },
@@ -117,7 +120,8 @@ const DB = {
           id: 'm4f2',
           epNum: 2,
           title: 'Ejderhanı Nasıl Eğitirsin 2',
-          desc: 'Hıçkıdık ve Dişsiz, yeni diyarlar keşfederken gizemli bir ejderha binicisiyle karşılaşır.',
+          desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
+          poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
           file: '',
           isYoutube: false
         },
@@ -125,7 +129,8 @@ const DB = {
           id: 'm4f3',
           epNum: 3,
           title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
-          desc: 'Dişsiz kendi türünden birini keşfederken, ejderhaların kaderi değişmek üzeredir.',
+          desc: 'Hıçkıdık ejderha ütopyasını ararken, Dişsiz kendi türünden birini bulur.',
+          poster: 'assets/img/ejderhanınasıleğitirsin3.jpg',
           file: '',
           isYoutube: false
         }
