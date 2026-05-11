@@ -20,7 +20,7 @@ function generateCardHTML(item, type) {
   else onClickAction = `openPlayerMovie('${item.id}')`;
   
   const shapeClass = type === 'series' ? 'card-wide' : 'card-tall';
-  const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=500&output=webp`;
+  const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=500&output=webp`;
   
   return `
   <div class="card-wrapper ${shapeClass}">
@@ -56,7 +56,7 @@ function initCoverFlow() {
   
   const container = document.getElementById('coverflow-container');
   container.innerHTML = cfItems.map((item, i) => {
-    const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=600&output=webp`;
+    const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=600&output=webp`;
     return `
     <div class="cf-item" id="cf-item-${i}" onclick="clickCoverflow(${i})">
       <img class="poster-art" src="${proxyUrl}" alt="${item.title}">
