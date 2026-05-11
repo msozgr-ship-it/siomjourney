@@ -19,7 +19,7 @@ function generateCardHTML(item, type) {
   else if (item.isCollection) onClickAction = `openDetailsModal('${item.id}', 'collection')`;
   else onClickAction = `openPlayerMovie('${item.id}')`;
   
-  const shapeClass = type === 'series' ? 'card-wide' : 'card-tall';
+  const shapeClass = 'card-tall'; // Always use square for the new grid layout
   const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=500&output=webp`;
   
   return `
