@@ -88,6 +88,7 @@ function updateCoverFlow() {
   }
   
   const activeItem = cfItems[cfActiveIndex];
+  document.getElementById('cf-bg-blur').style.backgroundImage = `url('${activeItem.poster}')`;
   document.getElementById('cf-title').innerText = activeItem.title;
   document.getElementById('cf-meta').innerText = `${activeItem.year} • ${activeItem.meta}`;
 }
