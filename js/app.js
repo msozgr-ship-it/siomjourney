@@ -36,10 +36,9 @@ function generateCardHTML(item, type) {
 }
 
 function renderContent() {
-  const seriesHTML = DB.series.map(s => generateCardHTML(s, 'series')).join('');
-  const moviesHTML = DB.movies.map(m => generateCardHTML(m, 'movie')).join('');
-  document.getElementById('series-row').innerHTML = seriesHTML;
-  document.getElementById('movies-row').innerHTML = moviesHTML;
+  const all = [...DB.series.map(s => ({...s, type: 'series'})), ...DB.movies.map(m => ({...m, type: 'movie'}))];
+  const gridHTML = all.map(item => generateCardHTML(item, item.type)).join('');
+  document.getElementById('movie-grid').innerHTML = gridHTML;
 }
 renderContent();
 
@@ -54,8 +53,9 @@ function initCoverFlow() {
   const allItems = [...DB.series.map(s => ({...s, type: 'series'})), ...DB.movies.map(m => ({...m, type: 'movie'}))];
   allItems.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
   
-  cfItems = [...allItems];
-  while(cfItems.length < 5 && cfItems.length > 0) cfItems = cfItems.concat(allItems);
+  // Sadece Popülerler (İlk 5) Vitrinde Dönecek
+  cfItems = allItems.slice(0, 5);
+  while(cfItems.length < 5 && cfItems.length > 0) cfItems = cfItems.concat(cfItems);
   
   const container = document.getElementById('coverflow-container');
   container.innerHTML = cfItems.map((item, i) => {
