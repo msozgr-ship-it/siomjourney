@@ -217,8 +217,14 @@ searchInput.addEventListener('input', (e) => {
   if (query.length < 2) { searchResults.innerHTML = ''; return; }
   
   const results = [];
-  DB.series.forEach(s => { if(s.title.toLowerCase().includes(query)) results.push({item: s, type: 'series'}); });
-  DB.movies.forEach(m => { if(m.title.toLowerCase().includes(query)) results.push({item: m, type: 'movie'}); });
+  DB.series.forEach(s => { 
+    const tags = s.searchTags ? s.searchTags.toLowerCase() : '';
+    if(s.title.toLowerCase().includes(query) || tags.includes(query)) results.push({item: s, type: 'series'}); 
+  });
+  DB.movies.forEach(m => { 
+    const tags = m.searchTags ? m.searchTags.toLowerCase() : '';
+    if(m.title.toLowerCase().includes(query) || tags.includes(query)) results.push({item: m, type: 'movie'}); 
+  });
   
   if (results.length === 0) {
     searchResults.innerHTML = '<div style="width:100%; text-align:center; color:#888; font-size:20px; padding: 40px;">Sonuç bulunamadı...</div>';

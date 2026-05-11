@@ -3,6 +3,7 @@ const DB = {
     {
       id: 's1',
       title: 'Mini: The Journey',
+      searchTags: 'mini, the journey, orman',
       desc: 'Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.',
       poster: 'assets/posters/mini_poster.png',
       trailer: 'bolum1.mp4',
@@ -42,6 +43,7 @@ const DB = {
     {
       id: 'm1',
       title: 'Hoplayanlar (Hoppers)',
+      searchTags: 'hoppers, hoplayanlar, disney, pixar, animasyon',
       desc: 'Eşsiz bir animasyon macerası. Disney ve Pixar\'ın en yeni başyapıtı.',
       poster: 'https://image.tmdb.org/t/p/original/eYjLQ3ULyr3nWj218Cu7YYU0Z8x.jpg',
       trailer: 'https://archive.org/embed/hoplayanlar-izle-2026',
@@ -54,6 +56,7 @@ const DB = {
     {
       id: 'm2',
       title: 'Zootopia Serisi',
+      searchTags: 'zootopia 2, zootropolis, judy hopps, nick wilde, tavşan, polis, animasyon',
       desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk (iOS Klasörü).',
       poster: 'https://m.media-amazon.com/images/M/MV5BMzRkMGZhYzItNmFlMy00ZGRlLTlmNWYtMDJlZGZlOWRjMzQ5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
       isCollection: true,
