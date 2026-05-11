@@ -43,7 +43,7 @@ const DB = {
       id: 'm1',
       title: 'Hoplayanlar (Hoppers)',
       desc: 'Eşsiz bir animasyon macerası. Netflix kalitesini geride bırakan muhteşem bir komedi yapımı.',
-      poster: 'https://img.youtube.com/vi/xXMDQVOCXmE/maxresdefault.jpg',
+      poster: 'assets/posters/hoppers_poster_real.jpg',
       trailer: 'https://www.youtube.com/embed/xXMDQVOCXmE?autoplay=1&mute=1&controls=0&loop=1&playlist=xXMDQVOCXmE&vq=hd1080',
       file: 'https://www.youtube.com/embed/xXMDQVOCXmE?autoplay=1&rel=0&modestbranding=1&vq=hd1080',
       isYoutube: true,
