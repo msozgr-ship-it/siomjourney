@@ -20,11 +20,12 @@ function generateCardHTML(item, type) {
   else onClickAction = `openPlayerMovie('${item.id}')`;
   
   const shapeClass = type === 'series' ? 'card-wide' : 'card-tall';
+  const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=500&output=webp`;
   
   return `
   <div class="card-wrapper ${shapeClass}">
     <div class="card" onclick="${onClickAction}">
-      <img class="poster-art" src="${item.poster.replace('original', 'w500')}" alt="${item.title}" loading="lazy">
+      <img class="poster-art" src="${proxyUrl}" alt="${item.title}" loading="lazy">
       <div class="card-glass-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
       <div class="card-content">
         <div class="card-meta">${item.year} • ${item.meta}</div>
@@ -54,15 +55,18 @@ function initCoverFlow() {
   while(cfItems.length < 5 && cfItems.length > 0) cfItems = cfItems.concat(allItems);
   
   const container = document.getElementById('coverflow-container');
-  container.innerHTML = cfItems.map((item, i) => `
-    <div class="cf-item" id="cf-item-${i}" style="background-image: url('${item.poster}')" onclick="clickCoverflow(${i})">
+  container.innerHTML = cfItems.map((item, i) => {
+    const proxyUrl = `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=600&output=webp`;
+    return `
+    <div class="cf-item" id="cf-item-${i}" onclick="clickCoverflow(${i})">
+      <img class="poster-art" src="${proxyUrl}" alt="${item.title}">
       <div class="play-overlay">
         <div class="play-glass-btn">
           <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
   
   updateCoverFlow();
   startCoverflowAuto();
