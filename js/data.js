@@ -75,10 +75,59 @@ const DB = {
         {
           id: 'm2f2',
           epNum: 2,
-          title: 'Zootopia 2',
-          desc: 'Efsanevi ikili yepyeni bir macera ile geri dönüyor.',
-          file: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/preview',
+          title: 'Zootopia 2 (2025)',
+          desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
+          file: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/view?usp=sharing',
           isYoutube: true
+        }
+      ]
+    },
+    {
+      id: 'm3',
+      title: 'Coco (Koko)',
+      searchTags: 'coco, koko, miguel, ölüler diyarı, pixar, animasyon, müzikal',
+      desc: '12 yaşındaki Miguel\'in Ölüler Diyarı\'ndaki unutulmaz müzikal yolculuğu.',
+      poster: 'https://image.tmdb.org/t/p/original/g496p9as2S3Y6n0vYv9ovQUunp2.jpg',
+      year: '2017',
+      match: '97%',
+      meta: '4K Ultra HD',
+      file: '',
+      isYoutube: false
+    },
+    {
+      id: 'm4',
+      title: 'Ejderhanı Nasıl Eğitirsin Serisi',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Hıçkıdık ve Dişsiz\'in Berk adasındaki efsanevi dostluk hikayesi (iOS Klasörü).',
+      poster: 'https://image.tmdb.org/t/p/original/m9m56j01AAtS8Zq32Y1D2uE0p6u.jpg',
+      isCollection: true,
+      year: '2010-2019',
+      match: '99%',
+      meta: 'Koleksiyon',
+      collection: [
+        {
+          id: 'm4f1',
+          epNum: 1,
+          title: 'Ejderhanı Nasıl Eğitirsin 1',
+          desc: 'Bir Viking genci ve yaralı bir gece öfkesi ejderhası arasındaki bağ.',
+          file: '',
+          isYoutube: false
+        },
+        {
+          id: 'm4f2',
+          epNum: 2,
+          title: 'Ejderhanı Nasıl Eğitirsin 2',
+          desc: 'Hıçkıdık ve Dişsiz, yeni diyarlar keşfederken gizemli bir ejderha binicisiyle karşılaşır.',
+          file: '',
+          isYoutube: false
+        },
+        {
+          id: 'm4f3',
+          epNum: 3,
+          title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
+          desc: 'Dişsiz kendi türünden birini keşfederken, ejderhaların kaderi değişmek üzeredir.',
+          file: '',
+          isYoutube: false
         }
       ]
     }
