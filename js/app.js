@@ -5,7 +5,7 @@ function generateCardHTML(item, type) {
   else onClickAction = `openPlayerMovie('${item.id}')`;
   
   return `
-  <div class="card-wrapper" onmouseenter="updateHero('${item.id}', '${type}')">
+  <div class="card-wrapper">
     <div class="card" onclick="${onClickAction}">
       <div class="poster-art" style="background-image: url('${item.poster}')"></div>
       <div class="card-content">
@@ -26,35 +26,68 @@ renderContent();
 
 const heroTitle = document.getElementById('hero-title');
 const heroDesc = document.getElementById('hero-desc');
-const heroMatch = document.getElementById('hero-match');
-const heroYear = document.getElementById('hero-year');
-const heroMeta = document.getElementById('hero-meta');
 const heroType = document.getElementById('hero-type');
 const heroVideo = document.getElementById('hero-video');
 const heroYt = document.getElementById('hero-yt');
 const heroPlayBtn = document.getElementById('hero-play-btn');
-let currentHeroId = null; let heroTimeout = null;
+const heroIndicators = document.getElementById('hero-indicators');
 
-function updateHero(id, type) {
-  if (currentHeroId === id) return;
-  currentHeroId = id;
-  const item = type === 'series' ? DB.series.find(x => x.id === id) : DB.movies.find(x => x.id === id);
-  if(!item) return;
-  if(heroTimeout) clearTimeout(heroTimeout);
-  heroTimeout = setTimeout(() => {
-    heroTitle.innerText = item.title; heroDesc.innerText = item.desc;
-    heroMatch.innerText = item.match + ' Eşleşme'; heroYear.innerText = item.year;
-    heroMeta.innerText = item.meta; heroType.innerText = type === 'series' ? 'Orijinal Dizi' : 'Orijinal Film';
-    heroPlayBtn.onclick = () => { if(type === 'series') openSeriesModal(item.id); else openPlayerMovie(item.id); };
-    if(item.isYoutube && item.trailer.includes('http')) {
-      heroVideo.style.display = 'none'; heroVideo.pause(); heroYt.style.display = 'block'; heroYt.src = item.trailer;
-    } else {
-      heroYt.style.display = 'none'; heroYt.src = ''; heroVideo.style.display = 'block'; heroVideo.src = item.trailer;
-      heroVideo.play().catch(e=>console.log("Autoplay engellendi"));
-    }
-  }, 400);
+let heroItems = [];
+let currentHeroIndex = 0;
+let carouselInterval = null;
+
+function initHeroCarousel() {
+  const allItems = [...DB.series.map(s => ({...s, type: 'series'})), ...DB.movies.map(m => ({...m, type: 'movie'}))];
+  allItems.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
+  heroItems = allItems.slice(0, 3);
+  
+  heroIndicators.innerHTML = heroItems.map((_, i) => `<div class="indicator" onclick="setHero(${i})"></div>`).join('');
+  if(heroItems.length > 0) setHero(0);
 }
-if(DB.series.length > 0) updateHero(DB.series[0].id, 'series');
+
+function startCarousel() {
+  if(carouselInterval) clearInterval(carouselInterval);
+  carouselInterval = setInterval(() => {
+    setHero((currentHeroIndex + 1) % heroItems.length);
+  }, 10000);
+}
+
+function setHero(index) {
+  currentHeroIndex = index;
+  const item = heroItems[index];
+  
+  document.querySelectorAll('.indicator').forEach((ind, i) => ind.classList.toggle('active', i === index));
+  
+  heroTitle.innerText = item.title; 
+  heroDesc.innerText = item.desc;
+  heroType.innerText = item.type === 'series' ? 'Orijinal Dizi' : (item.isCollection ? 'Orijinal Seri' : 'Orijinal Film');
+  
+  const playType = item.isCollection ? 'collection' : item.type;
+  heroPlayBtn.onclick = () => { 
+    if(playType === 'series' || playType === 'collection') openDetailsModal(item.id, playType); 
+    else openPlayerMovie(item.id); 
+  };
+  document.getElementById('hero-info-btn').onclick = heroPlayBtn.onclick;
+  
+  let videoSource = item.trailer || item.file || '';
+  if (item.type === 'series' && item.episodes && item.episodes.length > 0) videoSource = item.trailer || item.episodes[0].file;
+  if (item.isCollection && item.collection && item.collection.length > 0) {
+    const validEp = item.collection.find(ep => ep.file);
+    if(validEp) videoSource = validEp.file;
+  }
+  
+  if(videoSource && (videoSource.includes('http') || item.isYoutube)) {
+    heroVideo.style.display = 'none'; heroVideo.pause(); 
+    heroYt.style.display = 'block'; heroYt.src = videoSource;
+  } else {
+    heroYt.style.display = 'none'; heroYt.src = ''; 
+    heroVideo.style.display = 'block'; heroVideo.src = videoSource;
+    heroVideo.play().catch(e=>console.log("Autoplay engellendi"));
+  }
+  startCarousel();
+}
+
+initHeroCarousel();
 
 const seriesModal = document.getElementById('series-modal');
 const playerModal = document.getElementById('player-modal');

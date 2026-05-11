@@ -38,6 +38,11 @@ nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-ba
 .btn-info { background: var(--glass); color: #fff; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
 .btn-info:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
+.hero-indicators { display: flex; gap: 10px; margin-top: 30px; }
+.indicator { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.indicator:hover { background: rgba(255,255,255,0.6); }
+.indicator.active { width: 32px; border-radius: 4px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
 .content-section { padding: 0 60px 60px; position: relative; z-index: 5; margin-top: -60px; }
 .section-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: #fff; display: flex; align-items: center; gap: 10px; z-index: 10; position: relative; letter-spacing: -0.5px;}
 .cards-row { display: flex; gap: 24px; overflow-x: auto; padding: 10px 0 40px; scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; }
