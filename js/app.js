@@ -1,3 +1,18 @@
+const seriesModal = document.getElementById('series-modal');
+const playerModal = document.getElementById('player-modal');
+const videoPlayer = document.getElementById('video-player');
+const ytPlayer = document.getElementById('yt-player');
+const subText = document.getElementById('sub-text');
+const customControls = document.getElementById('custom-controls');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const iconPlay = document.getElementById('icon-play');
+const iconPause = document.getElementById('icon-pause');
+const progressBar = document.getElementById('progress-bar');
+const progressContainer = document.getElementById('progress-container');
+const timeDisplay = document.getElementById('time-display');
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+const playerContainerWrapper = document.getElementById('player-container');
+
 function generateCardHTML(item, type) {
   let onClickAction;
   if (type === 'series') onClickAction = `openDetailsModal('${item.id}', 'series')`;
@@ -100,20 +115,7 @@ function startCoverflowAuto() {
 
 initCoverFlow();
 
-const seriesModal = document.getElementById('series-modal');
-const playerModal = document.getElementById('player-modal');
-const videoPlayer = document.getElementById('video-player');
-const ytPlayer = document.getElementById('yt-player');
-const subText = document.getElementById('sub-text');
-const customControls = document.getElementById('custom-controls');
-const playPauseBtn = document.getElementById('play-pause-btn');
-const iconPlay = document.getElementById('icon-play');
-const iconPause = document.getElementById('icon-pause');
-const progressBar = document.getElementById('progress-bar');
-const progressContainer = document.getElementById('progress-container');
-const timeDisplay = document.getElementById('time-display');
-const fullscreenBtn = document.getElementById('fullscreen-btn');
-const playerContainerWrapper = document.getElementById('player-container');
+// Global variables moved to top
 
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60); const s = Math.floor(seconds % 60);
@@ -188,22 +190,30 @@ function openPlayerEpisode(parentId, childId, type) {
 }
 
 function initPlayer(c) {
+  if(!playerModal) return;
   playerModal.classList.add('active');
   if (c.isYoutube) { 
-    videoPlayer.style.display = 'none'; ytPlayer.style.display = 'block'; ytPlayer.src = c.file; 
-    customControls.style.display = 'none'; 
-    
-    // Google Drive Crop Hack (Only apply if it's a Drive link)
-    if(c.file.includes('drive.google.com')) {
-      ytPlayer.style.top = '-60px';
-      ytPlayer.style.height = 'calc(100% + 60px)';
-    } else {
-      ytPlayer.style.top = '0';
-      ytPlayer.style.height = '100%';
+    if(videoPlayer) videoPlayer.style.display = 'none'; 
+    if(ytPlayer) {
+      ytPlayer.style.display = 'block'; 
+      ytPlayer.src = c.file; 
+      if(c.file.includes('drive.google.com')) {
+        ytPlayer.style.top = '-60px';
+        ytPlayer.style.height = 'calc(100% + 60px)';
+      } else {
+        ytPlayer.style.top = '0';
+        ytPlayer.style.height = '100%';
+      }
     }
+    if(customControls) customControls.style.display = 'none'; 
   } else { 
-    ytPlayer.style.display = 'none'; videoPlayer.style.display = 'block'; videoPlayer.src = c.file; 
-    customControls.style.display = 'flex'; videoPlayer.play(); 
+    if(ytPlayer) ytPlayer.style.display = 'none'; 
+    if(videoPlayer) {
+      videoPlayer.style.display = 'block'; 
+      videoPlayer.src = c.file; 
+      videoPlayer.play().catch(err => console.log("Autoplay blocked or error:", err));
+    }
+    if(customControls) customControls.style.display = 'flex'; 
   }
 }
 function closePlayer() {
