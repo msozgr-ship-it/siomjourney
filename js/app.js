@@ -188,7 +188,7 @@ function openPlayerEpisode(parentId, childId, type) {
 }
 
 function initPlayer(c) {
-  heroVideo.pause(); heroYt.src = ''; playerModal.classList.add('active');
+  playerModal.classList.add('active');
   if (c.isYoutube) { 
     videoPlayer.style.display = 'none'; ytPlayer.style.display = 'block'; ytPlayer.src = c.file; 
     customControls.style.display = 'none'; 
@@ -208,7 +208,7 @@ function initPlayer(c) {
 }
 function closePlayer() {
   playerModal.classList.remove('active'); ytPlayer.src = ''; videoPlayer.pause(); videoPlayer.src = '';
-  if(currentHeroId) updateHero(currentHeroId, DB.series.find(x=>x.id===currentHeroId)?'series':'movie');
+  // if(currentHeroId) updateHero(currentHeroId, DB.series.find(x=>x.id===currentHeroId)?'series':'movie');
 }
 
 /* SEARCH LOGIC */
