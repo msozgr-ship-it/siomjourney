@@ -27,8 +27,7 @@ renderContent();
 const heroTitle = document.getElementById('hero-title');
 const heroDesc = document.getElementById('hero-desc');
 const heroType = document.getElementById('hero-type');
-const heroVideo = document.getElementById('hero-video');
-const heroYt = document.getElementById('hero-yt');
+const heroImg = document.getElementById('hero-img');
 const heroPlayBtn = document.getElementById('hero-play-btn');
 const heroIndicators = document.getElementById('hero-indicators');
 
@@ -69,21 +68,12 @@ function setHero(index) {
   };
   document.getElementById('hero-info-btn').onclick = heroPlayBtn.onclick;
   
-  let videoSource = item.trailer || item.file || '';
-  if (item.type === 'series' && item.episodes && item.episodes.length > 0) videoSource = item.trailer || item.episodes[0].file;
-  if (item.isCollection && item.collection && item.collection.length > 0) {
-    const validEp = item.collection.find(ep => ep.file);
-    if(validEp) videoSource = validEp.file;
-  }
+  heroImg.classList.remove('active');
+  setTimeout(() => {
+    heroImg.src = item.poster;
+    heroImg.onload = () => heroImg.classList.add('active');
+  }, 400);
   
-  if(videoSource && (videoSource.includes('http') || item.isYoutube)) {
-    heroVideo.style.display = 'none'; heroVideo.pause(); 
-    heroYt.style.display = 'block'; heroYt.src = videoSource;
-  } else {
-    heroYt.style.display = 'none'; heroYt.src = ''; 
-    heroVideo.style.display = 'block'; heroVideo.src = videoSource;
-    heroVideo.play().catch(e=>console.log("Autoplay engellendi"));
-  }
   startCarousel();
 }
 
