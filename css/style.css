@@ -8,7 +8,12 @@
   --glass: rgba(28, 28, 30, 0.75);
 }
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit', -apple-system, sans-serif; }
-body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; scroll-behavior: smooth; padding-bottom: 0; }
+body { background: linear-gradient(135deg, #000000, #0a0005, #110000, #000000); background-size: 400% 400%; animation: bgPan 25s ease infinite; color: var(--text-main); overflow-x: hidden; scroll-behavior: smooth; padding-bottom: 0; }
+@keyframes bgPan { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.bg-glow { position: fixed; border-radius: 50%; filter: blur(120px); z-index: -3; animation: floatGlow 15s infinite alternate ease-in-out; pointer-events: none; }
+.glow-1 { top: -20%; left: -10%; width: 60vw; height: 60vw; background: rgba(255, 15, 35, 0.12); }
+.glow-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: rgba(10, 132, 255, 0.08); animation-delay: -7s; }
+@keyframes floatGlow { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(100px, 50px) scale(1.2); } }
 
 nav { position: fixed; top: 0; width: 100%; padding: 25px 60px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; transition: all 0.4s ease; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%); }
 nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); padding: 15px 60px; border-bottom: 1px solid rgba(255,255,255,0.1); }
