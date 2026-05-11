@@ -46,6 +46,9 @@ renderContent();
 let cfItems = [];
 let cfActiveIndex = 0;
 let cfInterval = null;
+let isDragging = false;
+let startX = 0;
+let dragDist = 0;
 
 function initCoverFlow() {
   const allItems = [...DB.series.map(s => ({...s, type: 'series'})), ...DB.movies.map(m => ({...m, type: 'movie'}))];
@@ -68,6 +71,46 @@ function initCoverFlow() {
     </div>`;
   }).join('');
   
+  updateCoverFlow();
+  startCoverflowAuto();
+
+  // Drag / Swipe Events
+  container.addEventListener('mousedown', dragStart);
+  container.addEventListener('touchstart', dragStart, {passive: true});
+  window.addEventListener('mousemove', dragMove);
+  window.addEventListener('touchmove', dragMove, {passive: false});
+  window.addEventListener('mouseup', dragEnd);
+  window.addEventListener('touchend', dragEnd);
+}
+
+function dragStart(e) {
+  isDragging = true;
+  startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  dragDist = 0;
+  clearInterval(cfInterval);
+}
+
+function dragMove(e) {
+  if (!isDragging) return;
+  const x = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  dragDist = x - startX;
+  const container = document.getElementById('coverflow-container');
+  container.style.transform = `translateX(${dragDist * 0.2}px)`;
+  if (Math.abs(dragDist) > 10) e.preventDefault();
+}
+
+function dragEnd() {
+  if (!isDragging) return;
+  isDragging = false;
+  document.getElementById('coverflow-container').style.transform = `translateX(0)`;
+  const threshold = 60;
+  if (dragDist > threshold) {
+    cfActiveIndex = (cfActiveIndex - 1 + cfItems.length) % cfItems.length;
+    if (dragDist > 160) cfActiveIndex = (cfActiveIndex - 1 + cfItems.length) % cfItems.length; // Momentum
+  } else if (dragDist < -threshold) {
+    cfActiveIndex = (cfActiveIndex + 1) % cfItems.length;
+    if (dragDist < -160) cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; // Momentum
+  }
   updateCoverFlow();
   startCoverflowAuto();
 }
@@ -98,6 +141,7 @@ function updateCoverFlow() {
 }
 
 function clickCoverflow(index) {
+  if (Math.abs(dragDist) > 15) return; 
   if (index === cfActiveIndex) {
     const item = cfItems[index];
     const playType = item.isCollection ? 'collection' : item.type;
