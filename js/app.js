@@ -24,7 +24,7 @@ function generateCardHTML(item, type) {
   return `
   <div class="card-wrapper ${shapeClass}">
     <div class="card" onclick="${onClickAction}">
-      <div class="poster-art" style="background-image: url('${item.poster}')"></div>
+      <img class="poster-art" src="${item.poster.replace('original', 'w500')}" alt="${item.title}" loading="lazy">
       <div class="card-glass-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
       <div class="card-content">
         <div class="card-meta">${item.year} • ${item.meta}</div>
@@ -186,13 +186,24 @@ function openPlayerEpisode(parentId, childId, type) {
      s = DB.movies.find(x => x.id === parentId); 
      if(s) ep = s.collection.find(x => x.id === childId); 
   }
-  if(ep && ep.file) initPlayer(ep); 
-  else alert('Bu video henüz eklenmedi!');
+  if(ep) initPlayer(ep); 
 }
 
 function initPlayer(c) {
   if(!playerModal) return;
   playerModal.classList.add('active');
+  const soonOverlay = document.getElementById('coming-soon-overlay');
+  
+  if(!c.file) {
+    if(videoPlayer) videoPlayer.style.display = 'none';
+    if(ytPlayer) ytPlayer.style.display = 'none';
+    if(customControls) customControls.style.display = 'none';
+    if(soonOverlay) soonOverlay.style.display = 'flex';
+    return;
+  }
+  
+  if(soonOverlay) soonOverlay.style.display = 'none';
+  
   if (c.isYoutube) { 
     if(videoPlayer) videoPlayer.style.display = 'none'; 
     if(ytPlayer) {
