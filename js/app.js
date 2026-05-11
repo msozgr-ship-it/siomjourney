@@ -4,10 +4,13 @@ function generateCardHTML(item, type) {
   else if (item.isCollection) onClickAction = `openDetailsModal('${item.id}', 'collection')`;
   else onClickAction = `openPlayerMovie('${item.id}')`;
   
+  const shapeClass = type === 'series' ? 'card-wide' : 'card-tall';
+  
   return `
-  <div class="card-wrapper">
+  <div class="card-wrapper ${shapeClass}">
     <div class="card" onclick="${onClickAction}">
       <div class="poster-art" style="background-image: url('${item.poster}')"></div>
+      <div class="card-glass-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
       <div class="card-content">
         <div class="card-meta">${item.year} • ${item.meta}</div>
         <div class="card-title">${item.title}</div>
