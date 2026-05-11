@@ -50,6 +50,18 @@ const DB = {
       year: '2026',
       match: '95%',
       meta: 'HD'
+    },
+    {
+      id: 'm2',
+      title: 'Zootopia 2 (2025)',
+      desc: 'Zootropolis polis departmanının efsanevi ikilisi Judy Hopps ve Nick Wilde, şehrin gördüğü en büyük gizemi çözmek için yepyeni bir macera ile geri dönüyor.',
+      poster: 'https://m.media-amazon.com/images/M/MV5BMzRkMGZhYzItNmFlMy00ZGRlLTlmNWYtMDJlZGZlOWRjMzQ5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+      trailer: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/preview',
+      file: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/preview',
+      isYoutube: true,
+      year: '2025',
+      match: '99%',
+      meta: '4K Ultra HD'
     }
   ]
 };
