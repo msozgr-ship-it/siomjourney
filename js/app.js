@@ -148,6 +148,15 @@ function initPlayer(c) {
   if (c.isYoutube) { 
     videoPlayer.style.display = 'none'; ytPlayer.style.display = 'block'; ytPlayer.src = c.file; 
     customControls.style.display = 'none'; 
+    
+    // Google Drive Crop Hack (Only apply if it's a Drive link)
+    if(c.file.includes('drive.google.com')) {
+      ytPlayer.style.top = '-60px';
+      ytPlayer.style.height = 'calc(100% + 60px)';
+    } else {
+      ytPlayer.style.top = '0';
+      ytPlayer.style.height = '100%';
+    }
   } else { 
     ytPlayer.style.display = 'none'; videoPlayer.style.display = 'block'; videoPlayer.src = c.file; 
     customControls.style.display = 'flex'; videoPlayer.play(); 
