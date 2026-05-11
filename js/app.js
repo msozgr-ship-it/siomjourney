@@ -57,6 +57,46 @@ const playerModal = document.getElementById('player-modal');
 const videoPlayer = document.getElementById('video-player');
 const ytPlayer = document.getElementById('yt-player');
 const subText = document.getElementById('sub-text');
+const customControls = document.getElementById('custom-controls');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const iconPlay = document.getElementById('icon-play');
+const iconPause = document.getElementById('icon-pause');
+const progressBar = document.getElementById('progress-bar');
+const progressContainer = document.getElementById('progress-container');
+const timeDisplay = document.getElementById('time-display');
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+const playerContainerWrapper = document.getElementById('player-container');
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60); const s = Math.floor(seconds % 60);
+  return `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+}
+
+videoPlayer.addEventListener('timeupdate', () => {
+  const percent = (videoPlayer.currentTime / (videoPlayer.duration || 1)) * 100;
+  progressBar.style.width = percent + '%';
+  timeDisplay.innerText = `${formatTime(videoPlayer.currentTime)} / ${formatTime(videoPlayer.duration || 0)}`;
+});
+
+playPauseBtn.addEventListener('click', () => { if(videoPlayer.paused) videoPlayer.play(); else videoPlayer.pause(); });
+videoPlayer.addEventListener('play', () => { iconPlay.style.display = 'none'; iconPause.style.display = 'block'; });
+videoPlayer.addEventListener('pause', () => { iconPlay.style.display = 'block'; iconPause.style.display = 'none'; });
+
+progressContainer.addEventListener('click', (e) => {
+  const rect = progressContainer.getBoundingClientRect();
+  const pos = (e.clientX - rect.left) / rect.width;
+  videoPlayer.currentTime = pos * videoPlayer.duration;
+});
+
+fullscreenBtn.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    if (playerContainerWrapper.requestFullscreen) playerContainerWrapper.requestFullscreen();
+    else if (playerContainerWrapper.webkitRequestFullscreen) playerContainerWrapper.webkitRequestFullscreen();
+  } else {
+    if (document.exitFullscreen) document.exitFullscreen();
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  }
+});
 
 function openSeriesModal(id) {
   const s = DB.series.find(x => x.id === id);
@@ -73,8 +113,13 @@ function openPlayerEpisode(seriesId, epId) { const s = DB.series.find(x => x.id 
 
 function initPlayer(c) {
   heroVideo.pause(); heroYt.src = ''; playerModal.classList.add('active');
-  if (c.isYoutube) { videoPlayer.style.display = 'none'; ytPlayer.style.display = 'block'; ytPlayer.src = c.file; } 
-  else { ytPlayer.style.display = 'none'; videoPlayer.style.display = 'block'; videoPlayer.src = c.file; videoPlayer.play(); }
+  if (c.isYoutube) { 
+    videoPlayer.style.display = 'none'; ytPlayer.style.display = 'block'; ytPlayer.src = c.file; 
+    customControls.style.display = 'none'; 
+  } else { 
+    ytPlayer.style.display = 'none'; videoPlayer.style.display = 'block'; videoPlayer.src = c.file; 
+    customControls.style.display = 'flex'; videoPlayer.play(); 
+  }
 }
 function closePlayer() {
   playerModal.classList.remove('active'); ytPlayer.src = ''; videoPlayer.pause(); videoPlayer.src = '';

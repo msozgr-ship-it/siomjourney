@@ -63,10 +63,25 @@
 
 <div id="player-modal">
   <div class="close-btn" onclick="closePlayer()">✕</div>
-  <div class="player-container">
-    <video id="video-player" playsinline webkit-playsinline controls></video>
+  <div class="player-container" id="player-container">
+    <video id="video-player" playsinline webkit-playsinline></video>
     <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="display:none;"></iframe>
-    <div class="sub-text" id="sub-text"></div>
+    <div class="custom-controls" id="custom-controls" style="display:none;">
+      <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="controls-main">
+        <button class="ctrl-btn" id="play-pause-btn">
+          <svg id="icon-play" viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="icon-pause" viewBox="0 0 24 24" fill="white" width="28" height="28" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <div class="time-display" id="time-display">00:00 / 00:00</div>
+        <div class="spacer" style="flex:1;"></div>
+        <button class="ctrl-btn" id="fullscreen-btn">
+          <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
