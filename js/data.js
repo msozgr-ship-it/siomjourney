@@ -53,15 +53,31 @@ const DB = {
     },
     {
       id: 'm2',
-      title: 'Zootopia 2 (2025)',
-      desc: 'Zootropolis polis departmanının efsanevi ikilisi Judy Hopps ve Nick Wilde, şehrin gördüğü en büyük gizemi çözmek için yepyeni bir macera ile geri dönüyor.',
+      title: 'Zootopia Serisi',
+      desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk (iOS Klasörü).',
       poster: 'https://m.media-amazon.com/images/M/MV5BMzRkMGZhYzItNmFlMy00ZGRlLTlmNWYtMDJlZGZlOWRjMzQ5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
-      trailer: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/preview',
-      file: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/preview',
-      isYoutube: true,
-      year: '2025',
+      isCollection: true,
+      year: 'Koleksiyon',
       match: '99%',
-      meta: '4K Ultra HD'
+      meta: '2 Film',
+      collection: [
+        {
+          id: 'm2f1',
+          epNum: 1,
+          title: 'Zootopia 1',
+          desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. (Video linki bekleniyor...)',
+          file: '',
+          isYoutube: false
+        },
+        {
+          id: 'm2f2',
+          epNum: 2,
+          title: 'Zootopia 2',
+          desc: 'Efsanevi ikili yepyeni bir macera ile geri dönüyor.',
+          file: 'https://drive.google.com/file/d/1rT79Rg0BovQU-P6kHHN48uc3T9tBzTAB/preview',
+          isYoutube: true
+        }
+      ]
     }
   ]
 };

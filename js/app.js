@@ -1,5 +1,9 @@
 function generateCardHTML(item, type) {
-  let onClickAction = type === 'series' ? `openSeriesModal('${item.id}')` : `openPlayerMovie('${item.id}')`;
+  let onClickAction;
+  if (type === 'series') onClickAction = `openDetailsModal('${item.id}', 'series')`;
+  else if (item.isCollection) onClickAction = `openDetailsModal('${item.id}', 'collection')`;
+  else onClickAction = `openPlayerMovie('${item.id}')`;
+  
   return `
   <div class="card-wrapper" onmouseenter="updateHero('${item.id}', '${type}')">
     <div class="card" onclick="${onClickAction}">
@@ -98,18 +102,46 @@ fullscreenBtn.addEventListener('click', () => {
   }
 });
 
-function openSeriesModal(id) {
-  const s = DB.series.find(x => x.id === id);
+function openDetailsModal(id, type) {
+  let s;
+  if (type === 'series') s = DB.series.find(x => x.id === id);
+  else if (type === 'collection') s = DB.movies.find(x => x.id === id);
   if(!s) return;
-  document.getElementById('sm-poster').src = s.poster; document.getElementById('sm-title').innerText = s.title; document.getElementById('sm-desc').innerText = s.desc;
-  document.getElementById('sm-episodes').innerHTML = s.episodes.map(ep => `
-    <div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}')"><div class="ep-number">${ep.epNum}</div><div class="ep-thumb"><video src="${ep.file}#t=2" preload="metadata"></video></div><div class="ep-details"><div class="ep-title">${ep.epNum}. ${ep.title}</div><div class="ep-desc">${ep.desc}</div></div></div>
+  
+  const listArr = type === 'series' ? s.episodes : s.collection;
+  
+  document.getElementById('sm-poster').src = s.poster; 
+  document.getElementById('sm-title').innerText = s.title; 
+  document.getElementById('sm-desc').innerText = s.desc;
+  
+  document.getElementById('sm-episodes').innerHTML = listArr.map(ep => `
+    <div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}', '${type}')">
+      <div class="ep-number">${ep.epNum}</div>
+      <div class="ep-thumb"><video src="${ep.file}#t=2" preload="metadata"></video></div>
+      <div class="ep-details">
+        <div class="ep-title">${ep.title}</div>
+        <div class="ep-desc">${ep.desc}</div>
+      </div>
+    </div>
   `).join('');
   seriesModal.classList.add('active');
 }
+
 function closeSeriesModal() { seriesModal.classList.remove('active'); }
 function openPlayerMovie(id) { const m = DB.movies.find(x => x.id === id); if(m) initPlayer(m); }
-function openPlayerEpisode(seriesId, epId) { const s = DB.series.find(x => x.id === seriesId); const ep = s.episodes.find(x => x.id === epId); if(ep) initPlayer(ep); }
+
+function openPlayerEpisode(parentId, childId, type) { 
+  let s, ep;
+  if(type === 'series') {
+     s = DB.series.find(x => x.id === parentId); 
+     if(s) ep = s.episodes.find(x => x.id === childId); 
+  } else if (type === 'collection') {
+     s = DB.movies.find(x => x.id === parentId); 
+     if(s) ep = s.collection.find(x => x.id === childId); 
+  }
+  if(ep && ep.file) initPlayer(ep); 
+  else alert('Bu video henüz eklenmedi!');
+}
 
 function initPlayer(c) {
   heroVideo.pause(); heroYt.src = ''; playerModal.classList.add('active');
