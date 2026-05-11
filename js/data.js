@@ -56,9 +56,9 @@ const DB = {
     {
       id: 'm2',
       title: 'Zootopia Serisi',
-      searchTags: 'zootopia 2, zootropolis, judy hopps, nick wilde, tavşan, polis, animasyon',
+      searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
       desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk (iOS Klasörü).',
-      poster: 'https://m.media-amazon.com/images/M/MV5BMzRkMGZhYzItNmFlMy00ZGRlLTlmNWYtMDJlZGZlOWRjMzQ5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
+      poster: 'https://image.tmdb.org/t/p/original/8Y980Iun10G3NqXh9DAnjM8mAnA.jpg',
       isCollection: true,
       year: 'Koleksiyon',
       match: '99%',
@@ -67,10 +67,10 @@ const DB = {
         {
           id: 'm2f1',
           epNum: 1,
-          title: 'Zootopia 1',
-          desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. (Video linki bekleniyor...)',
-          file: '',
-          isYoutube: false
+          title: 'Zootropolis: Hayvanlar Şehri (2016)',
+          desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. Nick Wilde ile unutulmaz bir macera başlar.',
+          file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+          isYoutube: true
         },
         {
           id: 'm2f2',
