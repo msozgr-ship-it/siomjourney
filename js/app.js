@@ -157,10 +157,29 @@ window.openPlayerEpisode = function(pId, cId, type) {
 window.initPlayer = function(c) {
   const modal = get('player-modal'); if(!modal) return; modal.classList.add('active');
   const video = get('video-player'); const yt = get('yt-player'); const soon = get('coming-soon-overlay');
+  
   if(!c.file) { if(video) video.style.display = 'none'; if(yt) yt.style.display = 'none'; if(soon) soon.style.display = 'flex'; return; }
   if(soon) soon.style.display = 'none';
-  if(c.isYoutube) { if(video) { video.style.display = 'none'; video.src = ''; } if(yt) { yt.style.display = 'block'; yt.src = c.file; } }
-  else { if(yt) { yt.style.display = 'none'; yt.src = ''; } if(video) { video.style.display = 'block'; video.src = c.file; video.play().catch(e => {}); } }
+
+  if(c.isYoutube) {
+    if(video) { video.style.display = 'none'; video.src = ''; }
+    if(yt) {
+      yt.style.display = 'block';
+      let url = c.file;
+      url += (url.includes('?') ? '&' : '?') + 'autoplay=1&mute=0&rel=0';
+      yt.src = url;
+    }
+  } else {
+    if(yt) { yt.style.display = 'none'; yt.src = ''; }
+    if(video) {
+      video.style.display = 'block';
+      video.src = c.file;
+      video.play().catch(e => {
+        console.log("Autoplay blocked, showing native controls as fallback");
+        video.controls = true;
+      });
+    }
+  }
 };
 window.closePlayer = function() { get('player-modal').classList.remove('active'); get('yt-player').src = ''; get('video-player').pause(); get('video-player').src = ''; };
 window.closeSeriesModal = function() { get('series-modal').classList.remove('active'); };
