@@ -191,46 +191,7 @@ nav.scrolled { background: var(--glass); backdrop-filter: blur(30px); -webkit-ba
 .search-results { display: flex; flex-wrap: wrap; gap: 24px; padding: 0; justify-content: flex-start;}
 .search-results .card-wrapper { flex: 0 0 240px; margin-bottom: 20px;}
 
-@media (max-width: 768px) { 
-  body { padding-bottom: 90px; } /* Tab bar height */
-  nav { padding: 20px; background: transparent; border: none; backdrop-filter: none;} 
-  nav.scrolled { background: transparent; border: none; backdrop-filter: none; }
-  .logo { font-size: 24px; text-shadow: 0 2px 10px rgba(0,0,0,0.5);} 
-  .nav-links { display: none; } 
-  .hero { height: 65vh; padding: 30px 20px; } 
-  .hero-title { font-size: 40px; margin-bottom: 10px;} 
-  .hero-desc { display: none; }
-  .btn { padding: 12px 24px; font-size: 15px; border-radius: 20px;}
-  .content-section { padding: 0 20px 40px; margin-top: -20px; } 
-  .content-section::before, .content-section::after { width: 30px; bottom: 40px; }
-  .card-wrapper { flex-basis: auto; } 
-  .card-tall { width: 150px; height: 225px; }
-  .card-wide { width: 260px; height: 150px; }
-  .card { border-radius: 12px; }
-  .card-meta { font-size: 11px; }
-  .card-title { font-size: 14px; }
-  .card-glass-play { width: 44px; height: 44px; }
-  .card-glass-play svg { width: 20px; height: 20px; }
-  
-  #series-modal { padding: 20px; padding-bottom: 100px; } 
-  .series-modal-content { padding: 20px; border-radius: 24px;}
-  .series-header { flex-direction: column; align-items: center; text-align: center; gap: 20px;} 
-  .series-poster { width: 200px; }
-  .series-info h2 { font-size: 32px; } 
-  .ep-thumb { width: 100px; }
-  
-  #player-modal { padding: 0; display: flex; align-items: center; justify-content: center; background: #000; backdrop-filter: none;} 
-  .player-container { width: 100vw; height: auto; aspect-ratio: 16/9; border-radius: 0; max-height: 100vh; position: relative; border: none;} 
-  .close-btn { top: 15px; right: 15px; width: 36px; height: 36px; background: rgba(255,255,255,0.1);} 
-  .custom-controls { padding: 20px 15px 15px; }
-
-  .search-results .card-wrapper { flex: 0 0 160px; }
-  
-  #search-modal { padding: 60px 20px; padding-bottom: 100px; }
-  #search-input { font-size: 36px; }
-  .search-results { justify-content: center; }
-  
-  /* SHOW TAB BAR */
+/* SHOW TAB BAR */
   .ios-tab-bar {
     display: flex; justify-content: space-around; align-items: center;
     position: fixed; bottom: 0; left: 0; width: 100%; height: 85px; padding-bottom: 15px;
