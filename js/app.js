@@ -1,29 +1,32 @@
-const seriesModal = document.getElementById('series-modal');
-const playerModal = document.getElementById('player-modal');
-const videoPlayer = document.getElementById('video-player');
-const ytPlayer = document.getElementById('yt-player');
-const subText = document.getElementById('sub-text');
-const customControls = document.getElementById('custom-controls');
-const playPauseBtn = document.getElementById('play-pause-btn');
-const iconPlay = document.getElementById('icon-play');
-const iconPause = document.getElementById('icon-pause');
-const progressBar = document.getElementById('progress-bar');
-const progressContainer = document.getElementById('progress-container');
-const timeDisplay = document.getElementById('time-display');
-const fullscreenBtn = document.getElementById('fullscreen-btn');
-const playerContainerWrapper = document.getElementById('player-container');
+// Global UI Elements
+let seriesModal, playerModal, videoPlayer, ytPlayer, customControls, playPauseBtn, iconPlay, iconPause, progressBar, progressContainer, timeDisplay, fullscreenBtn, playerContainerWrapper, searchModal, searchInput, searchResults;
+
+function initDOMElements() {
+  seriesModal = document.getElementById('series-modal');
+  playerModal = document.getElementById('player-modal');
+  videoPlayer = document.getElementById('video-player');
+  ytPlayer = document.getElementById('yt-player');
+  customControls = document.getElementById('custom-controls');
+  playPauseBtn = document.getElementById('play-pause-btn');
+  iconPlay = document.getElementById('icon-play');
+  iconPause = document.getElementById('icon-pause');
+  progressBar = document.getElementById('progress-bar');
+  progressContainer = document.getElementById('progress-container');
+  timeDisplay = document.getElementById('time-display');
+  fullscreenBtn = document.getElementById('fullscreen-btn');
+  playerContainerWrapper = document.getElementById('player-container');
+  searchModal = document.getElementById('search-modal');
+  searchInput = document.getElementById('search-input');
+  searchResults = document.getElementById('search-results');
+}
 
 function generateCardHTML(item, type) {
-  let onClickAction;
-  if (type === 'series') onClickAction = `openDetailsModal('${item.id}', 'series')`;
-  else if (item.isCollection) onClickAction = `openDetailsModal('${item.id}', 'collection')`;
-  else onClickAction = `openPlayerMovie('${item.id}')`;
-  
   const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=400&output=webp`;
+  const playType = item.isCollection ? 'collection' : type;
   
   return `
-    <div class="card-wrapper">
-      <div class="card" onclick="${onClickAction}">
+    <div class="card-wrapper" data-id="${item.id}" data-type="${playType}">
+      <div class="card">
         <img class="poster-art" src="${proxyUrl}" alt="${item.title}" loading="lazy">
         <div class="card-glass-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="card-content">
@@ -38,9 +41,28 @@ function generateCardHTML(item, type) {
 function renderContent() {
   const all = [...DB.series.map(s => ({...s, type: 'series'})), ...DB.movies.map(m => ({...m, type: 'movie'}))];
   const gridHTML = all.map(item => generateCardHTML(item, item.type)).join('');
-  document.getElementById('movie-grid').innerHTML = gridHTML;
+  const movieGrid = document.getElementById('movie-grid');
+  if(movieGrid) movieGrid.innerHTML = gridHTML;
 }
-renderContent();
+
+// Global Click Listener for Event Delegation
+document.addEventListener('click', (e) => {
+  const wrapper = e.target.closest('.card-wrapper');
+  if (wrapper) {
+    const id = wrapper.dataset.id;
+    const type = wrapper.dataset.type;
+    if (type === 'series' || type === 'collection') openDetailsModal(id, type);
+    else openPlayerMovie(id);
+    return;
+  }
+
+  // Coverflow clicks
+  const cfItem = e.target.closest('.cf-item');
+  if (cfItem) {
+    const index = parseInt(cfItem.id.split('-').pop());
+    clickCoverflow(index);
+  }
+});
 
 let cfItems = [];
 let cfActiveIndex = 0;
@@ -53,15 +75,15 @@ function initCoverFlow() {
   const allItems = [...DB.series.map(s => ({...s, type: 'series'})), ...DB.movies.map(m => ({...m, type: 'movie'}))];
   allItems.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
   
-  // Sadece Popülerler (İlk 5) Vitrinde Dönecek
   cfItems = allItems.slice(0, 5);
   while(cfItems.length < 5 && cfItems.length > 0) cfItems = cfItems.concat(cfItems);
   
   const container = document.getElementById('coverflow-container');
+  if(!container) return;
   container.innerHTML = cfItems.map((item, i) => {
     const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=600&output=webp`;
     return `
-    <div class="cf-item" id="cf-item-${i}" onclick="clickCoverflow(${i})">
+    <div class="cf-item" id="cf-item-${i}">
       <img class="poster-art" src="${encodeURI(proxyUrl)}" alt="${item.title}">
       <div class="play-overlay">
         <div class="play-glass-btn">
@@ -74,7 +96,6 @@ function initCoverFlow() {
   updateCoverFlow();
   startCoverflowAuto();
 
-  // Drag / Swipe Events
   container.addEventListener('mousedown', dragStart);
   container.addEventListener('touchstart', dragStart, {passive: true});
   window.addEventListener('mousemove', dragMove);
@@ -95,21 +116,20 @@ function dragMove(e) {
   const x = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
   dragDist = x - startX;
   const container = document.getElementById('coverflow-container');
-  container.style.transform = `translateX(${dragDist * 0.2}px)`;
+  if(container) container.style.transform = `translateX(${dragDist * 0.2}px)`;
   if (Math.abs(dragDist) > 10) e.preventDefault();
 }
 
 function dragEnd() {
   if (!isDragging) return;
   isDragging = false;
-  document.getElementById('coverflow-container').style.transform = `translateX(0)`;
+  const container = document.getElementById('coverflow-container');
+  if(container) container.style.transform = `translateX(0)`;
   const threshold = 60;
   if (dragDist > threshold) {
     cfActiveIndex = (cfActiveIndex - 1 + cfItems.length) % cfItems.length;
-    if (dragDist > 160) cfActiveIndex = (cfActiveIndex - 1 + cfItems.length) % cfItems.length; // Momentum
   } else if (dragDist < -threshold) {
     cfActiveIndex = (cfActiveIndex + 1) % cfItems.length;
-    if (dragDist < -160) cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; // Momentum
   }
   updateCoverFlow();
   startCoverflowAuto();
@@ -120,6 +140,7 @@ function updateCoverFlow() {
   const len = cfItems.length;
   for(let i = 0; i < len; i++) {
     const el = document.getElementById(`cf-item-${i}`);
+    if(!el) continue;
     el.className = 'cf-item';
     
     let offset = i - cfActiveIndex;
@@ -135,9 +156,12 @@ function updateCoverFlow() {
   }
   
   const activeItem = cfItems[cfActiveIndex];
-  document.getElementById('cf-bg-blur').style.backgroundImage = `url('${activeItem.poster}')`;
-  document.getElementById('cf-title').innerText = activeItem.title;
-  document.getElementById('cf-meta').innerText = `${activeItem.year} • ${activeItem.meta}`;
+  const bgBlur = document.getElementById('cf-bg-blur');
+  if(bgBlur) bgBlur.style.backgroundImage = `url('${activeItem.poster}')`;
+  const cfTitle = document.getElementById('cf-title');
+  if(cfTitle) cfTitle.innerText = activeItem.title;
+  const cfMeta = document.getElementById('cf-meta');
+  if(cfMeta) cfMeta.innerText = `${activeItem.year} • ${activeItem.meta}`;
 }
 
 function clickCoverflow(index) {
@@ -162,40 +186,10 @@ function startCoverflowAuto() {
   }, 5000);
 }
 
-initCoverFlow();
-
-// Global variables moved to top
-
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60); const s = Math.floor(seconds % 60);
   return `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
 }
-
-videoPlayer.addEventListener('timeupdate', () => {
-  const percent = (videoPlayer.currentTime / (videoPlayer.duration || 1)) * 100;
-  progressBar.style.width = percent + '%';
-  timeDisplay.innerText = `${formatTime(videoPlayer.currentTime)} / ${formatTime(videoPlayer.duration || 0)}`;
-});
-
-playPauseBtn.addEventListener('click', () => { if(videoPlayer.paused) videoPlayer.play(); else videoPlayer.pause(); });
-videoPlayer.addEventListener('play', () => { iconPlay.style.display = 'none'; iconPause.style.display = 'block'; });
-videoPlayer.addEventListener('pause', () => { iconPlay.style.display = 'block'; iconPause.style.display = 'none'; });
-
-progressContainer.addEventListener('click', (e) => {
-  const rect = progressContainer.getBoundingClientRect();
-  const pos = (e.clientX - rect.left) / rect.width;
-  videoPlayer.currentTime = pos * videoPlayer.duration;
-});
-
-fullscreenBtn.addEventListener('click', () => {
-  if (!document.fullscreenElement) {
-    if (playerContainerWrapper.requestFullscreen) playerContainerWrapper.requestFullscreen();
-    else if (playerContainerWrapper.webkitRequestFullscreen) playerContainerWrapper.webkitRequestFullscreen();
-  } else {
-    if (document.exitFullscreen) document.exitFullscreen();
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-  }
-});
 
 function openDetailsModal(id, type) {
   let s;
@@ -278,59 +272,93 @@ function initPlayer(c) {
     if(customControls) customControls.style.display = 'flex'; 
   }
 }
-function closePlayer() {
-  playerModal.classList.remove('active'); ytPlayer.src = ''; videoPlayer.pause(); videoPlayer.src = '';
-  // if(currentHeroId) updateHero(currentHeroId, DB.series.find(x=>x.id===currentHeroId)?'series':'movie');
-}
 
-/* SEARCH LOGIC */
-const searchModal = document.getElementById('search-modal');
-const searchInput = document.getElementById('search-input');
-const searchResults = document.getElementById('search-results');
+function closePlayer() {
+  if(playerModal) playerModal.classList.remove('active');
+  if(ytPlayer) ytPlayer.src = '';
+  if(videoPlayer) { videoPlayer.pause(); videoPlayer.src = ''; }
+}
 
 function openSearch() {
-  searchModal.classList.add('active');
-  searchInput.value = ''; searchResults.innerHTML = '';
-  setTimeout(() => searchInput.focus(), 100);
-}
-function closeSearch() { searchModal.classList.remove('active'); }
-
-searchInput.addEventListener('input', (e) => {
-  const query = e.target.value.toLowerCase().trim();
-  if (query.length < 2) { searchResults.innerHTML = ''; return; }
-  
-  const results = [];
-  DB.series.forEach(s => { 
-    const tags = s.searchTags ? s.searchTags.toLowerCase() : '';
-    if(s.title.toLowerCase().includes(query) || tags.includes(query)) results.push({item: s, type: 'series'}); 
-  });
-  DB.movies.forEach(m => { 
-    const tags = m.searchTags ? m.searchTags.toLowerCase() : '';
-    if(m.title.toLowerCase().includes(query) || tags.includes(query)) results.push({item: m, type: 'movie'}); 
-  });
-  
-  if (results.length === 0) {
-    searchResults.innerHTML = '<div style="width:100%; text-align:center; color:#888; font-size:20px; padding: 40px;">Sonuç bulunamadı...</div>';
-  } else {
-    searchResults.innerHTML = results.map(r => generateCardHTML(r.item, r.type)).join('');
+  if(searchModal) {
+    searchModal.classList.add('active');
+    searchInput.value = ''; searchResults.innerHTML = '';
+    setTimeout(() => searchInput.focus(), 100);
   }
-});
+}
+function closeSearch() { if(searchModal) searchModal.classList.remove('active'); }
 
-seriesModal.addEventListener('click', (e) => { if (e.target === seriesModal) closeSeriesModal(); });
-playerModal.addEventListener('click', (e) => { if (e.target === playerModal) closePlayer(); });
-searchModal.addEventListener('click', (e) => { if (e.target === searchModal) closeSearch(); });
-window.addEventListener('scroll', () => { const nav = document.getElementById('navbar'); if (window.scrollY > 50) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); });
-
-// VISITOR COUNTER LOGIC
 async function updateVisitorCount() {
   try {
     const response = await fetch('https://api.countapi.xyz/hit/siomjourney.io/visits');
     const data = await response.json();
-    if(data && data.value) {
-      document.getElementById('visit-count').innerText = data.value.toLocaleString();
+    const countEl = document.getElementById('visit-count');
+    if(data && data.value && countEl) {
+      countEl.innerText = data.value.toLocaleString();
     }
   } catch (err) {
-    document.getElementById('visit-count').innerText = "1"; 
+    const countEl = document.getElementById('visit-count');
+    if(countEl) countEl.innerText = "1"; 
   }
 }
-updateVisitorCount();
+
+// Initializations
+document.addEventListener('DOMContentLoaded', () => {
+  initDOMElements();
+  renderContent();
+  initCoverFlow();
+  updateVisitorCount();
+
+  // Search input listener
+  if(searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      if (query.length < 2) { searchResults.innerHTML = ''; return; }
+      const results = [];
+      DB.series.forEach(s => { 
+        const tags = s.searchTags ? s.searchTags.toLowerCase() : '';
+        if(s.title.toLowerCase().includes(query) || tags.includes(query)) results.push({item: s, type: 'series'}); 
+      });
+      DB.movies.forEach(m => { 
+        const tags = m.searchTags ? m.searchTags.toLowerCase() : '';
+        if(m.title.toLowerCase().includes(query) || tags.includes(query)) results.push({item: m, type: 'movie'}); 
+      });
+      if (results.length === 0) {
+        searchResults.innerHTML = '<div style="width:100%; text-align:center; color:#888; font-size:20px; padding: 40px;">Sonuç bulunamadı...</div>';
+      } else {
+        searchResults.innerHTML = results.map(r => generateCardHTML(r.item, r.type)).join('');
+      }
+    });
+  }
+
+  // UI Event Listeners
+  if(seriesModal) seriesModal.addEventListener('click', (e) => { if (e.target === seriesModal) closeSeriesModal(); });
+  if(playerModal) playerModal.addEventListener('click', (e) => { if (e.target === playerModal) closePlayer(); });
+  if(searchModal) searchModal.addEventListener('click', (e) => { if (e.target === searchModal) closeSearch(); });
+  window.addEventListener('scroll', () => { 
+    const nav = document.getElementById('navbar'); 
+    if(nav) {
+      if (window.scrollY > 50) nav.classList.add('scrolled'); 
+      else nav.classList.remove('scrolled'); 
+    }
+  });
+
+  // Video Player Listeners
+  if(videoPlayer) {
+    videoPlayer.addEventListener('timeupdate', () => {
+      const percent = (videoPlayer.currentTime / (videoPlayer.duration || 1)) * 100;
+      if(progressBar) progressBar.style.width = percent + '%';
+      if(timeDisplay) timeDisplay.innerText = `${formatTime(videoPlayer.currentTime)} / ${formatTime(videoPlayer.duration || 0)}`;
+    });
+    videoPlayer.addEventListener('play', () => { if(iconPlay) iconPlay.style.display = 'none'; if(iconPause) iconPause.style.display = 'block'; });
+    videoPlayer.addEventListener('pause', () => { if(iconPlay) iconPlay.style.display = 'block'; if(iconPause) iconPause.style.display = 'none'; });
+  }
+
+  if(progressContainer) {
+    progressContainer.addEventListener('click', (e) => {
+      const rect = progressContainer.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      videoPlayer.currentTime = pos * videoPlayer.duration;
+    });
+  }
+});
