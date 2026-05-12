@@ -22,8 +22,8 @@ function generateCardHTML(item, type) {
   const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=500&output=webp`;
   
   return `
-    <div class="card-wrapper" onclick="${onClickAction}">
-      <div class="card">
+    <div class="card-wrapper">
+      <div class="card" onclick="${onClickAction}">
         <img class="poster-art" src="${proxyUrl}" alt="${item.title}" loading="lazy">
         <div class="card-glass-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="card-content">
