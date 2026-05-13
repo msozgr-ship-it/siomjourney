@@ -1,10 +1,9 @@
-// SiomJourney Premium - Ultra Quality Version
+// SiomJourney Premium - Bug Fix & UI Update
 window.DB = DB; 
 
 function get(id) { return document.getElementById(id); }
 
 function generateCardHTML(item, type) {
-  // Afiş kalitesini 800px'e çıkararak netliği artırıyoruz
   const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=800&output=webp&q=90`;
   const playType = item.isCollection ? 'collection' : type;
   return `
@@ -36,9 +35,6 @@ window.handleItemClick = function(id, type) {
 let cfActiveIndex = 0;
 let cfItems = [];
 let cfInterval = null;
-let isDragging = false;
-let startX = 0;
-let dragDist = 0;
 
 function initCoverFlow() {
   const allItems = [...window.DB.series.map(s => ({...s, type: 'series'})), ...window.DB.movies.map(m => ({...m, type: 'movie'}))];
@@ -49,8 +45,7 @@ function initCoverFlow() {
   if(!container) return;
   container.innerHTML = cfItems.map((item, i) => {
     const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=1000&output=webp&q=90`;
-    return `
-    <div class="cf-item" id="cf-item-${i}" onclick="handleCoverflowClick(${i})">
+    return `<div class="cf-item" id="cf-item-${i}" onclick="handleCoverflowClick(${i})">
       <img class="poster-art" src="${encodeURI(proxyUrl)}" alt="${item.title}" style="pointer-events:none;">
       <div class="play-overlay" style="pointer-events:none;">
         <div class="play-glass-btn"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
@@ -58,44 +53,14 @@ function initCoverFlow() {
     </div>`;
   }).join('');
   updateCoverFlow();
-  startCoverflowAuto();
-  container.addEventListener('mousedown', dragStart);
-  container.addEventListener('touchstart', dragStart, {passive: true});
-  window.addEventListener('mousemove', dragMove);
-  window.addEventListener('touchmove', dragMove, {passive: false});
-  window.addEventListener('mouseup', dragEnd);
-  window.addEventListener('touchend', dragEnd);
-}
-
-function dragStart(e) { isDragging = true; startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX; dragDist = 0; clearInterval(cfInterval); }
-function dragMove(e) {
-  if (!isDragging) return;
-  const x = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  dragDist = x - startX;
-  const container = get('coverflow-container');
-  if(container) container.style.transform = `translateX(${dragDist * 0.2}px)`;
-  if (Math.abs(dragDist) > 10) e.preventDefault();
-}
-function dragEnd() {
-  if (!isDragging) return;
-  isDragging = false;
-  const container = get('coverflow-container');
-  if(container) container.style.transform = `translateX(0)`;
-  if (dragDist > 60) cfActiveIndex = (cfActiveIndex - 1 + cfItems.length) % cfItems.length;
-  else if (dragDist < -60) cfActiveIndex = (cfActiveIndex + 1) % cfItems.length;
-  updateCoverFlow();
-  startCoverflowAuto();
+  setInterval(() => { cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; updateCoverFlow(); }, 5000);
 }
 
 window.handleCoverflowClick = function(index) {
-  if (Math.abs(dragDist) > 15) return; 
   if (index === cfActiveIndex) {
     const item = cfItems[index];
-    const playType = item.isCollection ? 'collection' : (item.episodes ? 'series' : 'movie');
-    handleItemClick(item.id, playType);
-  } else {
-    cfActiveIndex = index; updateCoverFlow(); startCoverflowAuto();
-  }
+    handleItemClick(item.id, item.isCollection ? 'collection' : (item.episodes ? 'series' : 'movie'));
+  } else { cfActiveIndex = index; updateCoverFlow(); }
 };
 
 function updateCoverFlow() {
@@ -118,23 +83,51 @@ function updateCoverFlow() {
   if(get('cf-meta')) get('cf-meta').innerText = `${active.year} • ${active.meta}`;
 }
 
-function startCoverflowAuto() { if(cfInterval) clearInterval(cfInterval); cfInterval = setInterval(() => { cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; updateCoverFlow(); }, 5000); }
+// Player & Modals
+window.openPlayerMovie = function(id) { const m = window.DB.movies.find(x => x.id === id); if(m) initPlayer(m); };
 
-// Ultra Quality Player
+window.openDetailsModal = function(id, type) {
+  let s;
+  if (type === 'series') s = window.DB.series.find(x => x.id === id);
+  else if (type === 'collection') s = window.DB.movies.find(x => x.id === id);
+  if(!s) return;
+  
+  get('sm-poster').src = s.poster;
+  get('sm-title').innerText = s.title;
+  get('sm-desc').innerText = s.desc;
+  
+  const listArr = type === 'series' ? s.episodes : s.collection;
+  get('sm-episodes').innerHTML = listArr.map(ep => {
+    const epPoster = ep.poster || s.poster;
+    return `<div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}', '${type}')">
+      <div class="ep-number">${ep.epNum}</div>
+      <div class="ep-thumb"><img src="${epPoster}" alt="${ep.title}"></div>
+      <div class="ep-details">
+        <div class="ep-title">${ep.title}</div>
+        <div class="ep-desc">${ep.desc}</div>
+      </div>
+    </div>`;
+  }).join('');
+  get('series-modal').classList.add('active');
+};
+
+window.openPlayerEpisode = function(pId, cId, type) {
+  let s, ep;
+  if(type === 'series') {
+    s = window.DB.series.find(x => x.id === pId);
+    if(s) ep = s.episodes.find(x => x.id === cId);
+  } else {
+    s = window.DB.movies.find(x => x.id === pId);
+    if(s) ep = s.collection.find(x => x.id === cId); // FIXED! Was pId before.
+  }
+  if(ep) initPlayer(ep);
+};
+
 window.initPlayer = function(c) {
   const modal = get('player-modal'); if(!modal) return; modal.classList.add('active');
   const video = get('video-player'); const yt = get('yt-player'); const soon = get('coming-soon-overlay');
-  
   if(!c.file) { if(video) video.style.display = 'none'; if(yt) yt.style.display = 'none'; if(soon) soon.style.display = 'flex'; return; }
   if(soon) soon.style.display = 'none';
-
-  // Archive.org Embed Linkini Direct MP4'e cevirmeye calis (Kalite artisi icin)
-  let videoSrc = c.file;
-  if(videoSrc.includes('archive.org/embed/')) {
-    videoSrc = videoSrc.replace('embed/', 'download/') + '/' + videoSrc.split('/').pop() + '.mp4';
-    // Not: Bu donusum her zaman calismayabilir, calismazsa fallback olarak ytPlayer kullanilacak
-  }
-
   if(c.isYoutube) {
     if(video) { video.style.display = 'none'; video.src = ''; }
     if(yt) {
@@ -145,38 +138,16 @@ window.initPlayer = function(c) {
     }
   } else {
     if(yt) { yt.style.display = 'none'; yt.src = ''; }
-    if(video) {
-      video.style.display = 'block';
-      video.src = videoSrc;
-      video.play().catch(e => { video.controls = true; });
-    }
+    if(video) { video.style.display = 'block'; video.src = c.file; video.play().catch(e => { video.controls = true; }); }
   }
 };
 
-window.openPlayerMovie = function(id) { const m = window.DB.movies.find(x => x.id === id); if(m) initPlayer(m); };
-window.openDetailsModal = function(id, type) {
-  let s;
-  if (type === 'series') s = window.DB.series.find(x => x.id === id);
-  else if (type === 'collection') s = window.DB.movies.find(x => x.id === id);
-  if(!s) return;
-  get('sm-poster').src = s.poster; get('sm-title').innerText = s.title; get('sm-desc').innerText = s.desc;
-  const listArr = type === 'series' ? s.episodes : s.collection;
-  get('sm-episodes').innerHTML = listArr.map(ep => `
-    <div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}', '${type}')">
-      <div class="ep-number">${ep.epNum}</div>
-      <div class="ep-details"><div class="ep-title">${ep.title}</div><div class="ep-desc">${ep.desc}</div></div>
-    </div>`).join('');
-  get('series-modal').classList.add('active');
-};
-window.openPlayerEpisode = function(pId, cId, type) {
-  let s, ep;
-  if(type === 'series') { s = window.DB.series.find(x => x.id === pId); if(s) ep = s.episodes.find(x => x.id === cId); }
-  else { s = window.DB.movies.find(x => x.id === pId); if(s) ep = s.collection.find(x => x.id === pId); }
-  if(ep) initPlayer(ep);
-};
 window.closePlayer = function() { get('player-modal').classList.remove('active'); get('yt-player').src = ''; get('video-player').pause(); get('video-player').src = ''; };
 window.closeSeriesModal = function() { get('series-modal').classList.remove('active'); };
-window.openSearch = function() { get('search-modal').classList.add('active'); get('search-input').value = ''; get('search-results').innerHTML = ''; setTimeout(() => get('search-input').focus(), 100); };
+
+window.openSearch = function() {
+  get('search-modal').classList.add('active'); get('search-input').value = ''; get('search-results').innerHTML = ''; setTimeout(() => get('search-input').focus(), 100);
+};
 window.closeSearch = function() { get('search-modal').classList.remove('active'); };
 
 document.addEventListener('DOMContentLoaded', () => {
