@@ -17,12 +17,7 @@ const DB = {
           title: 'Karanlık Ormana Giriş',
           desc: 'Mini karanlık ormanda yürür. Uzakta gizemli bir ışık görür ve peşine düşer.',
           file: 'bolum1.mp4',
-          isYoutube: false,
-          subs: [
-            {from:0,to:5,text:'Mini karanlık ormanda yürür.'},
-            {from:5,to:10,text:'Uzakta küçük bir ışık görür.'},
-            {from:10,to:15,text:'Ay ışığı yüzüne vurur.'}
-          ]
+          isYoutube: false
         },
         {
           id: 's1e2',
@@ -30,11 +25,7 @@ const DB = {
           title: 'Işığın Gizemi',
           desc: 'Işığın gizemi derinleşir. Mini ormanın kalbindeki büyük kütüphaneye ulaşır.',
           file: 'bolum2.mp4',
-          isYoutube: false,
-          subs: [
-            {from:0,to:6,text:'Mini ışığın peşinden ormana ilerler.'},
-            {from:6,to:11,text:'Mini elini uzatır. Işık ona doğru gelir.'}
-          ]
+          isYoutube: false
         }
       ]
     }
@@ -46,7 +37,6 @@ const DB = {
       searchTags: 'hoppers, hoplayanlar, disney, pixar, animasyon',
       desc: 'Eşsiz bir animasyon macerası. Disney ve Pixar\'ın en yeni başyapıtı.',
       poster: 'assets/img/hoplayanlar.jpg',
-      trailer: 'https://archive.org/embed/hoplayanlar-izle-2026',
       file: 'https://archive.org/embed/hoplayanlar-izle-2026',
       isYoutube: true,
       year: '2026',
@@ -57,7 +47,7 @@ const DB = {
       id: 'm2',
       title: 'Zootopia Serisi',
       searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
-      desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk (iOS Klasörü).',
+      desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk.',
       poster: 'assets/img/zootopia_main.jpg.jpg',
       isCollection: true,
       year: 'Koleksiyon',
@@ -100,7 +90,7 @@ const DB = {
       id: 'm4',
       title: 'Ejderhanı Nasıl Eğitirsin Serisi',
       searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
-      desc: 'Hıçkıdık ve Dişsiz\'in Berk adasındaki efsanevi dostluk hikayesi (iOS Klasörü).',
+      desc: 'Hıçkıdık ve Dişsiz\'in Berk adasındaki efsanevi dostluk hikayesi.',
       poster: 'assets/img/httyd_main.jpg.jpg',
       isCollection: true,
       year: '2010-2019',
