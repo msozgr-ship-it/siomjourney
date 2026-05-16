@@ -33,6 +33,22 @@ const DB = {
   ],
   movies: [
     {
+      id: "stitch-head-movie",
+      title: "Stitch Head",
+      poster: "assets/posters/stitch-head.jpg",
+      file: "https://pixeldrain.com/u/STITCH_ID",
+      searchTags: "stitch head, animasyon, macera, korku, komedi, 2024",
+      isNew: true
+    },
+    {
+      id: "swapped-movie",
+      title: "Swapped",
+      poster: "assets/posters/swapped.jpg",
+      file: "https://pixeldrain.com/u/SWAPPED_ID",
+      searchTags: "swapped, drama, komedi, yer değiştirme, 2024",
+      isNew: true
+    },
+    {
       id: 'm1',
       title: 'Hoplayanlar',
       searchTags: 'hoppers, hoplayanlar, disney, pixar, animasyon',
