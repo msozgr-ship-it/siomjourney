@@ -1,4 +1,4 @@
-// Versiyon 2.3 - Kesin Çözüm
+// Versiyon 2.4 - Seri & Görsellik Düzeltmesi
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
@@ -15,7 +15,6 @@ function initApp() {
     renderContent();
     setupSearch();
 
-    // Klavye dinleyicileri
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { closePlayer(); closeDetails(); }
       if (e.key === 'ArrowRight') nextOrbital();
@@ -92,24 +91,17 @@ function renderContent() {
   `;
 }
 
-// ANA TIKLAMA YÖNETİCİSİ
 function handleItemClick(id, index, isOrbital) {
   if (isOrbital && index !== currentOrbitalIndex) {
     setOrbital(index);
     return;
   }
-
   const item = allContent.find(i => i.id === id);
   if (!item) return;
-
-  if (item.episodes || item.isCollection) {
-    openDetails(id);
-  } else {
-    openPlayer(item.file);
-  }
+  if (item.episodes || item.isCollection) openDetails(id);
+  else openPlayer(item.file);
 }
 
-// ARAMA
 function setupSearch() {
   const input = document.getElementById('search-input');
   if (!input) return;
@@ -123,7 +115,7 @@ function setupSearch() {
   });
 }
 
-// PANEL VE OYNATICI
+// SERİ PANELİ (Görsel Poster Izgarası)
 function openDetails(id) {
   const item = allContent.find(i => i.id === id);
   if (!item) return;
@@ -131,14 +123,22 @@ function openDetails(id) {
   const modal = document.getElementById('details-modal');
   const grid = document.getElementById('details-grid');
   
-  document.getElementById('details-poster').src = item.poster;
+  document.getElementById('details-poster').style.display = 'none'; // Yan afişi gizle, ızgaraya odaklan
   document.getElementById('details-title').textContent = item.title;
 
   let subItems = item.episodes || item.collection || [];
+  
+  // Seriyi de görsel bir ızgara yapıyoruz (Sadece Afişler)
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(150px, 1fr))";
+  grid.style.gap = "20px";
+  
   grid.innerHTML = subItems.map(sub => `
-    <div class="ep-card" onclick="openPlayer('${sub.file}')">
-      <h3>${sub.title}</h3>
-      <button class="play-btn-mini">İZLE</button>
+    <div class="card-wrapper" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
+      <div class="card">
+        <img src="${sub.poster || item.poster}" alt="">
+      </div>
+      <div style="font-size:12px; margin-top:5px; text-align:center; font-weight:700;">${sub.title}</div>
     </div>
   `).join('');
 
@@ -160,6 +160,7 @@ function openPlayer(file) {
   const iframe = document.getElementById('player-frame');
   
   modal.style.display = 'flex';
+  modal.style.zIndex = "50000"; // En üstte olduğundan emin ol
   modal.classList.add('active');
   iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
 }
