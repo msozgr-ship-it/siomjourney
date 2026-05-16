@@ -109,24 +109,41 @@ function renderCard(item) {
   `;
 }
 
-// SEARCH LOGIC
-function handleSearchClick() {
+// SEARCH LOGIC (INSTANT & SMART)
+function setupSearch() {
   const input = document.getElementById('search-input');
-  if (input) handleSearch(input.value);
+  if (!input) return;
+
+  input.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    
+    if (query === '') {
+      filteredContent = [...allContent];
+    } else {
+      filteredContent = allContent.filter(item => {
+        const titleMatch = item.title && item.title.toLowerCase().includes(query);
+        const tagMatch = item.searchTags && item.searchTags.toLowerCase().includes(query);
+        const descMatch = item.desc && item.desc.toLowerCase().includes(query);
+        return titleMatch || tagMatch || descMatch;
+      });
+    }
+    
+    renderContent();
+    
+    // Eğer sonuç bulunduysa ve yazı yazılıyorsa hafifçe aşağı kaydır (opsiyonel)
+    if (query.length > 1) {
+       const matrix = document.getElementById('content-matrix');
+       if (matrix) matrix.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
 }
 
-function handleSearch(query) {
-  const q = query.toLowerCase().trim();
-  if (q === '') {
-    filteredContent = [...allContent];
-  } else {
-    filteredContent = allContent.filter(item => 
-      (item.title && item.title.toLowerCase().includes(q)) || 
-      (item.searchTags && item.searchTags.toLowerCase().includes(q))
-    );
+function handleSearchClick() {
+  const input = document.getElementById('search-input');
+  if (input) {
+     // Butona basıldığında da manuel tetikleme (isteğe bağlı)
+     input.dispatchEvent(new Event('input'));
   }
-  renderContent();
-  window.scrollTo({ top: window.innerHeight * 0.8, behavior: 'smooth' });
 }
 
 function resetFilter() {
@@ -218,6 +235,7 @@ function closePlayer() {
 }
 
 function setupEventListeners() {
+  setupSearch();
   const input = document.getElementById('search-input');
   if (input) {
     input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearchClick(); });
