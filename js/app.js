@@ -88,15 +88,15 @@ function updateOrbitalTransforms() {
   if (!items.length) return;
   const count = items.length;
   const angleStep = 360 / count;
-  const radiusX = 650;
-  const radiusZ = 280;
+  const radiusX = 550;
+  const radiusZ = 300;
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
     const rad = (angle * Math.PI) / 180;
     const x = Math.sin(rad) * radiusX;
     const z = Math.cos(rad) * radiusZ;
-    item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-65deg)`;
+    item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-45deg)`;
     
     const normalizedAngle = ((angle % 360) + 360) % 360;
     if (normalizedAngle < 15 || normalizedAngle > 345) {

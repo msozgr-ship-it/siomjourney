@@ -35,7 +35,7 @@ const DB = {
     {
       id: "karaya-movie",
       title: "Karaya",
-      poster: "assets/posters/karaya.jpg",
+      poster: "assets/img/karaya.jpg",
       file: "https://pixeldrain.com/u/KARAYA_ID",
       searchTags: "karaya, macera, aksiyon, deniz, 2024",
       isNew: true
@@ -43,7 +43,7 @@ const DB = {
     {
       id: "stitch-head-movie",
       title: "Stitch Head",
-      poster: "assets/posters/stitch-head.jpg",
+      poster: "assets/img/stitch-head.jpg",
       file: "https://pixeldrain.com/u/STITCH_ID",
       searchTags: "stitch head, animasyon, macera, korku, komedi, 2024",
       isNew: true
@@ -51,7 +51,7 @@ const DB = {
     {
       id: "swapped-movie",
       title: "Swapped",
-      poster: "assets/posters/swapped.jpg",
+      poster: "assets/img/swapped.jpg",
       file: "https://pixeldrain.com/u/SWAPPED_ID",
       searchTags: "swapped, drama, komedi, yer değiştirme, 2024",
       isNew: true
