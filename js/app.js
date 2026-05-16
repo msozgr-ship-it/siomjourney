@@ -1,6 +1,4 @@
-// Versiyon 2.2 - Saf Sinema Modu
-const MAINTENANCE_MODE = false;
-
+// Versiyon 2.3 - Kesin Çözüm
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
@@ -15,20 +13,27 @@ function initApp() {
 
     renderOrbital();
     renderContent();
-    setupEventListeners();
+    setupSearch();
+
+    // Klavye dinleyicileri
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closePlayer(); closeDetails(); }
+      if (e.key === 'ArrowRight') nextOrbital();
+      if (e.key === 'ArrowLeft') prevOrbital();
+    });
   } catch (err) {
     console.error("Başlatma Hatası:", err);
   }
 }
 
-// 3D ORBITAL (Sadece Afiş)
+// 3D ORBITAL
 function renderOrbital() {
   const container = document.getElementById('orbital-container');
   if (!container) return;
   
   container.innerHTML = orbitalContent.map((item, index) => `
-    <div class="cf-item ${getOrbitalClass(index)}" data-id="${item.id}" data-index="${index}">
-      <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
+    <div class="cf-item ${getOrbitalClass(index)}" onclick="handleItemClick('${item.id}', ${index}, true)">
+      <img src="${item.poster}" alt="">
     </div>
   `).join('');
 
@@ -68,7 +73,7 @@ function prevOrbital() {
   renderOrbital();
 }
 
-// MATRİS RENDER (Sadece Afiş)
+// MATRİS RENDER
 function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
@@ -76,10 +81,10 @@ function renderContent() {
   content.innerHTML = `
     <div class="movie-grid">
       ${filteredContent.map(item => `
-        <div class="card-wrapper" data-id="${item.id}">
+        <div class="card-wrapper" onclick="handleItemClick('${item.id}', -1, false)">
           <div class="card">
             ${(item.isCollection || item.episodes) ? '<div class="card-badge">SERİ</div>' : ''}
-            <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
+            <img src="${item.poster}" alt="">
           </div>
         </div>
       `).join('')}
@@ -87,83 +92,51 @@ function renderContent() {
   `;
 }
 
-// AKILLI ARAMA (Sadece Input Dinleniyor)
+// ANA TIKLAMA YÖNETİCİSİ
+function handleItemClick(id, index, isOrbital) {
+  if (isOrbital && index !== currentOrbitalIndex) {
+    setOrbital(index);
+    return;
+  }
+
+  const item = allContent.find(i => i.id === id);
+  if (!item) return;
+
+  if (item.episodes || item.isCollection) {
+    openDetails(id);
+  } else {
+    openPlayer(item.file);
+  }
+}
+
+// ARAMA
 function setupSearch() {
   const input = document.getElementById('search-input');
   if (!input) return;
-
   input.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
+    const q = e.target.value.toLowerCase().trim();
     filteredContent = allContent.filter(item => 
-      (item.title && item.title.toLowerCase().includes(query)) || 
-      (item.searchTags && item.searchTags.toLowerCase().includes(query))
+      (item.title && item.title.toLowerCase().includes(q)) || 
+      (item.searchTags && item.searchTags.toLowerCase().includes(q))
     );
     renderContent();
   });
 }
 
-// KÜRESEL TIKLAMA YAKALAYICI
-function setupEventListeners() {
-  setupSearch();
-
-  document.addEventListener('click', (e) => {
-    const card = e.target.closest('.card-wrapper') || e.target.closest('.cf-item');
-    if (card) {
-      const id = card.dataset.id;
-      const index = card.dataset.index;
-      const item = allContent.find(i => i.id === id);
-      if (!item) return;
-
-      if (card.classList.contains('cf-item')) {
-        const idx = parseInt(index);
-        if (idx !== currentOrbitalIndex) {
-          setOrbital(idx);
-          return;
-        }
-      }
-
-      // SERİ İSE LİSTE AÇ, DEĞİLSE DİREKT OYNAT
-      if (item.episodes || item.isCollection) {
-        openDetails(id);
-      } else {
-        openPlayer(item.file);
-      }
-    }
-
-    const ep = e.target.closest('.ep-card');
-    if (ep) openPlayer(ep.dataset.file);
-  });
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { closePlayer(); closeDetails(); }
-    if (e.key === 'ArrowRight') nextOrbital();
-    if (e.key === 'ArrowLeft') prevOrbital();
-  });
-}
-
-// SERİ LİSTESİ PANELİ
+// PANEL VE OYNATICI
 function openDetails(id) {
   const item = allContent.find(i => i.id === id);
   if (!item) return;
 
   const modal = document.getElementById('details-modal');
   const grid = document.getElementById('details-grid');
-  if (!modal || !grid) return;
-
-  // Sadece başlık ve liste kalsın
-  document.getElementById('details-title').textContent = item.title;
   
-  // Gereksiz alanları gizle/temizle
   document.getElementById('details-poster').src = item.poster;
-  document.getElementById('details-year').textContent = "";
-  document.getElementById('details-rating').textContent = "";
-  document.getElementById('details-type').textContent = "";
-  document.getElementById('details-desc').textContent = "";
+  document.getElementById('details-title').textContent = item.title;
 
   let subItems = item.episodes || item.collection || [];
-
   grid.innerHTML = subItems.map(sub => `
-    <div class="ep-card" data-file="${sub.file}">
+    <div class="ep-card" onclick="openPlayer('${sub.file}')">
       <h3>${sub.title}</h3>
       <button class="play-btn-mini">İZLE</button>
     </div>
@@ -185,13 +158,10 @@ function openPlayer(file) {
   if (!file) return;
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
-  if (!modal || !iframe) return;
-
+  
   modal.style.display = 'flex';
-  setTimeout(() => {
-    modal.classList.add('active');
-    iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
-  }, 10);
+  modal.classList.add('active');
+  iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
 }
 
 function closePlayer() {
@@ -199,7 +169,7 @@ function closePlayer() {
   const iframe = document.getElementById('player-frame');
   if (modal) {
     modal.classList.remove('active');
-    setTimeout(() => { modal.style.display = 'none'; iframe.src = ''; }, 600);
+    setTimeout(() => { modal.style.display = 'none'; iframe.src = ''; }, 500);
   }
 }
 

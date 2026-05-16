@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <link rel="stylesheet" href="css/style.css?v=2.3">
 </head>
 <body>
     <div class="bg-spatial"></div>
@@ -21,8 +21,7 @@
         <div class="nav-right">
             <div class="search-container">
                 <div class="search-bar">
-                    <input type="text" id="search-input" placeholder="Film, dizi veya tür ara...">
-                    <button class="search-btn" onclick="handleSearchClick()">🔍</button>
+                    <input type="text" id="search-input" placeholder="Arama...">
                 </div>
             </div>
         </div>
@@ -54,7 +53,7 @@
         </main>
     </div>
 
-    <!-- DETAILS MODAL -->
+    <!-- DETAILS MODAL (ONLY FOR SERIES) -->
     <div id="details-modal" class="details-modal">
         <div class="modal-close" onclick="closeDetails()">✕</div>
         <div class="modal-content">
@@ -62,18 +61,13 @@
                 <img id="details-poster" src="" alt="">
                 <div class="details-main-info">
                     <h1 id="details-title"></h1>
-                    <div class="details-meta">
-                        <span id="details-year"></span>
-                        <span class="meta-sep">•</span>
-                        <span id="details-rating"></span>
-                        <span class="meta-sep">•</span>
-                        <span id="details-type"></span>
-                    </div>
-                    <p id="details-desc"></p>
+                    <div id="details-year" style="display:none"></div>
+                    <div id="details-rating" style="display:none"></div>
+                    <div id="details-type" style="display:none"></div>
+                    <p id="details-desc" style="display:none"></p>
                 </div>
             </div>
             <div class="details-list-section">
-                <h2 id="list-title">İçerikler</h2>
                 <div class="details-grid" id="details-grid"></div>
             </div>
         </div>
@@ -87,7 +81,7 @@
         </div>
     </div>
 
-    <script src="js/data.js?v=2.1"></script>
-    <script src="js/app.js?v=2.1"></script>
+    <script src="js/data.js?v=2.3"></script>
+    <script src="js/app.js?v=2.3"></script>
 </body>
 </html>
