@@ -19,46 +19,40 @@ body::after {
     z-index: -1; pointer-events: none;
 }
 
-/* HERO SECTION - SPATIAL DEPTH */
+/* HERO SECTION - SATURN DEPTH */
 .hero-spatial {
     position: relative; height: 100vh; width: 100%;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    perspective: 2000px; overflow: hidden;
+    perspective: 2500px; overflow: hidden;
 }
 
-/* THE GIANT 3D S */
+/* THE GIANT 3D S (Merkezde) */
 .giant-s-neon {
-    font-size: 50vw; font-weight: 900; color: var(--accent);
-    position: absolute; left: 50%; top: 50%; 
-    transform: translate(-50%, -50%) translateZ(-800px);
-    opacity: 0.4; text-shadow: var(--s-glow);
-    filter: blur(2px); user-select: none;
-    animation: sPulse 4s infinite ease-in-out;
-}
-@keyframes sPulse { 0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) translateZ(-800px) scale(1); } 50% { opacity: 0.5; transform: translate(-50%, -50%) translateZ(-800px) scale(1.05); } }
-
-/* THE ENERGY BEAM (Görseldeki kırmızı enerji süzmesi) */
-.orbital-wrapper::after {
-    content: ''; position: absolute; width: 200%; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), #ff8c94, var(--accent), transparent);
-    top: 50%; left: -50%; transform: translateZ(200px);
-    box-shadow: 0 0 30px var(--accent), 0 0 10px #fff;
-    opacity: 0.6; z-index: 5; pointer-events: none;
-    animation: beamFlow 3s infinite linear;
-}
-@keyframes beamFlow { 0% { opacity: 0.3; } 50% { opacity: 0.8; } 100% { opacity: 0.3; } }
-
-.orbital-wrapper {
-    position: relative; width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    transform-style: preserve-3d;
+    font-size: 40vw; font-weight: 900; color: var(--accent);
+    position: absolute; left: 50%; top: 45%; 
+    transform: translate(-50%, -50%) translateZ(-300px);
+    opacity: 0.3; text-shadow: var(--s-glow);
+    filter: blur(1px); user-select: none;
+    z-index: 1;
 }
 
+/* SATURN RING BELT */
 .orbital-belt {
     position: relative; width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
     transform-style: preserve-3d;
+    transform: rotateX(65deg) translateY(50px); /* Halkayı yatırıyoruz */
     transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ENERGY BEAM (Halka ile uyumlu) */
+.orbital-wrapper::after {
+    content: ''; position: absolute; width: 250%; height: 4px;
+    background: linear-gradient(90deg, transparent, var(--accent), #fff, var(--accent), transparent);
+    top: 55%; left: -75%; 
+    transform: translateZ(0px) rotateX(65deg);
+    box-shadow: 0 0 50px var(--accent);
+    opacity: 0.4; z-index: 2; pointer-events: none;
 }
 
 /* FANTASTIC CARDS */

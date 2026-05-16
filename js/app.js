@@ -1,4 +1,4 @@
-// Versiyon 3.1 - Elips Yörünge Motoru
+// Versiyon 3.2 - Satürn Halkası (Inclined Ellipse) Motoru
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
@@ -8,7 +8,7 @@ function initApp() {
   try {
     if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
-    orbitalContent = DB.movies.slice(0, 15); // Daha fazla kartla daha dolu bir elips
+    orbitalContent = DB.movies.slice(0, 18); // Halkanın daha dolu görünmesi için kart sayısını artırdık
     filteredContent = [...allContent];
 
     renderOrbital();
@@ -42,28 +42,32 @@ function updateOrbitalTransforms() {
   const count = items.length;
   const angleStep = 360 / count;
   
-  // ELİPS PARAMETRELERİ
-  const radiusX = 900; // Yatay genişlik (Geniş elips)
-  const radiusZ = 450; // Derinlik (Daha basık)
+  // SATÜRN HALKASI PARAMETRELERİ
+  const radiusX = 1000; // Genişlik
+  const radiusZ = 350;  // Derinlik (Basık elips)
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
     const rad = (angle * Math.PI) / 180;
     
-    // ELİPS MATEMATİĞİ (X ve Z koordinatları ayrı hesaplanıyor)
     const x = Math.sin(rad) * radiusX;
     const z = Math.cos(rad) * radiusZ;
     
-    item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg)`;
+    // transform: Eğimli halka üzerinde dik duran kartlar
+    // Not: CSS'deki .orbital-belt rotateX(65deg) ile eğildiği için burada kartları dik tutuyoruz
+    item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-65deg)`;
     
     const normalizedAngle = ((angle % 360) + 360) % 360;
     if (normalizedAngle < 15 || normalizedAngle > 345) {
       item.classList.add('active');
       item.style.opacity = "1";
+      item.style.filter = "brightness(1.2) contrast(1.1)";
     } else {
       item.classList.remove('active');
-      // Arkada kalanları daha fazla karartarak derinlik veriyoruz
-      item.style.opacity = (normalizedAngle > 70 && normalizedAngle < 290) ? "0.15" : "0.7";
+      // Arka tarafa gidenleri (90-270 derece arası) iyice sönükleştir
+      const isBack = normalizedAngle > 60 && normalizedAngle < 300;
+      item.style.opacity = isBack ? "0.1" : "0.6";
+      item.style.filter = isBack ? "blur(2px) grayscale(0.5)" : "none";
     }
   });
 }
@@ -123,7 +127,7 @@ function openDetails(id) {
   grid.innerHTML = subItems.map(sub => `
     <div class="card-wrapper" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
       <div class="card"><img src="${sub.poster || item.poster}" alt=""></div>
-      <div style="font-size:11px; margin-top:5px; font-weight:700; opacity:0.8;">${sub.title}</div>
+      <div style="font-size:10px; margin-top:5px; font-weight:700;">${sub.title}</div>
     </div>
   `).join('');
   modal.style.display = 'flex';
@@ -132,10 +136,7 @@ function openDetails(id) {
 
 function closeDetails() {
   const modal = document.getElementById('details-modal');
-  if (modal) {
-    modal.classList.remove('active');
-    setTimeout(() => modal.style.display = 'none', 500);
-  }
+  if (modal) { modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 500); }
 }
 
 function openPlayer(file) {
@@ -153,13 +154,6 @@ function closePlayer() {
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
   if (modal) { modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; iframe.src = ''; }, 500); }
-}
-
-function resetFilter() {
-  filteredContent = [...allContent];
-  const input = document.getElementById('search-input');
-  if (input) input.value = '';
-  renderContent();
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
