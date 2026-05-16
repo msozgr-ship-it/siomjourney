@@ -1,30 +1,23 @@
 let currentOrbitalIndex = 0;
-const orbitalMovies = [...DB.movies, ...DB.series];
+const orbitalMovies = DB.movies.slice(0, 5);
 
 function initApp() {
   renderOrbital();
-  updateStage();
+  renderContent();
   setupEventListeners();
 }
 
 function renderOrbital() {
-  const container = document.getElementById('coverflow-container');
+  const container = document.getElementById('orbital-container');
+  const indicator = document.getElementById('orbital-indicator');
   if (!container) return;
   
-  if (container.children.length === 0) {
-    container.innerHTML = orbitalMovies.map((movie, index) => `
-      <div class="cf-item" onclick="setOrbital(${index})" data-id="${movie.id}">
-        <img src="${movie.poster}" alt="${movie.title}">
-      </div>
-    `).join('');
-  }
-  
-  const items = container.querySelectorAll('.cf-item');
-  items.forEach((item, index) => {
-    item.className = `cf-item ${getOrbitalClass(index)}`;
-  });
+  container.innerHTML = orbitalMovies.map((movie, index) => `
+    <div class="cf-item ${getOrbitalClass(index)}" onclick="setOrbital(${index})">
+      <img src="${movie.poster}" alt="${movie.title}">
+    </div>
+  `).join('');
 
-  const indicator = document.querySelector('.ctrl-indicator');
   if (indicator) {
     const progress = ((currentOrbitalIndex + 1) / orbitalMovies.length) * 100;
     indicator.style.setProperty('--progress', `${progress}%`);
@@ -33,193 +26,99 @@ function renderOrbital() {
 
 function getOrbitalClass(index) {
   const diff = index - currentOrbitalIndex;
-  // Handle circular wrap
-  let virtualDiff = diff;
-  if (diff > orbitalMovies.length / 2) virtualDiff -= orbitalMovies.length;
-  if (diff < -orbitalMovies.length / 2) virtualDiff += orbitalMovies.length;
-
-  if (virtualDiff === 0) return 'active';
-  if (virtualDiff === -1) return 'prev-1';
-  if (virtualDiff === 1) return 'next-1';
-  if (virtualDiff === -2) return 'prev-2';
-  if (virtualDiff === 2) return 'next-2';
+  const len = orbitalMovies.length;
+  if (diff === 0) return 'active';
+  if (diff === -1 || (currentOrbitalIndex === 0 && index === len - 1)) return 'prev-1';
+  if (diff === 1 || (currentOrbitalIndex === len - 1 && index === 0)) return 'next-1';
+  if (diff === -2 || (currentOrbitalIndex === 1 && index === len - 1)) return 'prev-2';
+  if (diff === 2 || (currentOrbitalIndex === len - 2 && index === 0)) return 'next-2';
   return 'hidden';
 }
 
 function setOrbital(index) {
-  if (currentOrbitalIndex === index) {
-    // If clicking the active one, play it
-    playCurrent();
-    return;
-  }
   currentOrbitalIndex = index;
   renderOrbital();
-  updateStage();
 }
 
 function nextOrbital() {
   currentOrbitalIndex = (currentOrbitalIndex + 1) % orbitalMovies.length;
   renderOrbital();
-  updateStage();
 }
 
 function prevOrbital() {
   currentOrbitalIndex = (currentOrbitalIndex - 1 + orbitalMovies.length) % orbitalMovies.length;
   renderOrbital();
-  updateStage();
 }
 
-// STAGE LOGIC
-function updateStage() {
-  const movie = orbitalMovies[currentOrbitalIndex];
+function renderContent() {
+  const content = document.getElementById('content-matrix');
+  if (!content) return;
+
+  const categories = [
+    { label: 'TRENDING NOW', title: 'S-Trend Filmler', filter: () => true },
+    { label: 'NEW RELEASES', title: 'Yeni Çıkanlar', filter: (m) => m.year === '2025' || m.year === '2026' },
+    { label: 'TOP RATED', title: 'En Çok Beğenilenler', filter: (m) => parseInt(m.match) > 95 }
+  ];
+
+  content.innerHTML = categories.map(cat => `
+    <section class="section-matrix">
+      <div class="section-label">${cat.label}</div>
+      <h2 class="matrix-title">${cat.title}</h2>
+      <div class="movie-grid">
+        ${DB.movies.filter(cat.filter).map(m => renderCard(m)).join('')}
+      </div>
+    </section>
+  `).join('');
+}
+
+function renderCard(movie) {
+  return `
+    <div class="card-wrapper" onclick="openPlayer('${movie.id}')">
+      <div class="card">
+        <div class="card-rating">⭐ ${movie.match.replace('%','')}</div>
+        <img src="${movie.poster}" alt="${movie.title}">
+      </div>
+      <div class="card-info">
+          <h3>${movie.title}</h3>
+          <div class="card-meta">⭐ ${movie.match} • ${movie.year} • 2h 15m</div>
+          <p class="card-highlights">${movie.desc}</p>
+          <div class="card-progress"></div>
+      </div>
+    </div>
+  `;
+}
+
+function openPlayer(id) {
+  const movie = [...DB.movies, ...DB.series].find(m => m.id === id);
   if (!movie) return;
 
-  const titleEl = document.getElementById('st-title');
-  const yearEl = document.getElementById('st-year');
-  const ratingEl = document.getElementById('st-rating');
-  const matchEl = document.getElementById('st-match');
-  const descEl = document.getElementById('st-desc');
-  const epContainer = document.getElementById('st-episodes');
-  const dynamicBg = document.getElementById('dynamic-bg');
-
-  // Fade out effect
-  titleEl.parentElement.style.opacity = '0';
-  epContainer.style.opacity = '0';
-
-  setTimeout(() => {
-    titleEl.textContent = movie.title;
-    yearEl.textContent = movie.year;
-    ratingEl.textContent = `★ ${movie.rating}`;
-    matchEl.textContent = `${movie.match} Match`;
-    descEl.textContent = movie.desc;
-
-    // Dynamic Ambiance
-    const color = movie.id.startsWith('s') ? 'rgba(255, 15, 35, 0.2)' : 'rgba(74, 0, 255, 0.2)';
-    dynamicBg.style.setProperty('--accent-ambient', color);
-
-    // Render Episodes if Series
-    if (movie.episodes) {
-      epContainer.innerHTML = movie.episodes.map(ep => `
-        <div class="ep-panel" onclick="playEpisode('${movie.id}', '${ep.id}')">
-          <h3>Bölüm ${ep.epNum}: ${ep.title}</h3>
-          <p>${ep.desc}</p>
-        </div>
-      `).join('');
-    } else if (movie.isCollection) {
-      epContainer.innerHTML = movie.collection.map(f => `
-        <div class="ep-panel" onclick="playCollectionFilm('${movie.id}', '${f.id}')">
-          <h3>${f.title}</h3>
-          <p>${f.desc}</p>
-        </div>
-      `).join('');
-    } else {
-      epContainer.innerHTML = `
-        <div class="ep-panel" style="cursor: default; opacity: 0.5;">
-          <h3>Bağımsız Film</h3>
-          <p>Bu içerik tek parçadan oluşmaktadır.</p>
-        </div>
-      `;
-    }
-
-    // Fade in
-    titleEl.parentElement.style.opacity = '1';
-    epContainer.style.opacity = '1';
-  }, 300);
-}
-
-function playCurrent() {
-  const movie = orbitalMovies[currentOrbitalIndex];
-  openPlayerLogic(movie);
-}
-
-function playEpisode(seriesId, epId) {
-  const series = DB.series.find(s => s.id === seriesId);
-  const ep = series.episodes.find(e => e.id === epId);
-  openPlayerLogic(ep);
-}
-
-function playCollectionFilm(collId, filmId) {
-  const coll = DB.movies.find(m => m.id === collId);
-  const film = coll.collection.find(f => f.id === filmId);
-  openPlayerLogic(film);
-}
-
-function openPlayerLogic(content) {
   const modal = document.getElementById('player-modal');
-  const videoEl = document.getElementById('video-player');
-  const iframeEl = document.getElementById('yt-player');
+  const iframe = document.getElementById('player-frame');
   
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
   
-  videoEl.style.display = 'none';
-  iframeEl.style.display = 'none';
-  videoEl.src = '';
-  iframeEl.src = '';
-
-  const fileUrl = content.file;
-  const isEmbed = content.isYoutube || (fileUrl && fileUrl.includes('http'));
-
-  if (isEmbed) {
-    iframeEl.src = fileUrl;
-    iframeEl.style.display = 'block';
-  } else if (fileUrl) {
-    videoEl.src = fileUrl;
-    videoEl.style.display = 'block';
-    videoEl.play();
+  if (movie.file) {
+    iframe.src = movie.file.includes('?') ? `${movie.file}&autoplay=1` : `${movie.file}?autoplay=1`;
   }
 }
 
 function closePlayer() {
   const modal = document.getElementById('player-modal');
-  const videoEl = document.getElementById('video-player');
-  const iframeEl = document.getElementById('yt-player');
-  
+  const iframe = document.getElementById('player-frame');
   modal.classList.remove('active');
   setTimeout(() => {
     modal.style.display = 'none';
-    videoEl.pause();
-    videoEl.src = '';
-    iframeEl.src = '';
+    iframe.src = '';
   }, 600);
 }
 
-function openSearch() {
-  const modal = document.getElementById('search-modal');
-  modal.style.display = 'flex';
-  setTimeout(() => modal.classList.add('active'), 10);
-  document.getElementById('search-input').focus();
-}
-
-function closeSearch() {
-  const modal = document.getElementById('search-modal');
-  modal.classList.remove('active');
-  setTimeout(() => modal.style.display = 'none', 600);
-}
-
 function setupEventListeners() {
-  document.getElementById('search-input').oninput = (e) => {
-    const val = e.target.value.toLowerCase();
-    const results = orbitalMovies.filter(m => 
-      m.title.toLowerCase().includes(val) || 
-      m.searchTags.toLowerCase().includes(val)
-    );
-    const container = document.getElementById('search-results');
-    container.innerHTML = results.map(m => `
-      <div class="search-item" onclick="selectFromSearch('${m.id}')">
-        <img src="${m.poster}" alt="${m.title}">
-        <span>${m.title}</span>
-      </div>
-    `).join('');
-  };
-}
-
-function selectFromSearch(id) {
-  const index = orbitalMovies.findIndex(m => m.id === id);
-  if (index !== -1) {
-    setOrbital(index);
-    closeSearch();
-  }
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePlayer();
+    if (e.key === 'ArrowRight') nextOrbital();
+    if (e.key === 'ArrowLeft') prevOrbital();
+  });
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
