@@ -79,8 +79,8 @@ function updateOrbitalTransforms() {
   if (!items.length) return;
   const count = items.length;
   const angleStep = 360 / count;
-  const radiusX = 750; // Biraz daralttık ki daha toplu dursun
-  const radiusZ = 320;
+  const radiusX = 850; 
+  const radiusZ = 380;
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
@@ -97,8 +97,8 @@ function updateOrbitalTransforms() {
       item.style.zIndex = "20000";
     } else {
       item.classList.remove('active');
-      const isBack = normalizedAngle > 85 && normalizedAngle < 275;
-      item.style.opacity = isBack ? "0.03" : "0.5";
+      const isBack = normalizedAngle > 80 && normalizedAngle < 280;
+      item.style.opacity = isBack ? "0.15" : "0.5";
       item.style.zIndex = Math.round(z);
     }
   });
