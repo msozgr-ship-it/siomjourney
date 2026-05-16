@@ -137,6 +137,18 @@ const DB = {
       meta: '4K Ultra HD',
       file: '',
       isYoutube: false
+    },
+    {
+      id: 'm6',
+      title: 'Dayı 2: Bir Adamın Hikayesi',
+      searchTags: 'dayı 2, dayi 2, ufuk bayraktar, aksiyon, dram, türk filmi',
+      desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
+      poster: 'assets/img/dayı2.jpg',
+      year: '2025',
+      match: '99%',
+      meta: '4K Ultra HD',
+      file: '',
+      isYoutube: false
     }
   ]
 };
