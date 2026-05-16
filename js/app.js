@@ -1,10 +1,9 @@
-// Versiyon 3.4 - Kaydırma (Drag/Swipe) Aktif
+// Versiyon 4.0 - Canlı Otomatik Yörünge Motoru
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
 let currentRotation = 0;
-
-// Sürükleme değişkenleri
+let autoRotateSpeed = 0.05; // Dönüş hızı
 let isDragging = false;
 let startX = 0;
 let startRotation = 0;
@@ -13,26 +12,35 @@ function initApp() {
   try {
     if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
-    orbitalContent = DB.movies.slice(0, 18); 
+    // TÜM AFİŞLER YÖRÜNGEDE
+    orbitalContent = [...allContent]; 
     filteredContent = [...allContent];
 
     renderOrbital();
     renderContent();
     setupSearch();
-    setupDragEvents(); // Kaydırma özelliği eklendi
-    updateOrbitalTransforms();
+    setupDragEvents();
+    
+    // Animasyon döngüsünü başlat
+    animate();
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { closePlayer(); closeDetails(); }
-      if (e.key === 'ArrowRight') nextOrbital();
-      if (e.key === 'ArrowLeft') prevOrbital();
     });
   } catch (err) {
     console.error("Sistem hatası:", err);
   }
 }
 
-// KAYDIRMA (DRAG/SWIPE) MOTORU
+// OTOMATİK DÖNÜŞ DÖNGÜSÜ
+function animate() {
+  if (!isDragging) {
+    currentRotation -= autoRotateSpeed; // Kendi kendine yavaşça döner
+    updateOrbitalTransforms();
+  }
+  requestAnimationFrame(animate);
+}
+
 function setupDragEvents() {
   const dragArea = document.getElementById('hero-drag-area');
   if (!dragArea) return;
@@ -41,13 +49,12 @@ function setupDragEvents() {
     isDragging = true;
     startX = e.pageX || e.touches[0].pageX;
     startRotation = currentRotation;
-    dragArea.style.cursor = 'grabbing';
   };
 
   const onMove = (e) => {
     if (!isDragging) return;
     const x = e.pageX || e.touches[0].pageX;
-    const diff = (x - startX) * 0.15; // Kaydırma hızı hassasiyeti
+    const diff = (x - startX) * 0.15;
     currentRotation = startRotation + diff;
     updateOrbitalTransforms();
   };
@@ -55,18 +62,12 @@ function setupDragEvents() {
   const onEnd = () => {
     if (!isDragging) return;
     isDragging = false;
-    dragArea.style.cursor = 'grab';
-    
-    // Snapping (En yakın karta mıknatıslanma)
-    const angleStep = 360 / orbitalContent.length;
-    currentRotation = Math.round(currentRotation / angleStep) * angleStep;
-    updateOrbitalTransforms();
+    // Bıraktığında en yakın karta oturması için hafif bir düzenleme yapmıyoruz ki akış bozulmasın
   };
 
   dragArea.addEventListener('mousedown', onStart);
   dragArea.addEventListener('mousemove', onMove);
   window.addEventListener('mouseup', onEnd);
-  
   dragArea.addEventListener('touchstart', onStart);
   dragArea.addEventListener('touchmove', onMove);
   window.addEventListener('touchend', onEnd);
@@ -78,7 +79,7 @@ function renderOrbital() {
   container.innerHTML = orbitalContent.map((item, index) => `
     <div class="cf-item" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
       <div class="neon-rim"></div>
-      <img src="${item.poster}" alt="">
+      <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
     </div>
   `).join('');
 }
@@ -88,48 +89,39 @@ function updateOrbitalTransforms() {
   if (!items.length) return;
   const count = items.length;
   const angleStep = 360 / count;
-  const radiusX = 550;
-  const radiusZ = 300;
+  const radiusX = 800; // Tüm afişler sığsın diye biraz genişlettik
+  const radiusZ = 350;
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
     const rad = (angle * Math.PI) / 180;
     const x = Math.sin(rad) * radiusX;
     const z = Math.cos(rad) * radiusZ;
+    
+    // rotateX(-45deg) ile dik duruş sağlanıyor
     item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-45deg)`;
     
     const normalizedAngle = ((angle % 360) + 360) % 360;
     if (normalizedAngle < 15 || normalizedAngle > 345) {
       item.classList.add('active');
       item.style.opacity = "1";
+      item.style.zIndex = "20000"; // En öndeki kart her şeyin üstünde
     } else {
       item.classList.remove('active');
-      const isBack = normalizedAngle > 70 && normalizedAngle < 290;
-      item.style.opacity = isBack ? "0.08" : "0.5";
+      const isBack = normalizedAngle > 80 && normalizedAngle < 280;
+      item.style.opacity = isBack ? "0.05" : "0.5";
+      item.style.zIndex = Math.round(z); // Derinliğe göre z-index
     }
   });
 }
 
 function handleOrbitalClick(index, id) {
-  // Sürükleme yapıyorsak tıklamayı engelle
   if (isDragging) return;
-
-  const count = orbitalContent.length;
-  const angleStep = 360 / count;
-  const targetRotation = -(index * angleStep);
-  
-  if (Math.abs(currentRotation % 360 - targetRotation % 360) < 1) {
-    const item = allContent.find(i => i.id === id);
-    if (item.episodes || item.isCollection) openDetails(id);
-    else openPlayer(item.file);
-  } else {
-    currentRotation = targetRotation;
-    updateOrbitalTransforms();
-  }
+  const item = allContent.find(i => i.id === id);
+  if (!item) return;
+  if (item.episodes || item.isCollection) openDetails(id);
+  else openPlayer(item.file);
 }
-
-function nextOrbital() { currentRotation -= (360 / orbitalContent.length); updateOrbitalTransforms(); }
-function prevOrbital() { currentRotation += (360 / orbitalContent.length); updateOrbitalTransforms(); }
 
 function renderContent() {
   const content = document.getElementById('content-matrix');
@@ -138,7 +130,7 @@ function renderContent() {
     <div class="card-wrapper" onclick="handleItemClick('${item.id}')">
       <div class="card">
         ${(item.isCollection || item.episodes) ? '<div class="card-badge">SERİ</div>' : ''}
-        <img src="${item.poster}" alt="">
+        <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
       </div>
     </div>`).join('')}</div>`;
 }
@@ -196,6 +188,13 @@ function closePlayer() {
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
   if (modal) { modal.classList.remove('active'); setTimeout(() => { modal.style.display = 'none'; iframe.src = ''; }, 500); }
+}
+
+function resetFilter() {
+  filteredContent = [...allContent];
+  const input = document.getElementById('search-input');
+  if (input) input.value = '';
+  renderContent();
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
