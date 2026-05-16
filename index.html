@@ -19,13 +19,11 @@
             </nav>
         </div>
         <div class="nav-right">
-            <div class="search-bar">
-                <span class="search-icon">🔍</span>
-                <input type="text" placeholder="Search">
-            </div>
-            <div class="user-profile">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mehmet" alt="User">
-                <span>Mehmet Özgür</span>
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Film, dizi veya tür ara...">
+                    <button class="search-btn" onclick="handleSearchClick()">🔍</button>
+                </div>
             </div>
         </div>
     </header>
@@ -33,8 +31,8 @@
     <div class="main-container">
         <!-- HERO SPATIAL SECTION -->
         <section class="hero-spatial">
-            <div class="hero-bg-text">SPATIAL CINEMA</div>
-            <div class="hero-subtitle">EXPLORE NEW FRONTIERS</div>
+            <div class="hero-bg-text">SPATIAL</div>
+            <div class="hero-subtitle">SIOMJOURNEY VISION</div>
             
             <div class="orbital-wrapper">
                 <div class="giant-s-neon">S</div>
@@ -52,7 +50,7 @@
 
         <!-- CONTENT MATRIX -->
         <main class="content-matrix" id="content-matrix">
-            <!-- Kategoriler JS ile dolacak -->
+            <!-- Izgara düzeni JS ile dolacak -->
         </main>
     </div>
 
@@ -75,7 +73,7 @@
                 </div>
             </div>
             <div class="details-list-section">
-                <h2 id="list-title">Bölümler / Serideki Filmler</h2>
+                <h2 id="list-title">İçerikler</h2>
                 <div class="details-grid" id="details-grid"></div>
             </div>
         </div>
