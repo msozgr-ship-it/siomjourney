@@ -34,18 +34,18 @@ const DB = {
   movies: [
     {
       id: "karaya-movie",
-      title: "Karaya",
-      poster: "assets/img/karaya.jpg",
-      file: "https://pixeldrain.com/u/KARAYA_ID",
-      searchTags: "karaya, macera, aksiyon, deniz, 2024",
+      title: "Kayara",
+      poster: "assets/img/kayara.webp",
+      file: "https://pixeldrain.com/u/KAYARA_ID",
+      searchTags: "kayara, karaya, macera, aksiyon, deniz, 2024",
       isNew: true
     },
     {
       id: "stitch-head-movie",
       title: "Stitch Head",
-      poster: "assets/img/stitch-head.jpg",
+      poster: "assets/img/Stitchhead.jpg",
       file: "https://pixeldrain.com/u/STITCH_ID",
-      searchTags: "stitch head, animasyon, macera, korku, komedi, 2024",
+      searchTags: "stitch head, stitchhead, animasyon, macera, korku, komedi, 2024",
       isNew: true
     },
     {
