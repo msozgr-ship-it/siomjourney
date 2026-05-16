@@ -1,18 +1,19 @@
-// Versiyon 4.0 - Canlı Otomatik Yörünge Motoru
+// Versiyon 4.1 - Akıllı Odaklama ve Gecikmeli Dönüş Motoru
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
 let currentRotation = 0;
-let autoRotateSpeed = 0.05; // Dönüş hızı
+let autoRotateSpeed = 0.05; 
 let isDragging = false;
 let startX = 0;
 let startRotation = 0;
+let pauseAutoRotate = false;
+let pauseTimeout = null;
 
 function initApp() {
   try {
     if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
-    // TÜM AFİŞLER YÖRÜNGEDE
     orbitalContent = [...allContent]; 
     filteredContent = [...allContent];
 
@@ -20,8 +21,6 @@ function initApp() {
     renderContent();
     setupSearch();
     setupDragEvents();
-    
-    // Animasyon döngüsünü başlat
     animate();
 
     window.addEventListener('keydown', (e) => {
@@ -32,10 +31,9 @@ function initApp() {
   }
 }
 
-// OTOMATİK DÖNÜŞ DÖNGÜSÜ
 function animate() {
-  if (!isDragging) {
-    currentRotation -= autoRotateSpeed; // Kendi kendine yavaşça döner
+  if (!isDragging && !pauseAutoRotate) {
+    currentRotation -= autoRotateSpeed;
     updateOrbitalTransforms();
   }
   requestAnimationFrame(animate);
@@ -49,6 +47,8 @@ function setupDragEvents() {
     isDragging = true;
     startX = e.pageX || e.touches[0].pageX;
     startRotation = currentRotation;
+    clearTimeout(pauseTimeout);
+    pauseAutoRotate = true; // Sürüklerken durdur
   };
 
   const onMove = (e) => {
@@ -62,7 +62,8 @@ function setupDragEvents() {
   const onEnd = () => {
     if (!isDragging) return;
     isDragging = false;
-    // Bıraktığında en yakın karta oturması için hafif bir düzenleme yapmıyoruz ki akış bozulmasın
+    // Bıraktıktan 3 saniye sonra dönmeye devam etsin (kullanıcı etkileşimi bittiyse)
+    startPauseTimer(3000);
   };
 
   dragArea.addEventListener('mousedown', onStart);
@@ -71,6 +72,76 @@ function setupDragEvents() {
   dragArea.addEventListener('touchstart', onStart);
   dragArea.addEventListener('touchmove', onMove);
   window.addEventListener('touchend', onEnd);
+}
+
+function updateOrbitalTransforms() {
+  const items = document.querySelectorAll('.cf-item');
+  if (!items.length) return;
+  const count = items.length;
+  const angleStep = 360 / count;
+  const radiusX = 750; // Biraz daralttık ki daha toplu dursun
+  const radiusZ = 320;
+
+  items.forEach((item, i) => {
+    const angle = (i * angleStep) + currentRotation;
+    const rad = (angle * Math.PI) / 180;
+    const x = Math.sin(rad) * radiusX;
+    const z = Math.cos(rad) * radiusZ;
+    
+    item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-45deg)`;
+    
+    const normalizedAngle = ((angle % 360) + 360) % 360;
+    if (normalizedAngle < 15 || normalizedAngle > 345) {
+      item.classList.add('active');
+      item.style.opacity = "1";
+      item.style.zIndex = "20000";
+    } else {
+      item.classList.remove('active');
+      const isBack = normalizedAngle > 85 && normalizedAngle < 275;
+      item.style.opacity = isBack ? "0.03" : "0.5";
+      item.style.zIndex = Math.round(z);
+    }
+  });
+}
+
+function handleOrbitalClick(index, id) {
+  if (isDragging) return;
+
+  const count = orbitalContent.length;
+  const angleStep = 360 / count;
+  
+  // Tıklanan kartı tam merkeze getirmek için gereken rotasyon
+  const targetRotation = -(index * angleStep);
+  
+  // Normalize edilmiş açılarla karşılaştırma yap (360 derece döngüsü için)
+  const currentNorm = ((currentRotation % 360) + 360) % 360;
+  const targetNorm = ((targetRotation % 360) + 360) % 360;
+  
+  const diff = Math.abs(currentNorm - targetNorm);
+
+  // EĞER KART MERKEZDE DEĞİLSE (Odaklama Yap)
+  if (diff > 5 && diff < 355) {
+    currentRotation = targetRotation;
+    updateOrbitalTransforms();
+    
+    // 5 saniye boyunca durdur
+    startPauseTimer(5000);
+  } 
+  // EĞER KART ZATEN MERKEZDEYSE (Filmi Aç)
+  else {
+    const item = allContent.find(i => i.id === id);
+    if (!item) return;
+    if (item.episodes || item.isCollection) openDetails(id);
+    else openPlayer(item.file);
+  }
+}
+
+function startPauseTimer(ms) {
+  clearTimeout(pauseTimeout);
+  pauseAutoRotate = true;
+  pauseTimeout = setTimeout(() => {
+    pauseAutoRotate = false;
+  }, ms);
 }
 
 function renderOrbital() {
@@ -82,45 +153,6 @@ function renderOrbital() {
       <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
     </div>
   `).join('');
-}
-
-function updateOrbitalTransforms() {
-  const items = document.querySelectorAll('.cf-item');
-  if (!items.length) return;
-  const count = items.length;
-  const angleStep = 360 / count;
-  const radiusX = 800; // Tüm afişler sığsın diye biraz genişlettik
-  const radiusZ = 350;
-
-  items.forEach((item, i) => {
-    const angle = (i * angleStep) + currentRotation;
-    const rad = (angle * Math.PI) / 180;
-    const x = Math.sin(rad) * radiusX;
-    const z = Math.cos(rad) * radiusZ;
-    
-    // rotateX(-45deg) ile dik duruş sağlanıyor
-    item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-45deg)`;
-    
-    const normalizedAngle = ((angle % 360) + 360) % 360;
-    if (normalizedAngle < 15 || normalizedAngle > 345) {
-      item.classList.add('active');
-      item.style.opacity = "1";
-      item.style.zIndex = "20000"; // En öndeki kart her şeyin üstünde
-    } else {
-      item.classList.remove('active');
-      const isBack = normalizedAngle > 80 && normalizedAngle < 280;
-      item.style.opacity = isBack ? "0.05" : "0.5";
-      item.style.zIndex = Math.round(z); // Derinliğe göre z-index
-    }
-  });
-}
-
-function handleOrbitalClick(index, id) {
-  if (isDragging) return;
-  const item = allContent.find(i => i.id === id);
-  if (!item) return;
-  if (item.episodes || item.isCollection) openDetails(id);
-  else openPlayer(item.file);
 }
 
 function renderContent() {
