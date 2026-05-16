@@ -8,14 +8,21 @@ function initApp() {
 }
 
 function renderOrbital() {
-  const container = document.getElementById('orbital-container');
+  const container = document.getElementById('coverflow-container');
   if (!container) return;
   
-  container.innerHTML = orbitalMovies.map((movie, index) => `
-    <div class="cf-item ${getOrbitalClass(index)}" onclick="setOrbital(${index})" data-id="${movie.id}">
-      <img src="${movie.poster}" alt="${movie.title}">
-    </div>
-  `).join('');
+  if (container.children.length === 0) {
+    container.innerHTML = orbitalMovies.map((movie, index) => `
+      <div class="cf-item" onclick="setOrbital(${index})" data-id="${movie.id}">
+        <img src="${movie.poster}" alt="${movie.title}">
+      </div>
+    `).join('');
+  }
+  
+  const items = container.querySelectorAll('.cf-item');
+  items.forEach((item, index) => {
+    item.className = `cf-item ${getOrbitalClass(index)}`;
+  });
   
   updateOrbitalInfo();
 }
@@ -47,7 +54,7 @@ function updateOrbitalInfo() {
 }
 
 function renderContent() {
-  const content = document.getElementById('content-matrix');
+  const content = document.getElementById('kutuphane');
   if (!content) return;
 
   content.innerHTML = `

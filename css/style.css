@@ -32,9 +32,9 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--te
   width: 450px; height: 100vh; position: fixed; left: 0; top: 0; 
   display: flex; flex-direction: column; justify-content: space-between; align-items: center; 
   padding: 100px 40px; z-index: 1000; 
-  background: linear-gradient(to right, rgba(255,15,35,0.1) 0%, transparent 100%);
+  background: rgba(0, 0, 0, 0.85);
   border-right: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 .logo-s-giant { 
   font-size: 280px; font-weight: 900; color: var(--accent); 
@@ -72,18 +72,19 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--te
   position: absolute; width: 260px; height: 390px; border-radius: 20px; 
   overflow: hidden; transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); 
   cursor: pointer; background: #111; border: 1px solid rgba(255,255,255,0.05);
-  -webkit-box-reflect: below 15px linear-gradient(transparent 50%, rgba(255,255,255,0.15));
   transform-style: preserve-3d;
   box-shadow: 0 50px 100px rgba(0,0,0,0.9);
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 .cf-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
 
 /* THE ORBITAL POSITIONING */
 .cf-item.active { transform: translate3d(50px, 0, 500px); z-index: 100; opacity: 1; border-color: rgba(255,255,255,0.4); }
-.cf-item.prev-1 { transform: translate3d(-250px, 0, 100px) rotateY(55deg) scale(0.8); z-index: 50; opacity: 0.6; filter: brightness(0.5); }
-.cf-item.next-1 { transform: translate3d(450px, 0, 100px) rotateY(-55deg) scale(0.8); z-index: 50; opacity: 0.6; filter: brightness(0.5); }
-.cf-item.prev-2 { transform: translate3d(-500px, 0, -300px) rotateY(75deg) scale(0.6); z-index: 20; opacity: 0.2; filter: brightness(0.3); }
-.cf-item.next-2 { transform: translate3d(850px, 0, -300px) rotateY(-75deg) scale(0.6); z-index: 20; opacity: 0.2; filter: brightness(0.3); }
+.cf-item.prev-1 { transform: translate3d(-250px, 0, 100px) rotateY(55deg) scale(0.8); z-index: 50; opacity: 0.4; }
+.cf-item.next-1 { transform: translate3d(450px, 0, 100px) rotateY(-55deg) scale(0.8); z-index: 50; opacity: 0.4; }
+.cf-item.prev-2 { transform: translate3d(-500px, 0, -300px) rotateY(75deg) scale(0.6); z-index: 20; opacity: 0.1; }
+.cf-item.next-2 { transform: translate3d(850px, 0, -300px) rotateY(-75deg) scale(0.6); z-index: 20; opacity: 0.1; }
 .cf-item.hidden { transform: translate3d(0, 0, -1000px) scale(0); opacity: 0; pointer-events: none; }
 
 .cf-title-overlay { 
