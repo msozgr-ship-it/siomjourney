@@ -23,8 +23,13 @@ function renderOrbital() {
   items.forEach((item, index) => {
     item.className = `cf-item ${getOrbitalClass(index)}`;
   });
-  
-  updateOrbitalInfo();
+
+  // Update controls indicator
+  const indicator = document.querySelector('.ctrl-indicator');
+  if (indicator) {
+    const progress = ((currentOrbitalIndex + 1) / orbitalMovies.length) * 100;
+    indicator.style.setProperty('--progress', `${progress}%`);
+  }
 }
 
 function getOrbitalClass(index) {
@@ -42,40 +47,35 @@ function setOrbital(index) {
   renderOrbital();
 }
 
-function updateOrbitalInfo() {
-  const activeMovie = orbitalMovies[currentOrbitalIndex];
-  const titleEl = document.getElementById('cf-title');
-  const metaEl = document.getElementById('cf-meta');
-  
-  if (titleEl && metaEl) {
-    titleEl.textContent = activeMovie.title;
-    metaEl.textContent = `${activeMovie.year} • ${activeMovie.meta} • MATCH ${activeMovie.match}`;
-  }
+function nextOrbital() {
+  currentOrbitalIndex = (currentOrbitalIndex + 1) % orbitalMovies.length;
+  renderOrbital();
+}
+
+function prevOrbital() {
+  currentOrbitalIndex = (currentOrbitalIndex - 1 + orbitalMovies.length) % orbitalMovies.length;
+  renderOrbital();
 }
 
 function renderContent() {
   const content = document.getElementById('kutuphane');
   if (!content) return;
 
-  content.innerHTML = `
-    <!-- TRENDING MATRIX -->
-    <section class="section-matrix">
-      <div class="section-label">TRENDING</div>
-      <h2 class="matrix-title">S-Trend Filmler</h2>
-      <div class="movie-grid">
-        ${DB.movies.map(m => renderCard(m)).join('')}
-      </div>
-    </section>
+  const sections = [
+    { label: 'TRENDING NOW', movies: DB.movies },
+    { label: 'NEW RELEASES', movies: DB.series },
+    { label: 'TOP RATED', movies: DB.movies.filter(m => m.rating >= 8.8) },
+    { label: 'SCI-FI EXPLORATION', movies: DB.movies.filter(m => m.searchTags.includes('uzay') || m.searchTags.includes('elio')) }
+  ];
 
-    <!-- ANIMATION MATRIX -->
+  content.innerHTML = sections.map(sec => `
     <section class="section-matrix">
-      <div class="section-label">ANIMATION</div>
-      <h2 class="matrix-title">Animasyon Dünyası</h2>
+      <div class="section-label">${sec.label}</div>
       <div class="movie-grid">
-        ${DB.movies.filter(m => m.searchTags.includes('animasyon')).map(m => renderCard(m)).join('')}
+        ${sec.movies.map(m => renderCard(m)).join('')}
       </div>
     </section>
-  `;
+  `).join('');
 }
 
 function renderCard(movie) {
@@ -84,6 +84,17 @@ function renderCard(movie) {
     <div class="card-wrapper" onclick="${clickAction}">
       <div class="card">
         <img src="${movie.poster}" alt="${movie.title}">
+        <div class="card-rating">
+          <span>★</span> ${movie.rating || '8.5'}
+        </div>
+      </div>
+      <div class="card-info">
+        <h3>${movie.title}</h3>
+        <p class="card-meta">${movie.year} • ${movie.meta}</p>
+        <div class="card-highlights">
+          <strong>HIGHLIGHTS</strong><br>
+          ${movie.highlights || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'}
+        </div>
       </div>
     </div>
   `;
@@ -100,7 +111,6 @@ function openPlayer(id) {
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
   
-  // Reset players
   videoEl.style.display = 'none';
   iframeEl.style.display = 'none';
   videoEl.src = '';
@@ -168,16 +178,10 @@ function openPlayerFromSeries(seriesId, epId) {
   const ep = series.episodes.find(e => e.id === epId);
   if (!ep) return;
 
-  // Simulate movie object for openPlayer logic
-  const mockMovie = {
-    file: ep.file,
-    isYoutube: ep.isYoutube
-  };
-  
+  const mockMovie = { file: ep.file, isYoutube: ep.isYoutube };
   openPlayerLogic(mockMovie);
 }
 
-// Helper to keep code DRY
 function openPlayerLogic(movie) {
   const modal = document.getElementById('player-modal');
   const videoEl = document.getElementById('video-player');
@@ -200,8 +204,13 @@ function openPlayerLogic(movie) {
 }
 
 function setupEventListeners() {
-  const closeBtn = document.querySelector('.close-btn');
-  if (closeBtn) closeBtn.onclick = closePlayer;
+  const closeBtns = document.querySelectorAll('.close-btn');
+  closeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      closePlayer();
+      closeSeriesModal();
+    });
+  });
 }
 
 document.addEventListener('DOMContentLoaded', initApp);

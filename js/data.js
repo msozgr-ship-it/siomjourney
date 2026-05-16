@@ -6,10 +6,11 @@ const DB = {
       searchTags: 'mini, the journey, orman',
       desc: 'Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.',
       poster: 'assets/img/mini.jpg',
-      trailer: 'bolum1.mp4',
       year: '2026',
       match: '98%',
       meta: '4K HDR',
+      rating: '8.9',
+      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
       episodes: [
         {
           id: 's1e1',
@@ -41,7 +42,9 @@ const DB = {
       isYoutube: true,
       year: '2026',
       match: '95%',
-      meta: 'HD'
+      meta: 'HD',
+      rating: '8.5',
+      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...'
     },
     {
       id: 'm2',
@@ -53,6 +56,8 @@ const DB = {
       year: 'Koleksiyon',
       match: '99%',
       meta: '2 Film',
+      rating: '8.7',
+      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
       collection: [
         {
           id: 'm2f1',
@@ -83,6 +88,8 @@ const DB = {
       year: '2017',
       match: '97%',
       meta: '4K Ultra HD',
+      rating: '8.5',
+      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
       file: 'https://archive.org/embed/koko_20260511',
       isYoutube: true
     },
@@ -96,6 +103,8 @@ const DB = {
       year: '2010-2019',
       match: '99%',
       meta: 'Koleksiyon',
+      rating: '8.8',
+      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
       collection: [
         {
           id: 'm4f1',
@@ -135,6 +144,8 @@ const DB = {
       year: '2025',
       match: '98%',
       meta: '4K Ultra HD',
+      rating: '8.5',
+      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
       file: 'https://archive.org/embed/elio-2025-teaser',
       isYoutube: true
     },
@@ -147,6 +158,8 @@ const DB = {
       year: '2025',
       match: '99%',
       meta: '4K Ultra HD',
+      rating: '8.9',
+      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
       file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
       isYoutube: true
     }
