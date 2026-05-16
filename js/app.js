@@ -121,18 +121,26 @@ function setupEventListeners() {
 
   // TÜM SAYFA TIKLAMALARI
   document.addEventListener('click', (e) => {
-    // 1. Matris veya Yörünge Kartı mı?
     const card = e.target.closest('.card-wrapper') || e.target.closest('.cf-item');
     if (card) {
       const id = card.dataset.id;
       const index = card.dataset.index;
-      
+      const item = allContent.find(i => i.id === id);
+      if (!item) return;
+
       if (card.classList.contains('cf-item')) {
         const idx = parseInt(index);
-        if (idx === currentOrbitalIndex) openDetails(id);
-        else setOrbital(idx);
-      } else {
+        if (idx !== currentOrbitalIndex) {
+          setOrbital(idx);
+          return;
+        }
+      }
+
+      // ANA MANTIK: Seri ise detayları aç, değilse direkt oynat
+      if (item.episodes || item.isCollection) {
         openDetails(id);
+      } else {
+        openPlayer(item.file);
       }
       return;
     }
