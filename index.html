@@ -65,8 +65,9 @@
 </div>
 
 <div id="player-modal">
+  <div class="close-btn" onclick="closePlayer()">✕</div>
   <div class="player-container" id="player-container">
-    <div class="close-btn" onclick="closePlayer()">✕</div>
+    <div class="player-loader" id="player-loader"></div>
     <video id="video-player" playsinline webkit-playsinline></video>
     <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="display:none;"></iframe>
     <div id="coming-soon-overlay" class="coming-soon-overlay" style="display:none;">

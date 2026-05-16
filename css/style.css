@@ -130,13 +130,28 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--te
 }
 
 /* PLAYER MODAL */
-#player-modal { position: fixed; inset: 0; background: #000; z-index: 10000; display: none; align-items: center; justify-content: center; }
-#player-modal.active { display: flex; }
-.player-container { position: relative; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; }
-#video-player, #yt-player { width: 100%; height: 100%; object-fit: contain; background: #000; border: none; }
+#player-modal { position: fixed; inset: 0; background: #000; z-index: 10000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease; }
+#player-modal.active { display: flex; opacity: 1; }
+.player-container { position: relative; width: 100%; height: 100%; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+#video-player, #yt-player { width: 100%; height: 100%; object-fit: contain; background: #000; border: none; opacity: 0; transition: opacity 0.8s ease; }
+#video-player.ready, #yt-player.ready { opacity: 1; }
 
-.close-btn { position: absolute; top: 30px; right: 30px; width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; z-index: 10001; transition: 0.3s; color: #fff; }
-.close-btn:hover { background: var(--accent); transform: rotate(90deg); }
+.close-btn { 
+  position: fixed; top: 30px; right: 30px; width: 44px; height: 44px; 
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%; display: flex; justify-content: center; align-items: center; 
+  font-size: 20px; cursor: pointer; z-index: 100000; transition: 0.3s; color: #fff; 
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.close-btn:hover { background: var(--accent); transform: rotate(90deg) scale(1.1); border-color: transparent; }
+
+/* LOADING SPINNER */
+.player-loader {
+  position: absolute; width: 50px; height: 50px;
+  border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin 1s linear infinite; z-index: 10001;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* CUSTOM CONTROLS */
 .custom-controls { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px 40px 40px; display: flex; flex-direction: column; gap: 15px; opacity: 0; transition: 0.3s; z-index: 10002; }

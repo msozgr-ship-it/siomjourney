@@ -1,4 +1,4 @@
-// SiomJourney Premium - Bug Fix & UI Update
+// SiomJourney Premium - Cinematic Version
 window.DB = DB; 
 
 function get(id) { return document.getElementById(id); }
@@ -35,6 +35,9 @@ window.handleItemClick = function(id, type) {
 let cfActiveIndex = 0;
 let cfItems = [];
 let cfInterval = null;
+let isDragging = false;
+let startX = 0;
+let dragDist = 0;
 
 function initCoverFlow() {
   const allItems = [...window.DB.series.map(s => ({...s, type: 'series'})), ...window.DB.movies.map(m => ({...m, type: 'movie'}))];
@@ -53,14 +56,42 @@ function initCoverFlow() {
     </div>`;
   }).join('');
   updateCoverFlow();
-  setInterval(() => { cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; updateCoverFlow(); }, 5000);
+  startCoverflowAuto();
+  container.addEventListener('mousedown', dragStart);
+  container.addEventListener('touchstart', dragStart, {passive: true});
+  window.addEventListener('mousemove', dragMove);
+  window.addEventListener('touchmove', dragMove, {passive: false});
+  window.addEventListener('mouseup', dragEnd);
+  window.addEventListener('touchend', dragEnd);
+}
+
+function dragStart(e) { isDragging = true; startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX; dragDist = 0; clearInterval(cfInterval); }
+function dragMove(e) {
+  if (!isDragging) return;
+  const x = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+  dragDist = x - startX;
+  const container = get('coverflow-container');
+  if(container) container.style.transform = `translateX(${dragDist * 0.2}px)`;
+  if (Math.abs(dragDist) > 10) e.preventDefault();
+}
+function dragEnd() {
+  if (!isDragging) return;
+  isDragging = false;
+  const container = get('coverflow-container');
+  if(container) container.style.transform = `translateX(0)`;
+  if (dragDist > 60) cfActiveIndex = (cfActiveIndex - 1 + cfItems.length) % cfItems.length;
+  else if (dragDist < -60) cfActiveIndex = (cfActiveIndex + 1) % cfItems.length;
+  updateCoverFlow();
+  startCoverflowAuto();
 }
 
 window.handleCoverflowClick = function(index) {
+  if (Math.abs(dragDist) > 15) return; 
   if (index === cfActiveIndex) {
     const item = cfItems[index];
-    handleItemClick(item.id, item.isCollection ? 'collection' : (item.episodes ? 'series' : 'movie'));
-  } else { cfActiveIndex = index; updateCoverFlow(); }
+    const playType = item.isCollection ? 'collection' : (item.episodes ? 'series' : 'movie');
+    handleItemClick(item.id, playType);
+  } else { cfActiveIndex = index; updateCoverFlow(); startCoverflowAuto(); }
 };
 
 function updateCoverFlow() {
@@ -83,29 +114,61 @@ function updateCoverFlow() {
   if(get('cf-meta')) get('cf-meta').innerText = `${active.year} • ${active.meta}`;
 }
 
-// Player & Modals
-window.openPlayerMovie = function(id) { const m = window.DB.movies.find(x => x.id === id); if(m) initPlayer(m); };
+function startCoverflowAuto() { if(cfInterval) clearInterval(cfInterval); cfInterval = setInterval(() => { cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; updateCoverFlow(); }, 5000); }
 
+// Cinematic Player
+window.initPlayer = function(c) {
+  const modal = get('player-modal'); if(!modal) return;
+  const video = get('video-player'); const yt = get('yt-player'); const loader = get('player-loader'); const soon = get('coming-soon-overlay');
+  
+  modal.classList.add('active');
+  if(loader) loader.style.display = 'block';
+  if(video) { video.classList.remove('ready'); video.style.display = 'none'; }
+  if(yt) { yt.classList.remove('ready'); yt.style.display = 'none'; }
+
+  if(!c.file) {
+    if(loader) loader.style.display = 'none';
+    if(soon) soon.style.display = 'flex';
+    return;
+  }
+  if(soon) soon.style.display = 'none';
+
+  if(c.isYoutube) {
+    if(yt) {
+      yt.style.display = 'block';
+      let url = c.file;
+      url += (url.includes('?') ? '&' : '?') + 'autoplay=1&vq=hd1080&rel=0';
+      yt.src = url;
+      // YouTube iframe ready detection is limited, we simulate or wait for load
+      yt.onload = () => { if(loader) loader.style.display = 'none'; yt.classList.add('ready'); };
+    }
+  } else {
+    if(video) {
+      video.style.display = 'block';
+      video.src = c.file;
+      video.oncanplay = () => {
+        if(loader) loader.style.display = 'none';
+        video.classList.add('ready');
+        video.play().catch(e => { video.controls = true; });
+      };
+    }
+  }
+};
+
+window.openPlayerMovie = function(id) { const m = window.DB.movies.find(x => x.id === id); if(m) initPlayer(m); };
 window.openDetailsModal = function(id, type) {
   let s;
   if (type === 'series') s = window.DB.series.find(x => x.id === id);
   else if (type === 'collection') s = window.DB.movies.find(x => x.id === id);
   if(!s) return;
-  
-  get('sm-poster').src = s.poster;
-  get('sm-title').innerText = s.title;
-  get('sm-desc').innerText = s.desc;
-  
+  get('sm-poster').src = s.poster; get('sm-title').innerText = s.title; get('sm-desc').innerText = s.desc;
   const listArr = type === 'series' ? s.episodes : s.collection;
   get('sm-episodes').innerHTML = listArr.map(ep => {
     const epPoster = ep.poster || s.poster;
     return `<div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}', '${type}')">
       <div class="ep-number">${ep.epNum}</div>
       <div class="ep-thumb"><img src="${epPoster}" alt="${ep.title}"></div>
-      <div class="ep-details">
-        <div class="ep-title">${ep.title}</div>
-        <div class="ep-desc">${ep.desc}</div>
-      </div>
+      <div class="ep-details"><div class="ep-title">${ep.title}</div><div class="ep-desc">${ep.desc}</div></div>
     </div>`;
   }).join('');
   get('series-modal').classList.add('active');
@@ -113,41 +176,21 @@ window.openDetailsModal = function(id, type) {
 
 window.openPlayerEpisode = function(pId, cId, type) {
   let s, ep;
-  if(type === 'series') {
-    s = window.DB.series.find(x => x.id === pId);
-    if(s) ep = s.episodes.find(x => x.id === cId);
-  } else {
-    s = window.DB.movies.find(x => x.id === pId);
-    if(s) ep = s.collection.find(x => x.id === cId); // FIXED! Was pId before.
-  }
+  if(type === 'series') { s = window.DB.series.find(x => x.id === pId); if(s) ep = s.episodes.find(x => x.id === cId); }
+  else { s = window.DB.movies.find(x => x.id === pId); if(s) ep = s.collection.find(x => x.id === cId); }
   if(ep) initPlayer(ep);
 };
 
-window.initPlayer = function(c) {
-  const modal = get('player-modal'); if(!modal) return; modal.classList.add('active');
-  const video = get('video-player'); const yt = get('yt-player'); const soon = get('coming-soon-overlay');
-  if(!c.file) { if(video) video.style.display = 'none'; if(yt) yt.style.display = 'none'; if(soon) soon.style.display = 'flex'; return; }
-  if(soon) soon.style.display = 'none';
-  if(c.isYoutube) {
-    if(video) { video.style.display = 'none'; video.src = ''; }
-    if(yt) {
-      yt.style.display = 'block';
-      let url = c.file;
-      url += (url.includes('?') ? '&' : '?') + 'autoplay=1&vq=hd1080&rel=0';
-      yt.src = url;
-    }
-  } else {
-    if(yt) { yt.style.display = 'none'; yt.src = ''; }
-    if(video) { video.style.display = 'block'; video.src = c.file; video.play().catch(e => { video.controls = true; }); }
-  }
+window.closePlayer = function() {
+  const modal = get('player-modal');
+  modal.classList.remove('active');
+  const video = get('video-player'); const yt = get('yt-player');
+  if(yt) { yt.src = ''; yt.classList.remove('ready'); }
+  if(video) { video.pause(); video.src = ''; video.classList.remove('ready'); }
 };
 
-window.closePlayer = function() { get('player-modal').classList.remove('active'); get('yt-player').src = ''; get('video-player').pause(); get('video-player').src = ''; };
 window.closeSeriesModal = function() { get('series-modal').classList.remove('active'); };
-
-window.openSearch = function() {
-  get('search-modal').classList.add('active'); get('search-input').value = ''; get('search-results').innerHTML = ''; setTimeout(() => get('search-input').focus(), 100);
-};
+window.openSearch = function() { get('search-modal').classList.add('active'); get('search-input').value = ''; get('search-results').innerHTML = ''; setTimeout(() => get('search-input').focus(), 100); };
 window.closeSearch = function() { get('search-modal').classList.remove('active'); };
 
 document.addEventListener('DOMContentLoaded', () => {
