@@ -228,6 +228,22 @@ body::after {
 }
 .series-item:hover h3 { opacity: 1; color: var(--accent); }
 
+/* PROFESSIONAL SERIES BADGE */
+.card-badge {
+    position: absolute; top: 12px; left: 12px; z-index: 10;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 4px 10px; border-radius: 6px;
+    display: flex; align-items: center; gap: 6px;
+    pointer-events: none;
+    color: #fff; font-size: 9px; font-weight: 800;
+    letter-spacing: 1.5px; text-transform: uppercase;
+}
+.card-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 10px var(--accent);
+}
+
 .modal-close {
     position: absolute; top: 30px; right: 30px;
     font-size: 24px; color: #fff; cursor: pointer;
