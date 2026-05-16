@@ -42,9 +42,9 @@ function updateOrbitalTransforms() {
   const count = items.length;
   const angleStep = 360 / count;
   
-  // DARALTILMIŞ KOMPAKT PARAMETRELER
-  const radiusX = 650; // Daha dar
-  const radiusZ = 280; // Daha basık ve yakın
+  // KOMPAKT YÖRÜNGE PARAMETRELERİ
+  const radiusX = 450; 
+  const radiusZ = 200; 
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
