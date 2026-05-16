@@ -191,9 +191,9 @@ function openDetails(id) {
   document.getElementById('details-title').textContent = item.title;
   let subItems = item.episodes || item.collection || [];
   grid.innerHTML = subItems.map(sub => `
-    <div class="card-wrapper" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
+    <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
       <div class="card"><img src="${sub.poster || item.poster}" alt=""></div>
-      <div style="font-size:10px; margin-top:5px; font-weight:700;">${sub.title}</div>
+      <h3>${sub.title}</h3>
     </div>
   `).join('');
   modal.style.display = 'flex';
