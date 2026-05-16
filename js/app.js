@@ -1,8 +1,13 @@
-// Versiyon 3.3 - Kompakt Satürn Halkası
+// Versiyon 3.4 - Kaydırma (Drag/Swipe) Aktif
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
 let currentRotation = 0;
+
+// Sürükleme değişkenleri
+let isDragging = false;
+let startX = 0;
+let startRotation = 0;
 
 function initApp() {
   try {
@@ -14,6 +19,7 @@ function initApp() {
     renderOrbital();
     renderContent();
     setupSearch();
+    setupDragEvents(); // Kaydırma özelliği eklendi
     updateOrbitalTransforms();
 
     window.addEventListener('keydown', (e) => {
@@ -24,6 +30,46 @@ function initApp() {
   } catch (err) {
     console.error("Sistem hatası:", err);
   }
+}
+
+// KAYDIRMA (DRAG/SWIPE) MOTORU
+function setupDragEvents() {
+  const dragArea = document.getElementById('hero-drag-area');
+  if (!dragArea) return;
+
+  const onStart = (e) => {
+    isDragging = true;
+    startX = e.pageX || e.touches[0].pageX;
+    startRotation = currentRotation;
+    dragArea.style.cursor = 'grabbing';
+  };
+
+  const onMove = (e) => {
+    if (!isDragging) return;
+    const x = e.pageX || e.touches[0].pageX;
+    const diff = (x - startX) * 0.15; // Kaydırma hızı hassasiyeti
+    currentRotation = startRotation + diff;
+    updateOrbitalTransforms();
+  };
+
+  const onEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    dragArea.style.cursor = 'grab';
+    
+    // Snapping (En yakın karta mıknatıslanma)
+    const angleStep = 360 / orbitalContent.length;
+    currentRotation = Math.round(currentRotation / angleStep) * angleStep;
+    updateOrbitalTransforms();
+  };
+
+  dragArea.addEventListener('mousedown', onStart);
+  dragArea.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onEnd);
+  
+  dragArea.addEventListener('touchstart', onStart);
+  dragArea.addEventListener('touchmove', onMove);
+  window.addEventListener('touchend', onEnd);
 }
 
 function renderOrbital() {
@@ -39,40 +85,40 @@ function renderOrbital() {
 
 function updateOrbitalTransforms() {
   const items = document.querySelectorAll('.cf-item');
+  if (!items.length) return;
   const count = items.length;
   const angleStep = 360 / count;
-  
-  // KOMPAKT YÖRÜNGE PARAMETRELERİ
-  const radiusX = 450; 
-  const radiusZ = 200; 
+  const radiusX = 650;
+  const radiusZ = 280;
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
     const rad = (angle * Math.PI) / 180;
     const x = Math.sin(rad) * radiusX;
     const z = Math.cos(rad) * radiusZ;
-    
     item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-65deg)`;
     
     const normalizedAngle = ((angle % 360) + 360) % 360;
     if (normalizedAngle < 15 || normalizedAngle > 345) {
       item.classList.add('active');
       item.style.opacity = "1";
-      item.style.filter = "brightness(1.2) drop-shadow(0 0 20px rgba(255,15,35,0.5))";
     } else {
       item.classList.remove('active');
       const isBack = normalizedAngle > 70 && normalizedAngle < 290;
       item.style.opacity = isBack ? "0.08" : "0.5";
-      item.style.filter = isBack ? "blur(3px)" : "none";
     }
   });
 }
 
 function handleOrbitalClick(index, id) {
+  // Sürükleme yapıyorsak tıklamayı engelle
+  if (isDragging) return;
+
   const count = orbitalContent.length;
   const angleStep = 360 / count;
   const targetRotation = -(index * angleStep);
-  if (Math.abs(currentRotation - targetRotation) < 1) {
+  
+  if (Math.abs(currentRotation % 360 - targetRotation % 360) < 1) {
     const item = allContent.find(i => i.id === id);
     if (item.episodes || item.isCollection) openDetails(id);
     else openPlayer(item.file);
