@@ -174,15 +174,15 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--te
 .series-info h2 { font-size: 40px; font-weight: 800; margin-bottom: 15px; }
 .series-info p { font-size: 16px; color: var(--text-muted); line-height: 1.6; }
 
-.episodes-list { display: flex; flex-direction: column; gap: 15px; }
-.episode-row { display: flex; align-items: center; gap: 20px; padding: 15px; background: var(--glass); border-radius: 15px; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; }
-.episode-row:hover { background: rgba(255,255,255,0.12); transform: translateX(10px); }
-.ep-number { font-size: 24px; font-weight: 800; opacity: 0.2; width: 40px; }
-.ep-thumb { width: 120px; height: 68px; border-radius: 8px; overflow: hidden; }
+.episodes-list { display: flex; flex-direction: column; gap: 12px; }
+.episode-row { display: flex; align-items: center; gap: 15px; padding: 10px; background: var(--glass); border-radius: 12px; border: 1px solid var(--glass-border); cursor: pointer; transition: 0.3s; }
+.episode-row:hover { background: rgba(255,255,255,0.12); transform: translateX(8px); border-color: var(--accent); }
+.ep-number { font-size: 20px; font-weight: 800; opacity: 0.2; width: 30px; text-align: center; }
+.ep-thumb { width: 60px; height: 90px; border-radius: 6px; overflow: hidden; flex-shrink: 0; box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
 .ep-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.ep-details { flex: 1; }
-.ep-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-.ep-desc { font-size: 13px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ep-details { flex: 1; min-width: 0; }
+.ep-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ep-desc { font-size: 12px; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
 
 /* TAB BAR */
 .ios-tab-bar { position: fixed; bottom: 0; width: 100%; height: 80px; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); display: none; justify-content: space-around; align-items: center; padding-bottom: 20px; z-index: 1000; }
