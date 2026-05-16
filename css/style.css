@@ -23,7 +23,7 @@ body::after {
 .top-nav {
     position: fixed; top: 0; left: 0; width: 100%; height: 90px;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0 60px; z-index: 10000;
+    padding: 0 60px; z-index: 100; /* Daha alt katmana çekildi */
     background: linear-gradient(to bottom, rgba(3, 3, 5, 0.95), transparent);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -78,8 +78,10 @@ body::after {
 .hero-spatial {
     position: relative; height: 65vh; width: 100%;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    perspective: 3000px; overflow: hidden;
-    cursor: grab; /* Kaydırılabilir olduğunu belirtir */
+    perspective: 3000px; 
+    overflow: visible; /* Afişlerin barın üzerine taşmasına izin verir */
+    z-index: 1000; /* Navigasyonun önüne çıkarır */
+    cursor: grab;
 }
 .hero-spatial:active { cursor: grabbing; }
 
