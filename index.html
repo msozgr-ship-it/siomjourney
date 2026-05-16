@@ -3,55 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SiomJourney | Premium</title>
+<title>SiomJourney | S-Orbital Edition</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="bg-glow glow-1"></div>
-<div class="bg-glow glow-2"></div>
+<div class="bg-spatial"></div>
 
-<nav id="navbar">
-  <div class="logo">
-    <span class="logo-s">S</span>
-    <div class="logo-text">IOM<span>JOURNEY</span></div>
-  </div>
-  <div class="nav-links">
-    <a href="#" class="active">Ana Sayfa</a>
-    <a href="javascript:void(0)" onclick="openSearch()" title="Ara" style="display:flex; align-items:center;">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-    </a>
-  </div>
-</nav>
-
-<div class="coverflow-hero">
-  <div class="cf-bg-blur" id="cf-bg-blur"></div>
-  
-  <div class="hero-brand">
-    <div class="visitor-badge">
-      <span id="visit-count">...</span> Canlı İzleyici
+<div class="main-wrapper">
+  <!-- S-MATRIX SIDEBAR -->
+  <aside class="s-sidebar">
+    <div class="brand-hub">
+      <div class="logo-s-giant">S</div>
+      <div class="brand-name">SiomJourney</div>
     </div>
-    <div class="brand-siom">
-      <span class="hero-s">S</span>
-      <div class="oval-iom">IOM</div>
-    </div>
-    <div class="brand-journey">JOURNEY</div>
-  </div>
+    <nav class="side-nav">
+      <a href="#" class="active">Ana Sayfa</a>
+      <a href="javascript:void(0)" onclick="openSearch()">Arama</a>
+      <a href="#kutuphane">Kütüphane</a>
+    </nav>
+  </aside>
 
-  <div class="coverflow-container" id="coverflow-container"></div>
-  <div class="coverflow-title-container">
-    <h1 id="cf-title">Yükleniyor...</h1>
-    <div id="cf-meta">...</div>
-  </div>
+  <!-- CONTENT HUB -->
+  <main class="content-matrix">
+    <div class="hero-orbital">
+      <div class="orbital-container" id="coverflow-container"></div>
+      <div class="cf-title-overlay">
+        <h1 id="cf-title">Yükleniyor...</h1>
+        <div id="cf-meta">...</div>
+      </div>
+    </div>
+
+    <div id="kutuphane">
+      <!-- Kategoriler JS ile buraya Matrix düzeninde dolacak -->
+    </div>
+  </main>
 </div>
 
-<div class="content-section" id="kutuphane">
-  <div class="section-title">Film Kütüphanesi</div>
-  <div class="movie-grid" id="movie-grid"></div>
-</div>
-
+<!-- MODALS -->
 <div id="series-modal">
-  <div class="close-btn" onclick="closeSeriesModal()" style="position:fixed;">✕</div>
+  <div class="close-btn" onclick="closeSeriesModal()">✕</div>
   <div class="series-modal-content">
     <div class="series-header">
       <img id="sm-poster" class="series-poster" src="" alt="Poster">
@@ -69,7 +60,7 @@
   <div class="player-container" id="player-container">
     <div class="player-loader" id="player-loader"></div>
     <video id="video-player" playsinline webkit-playsinline></video>
-    <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="display:none;"></iframe>
+    <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen="true" style="display:none;"></iframe>
     <div id="coming-soon-overlay" class="coming-soon-overlay" style="display:none;">
       <div class="soon-content">
         <div class="soon-badge">YAKINDA</div>
@@ -78,45 +69,16 @@
         <div class="soon-loader"></div>
       </div>
     </div>
-    <div class="custom-controls" id="custom-controls" style="display:none;">
-      <div class="progress-container" id="progress-container">
-        <div class="progress-bar" id="progress-bar"></div>
-      </div>
-      <div class="controls-main">
-        <button class="ctrl-btn" id="play-pause-btn">
-          <svg id="icon-play" viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M8 5v14l11-7z"/></svg>
-          <svg id="icon-pause" viewBox="0 0 24 24" fill="white" width="28" height="28" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
-        <div class="time-display" id="time-display">00:00 / 00:00</div>
-        <div class="spacer" style="flex:1;"></div>
-        <button class="ctrl-btn" id="fullscreen-btn">
-          <svg viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="ios-tab-bar" id="ios-tab-bar">
-  <div class="tab-item active" onclick="closeSearch(); window.scrollTo(0,0);">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-    <span>Ana Sayfa</span>
-  </div>
-  <div class="tab-item" onclick="openSearch()">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-    <span>Ara</span>
   </div>
 </div>
 
 <div id="search-modal">
-  <div class="close-btn" onclick="closeSearch()" style="position:fixed; top:30px; right:40px; z-index:10002;">✕</div>
+  <div class="close-btn" onclick="closeSearch()">✕</div>
   <div class="search-container">
-    <input type="text" id="search-input" placeholder="Film veya dizi ara..." autocomplete="off">
-    <div class="search-results cards-row" id="search-results" style="flex-wrap: wrap;"></div>
+    <input type="text" id="search-input" placeholder="SiomJourney'de ara..." autocomplete="off">
+    <div class="search-results cards-row" id="search-results" style="display:flex; flex-wrap:wrap; gap:15px;"></div>
   </div>
 </div>
-
-<footer><p>SiomJourney </p></footer>
 
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>

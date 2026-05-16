@@ -1,29 +1,41 @@
-// SiomJourney Premium - Cinematic Version
+// SiomJourney S-Orbital Edition App Logic
 window.DB = DB; 
 
 function get(id) { return document.getElementById(id); }
 
 function generateCardHTML(item, type) {
-  const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=800&output=webp&q=90`;
+  const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=400&output=webp&q=90`;
   const playType = item.isCollection ? 'collection' : type;
   return `
     <div class="card-wrapper" onclick="handleItemClick('${item.id}', '${playType}')">
       <div class="card">
-        <img class="poster-art" src="${proxyUrl}" alt="${item.title}" loading="lazy">
-        <div class="card-glass-play"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
-        <div class="card-content">
-          <div class="card-meta">${item.year}</div>
-          <div class="card-title">${item.title}</div>
-        </div>
+        <img src="${proxyUrl}" alt="${item.title}" loading="lazy">
+        <div class="card-info"><h3>${item.title}</h3></div>
       </div>
     </div>
   `;
 }
 
 function renderContent() {
-  const all = [...window.DB.series.map(s => ({...s, type: 'series'})), ...window.DB.movies.map(m => ({...m, type: 'movie'}))];
-  const movieGrid = get('movie-grid');
-  if(movieGrid) movieGrid.innerHTML = all.map(item => generateCardHTML(item, item.type)).join('');
+  const container = get('kutuphane');
+  if(!container) return;
+  
+  // Categorization logic
+  const sections = [
+    { label: 'TRENDİNG', title: 'Trend Filmler', items: window.DB.movies.slice(0, 5) },
+    { label: 'ANIMATION', title: 'Popüler Animasyonlar', items: window.DB.movies.filter(m => m.searchTags && m.searchTags.includes('animasyon')) },
+    { label: 'SERIES', title: 'Orijinal Seriler', items: window.DB.series }
+  ];
+
+  container.innerHTML = sections.map(sec => `
+    <section class="section-matrix">
+      <div class="section-label">${sec.label}</div>
+      <div class="matrix-title">${sec.title}</div>
+      <div class="movie-grid">
+        ${sec.items.map(item => generateCardHTML(item, item.episodes ? 'series' : 'movie')).join('')}
+      </div>
+    </section>
+  `).join('');
 }
 
 window.handleItemClick = function(id, type) {
@@ -31,68 +43,29 @@ window.handleItemClick = function(id, type) {
   else openPlayerMovie(id);
 };
 
-// Coverflow Logic
+// Orbital Coverflow Logic
 let cfActiveIndex = 0;
 let cfItems = [];
 let cfInterval = null;
-let isDragging = false;
-let startX = 0;
-let dragDist = 0;
 
 function initCoverFlow() {
   const allItems = [...window.DB.series.map(s => ({...s, type: 'series'})), ...window.DB.movies.map(m => ({...m, type: 'movie'}))];
   allItems.sort((a, b) => (parseInt(b.year) || 0) - (parseInt(a.year) || 0));
-  cfItems = allItems.slice(0, 5);
-  while(cfItems.length < 5 && cfItems.length > 0) cfItems = cfItems.concat(cfItems);
+  cfItems = allItems.slice(0, 6);
+  
   const container = get('coverflow-container');
   if(!container) return;
+  
   container.innerHTML = cfItems.map((item, i) => {
-    const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=1000&output=webp&q=90`;
+    const proxyUrl = item.poster.startsWith('assets') ? item.poster : `https://wsrv.nl/?url=${encodeURIComponent(item.poster)}&w=800&output=webp`;
     return `<div class="cf-item" id="cf-item-${i}" onclick="handleCoverflowClick(${i})">
-      <img class="poster-art" src="${encodeURI(proxyUrl)}" alt="${item.title}" style="pointer-events:none;">
-      <div class="play-overlay" style="pointer-events:none;">
-        <div class="play-glass-btn"><svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
-      </div>
+      <img src="${encodeURI(proxyUrl)}" alt="${item.title}">
     </div>`;
   }).join('');
+  
   updateCoverFlow();
-  startCoverflowAuto();
-  container.addEventListener('mousedown', dragStart);
-  container.addEventListener('touchstart', dragStart, {passive: true});
-  window.addEventListener('mousemove', dragMove);
-  window.addEventListener('touchmove', dragMove, {passive: false});
-  window.addEventListener('mouseup', dragEnd);
-  window.addEventListener('touchend', dragEnd);
+  cfInterval = setInterval(() => { cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; updateCoverFlow(); }, 5000);
 }
-
-function dragStart(e) { isDragging = true; startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX; dragDist = 0; clearInterval(cfInterval); }
-function dragMove(e) {
-  if (!isDragging) return;
-  const x = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  dragDist = x - startX;
-  const container = get('coverflow-container');
-  if(container) container.style.transform = `translateX(${dragDist * 0.2}px)`;
-  if (Math.abs(dragDist) > 10) e.preventDefault();
-}
-function dragEnd() {
-  if (!isDragging) return;
-  isDragging = false;
-  const container = get('coverflow-container');
-  if(container) container.style.transform = `translateX(0)`;
-  if (dragDist > 60) cfActiveIndex = (cfActiveIndex - 1 + cfItems.length) % cfItems.length;
-  else if (dragDist < -60) cfActiveIndex = (cfActiveIndex + 1) % cfItems.length;
-  updateCoverFlow();
-  startCoverflowAuto();
-}
-
-window.handleCoverflowClick = function(index) {
-  if (Math.abs(dragDist) > 15) return; 
-  if (index === cfActiveIndex) {
-    const item = cfItems[index];
-    const playType = item.isCollection ? 'collection' : (item.episodes ? 'series' : 'movie');
-    handleItemClick(item.id, playType);
-  } else { cfActiveIndex = index; updateCoverFlow(); startCoverflowAuto(); }
-};
 
 function updateCoverFlow() {
   if(cfItems.length === 0) return;
@@ -103,112 +76,69 @@ function updateCoverFlow() {
     let offset = i - cfActiveIndex;
     if (offset < -Math.floor(cfItems.length/2)) offset += cfItems.length;
     if (offset > Math.floor(cfItems.length/2)) offset -= cfItems.length;
+    
     if (offset === 0) el.classList.add('active');
     else if (Math.abs(offset) === 1) el.classList.add(offset === -1 ? 'prev-1' : 'next-1');
     else if (Math.abs(offset) === 2) el.classList.add(offset === -2 ? 'prev-2' : 'next-2');
     else el.classList.add('hidden');
   }
   const active = cfItems[cfActiveIndex];
-  if(get('cf-bg-blur')) get('cf-bg-blur').style.backgroundImage = `url('${active.poster}')`;
   if(get('cf-title')) get('cf-title').innerText = active.title;
   if(get('cf-meta')) get('cf-meta').innerText = `${active.year} • ${active.meta}`;
 }
 
-function startCoverflowAuto() { if(cfInterval) clearInterval(cfInterval); cfInterval = setInterval(() => { cfActiveIndex = (cfActiveIndex + 1) % cfItems.length; updateCoverFlow(); }, 5000); }
-
-// Cinematic Player
-window.initPlayer = function(c) {
-  const modal = get('player-modal'); if(!modal) return;
-  const video = get('video-player'); const yt = get('yt-player'); const loader = get('player-loader'); const soon = get('coming-soon-overlay');
-  
-  modal.classList.add('active');
-  if(loader) loader.style.display = 'block';
-  if(video) { video.classList.remove('ready'); video.style.display = 'none'; }
-  if(yt) { yt.classList.remove('ready'); yt.style.display = 'none'; }
-
-  if(!c.file) {
-    if(loader) loader.style.display = 'none';
-    if(soon) soon.style.display = 'flex';
-    return;
-  }
-  if(soon) soon.style.display = 'none';
-
-  if(c.isYoutube) {
-    if(yt) {
-      yt.style.display = 'block';
-      let url = c.file;
-      url += (url.includes('?') ? '&' : '?') + 'autoplay=1&vq=hd1080&rel=0';
-      yt.src = url;
-      // YouTube iframe ready detection is limited, we simulate or wait for load
-      yt.onload = () => { if(loader) loader.style.display = 'none'; yt.classList.add('ready'); };
-    }
-  } else {
-    if(video) {
-      video.style.display = 'block';
-      video.src = c.file;
-      video.oncanplay = () => {
-        if(loader) loader.style.display = 'none';
-        video.classList.add('ready');
-        video.play().catch(e => { video.controls = true; });
-      };
-    }
-  }
+window.handleCoverflowClick = function(index) {
+  if (index === cfActiveIndex) {
+    const item = cfItems[index];
+    handleItemClick(item.id, item.episodes ? 'series' : (item.isCollection ? 'collection' : 'movie'));
+  } else { cfActiveIndex = index; updateCoverFlow(); }
 };
 
+// Player & Modals
 window.openPlayerMovie = function(id) { const m = window.DB.movies.find(x => x.id === id); if(m) initPlayer(m); };
 window.openDetailsModal = function(id, type) {
-  let s;
-  if (type === 'series') s = window.DB.series.find(x => x.id === id);
-  else if (type === 'collection') s = window.DB.movies.find(x => x.id === id);
+  let s = type === 'series' ? window.DB.series.find(x => x.id === id) : window.DB.movies.find(x => x.id === id);
   if(!s) return;
   get('sm-poster').src = s.poster; get('sm-title').innerText = s.title; get('sm-desc').innerText = s.desc;
   const listArr = type === 'series' ? s.episodes : s.collection;
-  get('sm-episodes').innerHTML = listArr.map(ep => {
-    const epPoster = ep.poster || s.poster;
-    return `<div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}', '${type}')">
+  get('sm-episodes').innerHTML = listArr.map(ep => `
+    <div class="episode-row" onclick="openPlayerEpisode('${s.id}', '${ep.id}', '${type}')">
       <div class="ep-number">${ep.epNum}</div>
-      <div class="ep-thumb"><img src="${epPoster}" alt="${ep.title}"></div>
+      <div class="ep-thumb"><img src="${ep.poster || s.poster}" alt="${ep.title}"></div>
       <div class="ep-details"><div class="ep-title">${ep.title}</div><div class="ep-desc">${ep.desc}</div></div>
-    </div>`;
-  }).join('');
+    </div>`).join('');
   get('series-modal').classList.add('active');
 };
-
 window.openPlayerEpisode = function(pId, cId, type) {
-  let s, ep;
-  if(type === 'series') { s = window.DB.series.find(x => x.id === pId); if(s) ep = s.episodes.find(x => x.id === cId); }
-  else { s = window.DB.movies.find(x => x.id === pId); if(s) ep = s.collection.find(x => x.id === cId); }
-  if(ep) initPlayer(ep);
+  let s = type === 'series' ? window.DB.series.find(x => x.id === pId) : window.DB.movies.find(x => x.id === pId);
+  if(s) { const ep = (type === 'series' ? s.episodes : s.collection).find(x => x.id === cId); if(ep) initPlayer(ep); }
 };
-
-window.closePlayer = function() {
-  const modal = get('player-modal');
-  modal.classList.remove('active');
-  const video = get('video-player'); const yt = get('yt-player');
-  if(yt) { yt.src = ''; yt.classList.remove('ready'); }
-  if(video) { video.pause(); video.src = ''; video.classList.remove('ready'); }
+window.initPlayer = function(c) {
+  const modal = get('player-modal'); modal.classList.add('active');
+  const video = get('video-player'); const yt = get('yt-player'); const loader = get('player-loader');
+  loader.style.display = 'block'; video.style.display = 'none'; yt.style.display = 'none';
+  if(!c.file) { loader.style.display = 'none'; get('coming-soon-overlay').style.display = 'flex'; return; }
+  get('coming-soon-overlay').style.display = 'none';
+  if(c.isYoutube) {
+    yt.style.display = 'block'; yt.src = c.file + (c.file.includes('?') ? '&' : '?') + 'autoplay=1';
+    yt.onload = () => { loader.style.display = 'none'; yt.classList.add('ready'); };
+  } else {
+    video.style.display = 'block'; video.src = c.file;
+    video.oncanplay = () => { loader.style.display = 'none'; video.classList.add('ready'); video.play().catch(e => { video.controls = true; }); };
+  }
 };
-
+window.closePlayer = function() { get('player-modal').classList.remove('active'); get('yt-player').src = ''; get('video-player').pause(); get('video-player').src = ''; };
 window.closeSeriesModal = function() { get('series-modal').classList.remove('active'); };
 window.openSearch = function() { get('search-modal').classList.add('active'); get('search-input').value = ''; get('search-results').innerHTML = ''; setTimeout(() => get('search-input').focus(), 100); };
 window.closeSearch = function() { get('search-modal').classList.remove('active'); };
 
 document.addEventListener('DOMContentLoaded', () => {
   renderContent(); initCoverFlow();
-  const sInput = get('search-input');
-  if(sInput) {
-    sInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim(); if(q.length < 2) return;
-      const res = [];
-      window.DB.series.forEach(s => { if(s.title.toLowerCase().includes(q)) res.push({item: s, type: 'series'}); });
-      window.DB.movies.forEach(m => { if(m.title.toLowerCase().includes(q)) res.push({item: m, type: 'movie'}); });
-      get('search-results').innerHTML = res.map(r => generateCardHTML(r.item, r.type)).join('');
-    });
-  }
-  window.addEventListener('click', (e) => {
-    if(e.target === get('series-modal')) closeSeriesModal();
-    if(e.target === get('player-modal')) closePlayer();
-    if(e.target === get('search-modal')) closeSearch();
+  get('search-input').addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim(); if(q.length < 2) return;
+    const res = [];
+    [...window.DB.series, ...window.DB.movies].forEach(item => { if(item.title.toLowerCase().includes(q)) res.push(item); });
+    get('search-results').innerHTML = res.map(r => generateCardHTML(r, r.episodes ? 'series' : 'movie')).join('');
   });
-  fetch('https://api.countapi.xyz/hit/siomjourney.io/visits').then(r => r.json()).then(d => { if(d.value) get('visit-count').innerText = d.value.toLocaleString(); }).catch(e => get('visit-count').innerText = "1");
+  window.addEventListener('click', (e) => { if(e.target.id.includes('modal')) { closeSeriesModal(); closePlayer(); closeSearch(); } });
 });
