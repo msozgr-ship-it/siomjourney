@@ -6,52 +6,56 @@ let orbitalContent = [];
 let filteredContent = [];
 let currentOrbitalIndex = 0;
 
+// UYGULAMA BAŞLATMA
 function initApp() {
   try {
     if (typeof DB === 'undefined') {
-      console.error("KRİTİK HATA: data.js yüklenemedi!");
+      console.error("KRİTİK HATA: data.js bulunamadı!");
       return;
     }
     
     allContent = [...DB.movies, ...DB.series];
-    orbitalContent = DB.movies.slice(0, 8); 
+    orbitalContent = DB.movies.slice(0, 10); 
     filteredContent = [...allContent];
 
     renderOrbital();
     renderContent();
     setupEventListeners();
     
-    console.log("Sistem Hazır. Toplam İçerik:", allContent.length);
+    console.log("Uygulama başarıyla yüklendi.");
   } catch (err) {
     console.error("Başlatma hatası:", err);
   }
 }
 
-// 3D ORBITAL - TIKLAMA DÜZELTİLDİ
+// 3D ORBITAL
 function renderOrbital() {
   const container = document.getElementById('orbital-container');
-  if (!container || orbitalContent.length === 0) return;
+  if (!container) return;
   
   container.innerHTML = orbitalContent.map((item, index) => `
-    <div class="cf-item ${getOrbitalClass(index)}" onclick="handleOrbitalClick(${index}, '${item.id}')">
+    <div class="cf-item ${getOrbitalClass(index)}" data-id="${item.id}" data-index="${index}">
       <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
     </div>
   `).join('');
+  
+  // Orbital tıklamalarını ata
+  document.querySelectorAll('.cf-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const idx = parseInt(el.dataset.index);
+      const id = el.dataset.id;
+      if (idx === currentOrbitalIndex) {
+        openDetails(id);
+      } else {
+        setOrbital(idx);
+      }
+    });
+  });
 
   const indicator = document.getElementById('orbital-indicator');
   if (indicator) {
     const progress = ((currentOrbitalIndex + 1) / orbitalContent.length) * 100;
     indicator.style.setProperty('--progress', `${progress}%`);
-  }
-}
-
-function handleOrbitalClick(index, id) {
-  if (index === currentOrbitalIndex) {
-    // Eğer zaten aktifse, filmi/detayı aç
-    openDetails(id);
-  } else {
-    // Değilse, o afişi merkeze getir
-    setOrbital(index);
   }
 }
 
@@ -87,7 +91,7 @@ function prevOrbital() {
   renderOrbital();
 }
 
-// MATRİS RENDER
+// MATRİS RENDER (TIKLAMA OLAYLARI İÇERDEN ATANIYOR)
 function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
@@ -96,7 +100,7 @@ function renderContent() {
     <section class="section-matrix">
       <div class="movie-grid">
         ${filteredContent.map(item => `
-          <div class="card-wrapper" onclick="openDetails('${item.id}')">
+          <div class="card-wrapper" data-id="${item.id}">
             <div class="card">
               ${(item.isCollection || item.episodes) ? '<div class="card-badge">SERİ</div>' : ''}
               <div class="card-rating">⭐ ${item.rating || '9.0'}</div>
@@ -110,6 +114,13 @@ function renderContent() {
       </div>
     </section>
   `;
+
+  // Matris kartlarına tıklama olaylarını ata
+  document.querySelectorAll('.card-wrapper').forEach(card => {
+    card.addEventListener('click', () => {
+      openDetails(card.dataset.id);
+    });
+  });
 }
 
 // ARAMA SİSTEMİ
@@ -119,21 +130,12 @@ function setupSearch() {
 
   input.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
-    if (query === '') {
-      filteredContent = [...allContent];
-    } else {
-      filteredContent = allContent.filter(item => 
-        (item.title && item.title.toLowerCase().includes(query)) || 
-        (item.searchTags && item.searchTags.toLowerCase().includes(query))
-      );
-    }
+    filteredContent = allContent.filter(item => 
+      (item.title && item.title.toLowerCase().includes(query)) || 
+      (item.searchTags && item.searchTags.toLowerCase().includes(query))
+    );
     renderContent();
   });
-}
-
-function handleSearchClick() {
-  const input = document.getElementById('search-input');
-  if (input) input.dispatchEvent(new Event('input'));
 }
 
 function resetFilter() {
@@ -144,33 +146,26 @@ function resetFilter() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// PANEL AÇMA (DÜZELTİLDİ)
+// PANEL AÇMA
 function openDetails(id) {
   const item = allContent.find(i => i.id === id);
-  if (!item) {
-    console.error("İçerik bulunamadı:", id);
-    return;
-  }
+  if (!item) return;
 
   const modal = document.getElementById('details-modal');
   if (!modal) return;
 
-  // Görselleri ve Bilgileri Bas
-  const poster = document.getElementById('details-poster');
-  const title = document.getElementById('details-title');
-  const year = document.getElementById('details-year');
-  const rating = document.getElementById('details-rating');
-  const type = document.getElementById('details-type');
-  const desc = document.getElementById('details-desc');
+  // İçeriği Doldur
+  document.getElementById('details-poster').src = item.poster;
+  document.getElementById('details-title').textContent = item.title;
+  document.getElementById('details-year').textContent = item.year;
+  document.getElementById('details-rating').textContent = `⭐ ${item.rating || '9.0'}`;
+  document.getElementById('details-type').textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
+  
+  const descEl = document.getElementById('details-desc');
+  descEl.textContent = item.desc;
+
   const grid = document.getElementById('details-grid');
   const listSection = document.querySelector('.details-list-section');
-
-  if (poster) poster.src = item.poster;
-  if (title) title.textContent = item.title;
-  if (year) year.textContent = item.year;
-  if (rating) rating.textContent = `⭐ ${item.rating || '9.0'}`;
-  if (type) type.textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
-  if (desc) desc.textContent = item.desc;
 
   let subItems = [];
   if (item.episodes) subItems = item.episodes;
@@ -179,7 +174,7 @@ function openDetails(id) {
   if (subItems.length > 0) {
     listSection.style.display = 'block';
     grid.innerHTML = subItems.map(sub => `
-      <div class="ep-card" onclick="openPlayer('${sub.file}')">
+      <div class="ep-card" data-file="${sub.file}">
         <div class="ep-header">
             <h3>${sub.epNum ? sub.epNum + '. ' : ''}${sub.title}</h3>
             <button class="play-btn-mini">İZLE</button>
@@ -187,25 +182,39 @@ function openDetails(id) {
         <p>${sub.desc || ''}</p>
       </div>
     `).join('');
+    
+    // Alt öğe tıklamaları
+    grid.querySelectorAll('.ep-card').forEach(ep => {
+      ep.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openPlayer(ep.dataset.file);
+      });
+    });
+
   } else {
     listSection.style.display = 'none';
     grid.innerHTML = '';
-    // Tekil filmse direkt oynat butonu ekle
-    if (desc) {
-      desc.innerHTML += `<br><br><button class="ctrl-btn" style="width:auto; padding:0 30px; border-radius:10px; font-size:16px;" onclick="openPlayer('${item.file}')">Hemen İzle</button>`;
-    }
+    // Butonu direkt ekle ve olayı ata
+    const playBtn = document.createElement('button');
+    playBtn.className = 'ctrl-btn';
+    playBtn.style.cssText = "width:auto; padding:0 30px; border-radius:10px; font-size:16px; margin-top:20px;";
+    playBtn.textContent = "Hemen İzle";
+    playBtn.onclick = () => openPlayer(item.file);
+    descEl.appendChild(playBtn);
   }
 
-  // Modalı Göster
+  // Göster
   modal.style.display = 'flex';
-  setTimeout(() => modal.classList.add('active'), 10);
+  setTimeout(() => {
+    modal.classList.add('active');
+  }, 10);
 }
 
 function closeDetails() {
   const modal = document.getElementById('details-modal');
   if (modal) {
     modal.classList.remove('active');
-    setTimeout(() => modal.style.display = 'none', 500);
+    setTimeout(() => { modal.style.display = 'none'; }, 500);
   }
 }
 
@@ -216,8 +225,10 @@ function openPlayer(file) {
   if (!modal || !iframe) return;
 
   modal.style.display = 'flex';
-  setTimeout(() => modal.classList.add('active'), 10);
-  iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
+  setTimeout(() => {
+    modal.classList.add('active');
+    iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
+  }, 10);
 }
 
 function closePlayer() {
