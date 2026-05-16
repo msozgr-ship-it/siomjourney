@@ -128,11 +128,43 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--te
 
 /* MOBILE RESPONSIVE - S-ORBITAL ADAPTATION */
 @media (max-width: 1200px) {
-  .s-sidebar { width: 100%; height: auto; position: relative; padding: 50px 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .logo-s-giant { font-size: 150px; }
-  .content-matrix { margin-left: 0; padding: 50px 30px; }
-  .hero-orbital { height: 500px; margin-bottom: 100px; }
-  .cf-item { width: 200px; height: 300px; }
-  .cf-item.active { transform: translate3d(0, 0, 250px); }
-  #cf-title { font-size: 48px; }
+  .s-sidebar { width: 100%; height: auto; position: fixed; padding: 20px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.9); height: 80px; flex-direction: row; justify-content: space-between; }
+  .brand-hub { display: flex; align-items: center; gap: 10px; }
+  .logo-s-giant { font-size: 50px; letter-spacing: -2px; }
+  .brand-name { display: none; }
+  .side-nav { flex-direction: row; gap: 20px; }
+  .side-nav a { font-size: 10px; letter-spacing: 2px; }
+
+  .content-matrix { margin-left: 0; padding: 120px 20px 50px; }
+  .hero-orbital { height: 450px; margin-bottom: 50px; justify-content: center; overflow: hidden; }
+  .cf-item { width: 180px; height: 270px; }
+  
+  .cf-item.active { transform: translate3d(0, 0, 200px); }
+  .cf-item.prev-1 { transform: translate3d(-150px, 0, 50px) rotateY(45deg) scale(0.8); opacity: 0.3; }
+  .cf-item.next-1 { transform: translate3d(150px, 0, 50px) rotateY(-45deg) scale(0.8); opacity: 0.3; }
+  .cf-item.prev-2, .cf-item.next-2 { display: none; } /* Hide far items on mobile */
+
+  #cf-title { font-size: 36px; left: 20px; bottom: 0; }
+  #cf-meta { font-size: 12px; left: 20px; }
+  .cf-title-overlay { left: 0; bottom: -20px; width: 100%; text-align: center; }
+  
+  .section-label { font-size: 100px; top: -50px; left: 0; }
 }
+
+/* SERIES MODAL STYLES */
+#series-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 9000; display: none; padding: 100px 50px; overflow-y: auto; }
+#series-modal.active { display: block; }
+.series-header { display: flex; gap: 40px; margin-bottom: 50px; }
+.series-poster { width: 200px; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+.series-info h2 { font-size: 48px; margin-bottom: 20px; }
+.series-info p { opacity: 0.6; line-height: 1.6; max-width: 600px; }
+
+.episodes-list { display: grid; gap: 20px; }
+.ep-card { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; display: flex; gap: 20px; cursor: pointer; transition: 0.3s; border: 1px solid transparent; }
+.ep-card:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); transform: translateX(10px); }
+.ep-num { font-size: 24px; font-weight: 900; opacity: 0.3; min-width: 40px; }
+
+/* PLAYER IMPROVEMENTS */
+.player-container { width: 90%; max-width: 1200px; aspect-ratio: 16/9; background: #000; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 20px; overflow: hidden; box-shadow: 0 0 100px rgba(255,15,35,0.2); }
+#video-player, #yt-player { width: 100%; height: 100%; border: none; }
+#player-modal.active { opacity: 1; }

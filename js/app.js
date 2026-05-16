@@ -79,8 +79,9 @@ function renderContent() {
 }
 
 function renderCard(movie) {
+  const clickAction = movie.episodes ? `openSeries('${movie.id}')` : `openPlayer('${movie.id}')`;
   return `
-    <div class="card-wrapper" onclick="openPlayer('${movie.id}')">
+    <div class="card-wrapper" onclick="${clickAction}">
       <div class="card">
         <img src="${movie.poster}" alt="${movie.title}">
       </div>
@@ -93,27 +94,109 @@ function openPlayer(id) {
   if (!movie) return;
 
   const modal = document.getElementById('player-modal');
-  const iframe = document.getElementById('player-frame');
+  const videoEl = document.getElementById('video-player');
+  const iframeEl = document.getElementById('yt-player');
   
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
   
-  if (movie.file) {
-    iframe.src = movie.file;
-  } else if (movie.isCollection) {
-    iframe.src = movie.collection[0].file;
+  // Reset players
+  videoEl.style.display = 'none';
+  iframeEl.style.display = 'none';
+  videoEl.src = '';
+  iframeEl.src = '';
+
+  const fileUrl = movie.file || (movie.isCollection ? movie.collection[0].file : null);
+  const isEmbed = movie.isYoutube || (fileUrl && fileUrl.includes('http'));
+
+  if (isEmbed) {
+    iframeEl.src = fileUrl;
+    iframeEl.style.display = 'block';
+  } else if (fileUrl) {
+    videoEl.src = fileUrl;
+    videoEl.style.display = 'block';
+    videoEl.play();
   }
 }
 
 function closePlayer() {
   const modal = document.getElementById('player-modal');
-  const iframe = document.getElementById('player-frame');
+  const videoEl = document.getElementById('video-player');
+  const iframeEl = document.getElementById('yt-player');
   
   modal.classList.remove('active');
   setTimeout(() => {
     modal.style.display = 'none';
-    iframe.src = '';
+    videoEl.pause();
+    videoEl.src = '';
+    iframeEl.src = '';
   }, 600);
+}
+
+function openSeries(id) {
+  const series = DB.series.find(s => s.id === id);
+  if (!series) return;
+
+  const modal = document.getElementById('series-modal');
+  document.getElementById('sm-poster').src = series.poster;
+  document.getElementById('sm-title').textContent = series.title;
+  document.getElementById('sm-desc').textContent = series.desc;
+  
+  const epList = document.getElementById('sm-episodes');
+  epList.innerHTML = series.episodes.map(ep => `
+    <div class="ep-card" onclick="openPlayerFromSeries('${series.id}', '${ep.id}')">
+      <div class="ep-num">${ep.epNum}</div>
+      <div class="ep-info">
+        <h3>${ep.title}</h3>
+        <p>${ep.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeSeriesModal() {
+  const modal = document.getElementById('series-modal');
+  modal.classList.remove('active');
+  setTimeout(() => modal.style.display = 'none', 600);
+}
+
+function openPlayerFromSeries(seriesId, epId) {
+  const series = DB.series.find(s => s.id === seriesId);
+  const ep = series.episodes.find(e => e.id === epId);
+  if (!ep) return;
+
+  // Simulate movie object for openPlayer logic
+  const mockMovie = {
+    file: ep.file,
+    isYoutube: ep.isYoutube
+  };
+  
+  openPlayerLogic(mockMovie);
+}
+
+// Helper to keep code DRY
+function openPlayerLogic(movie) {
+  const modal = document.getElementById('player-modal');
+  const videoEl = document.getElementById('video-player');
+  const iframeEl = document.getElementById('yt-player');
+  
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+  
+  videoEl.style.display = 'none';
+  iframeEl.style.display = 'none';
+
+  if (movie.isYoutube || movie.file.includes('http')) {
+    iframeEl.src = movie.file;
+    iframeEl.style.display = 'block';
+  } else {
+    videoEl.src = movie.file;
+    videoEl.style.display = 'block';
+    videoEl.play();
+  }
 }
 
 function setupEventListeners() {
