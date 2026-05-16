@@ -121,8 +121,8 @@ const DB = {
           title: 'Ejderhanı Nasıl Eğitirsin 2',
           desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
           poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
-          file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
-          isYoutube: true
+          file: 'https://pixeldrain.com/u/JEKuAPTU?embed',
+          isYoutube: false
         },
         {
           id: 'm4f3',
