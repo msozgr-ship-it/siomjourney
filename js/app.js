@@ -109,30 +109,24 @@ function handleOrbitalClick(index, id) {
 
   const count = orbitalContent.length;
   const angleStep = 360 / count;
-  
-  // Tıklanan kartı tam merkeze getirmek için gereken rotasyon
   const targetRotation = -(index * angleStep);
   
-  // Normalize edilmiş açılarla karşılaştırma yap (360 derece döngüsü için)
   const currentNorm = ((currentRotation % 360) + 360) % 360;
   const targetNorm = ((targetRotation % 360) + 360) % 360;
-  
   const diff = Math.abs(currentNorm - targetNorm);
 
-  // EĞER KART MERKEZDE DEĞİLSE (Odaklama Yap)
-  if (diff > 5 && diff < 355) {
-    currentRotation = targetRotation;
-    updateOrbitalTransforms();
-    
-    // 5 saniye boyunca durdur
-    startPauseTimer(5000);
-  } 
   // EĞER KART ZATEN MERKEZDEYSE (Filmi Aç)
-  else {
+  if (diff < 5 || diff > 355) {
     const item = allContent.find(i => i.id === id);
     if (!item) return;
     if (item.episodes || item.isCollection) openDetails(id);
-    else openPlayer(item.file);
+    else openPlayer(item.file, item.title, item.poster);
+  } 
+  // EĞER KART MERKEZDE DEĞİLSE (Merkeze Getir ve 5sn durdur)
+  else {
+    currentRotation = targetRotation;
+    updateOrbitalTransforms();
+    startPauseTimer(5000);
   }
 }
 
@@ -170,7 +164,7 @@ function renderContent() {
 function handleItemClick(id) {
   const item = allContent.find(i => i.id === id);
   if (item.episodes || item.isCollection) openDetails(id);
-  else openPlayer(item.file);
+  else openPlayer(item.file, item.title, item.poster);
 }
 
 function setupSearch() {
@@ -191,7 +185,7 @@ function openDetails(id) {
   document.getElementById('details-title').textContent = item.title;
   let subItems = item.episodes || item.collection || [];
   grid.innerHTML = subItems.map(sub => `
-    <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
+    <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}', '${sub.title}', '${sub.poster || item.poster}')">
       <div class="card"><img src="${sub.poster || item.poster}" alt=""></div>
       <h3>${sub.title}</h3>
     </div>
@@ -205,8 +199,11 @@ function closeDetails() {
   if (modal) { modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 500); }
 }
 
-function openPlayer(file) {
-  if (!file) return;
+function openPlayer(file, title, poster) {
+  if (!file || file.includes('ID')) {
+    openComingSoon(title, poster);
+    return;
+  }
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
   let finalUrl = file;
@@ -214,6 +211,26 @@ function openPlayer(file) {
   modal.style.display = 'flex';
   modal.classList.add('active');
   iframe.src = finalUrl;
+}
+
+function openComingSoon(title, poster) {
+  const modal = document.getElementById('coming-soon-modal');
+  const csTitle = document.getElementById('cs-title');
+  const csBackdrop = document.getElementById('cs-backdrop');
+  
+  csTitle.textContent = title || "Sinematik İçerik";
+  if (poster) csBackdrop.style.backgroundImage = `url(${poster})`;
+  
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeComingSoon() {
+  const modal = document.getElementById('coming-soon-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    setTimeout(() => modal.style.display = 'none', 600);
+  }
 }
 
 function closePlayer() {
