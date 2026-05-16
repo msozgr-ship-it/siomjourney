@@ -6,10 +6,15 @@ let orbitalContent = [];
 let filteredContent = [];
 let currentOrbitalIndex = 0;
 
+// UYGULAMA BAŞLATMA
 function initApp() {
   try {
+    if (typeof DB === 'undefined') {
+      console.error("DB bulunamadı!");
+      return;
+    }
+    
     // Verileri Birleştir
-    if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
     orbitalContent = DB.movies.slice(0, 8); 
     filteredContent = [...allContent];
@@ -18,19 +23,18 @@ function initApp() {
     renderContent();
     setupEventListeners();
     
-    // Bakım ekranını her ihtimale karşı gizle
+    // Varsa bakım ekranını temizle
     const maintenance = document.getElementById('maintenance-screen');
     if (maintenance) maintenance.style.display = 'none';
 
   } catch (err) {
-    console.error("Uygulama başlatılırken hata:", err);
+    console.error("Başlatma hatası:", err);
   }
 }
 
-// 3D OVAL ORBITAL LOGIC
+// 3D ORBITAL
 function renderOrbital() {
   const container = document.getElementById('orbital-container');
-  const indicator = document.getElementById('orbital-indicator');
   if (!container || orbitalContent.length === 0) return;
   
   container.innerHTML = orbitalContent.map((item, index) => `
@@ -39,6 +43,7 @@ function renderOrbital() {
     </div>
   `).join('');
 
+  const indicator = document.getElementById('orbital-indicator');
   if (indicator) {
     const progress = ((currentOrbitalIndex + 1) / orbitalContent.length) * 100;
     indicator.style.setProperty('--progress', `${progress}%`);
@@ -77,7 +82,7 @@ function prevOrbital() {
   renderOrbital();
 }
 
-// CONTENT MATRIX RENDER
+// MATRİS RENDER
 function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
@@ -85,65 +90,45 @@ function renderContent() {
   content.innerHTML = `
     <section class="section-matrix">
       <div class="movie-grid">
-        ${filteredContent.map(item => renderCard(item)).join('')}
+        ${filteredContent.map(item => `
+          <div class="card-wrapper" onclick="openDetails('${item.id}')">
+            <div class="card">
+              ${(item.isCollection || item.episodes) ? '<div class="card-badge">SERİ</div>' : ''}
+              <div class="card-rating">⭐ ${item.rating || '9.0'}</div>
+              <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
+            </div>
+            <div class="card-info">
+                <h3>${item.title}</h3>
+            </div>
+          </div>
+        `).join('')}
       </div>
     </section>
   `;
 }
 
-function renderCard(item) {
-  const isCollection = item.isCollection || item.episodes;
-  const badge = isCollection ? `<div class="card-badge">SERİ</div>` : '';
-  
-  return `
-    <div class="card-wrapper" onclick="openDetails('${item.id}')">
-      <div class="card">
-        ${badge}
-        <div class="card-rating">⭐ ${item.rating || '9.0'}</div>
-        <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
-      </div>
-      <div class="card-info">
-          <h3>${item.title}</h3>
-      </div>
-    </div>
-  `;
-}
-
-// SEARCH LOGIC (INSTANT & SMART)
+// ARAMA MANTIĞI
 function setupSearch() {
   const input = document.getElementById('search-input');
   if (!input) return;
 
   input.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase().trim();
-    
     if (query === '') {
       filteredContent = [...allContent];
     } else {
-      filteredContent = allContent.filter(item => {
-        const titleMatch = item.title && item.title.toLowerCase().includes(query);
-        const tagMatch = item.searchTags && item.searchTags.toLowerCase().includes(query);
-        const descMatch = item.desc && item.desc.toLowerCase().includes(query);
-        return titleMatch || tagMatch || descMatch;
-      });
+      filteredContent = allContent.filter(item => 
+        (item.title && item.title.toLowerCase().includes(query)) || 
+        (item.searchTags && item.searchTags.toLowerCase().includes(query))
+      );
     }
-    
     renderContent();
-    
-    // Eğer sonuç bulunduysa ve yazı yazılıyorsa hafifçe aşağı kaydır (opsiyonel)
-    if (query.length > 1) {
-       const matrix = document.getElementById('content-matrix');
-       if (matrix) matrix.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   });
 }
 
 function handleSearchClick() {
   const input = document.getElementById('search-input');
-  if (input) {
-     // Butona basıldığında da manuel tetikleme (isteğe bağlı)
-     input.dispatchEvent(new Event('input'));
-  }
+  if (input) input.dispatchEvent(new Event('input'));
 }
 
 function resetFilter() {
@@ -154,7 +139,7 @@ function resetFilter() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// MODAL LOGIC
+// DETAY VE OYNATICI (KRİTİK DÜZELTME)
 function openDetails(id) {
   const item = allContent.find(i => i.id === id);
   if (!item) return;
@@ -162,34 +147,27 @@ function openDetails(id) {
   const modal = document.getElementById('details-modal');
   if (!modal) return;
 
-  const poster = document.getElementById('details-poster');
-  const title = document.getElementById('details-title');
-  const year = document.getElementById('details-year');
-  const rating = document.getElementById('details-rating');
-  const type = document.getElementById('details-type');
-  const desc = document.getElementById('details-desc');
-  const grid = document.getElementById('details-grid');
-  const listTitle = document.getElementById('list-title');
+  // İçeriği Doldur
+  document.getElementById('details-poster').src = item.poster;
+  document.getElementById('details-title').textContent = item.title;
+  document.getElementById('details-year').textContent = item.year;
+  document.getElementById('details-rating').textContent = `⭐ ${item.rating || '9.0'}`;
+  document.getElementById('details-type').textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
+  
+  const descEl = document.getElementById('details-desc');
+  descEl.textContent = item.desc;
 
-  if (poster) poster.src = item.poster;
-  if (title) title.textContent = item.title;
-  if (year) year.textContent = item.year;
-  if (rating) rating.textContent = `⭐ ${item.rating || '9.0'}`;
-  if (type) type.textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
-  if (desc) desc.textContent = item.desc;
+  const grid = document.getElementById('details-grid');
+  const listSection = document.querySelector('.details-list-section');
 
   let subItems = [];
-  if (item.episodes) {
-    subItems = item.episodes;
-    listTitle.textContent = 'Bölümler';
-  } else if (item.isCollection) {
-    subItems = item.collection;
-    listTitle.textContent = 'Serideki Filmler';
-  }
+  if (item.episodes) subItems = item.episodes;
+  else if (item.isCollection) subItems = item.collection;
 
   if (subItems.length > 0) {
+    listSection.style.display = 'block';
     grid.innerHTML = subItems.map(sub => `
-      <div class="ep-card" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
+      <div class="ep-card" onclick="openPlayer('${sub.file}')">
         <div class="ep-header">
             <h3>${sub.epNum ? sub.epNum + '. ' : ''}${sub.title}</h3>
             <button class="play-btn-mini">İZLE</button>
@@ -197,11 +175,11 @@ function openDetails(id) {
         <p>${sub.desc || ''}</p>
       </div>
     `).join('');
-    document.querySelector('.details-list-section').style.display = 'block';
   } else {
+    listSection.style.display = 'none';
     grid.innerHTML = '';
-    document.querySelector('.details-list-section').style.display = 'none';
-    if (desc) desc.innerHTML += `<br><br><button class="ctrl-btn" style="width:auto; padding:0 30px; border-radius:10px; font-size:16px;" onclick="openPlayer('${item.file}')">Hemen İzle</button>`;
+    // Direkt filmse "Hemen İzle" butonu ekle
+    descEl.innerHTML += `<br><br><button class="ctrl-btn" style="width:auto; padding:0 30px; border-radius:10px; font-size:16px;" onclick="openPlayer('${item.file}')">Hemen İzle</button>`;
   }
 
   modal.style.display = 'flex';
@@ -217,9 +195,11 @@ function closeDetails() {
 }
 
 function openPlayer(file) {
+  if (!file) return;
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
-  if (!modal || !iframe || !file) return;
+  if (!modal || !iframe) return;
+
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
   iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
@@ -236,10 +216,6 @@ function closePlayer() {
 
 function setupEventListeners() {
   setupSearch();
-  const input = document.getElementById('search-input');
-  if (input) {
-    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSearchClick(); });
-  }
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') { closePlayer(); closeDetails(); }
     if (e.key === 'ArrowRight') nextOrbital();
