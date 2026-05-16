@@ -8,34 +8,36 @@ function initApp() {
 }
 
 function renderOrbital() {
-  const container = document.getElementById('orbital-container');
-  const titleEl = document.getElementById('cf-title');
-  const metaEl = document.getElementById('cf-meta');
-  
+  const container = document.getElementById('coverflow-container');
   if (!container) return;
   
-  container.innerHTML = orbitalMovies.map((movie, index) => `
-    <div class="cf-item ${getOrbitalClass(index)}" onclick="setOrbital(${index})" data-id="${movie.id}">
-      <img src="${movie.poster}" alt="${movie.title}">
-    </div>
-  `).join('');
+  if (container.children.length === 0) {
+    container.innerHTML = orbitalMovies.map((movie, index) => `
+      <div class="cf-item" onclick="setOrbital(${index})" data-id="${movie.id}">
+        <img src="${movie.poster}" alt="${movie.title}">
+      </div>
+    `).join('');
+  }
+  
+  const items = container.querySelectorAll('.cf-item');
+  items.forEach((item, index) => {
+    item.className = `cf-item ${getOrbitalClass(index)}`;
+  });
 
-  const activeMovie = orbitalMovies[currentOrbitalIndex];
-  if (activeMovie && titleEl && metaEl) {
-    titleEl.textContent = activeMovie.title;
-    metaEl.textContent = `${activeMovie.year} • MATCH ${activeMovie.match} • S-ORBITAL EDITION`;
+  const indicator = document.querySelector('.ctrl-indicator');
+  if (indicator) {
+    const progress = ((currentOrbitalIndex + 1) / orbitalMovies.length) * 100;
+    indicator.style.setProperty('--progress', `${progress}%`);
   }
 }
 
 function getOrbitalClass(index) {
   const diff = index - currentOrbitalIndex;
-  const len = orbitalMovies.length;
-  
   if (diff === 0) return 'active';
-  if (diff === -1 || (currentOrbitalIndex === 0 && index === len - 1)) return 'prev-1';
-  if (diff === 1 || (currentOrbitalIndex === len - 1 && index === 0)) return 'next-1';
-  if (diff === -2 || (currentOrbitalIndex === 1 && index === len - 1) || (currentOrbitalIndex === 0 && index === len - 2)) return 'prev-2';
-  if (diff === 2 || (currentOrbitalIndex === len - 2 && index === 0) || (currentOrbitalIndex === len - 1 && index === 1)) return 'next-2';
+  if (diff === -1 || (currentOrbitalIndex === 0 && index === orbitalMovies.length - 1)) return 'prev-1';
+  if (diff === 1 || (currentOrbitalIndex === orbitalMovies.length - 1 && index === 0)) return 'next-1';
+  if (diff === -2 || (currentOrbitalIndex === 1 && index === orbitalMovies.length - 1)) return 'prev-2';
+  if (diff === 2 || (currentOrbitalIndex === orbitalMovies.length - 2 && index === 0)) return 'next-2';
   return 'hidden';
 }
 
@@ -55,75 +57,180 @@ function prevOrbital() {
 }
 
 function renderContent() {
-  const content = document.getElementById('content-matrix');
+  const content = document.getElementById('kutuphane');
   if (!content) return;
 
-  content.innerHTML = `
-    <!-- TRENDING -->
-    <section class="section-matrix">
-      <div class="section-label">TRENDING</div>
-      <h2 class="matrix-title">S-Trend Filmler</h2>
-      <div class="movie-grid">
-        ${DB.movies.map(m => renderCard(m)).join('')}
-      </div>
-    </section>
+  const sections = [
+    { label: 'TRENDING NOW', movies: DB.movies },
+    { label: 'NEW RELEASES', movies: DB.series },
+    { label: 'TOP RATED', movies: DB.movies.filter(m => parseFloat(m.rating) >= 8.8) },
+    { label: 'SCI-FI EXPLORATION', movies: DB.movies.filter(m => m.searchTags.includes('uzay') || m.searchTags.includes('elio')) }
+  ];
 
-    <!-- ANIMATION -->
+  content.innerHTML = sections.map(sec => `
     <section class="section-matrix">
-      <div class="section-label">ANIMATION</div>
-      <h2 class="matrix-title">Animasyon Dünyası</h2>
+      <div class="section-label">${sec.label}</div>
       <div class="movie-grid">
-        ${DB.movies.filter(m => m.searchTags.includes('animasyon')).map(m => renderCard(m)).join('')}
+        ${sec.movies.map(m => renderCard(m)).join('')}
       </div>
     </section>
-  `;
+  `).join('');
 }
 
 function renderCard(movie) {
+  const clickAction = movie.episodes ? `openSeries('${movie.id}')` : `openPlayer('${movie.id}')`;
   return `
-    <div class="card-wrapper" onclick="openPlayer('${movie.id}')">
+    <div class="card-wrapper" onclick="${clickAction}">
       <div class="card">
         <img src="${movie.poster}" alt="${movie.title}">
+        <div class="card-rating">
+          <span>★</span> ${movie.rating || '8.5'}
+        </div>
+      </div>
+      <div class="card-info">
+        <h3>${movie.title}</h3>
+        <p class="card-meta">${movie.year} • ${movie.meta}</p>
+        <div class="card-highlights">
+          <strong>HIGHLIGHTS</strong><br>
+          ${movie.highlights || 'İçeriğe dair en heyecan verici anlar ve detaylar burada.'}
+        </div>
       </div>
     </div>
   `;
 }
 
+// PLAYER LOGIC
 function openPlayer(id) {
   const movie = [...DB.movies, ...DB.series].find(m => m.id === id);
   if (!movie) return;
+  openPlayerLogic(movie);
+}
 
+function openPlayerLogic(movie) {
   const modal = document.getElementById('player-modal');
-  const iframe = document.getElementById('player-frame');
+  const videoEl = document.getElementById('video-player');
+  const iframeEl = document.getElementById('yt-player');
   
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
   
-  if (movie.file) {
-    iframe.src = movie.file.includes('?') ? `${movie.file}&autoplay=1` : `${movie.file}?autoplay=1`;
-  } else if (movie.isCollection) {
-    const firstVideo = movie.collection[0].file;
-    iframe.src = firstVideo.includes('?') ? `${firstVideo}&autoplay=1` : `${firstVideo}?autoplay=1`;
+  videoEl.style.display = 'none';
+  iframeEl.style.display = 'none';
+  videoEl.src = '';
+  iframeEl.src = '';
+
+  const fileUrl = movie.file || (movie.isCollection ? movie.collection[0].file : null);
+  const isEmbed = movie.isYoutube || (fileUrl && fileUrl.includes('http'));
+
+  if (isEmbed) {
+    iframeEl.src = fileUrl;
+    iframeEl.style.display = 'block';
+  } else if (fileUrl) {
+    videoEl.src = fileUrl;
+    videoEl.style.display = 'block';
+    videoEl.play();
   }
 }
 
 function closePlayer() {
   const modal = document.getElementById('player-modal');
-  const iframe = document.getElementById('player-frame');
+  const videoEl = document.getElementById('video-player');
+  const iframeEl = document.getElementById('yt-player');
   
+  if (!modal) return;
   modal.classList.remove('active');
   setTimeout(() => {
     modal.style.display = 'none';
-    iframe.src = '';
+    if (videoEl) { videoEl.pause(); videoEl.src = ''; }
+    if (iframeEl) { iframeEl.src = ''; }
   }, 600);
 }
 
+// SERIES LOGIC
+function openSeries(id) {
+  const series = DB.series.find(s => s.id === id);
+  if (!series) return;
+
+  const modal = document.getElementById('series-modal');
+  document.getElementById('sm-poster').src = series.poster;
+  document.getElementById('sm-title').textContent = series.title;
+  document.getElementById('sm-desc').textContent = series.desc;
+  
+  const epList = document.getElementById('sm-episodes');
+  epList.innerHTML = series.episodes.map(ep => `
+    <div class="ep-card" onclick="openPlayerFromSeries('${series.id}', '${ep.id}')">
+      <div class="ep-num">${ep.epNum}</div>
+      <div class="ep-info">
+        <h3>${ep.title}</h3>
+        <p>${ep.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeSeriesModal() {
+  const modal = document.getElementById('series-modal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  setTimeout(() => modal.style.display = 'none', 600);
+}
+
+function openPlayerFromSeries(seriesId, epId) {
+  const series = DB.series.find(s => s.id === seriesId);
+  const ep = series.episodes.find(e => e.id === epId);
+  if (!ep) return;
+  openPlayerLogic({ file: ep.file, isYoutube: ep.isYoutube });
+}
+
+// SEARCH LOGIC
+function openSearch() {
+  const modal = document.getElementById('search-modal');
+  modal.style.display = 'flex';
+  setTimeout(() => {
+    modal.classList.add('active');
+    document.getElementById('search-input').focus();
+  }, 10);
+}
+
+function closeSearch() {
+  const modal = document.getElementById('search-modal');
+  modal.classList.remove('active');
+  setTimeout(() => modal.style.display = 'none', 600);
+}
+
 function setupEventListeners() {
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closePlayer();
-    if (e.key === 'ArrowRight') nextOrbital();
-    if (e.key === 'ArrowLeft') prevOrbital();
+  const closeBtns = document.querySelectorAll('.close-btn');
+  closeBtns.forEach(btn => {
+    btn.onclick = () => {
+      closePlayer();
+      closeSeriesModal();
+      closeSearch();
+    };
   });
+
+  const searchInput = document.getElementById('search-input');
+  if (searchInput) {
+    searchInput.oninput = (e) => {
+      const val = e.target.value.toLowerCase();
+      const results = [...DB.movies, ...DB.series].filter(m => 
+        m.title.toLowerCase().includes(val) || 
+        m.searchTags.toLowerCase().includes(val)
+      );
+      renderSearchResults(results);
+    };
+  }
+}
+
+function renderSearchResults(results) {
+  const container = document.getElementById('search-results');
+  if (results.length === 0) {
+    container.innerHTML = '<p style="padding: 20px; opacity: 0.5;">Sonuç bulunamadı...</p>';
+    return;
+  }
+  container.innerHTML = results.map(m => renderCard(m)).join('');
 }
 
 document.addEventListener('DOMContentLoaded', initApp);

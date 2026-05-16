@@ -5,12 +5,12 @@ const DB = {
       title: 'Mini: The Journey',
       searchTags: 'mini, the journey, orman',
       desc: 'Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.',
-      poster: 'assets/img/mini.jpg',
+      poster: 'assets/img/mini.jpg.png',
       year: '2026',
       match: '98%',
       meta: '4K HDR',
       rating: '8.9',
-      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
+      highlights: 'Karanlık bir orman, gizemli bir ışık ve Mini\'nin destansı yolculuğu.',
       episodes: [
         {
           id: 's1e1',
@@ -44,20 +44,20 @@ const DB = {
       match: '95%',
       meta: 'HD',
       rating: '8.5',
-      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...'
+      highlights: 'Disney ve Pixar\'ın en yeni, eğlence dolu animasyon başyapıtı.'
     },
     {
       id: 'm2',
       title: 'Zootopia Serisi',
       searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
       desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk.',
-      poster: 'assets/img/zootopia_main.jpg',
+      poster: 'assets/img/zootopia_main.jpg.jpg',
       isCollection: true,
       year: 'Koleksiyon',
       match: '99%',
       meta: '2 Film',
       rating: '8.7',
-      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
+      highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
       collection: [
         {
           id: 'm2f1',
@@ -84,12 +84,12 @@ const DB = {
       title: 'Coco (Koko)',
       searchTags: 'coco, koko, miguel, ölüler diyarı, pixar, animasyon, müzikal',
       desc: '12 yaşındaki Miguel\'in Ölüler Diyarı\'ndaki unutulmaz müzikal yolculuğu.',
-      poster: 'assets/img/coco.jpg',
+      poster: 'assets/img/coco.jpg.jpg',
       year: '2017',
       match: '97%',
       meta: '4K Ultra HD',
       rating: '8.5',
-      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
+      highlights: 'Miguel\'in Ölüler Diyarı\'ndaki rengarenk ve duygusal müzikal hikayesi.',
       file: 'https://archive.org/embed/koko_20260511',
       isYoutube: true
     },
@@ -98,20 +98,20 @@ const DB = {
       title: 'Ejderhanı Nasıl Eğitirsin Serisi',
       searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
       desc: 'Hıçkıdık ve Dişsiz\'in Berk adasındaki efsanevi dostluk hikayesi.',
-      poster: 'assets/img/httyd_main.jpg',
+      poster: 'assets/img/httyd_main.jpg.jpg',
       isCollection: true,
       year: '2010-2019',
       match: '99%',
       meta: 'Koleksiyon',
       rating: '8.8',
-      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
       collection: [
         {
           id: 'm4f1',
           epNum: 1,
           title: 'Ejderhanı Nasıl Eğitirsin 1',
           desc: 'Genç bir Viking olan Hıçkıdık ve yaralı bir ejderhanın dostluğu.',
-          poster: 'assets/img/httyd1.jpg',
+          poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
           file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-1',
           isYoutube: true
         },
@@ -120,7 +120,7 @@ const DB = {
           epNum: 2,
           title: 'Ejderhanı Nasıl Eğitirsin 2',
           desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
-          poster: 'assets/img/httyd2.jpg',
+          poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
           file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
           isYoutube: true
         },
@@ -129,7 +129,7 @@ const DB = {
           epNum: 3,
           title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
           desc: 'Hıçkıdık ejderha ütopyasını ararken, Dişsiz kendi türünden birini bulur.',
-          poster: 'assets/img/httyd3.jpg',
+          poster: 'assets/img/ejderhanınasıleğitirsin3.jpg',
           file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-3',
           isYoutube: true
         }
@@ -145,7 +145,7 @@ const DB = {
       match: '98%',
       meta: '4K Ultra HD',
       rating: '8.5',
-      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
+      highlights: 'Elio\'nun galaksiler arası elçi olarak yaşadığı komik macera.',
       file: 'https://archive.org/embed/elio-2025-teaser',
       isYoutube: true
     },
@@ -154,12 +154,12 @@ const DB = {
       title: 'Dayı 2: Bir Adamın Hikayesi',
       searchTags: 'dayı 2, dayi 2, ufuk bayraktar, aksiyon, dram, türk filmi',
       desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
-      poster: 'assets/img/dayi2.jpg',
+      poster: 'assets/img/dayı2.jpg',
       year: '2025',
       match: '99%',
       meta: '4K Ultra HD',
       rating: '8.9',
-      highlights: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...',
+      highlights: 'Efsane Dayı\'nın adaleti tesis etmek için geri döndüğü yeni hikaye.',
       file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
       isYoutube: true
     }
