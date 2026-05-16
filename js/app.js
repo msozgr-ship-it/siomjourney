@@ -146,9 +146,19 @@ function openPlayer(file) {
   if (!file) return;
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
+  
+  let finalUrl = file;
+  
+  // Pixeldrain Embed Dönüşümü (Refused to connect hatasını çözer)
+  if (file.includes('pixeldrain.com/u/')) {
+    finalUrl = file.replace('pixeldrain.com/u/', 'pixeldrain.com/u/') + '?embed';
+    // Eğer zaten ?embed varsa çift eklemesin
+    if (file.includes('?embed')) finalUrl = file;
+  }
+
   modal.style.display = 'flex';
   modal.classList.add('active');
-  iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
+  iframe.src = finalUrl;
   document.body.style.overflow = 'hidden';
 }
 
