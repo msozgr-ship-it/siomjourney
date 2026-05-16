@@ -1,23 +1,42 @@
+// Uygulama Değişkenleri
+let allContent = [];
+let orbitalContent = [];
+let filteredContent = [];
 let currentOrbitalIndex = 0;
-const allContent = [...DB.movies, ...DB.series];
-const orbitalContent = DB.movies.slice(0, 6);
-let filteredContent = [...allContent];
 
+// UYGULAMA BAŞLATMA (Hata Payını Sıfıra İndiriyoruz)
 function initApp() {
-  renderOrbital();
-  renderContent();
-  setupEventListeners();
+  try {
+    // DB Kontrolü
+    if (typeof DB === 'undefined' || !DB.movies || !DB.series) {
+      console.error("Veri dosyası (data.js) yüklenemedi veya hatalı!");
+      return;
+    }
+
+    // Verileri Birleştir
+    allContent = [...DB.movies, ...DB.series];
+    orbitalContent = DB.movies.slice(0, 8); // Yörünge için ilk 8 filmi al
+    filteredContent = [...allContent];
+
+    renderOrbital();
+    renderContent();
+    setupEventListeners();
+    
+    console.log("SiomJourney başarıyla başlatıldı. İçerik sayısı:", allContent.length);
+  } catch (err) {
+    console.error("Uygulama başlatılırken hata oluştu:", err);
+  }
 }
 
-// 3D ORBITAL LOGIC
+// 3D ORBITAL RENDER
 function renderOrbital() {
   const container = document.getElementById('orbital-container');
   const indicator = document.getElementById('orbital-indicator');
-  if (!container) return;
+  if (!container || orbitalContent.length === 0) return;
   
   container.innerHTML = orbitalContent.map((item, index) => `
     <div class="cf-item ${getOrbitalClass(index)}" onclick="setOrbital(${index})">
-      <img src="${item.poster}" alt="${item.title}">
+      <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
     </div>
   `).join('');
 
@@ -59,10 +78,15 @@ function prevOrbital() {
   renderOrbital();
 }
 
-// CONTENT MATRIX RENDER (SINGLE 10-COLUMN GRID)
+// ANA İÇERİK MATRİSİ RENDER
 function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
+
+  if (filteredContent.length === 0) {
+    content.innerHTML = `<div style="text-align:center; padding:100px; color:var(--text-muted);">Aradığınız kriterde içerik bulunamadı.</div>`;
+    return;
+  }
 
   content.innerHTML = `
     <section class="section-matrix">
@@ -82,7 +106,7 @@ function renderCard(item) {
       <div class="card">
         ${badge}
         <div class="card-rating">⭐ ${item.rating || '9.0'}</div>
-        <img src="${item.poster}" alt="${item.title}">
+        <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
       </div>
       <div class="card-info">
           <h3>${item.title}</h3>
@@ -92,15 +116,15 @@ function renderCard(item) {
   `;
 }
 
-// SEARCH & HOME LOGIC
+// ARAMA VE FİLTRELEME
 function handleSearch(query) {
   const q = query.toLowerCase().trim();
   if (q === '') {
     filteredContent = [...allContent];
   } else {
     filteredContent = allContent.filter(item => 
-      item.title.toLowerCase().includes(q) || 
-      item.searchTags.toLowerCase().includes(q)
+      (item.title && item.title.toLowerCase().includes(q)) || 
+      (item.searchTags && item.searchTags.toLowerCase().includes(q))
     );
   }
   renderContent();
@@ -114,12 +138,14 @@ function resetFilter() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// DETAILS MODAL LOGIC
+// DETAY PANELİ MANTIĞI (Hata Korumalı)
 function openDetails(id) {
   const item = allContent.find(i => i.id === id);
   if (!item) return;
 
   const modal = document.getElementById('details-modal');
+  if (!modal) return;
+
   const poster = document.getElementById('details-poster');
   const title = document.getElementById('details-title');
   const year = document.getElementById('details-year');
@@ -129,12 +155,12 @@ function openDetails(id) {
   const grid = document.getElementById('details-grid');
   const listTitle = document.getElementById('list-title');
 
-  poster.src = item.poster;
-  title.textContent = item.title;
-  year.textContent = item.year;
-  rating.textContent = `⭐ ${item.rating || '9.0'}`;
-  type.textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
-  desc.textContent = item.desc;
+  if (poster) poster.src = item.poster;
+  if (title) title.textContent = item.title;
+  if (year) year.textContent = item.year;
+  if (rating) rating.textContent = `⭐ ${item.rating || '9.0'}`;
+  if (type) type.textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
+  if (desc) desc.textContent = item.desc;
 
   let subItems = [];
   if (item.episodes) {
@@ -150,7 +176,7 @@ function openDetails(id) {
       <div class="ep-card" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
         <div class="ep-header">
             <h3>${sub.epNum ? sub.epNum + '. ' : ''}${sub.title}</h3>
-            <button class="play-btn-mini">HEMEN İZLE</button>
+            <button class="play-btn-mini">İZE</button>
         </div>
         <p>${sub.desc || ''}</p>
       </div>
@@ -159,7 +185,7 @@ function openDetails(id) {
   } else {
     grid.innerHTML = '';
     document.querySelector('.details-list-section').style.display = 'none';
-    desc.innerHTML += `<br><br><button class="ctrl-btn" style="width:auto; padding:0 30px; border-radius:10px; font-size:16px;" onclick="openPlayer('${item.file}')">Hemen İzle</button>`;
+    if (desc) desc.innerHTML += `<br><br><button class="ctrl-btn" style="width:auto; padding:0 30px; border-radius:10px; font-size:16px;" onclick="openPlayer('${item.file}')">Hemen İzle</button>`;
   }
 
   modal.style.display = 'flex';
@@ -173,11 +199,11 @@ function closeDetails() {
   setTimeout(() => modal.style.display = 'none', 500);
 }
 
-// PLAYER LOGIC
+// OYNATICI MANTIĞI
 function openPlayer(file) {
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
-  if (!file) return;
+  if (!modal || !iframe || !file) return;
 
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
@@ -187,7 +213,7 @@ function openPlayer(file) {
 function closePlayer() {
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
-  if (!modal) return;
+  if (!modal || !iframe) return;
   modal.classList.remove('active');
   setTimeout(() => {
     modal.style.display = 'none';
@@ -195,6 +221,7 @@ function closePlayer() {
   }, 600);
 }
 
+// OLAY DİNLEYİCİLER
 function setupEventListeners() {
   const searchInput = document.querySelector('.search-bar input');
   if (searchInput) {
@@ -211,4 +238,5 @@ function setupEventListeners() {
   });
 }
 
+// BAŞLAT
 document.addEventListener('DOMContentLoaded', initApp);
