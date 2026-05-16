@@ -1,103 +1,65 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SiomJourney | Spatial Cinema Edition</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SiomJourney | S-Orbital Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="bg-spatial"></div>
+    <div class="bg-spatial"></div>
 
-<header class="top-nav">
-  <div class="nav-left">
-    <div class="logo-s-small">S</div>
-    <nav class="nav-links">
-      <a href="#" class="active">Browse</a>
-      <a href="#">My List</a>
-      <a href="#">Settings</a>
-    </nav>
-  </div>
-  <div class="nav-right">
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="main-search" placeholder="Search" onfocus="openSearch()">
+    <div class="main-wrapper">
+        <!-- S-MATRIX SIDEBAR -->
+        <aside class="s-sidebar">
+            <div class="logo-area">
+                <div class="logo-s-giant">S</div>
+                <div class="brand-name">SiomJourney</div>
+            </div>
+            
+            <nav class="side-nav">
+                <a href="#" class="active">ANASAYFA</a>
+                <a href="#">FİLMLER</a>
+                <a href="#">DİZİLER</a>
+                <a href="#">LİSTEM</a>
+            </nav>
+
+            <div class="user-area">
+                <img src="https://i.pravatar.cc/150?u=siom" alt="User" style="width:55px; height:55px; border-radius:50%; border:2px solid var(--accent); cursor:pointer;">
+            </div>
+        </aside>
+
+        <!-- CONTENT HUB -->
+        <main class="content-matrix">
+            
+            <!-- S-ORBITAL HERO -->
+            <section class="hero-orbital">
+                <div class="orbital-container" id="orbital-container">
+                    <!-- JS ile dolacak -->
+                </div>
+                
+                <div class="cf-title-overlay">
+                    <h1 id="cf-title">Yükleniyor...</h1>
+                    <div id="cf-meta">2025 • S-ORBITAL EDITION</div>
+                </div>
+            </section>
+
+            <!-- CATEGORY MATRIX -->
+            <div id="content-matrix">
+                <!-- Kategoriler JS ile buraya dolacak -->
+            </div>
+
+        </main>
     </div>
-    <div class="user-profile">
-      <img src="https://i.pravatar.cc/150?u=siom" alt="User">
-      <span>A. Chen</span>
-    </div>
-  </div>
-</header>
 
-<div class="main-container">
-  <!-- HERO SECTION -->
-  <section class="hero-spatial">
-    <div class="hero-bg-text">SPATIAL CINEMA</div>
-    <div class="hero-subtitle">EXPLORE NEW FRONTIERS</div>
-    
-    <div class="orbital-wrapper">
-      <div class="giant-s-neon">S</div>
-      <div class="orbital-belt" id="coverflow-container">
-        <!-- JS ile dolacak -->
-      </div>
+    <!-- PLAYER MODAL -->
+    <div id="player-modal">
+        <div class="close-btn" onclick="closePlayer()">✕</div>
+        <iframe id="player-frame" allow="autoplay; fullscreen" allowfullscreen="true"></iframe>
     </div>
 
-    <div class="orbital-controls">
-      <button class="ctrl-btn" onclick="prevOrbital()">❮</button>
-      <div class="ctrl-indicator"></div>
-      <button class="ctrl-btn" onclick="nextOrbital()">❯</button>
-    </div>
-  </section>
-
-  <!-- CONTENT MATRIX -->
-  <main class="content-matrix" id="kutuphane">
-    <!-- Kategoriler JS ile buraya Matrix düzeninde dolacak -->
-  </main>
-</div>
-
-<!-- MODALS -->
-<div id="series-modal">
-  <div class="close-btn" onclick="closeSeriesModal()">✕</div>
-  <div class="series-modal-content">
-    <div class="series-header">
-      <img id="sm-poster" class="series-poster" src="" alt="Poster">
-      <div class="series-info">
-        <h2 id="sm-title"></h2>
-        <p id="sm-desc"></p>
-      </div>
-    </div>
-    <div class="episodes-list" id="sm-episodes"></div>
-  </div>
-</div>
-
-<div id="player-modal">
-  <div class="close-btn" onclick="closePlayer()">✕</div>
-  <div class="player-container" id="player-container">
-    <div class="player-loader" id="player-loader"></div>
-    <video id="video-player" playsinline webkit-playsinline preload="none"></video>
-    <iframe id="yt-player" allow="autoplay; fullscreen" allowfullscreen="true" style="display:none;"></iframe>
-    <div id="coming-soon-overlay" class="coming-soon-overlay" style="display:none;">
-      <div class="soon-content">
-        <div class="soon-badge">YAKINDA</div>
-        <h1>Bu İçerik Hazırlanıyor</h1>
-        <p>SiomJourney ekibi bu içeriği hazırlıyor. Lütfen takipte kal!</p>
-        <div class="soon-loader"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="search-modal">
-  <div class="close-btn" onclick="closeSearch()">✕</div>
-  <div class="search-container">
-    <input type="text" id="search-input" placeholder="SiomJourney'de ara..." autocomplete="off">
-    <div class="search-results cards-row" id="search-results" style="display:flex; flex-wrap:wrap; gap:15px;"></div>
-  </div>
-</div>
-
-<script src="js/data.js"></script>
-<script src="js/app.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
