@@ -1,4 +1,4 @@
-// Bakım Modu Kapalı (Yayına açık)
+// Bakım Modu Kapalı
 const MAINTENANCE_MODE = false;
 
 let allContent = [];
@@ -6,15 +6,13 @@ let orbitalContent = [];
 let filteredContent = [];
 let currentOrbitalIndex = 0;
 
-// UYGULAMA BAŞLATMA
 function initApp() {
   try {
     if (typeof DB === 'undefined') {
-      console.error("DB bulunamadı!");
+      console.error("KRİTİK HATA: data.js yüklenemedi!");
       return;
     }
     
-    // Verileri Birleştir
     allContent = [...DB.movies, ...DB.series];
     orbitalContent = DB.movies.slice(0, 8); 
     filteredContent = [...allContent];
@@ -23,22 +21,19 @@ function initApp() {
     renderContent();
     setupEventListeners();
     
-    // Varsa bakım ekranını temizle
-    const maintenance = document.getElementById('maintenance-screen');
-    if (maintenance) maintenance.style.display = 'none';
-
+    console.log("Sistem Hazır. Toplam İçerik:", allContent.length);
   } catch (err) {
     console.error("Başlatma hatası:", err);
   }
 }
 
-// 3D ORBITAL
+// 3D ORBITAL - TIKLAMA DÜZELTİLDİ
 function renderOrbital() {
   const container = document.getElementById('orbital-container');
   if (!container || orbitalContent.length === 0) return;
   
   container.innerHTML = orbitalContent.map((item, index) => `
-    <div class="cf-item ${getOrbitalClass(index)}" onclick="setOrbital(${index})">
+    <div class="cf-item ${getOrbitalClass(index)}" onclick="handleOrbitalClick(${index}, '${item.id}')">
       <img src="${item.poster}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x450?text=Afiş+Yok'">
     </div>
   `).join('');
@@ -47,6 +42,16 @@ function renderOrbital() {
   if (indicator) {
     const progress = ((currentOrbitalIndex + 1) / orbitalContent.length) * 100;
     indicator.style.setProperty('--progress', `${progress}%`);
+  }
+}
+
+function handleOrbitalClick(index, id) {
+  if (index === currentOrbitalIndex) {
+    // Eğer zaten aktifse, filmi/detayı aç
+    openDetails(id);
+  } else {
+    // Değilse, o afişi merkeze getir
+    setOrbital(index);
   }
 }
 
@@ -107,7 +112,7 @@ function renderContent() {
   `;
 }
 
-// ARAMA MANTIĞI
+// ARAMA SİSTEMİ
 function setupSearch() {
   const input = document.getElementById('search-input');
   if (!input) return;
@@ -139,26 +144,33 @@ function resetFilter() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// DETAY VE OYNATICI (KRİTİK DÜZELTME)
+// PANEL AÇMA (DÜZELTİLDİ)
 function openDetails(id) {
   const item = allContent.find(i => i.id === id);
-  if (!item) return;
+  if (!item) {
+    console.error("İçerik bulunamadı:", id);
+    return;
+  }
 
   const modal = document.getElementById('details-modal');
   if (!modal) return;
 
-  // İçeriği Doldur
-  document.getElementById('details-poster').src = item.poster;
-  document.getElementById('details-title').textContent = item.title;
-  document.getElementById('details-year').textContent = item.year;
-  document.getElementById('details-rating').textContent = `⭐ ${item.rating || '9.0'}`;
-  document.getElementById('details-type').textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
-  
-  const descEl = document.getElementById('details-desc');
-  descEl.textContent = item.desc;
-
+  // Görselleri ve Bilgileri Bas
+  const poster = document.getElementById('details-poster');
+  const title = document.getElementById('details-title');
+  const year = document.getElementById('details-year');
+  const rating = document.getElementById('details-rating');
+  const type = document.getElementById('details-type');
+  const desc = document.getElementById('details-desc');
   const grid = document.getElementById('details-grid');
   const listSection = document.querySelector('.details-list-section');
+
+  if (poster) poster.src = item.poster;
+  if (title) title.textContent = item.title;
+  if (year) year.textContent = item.year;
+  if (rating) rating.textContent = `⭐ ${item.rating || '9.0'}`;
+  if (type) type.textContent = item.episodes ? 'Dizi' : (item.isCollection ? 'Koleksiyon' : 'Film');
+  if (desc) desc.textContent = item.desc;
 
   let subItems = [];
   if (item.episodes) subItems = item.episodes;
@@ -178,10 +190,13 @@ function openDetails(id) {
   } else {
     listSection.style.display = 'none';
     grid.innerHTML = '';
-    // Direkt filmse "Hemen İzle" butonu ekle
-    descEl.innerHTML += `<br><br><button class="ctrl-btn" style="width:auto; padding:0 30px; border-radius:10px; font-size:16px;" onclick="openPlayer('${item.file}')">Hemen İzle</button>`;
+    // Tekil filmse direkt oynat butonu ekle
+    if (desc) {
+      desc.innerHTML += `<br><br><button class="ctrl-btn" style="width:auto; padding:0 30px; border-radius:10px; font-size:16px;" onclick="openPlayer('${item.file}')">Hemen İzle</button>`;
+    }
   }
 
+  // Modalı Göster
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
 }
