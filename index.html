@@ -5,41 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2.3">
+    <link rel="stylesheet" href="css/style.css?v=2.5">
 </head>
 <body>
     <div class="bg-spatial"></div>
 
-    <!-- TOP NAVIGATION -->
     <header class="top-nav">
         <div class="nav-left">
             <div class="logo-s-small">S</div>
-            <nav class="nav-links">
-                <a href="#" class="active" onclick="resetFilter()">Anasayfa</a>
-            </nav>
+            <nav class="nav-links"><a href="#" onclick="resetFilter()">Anasayfa</a></nav>
         </div>
         <div class="nav-right">
-            <div class="search-container">
-                <div class="search-bar">
-                    <input type="text" id="search-input" placeholder="Arama...">
-                </div>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Arama...">
             </div>
         </div>
     </header>
 
     <div class="main-container">
-        <!-- HERO SPATIAL SECTION -->
         <section class="hero-spatial">
-            <div class="hero-bg-text">SPATIAL</div>
-            <div class="hero-subtitle">SIOMJOURNEY VISION</div>
-            
             <div class="orbital-wrapper">
                 <div class="giant-s-neon">S</div>
-                <div class="orbital-belt" id="orbital-container">
-                    <!-- Dinamik İçerik -->
-                </div>
+                <div class="orbital-belt" id="orbital-container"></div>
             </div>
-
             <div class="orbital-controls">
                 <button class="ctrl-btn" onclick="prevOrbital()">❮</button>
                 <div class="ctrl-indicator" id="orbital-indicator"></div>
@@ -47,29 +35,15 @@
             </div>
         </section>
 
-        <!-- CONTENT MATRIX -->
-        <main class="content-matrix" id="content-matrix">
-            <!-- Izgara düzeni JS ile dolacak -->
-        </main>
+        <main class="content-matrix" id="content-matrix"></main>
     </div>
 
-    <!-- DETAILS MODAL (ONLY FOR SERIES) -->
+    <!-- SERIES LIST MODAL -->
     <div id="details-modal" class="details-modal">
         <div class="modal-close" onclick="closeDetails()">✕</div>
-        <div class="modal-content">
-            <div class="details-hero">
-                <img id="details-poster" src="" alt="">
-                <div class="details-main-info">
-                    <h1 id="details-title"></h1>
-                    <div id="details-year" style="display:none"></div>
-                    <div id="details-rating" style="display:none"></div>
-                    <div id="details-type" style="display:none"></div>
-                    <p id="details-desc" style="display:none"></p>
-                </div>
-            </div>
-            <div class="details-list-section">
-                <div class="details-grid" id="details-grid"></div>
-            </div>
+        <div class="modal-inner">
+            <h1 id="details-title"></h1>
+            <div class="series-grid" id="details-grid"></div>
         </div>
     </div>
 
@@ -81,7 +55,7 @@
         </div>
     </div>
 
-    <script src="js/data.js?v=2.3"></script>
-    <script src="js/app.js?v=2.3"></script>
+    <script src="js/data.js?v=2.5"></script>
+    <script src="js/app.js?v=2.5"></script>
 </body>
 </html>

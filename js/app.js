@@ -1,4 +1,4 @@
-// Versiyon 2.4 - Seri & Görsellik Düzeltmesi
+// Versiyon 2.5 - Kararlı Çözünürlük ve Seri Düzeltmesi
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
@@ -21,21 +21,18 @@ function initApp() {
       if (e.key === 'ArrowLeft') prevOrbital();
     });
   } catch (err) {
-    console.error("Başlatma Hatası:", err);
+    console.error("Sistem hatası:", err);
   }
 }
 
-// 3D ORBITAL
 function renderOrbital() {
   const container = document.getElementById('orbital-container');
   if (!container) return;
-  
   container.innerHTML = orbitalContent.map((item, index) => `
     <div class="cf-item ${getOrbitalClass(index)}" onclick="handleItemClick('${item.id}', ${index}, true)">
       <img src="${item.poster}" alt="">
     </div>
   `).join('');
-
   const indicator = document.getElementById('orbital-indicator');
   if (indicator) {
     const progress = ((currentOrbitalIndex + 1) / orbitalContent.length) * 100;
@@ -72,11 +69,9 @@ function prevOrbital() {
   renderOrbital();
 }
 
-// MATRİS RENDER
 function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
-
   content.innerHTML = `
     <div class="movie-grid">
       ${filteredContent.map(item => `
@@ -115,42 +110,35 @@ function setupSearch() {
   });
 }
 
-// SERİ PANELİ (Görsel Poster Izgarası)
 function openDetails(id) {
   const item = allContent.find(i => i.id === id);
   if (!item) return;
-
   const modal = document.getElementById('details-modal');
   const grid = document.getElementById('details-grid');
+  const title = document.getElementById('details-title');
   
-  document.getElementById('details-poster').style.display = 'none'; // Yan afişi gizle, ızgaraya odaklan
-  document.getElementById('details-title').textContent = item.title;
+  if (title) title.textContent = item.title;
 
   let subItems = item.episodes || item.collection || [];
-  
-  // Seriyi de görsel bir ızgara yapıyoruz (Sadece Afişler)
-  grid.style.display = "grid";
-  grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(150px, 1fr))";
-  grid.style.gap = "20px";
-  
   grid.innerHTML = subItems.map(sub => `
     <div class="card-wrapper" onclick="event.stopPropagation(); openPlayer('${sub.file}')">
       <div class="card">
         <img src="${sub.poster || item.poster}" alt="">
       </div>
-      <div style="font-size:12px; margin-top:5px; text-align:center; font-weight:700;">${sub.title}</div>
+      <div style="font-size:12px; margin-top:8px; font-weight:700;">${sub.title}</div>
     </div>
   `).join('');
 
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
+  document.body.style.overflow = 'hidden';
 }
 
 function closeDetails() {
   const modal = document.getElementById('details-modal');
   if (modal) {
     modal.classList.remove('active');
-    setTimeout(() => modal.style.display = 'none', 500);
+    setTimeout(() => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }, 500);
   }
 }
 
@@ -158,11 +146,10 @@ function openPlayer(file) {
   if (!file) return;
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
-  
   modal.style.display = 'flex';
-  modal.style.zIndex = "50000"; // En üstte olduğundan emin ol
   modal.classList.add('active');
   iframe.src = file.includes('?') ? `${file}&autoplay=1` : `${file}?autoplay=1`;
+  document.body.style.overflow = 'hidden';
 }
 
 function closePlayer() {
@@ -170,7 +157,7 @@ function closePlayer() {
   const iframe = document.getElementById('player-frame');
   if (modal) {
     modal.classList.remove('active');
-    setTimeout(() => { modal.style.display = 'none'; iframe.src = ''; }, 500);
+    setTimeout(() => { modal.style.display = 'none'; iframe.src = ''; document.body.style.overflow = 'auto'; }, 500);
   }
 }
 
