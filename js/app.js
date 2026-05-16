@@ -1,4 +1,4 @@
-// Versiyon 3.2 - Satürn Halkası (Inclined Ellipse) Motoru
+// Versiyon 3.3 - Kompakt Satürn Halkası
 let allContent = [];
 let orbitalContent = [];
 let filteredContent = [];
@@ -8,7 +8,7 @@ function initApp() {
   try {
     if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
-    orbitalContent = DB.movies.slice(0, 18); // Halkanın daha dolu görünmesi için kart sayısını artırdık
+    orbitalContent = DB.movies.slice(0, 18); 
     filteredContent = [...allContent];
 
     renderOrbital();
@@ -42,32 +42,28 @@ function updateOrbitalTransforms() {
   const count = items.length;
   const angleStep = 360 / count;
   
-  // SATÜRN HALKASI PARAMETRELERİ
-  const radiusX = 1000; // Genişlik
-  const radiusZ = 350;  // Derinlik (Basık elips)
+  // DARALTILMIŞ KOMPAKT PARAMETRELER
+  const radiusX = 650; // Daha dar
+  const radiusZ = 280; // Daha basık ve yakın
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
     const rad = (angle * Math.PI) / 180;
-    
     const x = Math.sin(rad) * radiusX;
     const z = Math.cos(rad) * radiusZ;
     
-    // transform: Eğimli halka üzerinde dik duran kartlar
-    // Not: CSS'deki .orbital-belt rotateX(65deg) ile eğildiği için burada kartları dik tutuyoruz
     item.style.transform = `translate3d(${x}px, 0, ${z}px) rotateY(${angle}deg) rotateX(-65deg)`;
     
     const normalizedAngle = ((angle % 360) + 360) % 360;
     if (normalizedAngle < 15 || normalizedAngle > 345) {
       item.classList.add('active');
       item.style.opacity = "1";
-      item.style.filter = "brightness(1.2) contrast(1.1)";
+      item.style.filter = "brightness(1.2) drop-shadow(0 0 20px rgba(255,15,35,0.5))";
     } else {
       item.classList.remove('active');
-      // Arka tarafa gidenleri (90-270 derece arası) iyice sönükleştir
-      const isBack = normalizedAngle > 60 && normalizedAngle < 300;
-      item.style.opacity = isBack ? "0.1" : "0.6";
-      item.style.filter = isBack ? "blur(2px) grayscale(0.5)" : "none";
+      const isBack = normalizedAngle > 70 && normalizedAngle < 290;
+      item.style.opacity = isBack ? "0.08" : "0.5";
+      item.style.filter = isBack ? "blur(3px)" : "none";
     }
   });
 }

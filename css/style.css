@@ -19,21 +19,37 @@ body::after {
     z-index: -1; pointer-events: none;
 }
 
-/* HERO SECTION - SATURN DEPTH */
+/* HERO SECTION - COMPACT SATURN DEPTH */
 .hero-spatial {
     position: relative; height: 100vh; width: 100%;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    perspective: 2500px; overflow: hidden;
+    perspective: 3000px; overflow: hidden;
 }
 
-/* THE GIANT 3D S (Merkezde) */
+/* THE AFİLLİ 3D GLASS NEON S */
 .giant-s-neon {
-    font-size: 40vw; font-weight: 900; color: var(--accent);
+    font-size: 35vw; font-weight: 900; color: transparent;
     position: absolute; left: 50%; top: 45%; 
-    transform: translate(-50%, -50%) translateZ(-300px);
-    opacity: 0.3; text-shadow: var(--s-glow);
-    filter: blur(1px); user-select: none;
-    z-index: 1;
+    transform: translate(-50%, -50%) translateZ(-400px);
+    
+    /* 3D Cam ve Neon Katmanları */
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.4);
+    text-shadow: 
+        0 0 20px rgba(255, 15, 35, 0.8),
+        0 0 40px rgba(255, 15, 35, 0.4),
+        -5px 5px 0px rgba(255, 15, 35, 0.5), /* 3D Gölge */
+        -10px 10px 0px rgba(0, 0, 0, 0.8);
+    
+    background: linear-gradient(to bottom, #fff, var(--accent), #000);
+    -webkit-background-clip: text;
+    background-clip: text;
+    
+    opacity: 0.5; user-select: none; z-index: 1;
+    animation: sAfilli 5s infinite ease-in-out;
+}
+@keyframes sAfilli { 
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) translateZ(-400px) rotate(0deg); filter: blur(1px); } 
+    50% { opacity: 0.6; transform: translate(-50%, -52%) translateZ(-350px) rotate(-1deg); filter: blur(0px); } 
 }
 
 /* SATURN RING BELT */
