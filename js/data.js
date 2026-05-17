@@ -222,17 +222,36 @@ const DB = {
     },
     {
       id: 'm6',
-      title: 'Dayı 2: Bir Adamın Hikayesi',
-      searchTags: 'dayı 2, dayi 2, ufuk bayraktar, aksiyon, dram, türk filmi',
-      desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
+      title: 'Dayı Serisi',
+      searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi, koleksiyon',
+      desc: 'Dayı\'nın adalet mücadelesi ve efsanevi hikayesi tek bir koleksiyonda. Ufuk Bayraktar\'ın başrolünde yer aldığı aksiyon dolu yapımlar.',
       poster: 'assets/img/dayı2.jpg',
-      year: '2025',
+      isCollection: true,
+      year: 'Koleksiyon',
       match: '99%',
-      meta: '4K Ultra HD',
+      meta: '2 Film',
       rating: '8.9',
-      highlights: 'Efsane Dayı\'nın adaleti tesis etmek için geri döndüğü yeni hikaye.',
-      file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
-      isYoutube: true
+      highlights: 'Dayı\'nın adalet mücadelesi ve efsanevi kabadayılık raconları tek bir çatı altında.',
+      collection: [
+        {
+          id: 'm6f1',
+          epNum: 1,
+          title: 'Dayı: Bir Adamın Hikayesi (2021)',
+          desc: 'Adil ve cesur bir adam olan Cevahir\'in, İstanbul sokaklarında adaleti arama ve kabadayılık dünyasına adım atış hikayesi.',
+          poster: 'assets/img/dayı2.jpg',
+          file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi',
+          isYoutube: true
+        },
+        {
+          id: 'm6f2',
+          epNum: 2,
+          title: 'Dayı 2: Bir Adamın Hikayesi (2025)',
+          desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
+          poster: 'assets/img/dayı2.jpg',
+          file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
+          isYoutube: true
+        }
+      ]
     }
   ]
 };
