@@ -82,8 +82,8 @@ function updateOrbitalTransforms() {
   const count = items.length;
   const angleStep = 360 / count;
   const isMobile = window.innerWidth < 768;
-  const radiusX = isMobile ? window.innerWidth * 0.45 : 850; 
-  const radiusZ = isMobile ? window.innerWidth * 0.18 : 380;
+  const radiusX = isMobile ? window.innerWidth * 0.38 : 700; 
+  const radiusZ = isMobile ? window.innerWidth * 0.14 : 280;
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;
