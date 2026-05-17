@@ -217,7 +217,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '8.5',
       highlights: 'Elio\'nun galaksiler arası elçi olarak yaşadığı komik macera.',
-      file: 'https://archive.org/embed/elio-2025-teaser',
+      file: 'https://archive.org/embed/elio_20260516',
       isYoutube: true
     },
     {
