@@ -51,7 +51,7 @@ const DB = {
       id: "the-wampire-hunter-movie",
       title: "The Vampire Hunter",
       poster: "assets/img/thewampirehunter.jpeg",
-      file: "https://pixeldrain.com/u/VAMPIRE_ID",
+      file: "https://archive.org/embed/vampire-hunter-d-bloodlust_202605",
       searchTags: "the vampire hunter, vampir avcısı, aksiyon, macera, korku, fantastik, 2024",
       isNew: true
     },
