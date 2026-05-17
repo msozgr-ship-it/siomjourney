@@ -225,7 +225,7 @@ const DB = {
       title: 'Dayı Serisi',
       searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi, koleksiyon',
       desc: 'Dayı\'nın adalet mücadelesi ve efsanevi hikayesi tek bir koleksiyonda. Ufuk Bayraktar\'ın başrolünde yer aldığı aksiyon dolu yapımlar.',
-      poster: 'assets/img/dayı2.jpg',
+      poster: 'assets/img/dayımain.jpg',
       isCollection: true,
       year: 'Koleksiyon',
       match: '99%',
@@ -238,7 +238,7 @@ const DB = {
           epNum: 1,
           title: 'Dayı: Bir Adamın Hikayesi (2021)',
           desc: 'Adil ve cesur bir adam olan Cevahir\'in, İstanbul sokaklarında adaleti arama ve kabadayılık dünyasına adım atış hikayesi.',
-          poster: 'assets/img/dayı2.jpg',
+          poster: 'assets/img/dayı1.jpg',
           file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi',
           isYoutube: true
         },
