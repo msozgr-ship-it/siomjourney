@@ -144,24 +144,32 @@ function startPauseTimer(ms) {
 function renderOrbital() {
   const container = document.getElementById('orbital-container');
   if (!container) return;
-  container.innerHTML = orbitalContent.map((item, index) => `
-    <div class="cf-item" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
-      <div class="neon-rim"></div>
-      <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
-    </div>
-  `).join('');
+  container.innerHTML = orbitalContent.map((item, index) => {
+    const isColl = item.isCollection || item.episodes;
+    return `
+      <div class="cf-item ${isColl ? 'collection-stack' : ''}" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
+        ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+        <div class="neon-rim"></div>
+        <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+      </div>
+    `;
+  }).join('');
 }
 
 function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
-  content.innerHTML = `<div class="movie-grid">${filteredContent.map(item => `
-    <div class="card-wrapper" onclick="handleItemClick('${item.id}')">
-      <div class="card">
-        ${(item.isCollection || item.episodes) ? '<div class="card-badge">SERİ</div>' : ''}
-        <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+  content.innerHTML = `<div class="movie-grid">${filteredContent.map(item => {
+    const isColl = item.isCollection || item.episodes;
+    return `
+      <div class="card-wrapper ${isColl ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
+        <div class="card">
+          ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+          <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+        </div>
       </div>
-    </div>`).join('')}</div>`;
+    `;
+  }).join('')}</div>`;
 }
 
 function handleItemClick(id) {
