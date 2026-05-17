@@ -26,6 +26,8 @@ function initApp() {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { closePlayer(); closeDetails(); }
     });
+
+    window.addEventListener('resize', updateOrbitalTransforms);
   } catch (err) {
     console.error("Sistem hatası:", err);
   }
@@ -79,8 +81,9 @@ function updateOrbitalTransforms() {
   if (!items.length) return;
   const count = items.length;
   const angleStep = 360 / count;
-  const radiusX = 850; 
-  const radiusZ = 380;
+  const isMobile = window.innerWidth < 768;
+  const radiusX = isMobile ? window.innerWidth * 0.45 : 850; 
+  const radiusZ = isMobile ? window.innerWidth * 0.18 : 380;
 
   items.forEach((item, i) => {
     const angle = (i * angleStep) + currentRotation;

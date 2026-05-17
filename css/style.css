@@ -4,6 +4,12 @@
   --text: #fff;
   --s-glow: 0 0 20px rgba(255, 15, 35, 0.8), 0 0 50px rgba(255, 15, 35, 0.4), 0 0 100px rgba(255, 15, 35, 0.2);
   --neon-border: 0 0 10px rgba(255,15,35,0.5), inset 0 0 10px rgba(255,15,35,0.2);
+  
+  /* Dynamic Dimensions for Mobile Scaling */
+  --card-w: 160px;
+  --card-h: 240px;
+  --card-active-w: 220px;
+  --card-active-h: 330px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -136,7 +142,7 @@ body::after {
 
 /* FANTASTIC CARDS IMPROVED */
 .cf-item {
-    position: absolute; width: 160px; height: 240px; border-radius: 8px;
+    position: absolute; width: var(--card-w); height: var(--card-h); border-radius: 8px;
     overflow: hidden; transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     cursor: pointer; background: #000; border: 1px solid rgba(255,255,255,0.2);
     box-shadow: 0 20px 40px rgba(0,0,0,0.9);
@@ -145,7 +151,7 @@ body::after {
 .cf-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.5s; }
 
 .cf-item.active { 
-    width: 220px; height: 330px;
+    width: var(--card-active-w); height: var(--card-active-h);
     border-color: var(--accent);
     box-shadow: 0 0 60px rgba(255,15,35,0.6), 0 40px 80px rgba(0,0,0,1);
     z-index: 1000;
@@ -329,3 +335,152 @@ body::after {
 .cs-close:hover { opacity: 1; transform: rotate(90deg); color: var(--accent); }
 @media (max-width: 1000px) { .movie-grid { grid-template-columns: repeat(5, 1fr); } }
 @media (max-width: 600px) { .movie-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* PREMIUM MOBILE OPTIMIZATIONS (<768px) */
+@media (max-width: 768px) {
+  :root {
+    --card-w: 80px;
+    --card-h: 120px;
+    --card-active-w: 110px;
+    --card-active-h: 165px;
+  }
+  
+  /* Top Nav Adjustments */
+  .top-nav {
+      height: 65px;
+      padding: 0 20px;
+  }
+  .logo-s-small {
+      font-size: 24px;
+  }
+  .nav-left {
+      gap: 15px;
+  }
+  .nav-links a {
+      font-size: 10px;
+      letter-spacing: 1px;
+  }
+  .search-bar {
+      padding: 6px 14px;
+  }
+  .search-bar input {
+      width: 100px;
+      font-size: 11px;
+  }
+  
+  /* Hero 3D Spatial Adjustments */
+  .hero-spatial {
+      height: 40vh;
+      margin-top: 65px;
+  }
+  .orbital-belt {
+      transform: rotateX(45deg) translateY(70px);
+  }
+  .giant-s-neon {
+      font-size: 45vw;
+      transform: translate(-50%, -50%) translateZ(-350px);
+  }
+  .orbital-wrapper::after {
+      width: 150%;
+      left: -25%;
+      top: 60%;
+  }
+  
+  /* Content Matrix Adjustments */
+  .content-matrix {
+      padding: 30px 15px;
+  }
+  .movie-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 8px;
+  }
+  
+  /* Card Badges for mobile */
+  .card-badge {
+      top: 6px;
+      left: 6px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 7px;
+      gap: 3px;
+  }
+  .card-badge::before {
+      width: 4px;
+      height: 4px;
+  }
+  
+  /* Series Modal Adjustments */
+  .modal-inner {
+      padding: 30px 15px;
+      width: 95%;
+      border-radius: 20px;
+      max-height: 90vh;
+  }
+  .modal-inner h1 {
+      font-size: 20px;
+      letter-spacing: 2px;
+      margin-bottom: 25px;
+  }
+  .series-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 0;
+  }
+  .series-item h3 {
+      font-size: 9px;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+  }
+  .modal-close {
+      top: 15px;
+      right: 15px;
+      font-size: 18px;
+  }
+  
+  /* Coming Soon Modal Adjustments */
+  .cs-card {
+      width: 90%;
+      padding: 25px 15px;
+      border-radius: 25px;
+  }
+  .cs-content h2 {
+      font-size: 22px;
+  }
+  .cs-content p {
+      font-size: 12px;
+      margin-bottom: 20px;
+  }
+  .cs-badge {
+      margin-bottom: 15px;
+      font-size: 8px;
+      padding: 4px 10px;
+  }
+  .cs-close {
+      top: 15px;
+      right: 15px;
+      font-size: 16px;
+  }
+  
+  /* Player Modal Adjustments */
+  .close-btn {
+      top: 15px;
+      right: 15px;
+      font-size: 30px;
+  }
+}
+
+/* VERY SMALL SCREENS (<400px) */
+@media (max-width: 400px) {
+  .movie-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .series-grid {
+      grid-template-columns: repeat(2, 1fr);
+  }
+  .logo-s-small {
+      font-size: 20px;
+  }
+  .nav-links {
+      display: none; /* Mobilde anasayfa linkini yer kazanmak için saklıyoruz */
+  }
+}
