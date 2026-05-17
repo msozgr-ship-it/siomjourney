@@ -180,12 +180,104 @@ function handleItemClick(id) {
 
 function setupSearch() {
   const input = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear');
+  const resultsPanel = document.getElementById('search-results-panel');
   if (!input) return;
+
   input.addEventListener('input', (e) => {
     const q = e.target.value.toLowerCase().trim();
-    filteredContent = allContent.filter(item => (item.title && item.title.toLowerCase().includes(q)) || (item.searchTags && item.searchTags.toLowerCase().includes(q)));
+    
+    // Temizleme butonu kontrolü
+    if (q.length > 0) {
+      if (clearBtn) clearBtn.classList.add('active');
+      if (resultsPanel) {
+        resultsPanel.style.display = 'flex';
+        setTimeout(() => resultsPanel.classList.add('active'), 10);
+      }
+    } else {
+      if (clearBtn) clearBtn.classList.remove('active');
+      if (resultsPanel) {
+        resultsPanel.classList.remove('active');
+        setTimeout(() => resultsPanel.style.display = 'none', 300);
+      }
+    }
+
+    // Ana kütüphane grid filtreleme
+    filteredContent = allContent.filter(item => 
+      (item.title && item.title.toLowerCase().includes(q)) || 
+      (item.searchTags && item.searchTags.toLowerCase().includes(q))
+    );
     renderContent();
+
+    // Spotlight hızlı öneriler panelini render etme
+    if (q.length > 0 && resultsPanel) {
+      const matches = allContent.filter(item => 
+        (item.title && item.title.toLowerCase().includes(q)) || 
+        (item.searchTags && item.searchTags.toLowerCase().includes(q))
+      ).slice(0, 5); // En iyi 5 eşleşmeyi al
+
+      if (matches.length > 0) {
+        resultsPanel.innerHTML = matches.map(item => {
+          const isColl = item.isCollection || item.episodes;
+          const ratingText = item.rating ? `⭐ <span>${item.rating}</span>` : 'Yakında';
+          const typeText = isColl ? 'Seri' : 'Film';
+          return `
+            <div class="search-result-item" onclick="handleSuggestionClick('${item.id}')">
+              <img src="${item.poster}" alt="">
+              <div class="search-result-info">
+                <div class="search-result-title">${item.title}</div>
+                <div class="search-result-meta">${item.year || '2024'} • ${typeText} • ${ratingText}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        resultsPanel.innerHTML = `<div class="search-no-results">Aradığınız kriterlere uygun sonuç bulunamadı.</div>`;
+      }
+    }
   });
+
+  // Dışarı tıklandığında paneli gizleme
+  document.addEventListener('click', (e) => {
+    if (resultsPanel && !e.target.closest('#search-container')) {
+      resultsPanel.classList.remove('active');
+      setTimeout(() => resultsPanel.style.display = 'none', 300);
+    }
+  });
+
+  // Odaklanıldığında sorgu varsa paneli tekrar açma
+  input.addEventListener('focus', () => {
+    if (input.value.trim().length > 0 && resultsPanel) {
+      resultsPanel.style.display = 'flex';
+      setTimeout(() => resultsPanel.classList.add('active'), 10);
+    }
+  });
+}
+
+function handleSuggestionClick(id) {
+  const resultsPanel = document.getElementById('search-results-panel');
+  if (resultsPanel) {
+    resultsPanel.classList.remove('active');
+    setTimeout(() => resultsPanel.style.display = 'none', 300);
+  }
+  handleItemClick(id);
+}
+
+function clearSearchInput(event) {
+  if (event) event.stopPropagation();
+  const input = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear');
+  const resultsPanel = document.getElementById('search-results-panel');
+  
+  if (input) input.value = '';
+  if (clearBtn) clearBtn.classList.remove('active');
+  if (resultsPanel) {
+    resultsPanel.classList.remove('active');
+    setTimeout(() => resultsPanel.style.display = 'none', 300);
+  }
+  
+  resetFilter();
+  if (input) input.focus();
 }
 
 function openDetails(id) {

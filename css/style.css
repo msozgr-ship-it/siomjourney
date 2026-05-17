@@ -56,29 +56,99 @@ body::after {
 }
 .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
-/* PROFESSIONAL SEARCH PILL */
-.search-container { position: relative; }
+/* ULTRA-PROFESSIONAL SPATIAL SEARCH CONTEXT */
+.search-container {
+    position: relative;
+    z-index: 16000;
+}
 .search-bar { 
     display: flex; align-items: center; gap: 12px;
-    background: rgba(255, 255, 255, 0.03); 
-    border: 1px solid rgba(255, 255, 255, 0.08); 
-    border-radius: 40px; padding: 8px 25px; 
-    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    background: rgba(255, 255, 255, 0.02); 
+    border: 1px solid rgba(255, 255, 255, 0.06); 
+    border-radius: 40px; padding: 10px 20px; 
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);
+    position: relative;
+    width: 230px;
 }
 .search-bar:focus-within { 
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.06);
     border-color: var(--accent);
-    box-shadow: 0 0 30px rgba(255, 15, 35, 0.15);
-    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(255, 15, 35, 0.25), inset 0 2px 10px rgba(0,0,0,0.5);
+    width: 300px;
 }
-.search-bar i { color: var(--accent); font-size: 14px; opacity: 0.7; }
+
+/* Vector SVG search icon */
+.search-icon {
+    width: 14px; height: 14px;
+    color: #fff; opacity: 0.4;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+.search-bar:focus-within .search-icon {
+    color: var(--accent); opacity: 1;
+    filter: drop-shadow(0 0 5px var(--accent));
+}
+
 .search-bar input { 
     background: transparent; border: none; color: #fff; 
-    outline: none; width: 220px; font-family: inherit;
-    font-size: 14px; font-weight: 500; letter-spacing: 0.5px;
+    outline: none; width: 100%; font-family: inherit;
+    font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
 }
-.search-bar input::placeholder { color: rgba(255,255,255,0.2); text-transform: uppercase; font-size: 11px; letter-spacing: 1.5px; }
+.search-bar input::placeholder { color: rgba(255,255,255,0.25); text-transform: uppercase; font-size: 10px; letter-spacing: 1.5px; }
+
+/* Dynamic close / clear button inside the bar */
+.search-clear-btn {
+    font-size: 10px; color: #fff; opacity: 0; cursor: pointer;
+    transition: 0.3s; padding: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.05); width: 18px; height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+.search-clear-btn.active { opacity: 0.4; pointer-events: auto; }
+.search-clear-btn.active:hover { opacity: 1; background: var(--accent); color: #fff; box-shadow: 0 0 10px var(--accent); }
+
+/* FLOATING INSTANT SEARCH SUGGESTION PANEL */
+.search-results-panel {
+    position: absolute; top: calc(100% + 15px); right: 0;
+    width: 360px; max-height: 400px; overflow-y: auto;
+    border-radius: 24px; background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+    padding: 15px; display: none; flex-direction: column; gap: 8px;
+    opacity: 0; transform: translateY(15px);
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 17000;
+}
+.search-results-panel.active { display: flex; opacity: 1; transform: translateY(0); }
+
+/* Individual suggestion item */
+.search-result-item {
+    display: flex; align-items: center; gap: 15px; padding: 8px 12px;
+    border-radius: 14px; cursor: pointer; transition: 0.3s;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
+}
+.search-result-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255,255,255,0.05);
+    transform: translateX(-5px);
+}
+.search-result-item img {
+    width: 40px; height: 58px; object-fit: cover; border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.search-result-info { display: flex; flex-direction: column; gap: 3px; flex-grow: 1; }
+.search-result-title { font-size: 13px; font-weight: 700; color: #fff; }
+.search-result-meta { font-size: 10px; color: rgba(255, 255, 255, 0.4); font-weight: 600; }
+.search-result-meta span { color: var(--accent); font-weight: 800; }
+
+.search-no-results {
+    padding: 25px 15px; text-align: center; color: rgba(255, 255, 255, 0.3);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+}
 
 /* HERO SECTION - COMPACT SPATIAL HEADER */
 .hero-spatial {

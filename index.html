@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3.5">
+    <link rel="stylesheet" href="css/style.css?v=3.6">
 </head>
 <body>
     <div class="bg-spatial"></div>
@@ -16,8 +16,16 @@
             <nav class="nav-links"><a href="#" onclick="resetFilter()">Anasayfa</a></nav>
         </div>
         <div class="nav-right">
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Arama...">
+            <div class="search-container" id="search-container">
+                <div class="search-bar">
+                    <svg class="search-icon" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2.5" fill="none"/>
+                        <line x1="16.5" y1="16.5" x2="22" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Arama..." autocomplete="off">
+                    <span class="search-clear-btn" id="search-clear" onclick="clearSearchInput(event)">✕</span>
+                </div>
+                <div class="search-results-panel" id="search-results-panel"></div>
             </div>
         </div>
     </header>
@@ -76,7 +84,7 @@
         </div>
     </div>
 
-    <script src="js/data.js?v=3.5"></script>
-    <script src="js/app.js?v=3.5"></script>
+    <script src="js/data.js?v=3.6"></script>
+    <script src="js/app.js?v=3.6"></script>
 </body>
 </html>
