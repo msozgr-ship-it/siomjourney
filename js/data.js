@@ -35,7 +35,7 @@ const DB = {
     {
       id: "up-movie",
       title: "Yukarı Bak (Up)",
-      poster: "https://image.tmdb.org/t/p/w500/vp6Vxagv6nSjC4oURQ06TXCmgmQ.jpg",
+      poster: "assets/img/yukarıbak.jpg",
       file: "https://archive.org/embed/up_20260516",
       searchTags: "up, yukarı bak, pixar, disney, carl, russell, balon, macera, animasyon, komedi, aile, 2009",
       desc: "78 yaşındaki baloncu Carl Fredricksen, evine binlerce balon bağlayarak ömür boyu hayalini kurduğu vahşi Güney Amerika semalarına doğru uçuşa geçer. Ancak davetsiz misafiri Russell ile çıktığı bu yolculukta onu unutulmaz maceralar beklemektedir.",
