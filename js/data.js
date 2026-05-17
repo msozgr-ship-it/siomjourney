@@ -33,6 +33,21 @@ const DB = {
   ],
   movies: [
     {
+      id: "up-movie",
+      title: "Yukarı Bak (Up)",
+      poster: "https://image.tmdb.org/t/p/w500/vp6Vxagv6nSjC4oURQ06TXCmgmQ.jpg",
+      file: "https://archive.org/embed/up_20260516",
+      searchTags: "up, yukarı bak, pixar, disney, carl, russell, balon, macera, animasyon, komedi, aile, 2009",
+      desc: "78 yaşındaki baloncu Carl Fredricksen, evine binlerce balon bağlayarak ömür boyu hayalini kurduğu vahşi Güney Amerika semalarına doğru uçuşa geçer. Ancak davetsiz misafiri Russell ile çıktığı bu yolculukta onu unutulmaz maceralar beklemektedir.",
+      year: "2009",
+      match: "99%",
+      meta: "4K HDR",
+      rating: "9.0",
+      highlights: "Carl ve Russell'ın binlerce rengarenk balonla çıktığı, her yaştan izleyiciyi büyüleyen Oscar ödüllü Pixar başyapıtı.",
+      isYoutube: true,
+      isNew: true
+    },
+    {
       id: "the-wampire-hunter-movie",
       title: "The Vampire Hunter",
       poster: "assets/img/thewampirehunter.jpeg",
