@@ -209,10 +209,17 @@ function openPlayer(file, title, poster) {
   }
   const modal = document.getElementById('player-modal');
   const iframe = document.getElementById('player-frame');
+  const playerTitle = document.getElementById('player-title');
+  const playerBackdrop = document.getElementById('player-backdrop');
+  
+  if (playerTitle) playerTitle.textContent = title || "Sinematik Deneyim";
+  if (playerBackdrop) playerBackdrop.style.backgroundImage = poster ? `url(${poster})` : '';
+  
   let finalUrl = file;
   if (file.includes('pixeldrain.com/u/')) finalUrl = file.replace('pixeldrain.com/u/', 'pixeldrain.com/u/') + '?embed';
+  
   modal.style.display = 'flex';
-  modal.classList.add('active');
+  setTimeout(() => modal.classList.add('active'), 10);
   iframe.src = finalUrl;
 }
 
