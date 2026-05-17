@@ -33,6 +33,30 @@ const DB = {
   ],
   movies: [
     {
+      id: "saftirik-greg-movie",
+      title: "Saftirik Greg'in Maceraları",
+      poster: "assets/img/saftirikgrekinmaceraları.webp",
+      file: "https://pixeldrain.com/u/SAFTIRIK_ID",
+      searchTags: "saftirik greg'in maceraları, saftirik, greg, animasyon, komedi, aile, 2024",
+      isNew: true
+    },
+    {
+      id: "ancak-ruyada-olur-movie",
+      title: "Ancak Rüyada Olur",
+      poster: "assets/img/ancakrüyadaolur.jpg",
+      file: "https://pixeldrain.com/u/RUYADA_ID",
+      searchTags: "ancak rüyada olur, komedi, romantik, dram, 2024",
+      isNew: true
+    },
+    {
+      id: "the-twits-movie",
+      title: "The Twits",
+      poster: "assets/img/thetwits.webp",
+      file: "https://pixeldrain.com/u/TWITS_ID",
+      searchTags: "the twits, twits, animasyon, komedi, roald dahl, netflix, 2025",
+      isNew: true
+    },
+    {
       id: "karaya-movie",
       title: "Kayara",
       poster: "assets/img/kayara.webp",
