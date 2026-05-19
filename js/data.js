@@ -111,34 +111,40 @@ const DB = {
       highlights: 'Disney ve Pixar\'ın en yeni, eğlence dolu animasyon başyapıtı.'
     },
     {
-      id: 'm2f1',
-      title: 'Zootropolis: Hayvanlar Şehri (2016)',
+      id: 'm2',
+      title: 'Zootopia Serisi',
       searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
-      desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. Nick Wilde ile unutulmaz bir macera başlar.',
-      poster: 'assets/img/zootopia1.jpg',
+      desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk.',
+      poster: 'assets/img/zootopia_main.jpg.jpg',
       trailer: 'https://youtu.be/d4Ulh142Gx4?si=2dy8xjPm6ctNCwhh&start=10',
-      year: '2016',
+      isCollection: true,
+      year: 'Koleksiyon',
       match: '99%',
-      meta: 'HD',
+      meta: '2 Film',
       rating: '8.7',
       highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
-      file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
-      isYoutube: true
-    },
-    {
-      id: 'm2f2',
-      title: 'Zootopia 2 (2025)',
-      searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
-      desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
-      poster: 'assets/img/zootopia2.jpg',
-      trailer: 'https://youtu.be/0I3PcUcREkQ?si=l3Mm5kVjqyFQM4gV&start=10',
-      year: '2025',
-      match: '99%',
-      meta: 'HD',
-      rating: '8.7',
-      highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
-      file: 'https://archive.org/embed/zootropolis-2-izle-hdfilmcehennemi-film-izle-hd-film-izle',
-      isYoutube: true
+      collection: [
+        {
+          id: 'm2f1',
+          epNum: 1,
+          title: 'Zootropolis: Hayvanlar Şehri (2016)',
+          desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. Nick Wilde ile unutulmaz bir macera başlar.',
+          poster: 'assets/img/zootopia1.jpg',
+          trailer: 'https://youtu.be/d4Ulh142Gx4?si=2dy8xjPm6ctNCwhh&start=10',
+          file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+          isYoutube: true
+        },
+        {
+          id: 'm2f2',
+          epNum: 2,
+          title: 'Zootopia 2 (2025)',
+          desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
+          poster: 'assets/img/zootopia2.jpg',
+          trailer: 'https://youtu.be/0I3PcUcREkQ?si=l3Mm5kVjqyFQM4gV&start=10',
+          file: 'https://archive.org/embed/zootropolis-2-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+          isYoutube: true
+        }
+      ]
     },
     {
       id: 'm3',
@@ -156,49 +162,50 @@ const DB = {
       isYoutube: true
     },
     {
-      id: 'm4f1',
-      title: 'Ejderhanı Nasıl Eğitirsin 1',
+      id: 'm4',
+      title: 'Ejderhanı Nasıl Eğitirsin Serisi',
       searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
-      desc: 'Genç bir Viking olan Hıçkıdık ve yaralı bir ejderhanın dostluğu.',
-      poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
+      desc: 'Hıçkıdık ve Dişsiz\'in Berk adasındaki efsanevi dostluk hikayesi.',
+      poster: 'assets/img/httyd_main.jpg.jpg',
       trailer: 'https://youtu.be/E73btLlzXmA?si=k7WF5AZC0SNC3Sok&start=10',
-      year: '2010',
+      isCollection: true,
+      year: '2010-2019',
       match: '99%',
-      meta: 'HD',
+      meta: 'Koleksiyon',
       rating: '8.8',
       highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
-      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-1',
-      isYoutube: true
-    },
-    {
-      id: 'm4f2',
-      title: 'Ejderhanı Nasıl Eğitirsin 2',
-      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
-      desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
-      poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
-      trailer: 'https://youtu.be/ev8huwbabX4?si=7JRKNozVL9CxMTnx&start=10',
-      year: '2014',
-      match: '99%',
-      meta: 'HD',
-      rating: '8.8',
-      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
-      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
-      isYoutube: true
-    },
-    {
-      id: 'm4f3',
-      title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
-      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
-      desc: 'Hıçkıdık ejderha ütopyasını ararken, Dişsiz kendi türünden birini bulur.',
-      poster: 'assets/img/ejderhanınasıleğitirsin3.jpg',
-      trailer: 'https://youtu.be/EHu-WpiaNHw?si=T_BRR2hxfqnb7bHn&start=10',
-      year: '2019',
-      match: '99%',
-      meta: 'HD',
-      rating: '8.8',
-      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
-      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-3',
-      isYoutube: true
+      collection: [
+        {
+          id: 'm4f1',
+          epNum: 1,
+          title: 'Ejderhanı Nasıl Eğitirsin 1',
+          desc: 'Genç bir Viking olan Hıçkıdık ve yaralı bir ejderhanın dostluğu.',
+          poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
+          trailer: 'https://youtu.be/E73btLlzXmA?si=k7WF5AZC0SNC3Sok&start=10',
+          file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-1',
+          isYoutube: true
+        },
+        {
+          id: 'm4f2',
+          epNum: 2,
+          title: 'Ejderhanı Nasıl Eğitirsin 2',
+          desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
+          poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
+          trailer: 'https://youtu.be/ev8huwbabX4?si=7JRKNozVL9CxMTnx&start=10',
+          file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
+          isYoutube: true
+        },
+        {
+          id: 'm4f3',
+          epNum: 3,
+          title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
+          desc: 'Hıçkıdık ejderha ütopyasını ararken, Dişsiz kendi türünden birini bulur.',
+          poster: 'assets/img/ejderhanınasıleğitirsin3.jpg',
+          trailer: 'https://youtu.be/EHu-WpiaNHw?si=T_BRR2hxfqnb7bHn&start=10',
+          file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-3',
+          isYoutube: true
+        }
+      ]
     },
     {
       id: 'm5',
@@ -216,7 +223,154 @@ const DB = {
       isYoutube: true
     },
     {
-      id: 'm6f1',
+      id: 'm6',
+      title: 'Dayı Serisi',
+      searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi, koleksiyon',
+      desc: 'Dayı\'nın adalet mücadelesi ve efsanevi hikayesi tek bir koleksiyonda. Ufuk Bayraktar\'ın başrolünde yer aldığı aksiyon dolu yapımlar.',
+      poster: 'assets/img/dayımain.jpg',
+      trailer: 'https://youtu.be/kLLQNtSfFZc?si=CnkE2IQvc7plRvAb&start=10',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '2 Film',
+      rating: '8.9',
+      highlights: 'Dayı\'nın adalet mücadelesi ve efsanevi kabadayılık raconları tek bir çatı altında.',
+      collection: [
+        {
+          id: 'm6f1',
+          epNum: 1,
+          title: 'Dayı: Bir Adamın Hikayesi (2021)',
+          desc: 'Adil ve cesur bir adam olan Cevahir\'in, İstanbul sokaklarında adaleti arama ve kabadayılık dünyasına adım atış hikayesi.',
+          poster: 'assets/img/dayı1.jpg',
+          trailer: 'https://youtu.be/kLLQNtSfFZc?si=CnkE2IQvc7plRvAb&start=10',
+          file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi',
+          isYoutube: true
+        },
+        {
+          id: 'm6f2',
+          epNum: 2,
+          title: 'Dayı 2: Bir Adamın Hikayesi (2025)',
+          desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
+          poster: 'assets/img/dayı2.jpg',
+          trailer: 'https://youtu.be/eYrHzCRMCfo?si=htS_UnKcJI4oVu9Y&start=10',
+          file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
+          isYoutube: true
+        }
+      ]
+    },
+    {
+      id: 'm7',
+      title: 'Arabalar Serisi',
+      searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
+      desc: 'Şimşek McQueen ve dostlarının heyecan dolu yarış maceraları tek bir koleksiyonda.',
+      poster: 'assets/img/arabalar.webp',
+      trailer: 'https://youtu.be/0h5G56bHnS0?start=10',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '2 Film',
+      rating: '8.8',
+      highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
+      collection: [
+        {
+          id: 'm7f1',
+          epNum: 1,
+          title: 'Arabalar (2006)',
+          desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
+          poster: 'assets/img/arabalar.webp',
+          trailer: 'https://www.youtube.com/watch?v=SbXIj2T-_uk',
+          file: 'https://archive.org/embed/arabalar-1-izle',
+          isYoutube: true
+        },
+        {
+          id: 'm7f2',
+          epNum: 2,
+          title: 'Arabalar 2 (2011)',
+          desc: 'Şimşek McQueen ve Mater, Dünya Şampiyonası için deniz aşırı bir maceraya atılır.',
+          poster: 'assets/img/arabalariki.webp',
+          trailer: 'https://www.youtube.com/watch?v=1sD4qkCymtI',
+          file: 'https://www.dailymotion.com/embed/video/k1qc1gWN68eyhiG4QGU?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+          isYoutube: false
+        }
+      ]
+    },
+    {
+      id: 'm2f1-single',
+      title: 'Zootropolis: Hayvanlar Şehri (2016)',
+      searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
+      desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. Nick Wilde ile unutulmaz bir macera başlar.',
+      poster: 'assets/img/zootopia1.jpg',
+      trailer: 'https://youtu.be/d4Ulh142Gx4?si=2dy8xjPm6ctNCwhh&start=10',
+      year: '2016',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.7',
+      highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
+      file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+      isYoutube: true
+    },
+    {
+      id: 'm2f2-single',
+      title: 'Zootopia 2 (2025)',
+      searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
+      desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
+      poster: 'assets/img/zootopia2.jpg',
+      trailer: 'https://youtu.be/0I3PcUcREkQ?si=l3Mm5kVjqyFQM4gV&start=10',
+      year: '2025',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.7',
+      highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
+      file: 'https://archive.org/embed/zootropolis-2-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+      isYoutube: true
+    },
+    {
+      id: 'm4f1-single',
+      title: 'Ejderhanı Nasıl Eğitirsin 1',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Genç bir Viking olan Hıçkıdık ve yaralı bir ejderhanın dostluğu.',
+      poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
+      trailer: 'https://youtu.be/E73btLlzXmA?si=k7WF5AZC0SNC3Sok&start=10',
+      year: '2010',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
+      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-1',
+      isYoutube: true
+    },
+    {
+      id: 'm4f2-single',
+      title: 'Ejderhanı Nasıl Eğitirsin 2',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
+      poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
+      trailer: 'https://youtu.be/ev8huwbabX4?si=7JRKNozVL9CxMTnx&start=10',
+      year: '2014',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
+      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
+      isYoutube: true
+    },
+    {
+      id: 'm4f3-single',
+      title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Hıçkıdık ejderha ütopyasını ararken, Dişsiz kendi türünden birini bulur.',
+      poster: 'assets/img/ejderhanınasıleğitirsin3.jpg',
+      trailer: 'https://youtu.be/EHu-WpiaNHw?si=T_BRR2hxfqnb7bHn&start=10',
+      year: '2019',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
+      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-3',
+      isYoutube: true
+    },
+    {
+      id: 'm6f1-single',
       title: 'Dayı: Bir Adamın Hikayesi (2021)',
       searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi',
       desc: 'Adil ve cesur bir adam olan Cevahir\'in, İstanbul sokaklarında adaleti arama ve kabadayılık dünyasına adım atış hikayesi.',
@@ -231,7 +385,7 @@ const DB = {
       isYoutube: true
     },
     {
-      id: 'm6f2',
+      id: 'm6f2-single',
       title: 'Dayı 2: Bir Adamın Hikayesi (2025)',
       searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi',
       desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
@@ -246,7 +400,7 @@ const DB = {
       isYoutube: true
     },
     {
-      id: 'm7f1',
+      id: 'm7f1-single',
       title: 'Arabalar (2006)',
       searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
       desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
@@ -261,18 +415,18 @@ const DB = {
       isYoutube: true
     },
     {
-      id: 'm7f2',
+      id: 'm7f2-single',
       title: 'Arabalar 2 (2011)',
       searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
       desc: 'Şimşek McQueen ve Mater, Dünya Şampiyonası için deniz aşırı bir maceraya atılır.',
       poster: 'assets/img/arabalariki.webp',
       trailer: 'https://www.youtube.com/watch?v=1sD4qkCymtI',
+      file: 'https://www.dailymotion.com/embed/video/k1qc1gWN68eyhiG4QGU?autoplay=1&queue-enable=false&queue-autoplay-next=false',
       year: '2011',
       match: '99%',
       meta: 'HD',
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
-      file: 'https://www.dailymotion.com/embed/video/k1qc1gWN68eyhiG4QGU?autoplay=1&queue-enable=false&queue-autoplay-next=false',
       isYoutube: false
     },
     {
