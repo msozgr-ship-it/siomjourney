@@ -272,7 +272,52 @@ const DB = {
       meta: 'HD',
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
-      file: 'https://archive.org/embed/arabalar-2-izle',
+      file: 'https://www.dailymotion.com/embed/video/k1qc1gWN68eyhiG4QGU?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+      isYoutube: false
+    },
+    {
+      id: "avatar-ates-ve-kul",
+      title: "Avatar: Ateş ve Kül",
+      poster: "assets/img/avatarateşvekül.jpeg",
+      file: "https://archive.org/embed/avatar-ates-ve-kul",
+      trailer: "https://youtu.be/0h5G56bHnS0",
+      searchTags: "avatar, ateş ve kül, pandora, jake sully, aksiyon, bilim kurgu, 2025",
+      year: "2025",
+      match: "98%",
+      meta: "4K HDR",
+      rating: "8.5",
+      highlights: "Pandora'nın keşfedilmemiş karanlık yüzü ve yeni bir maceranın başlangıcı.",
+      isNew: true,
+      isYoutube: true
+    },
+    {
+      id: "mario-movie",
+      title: "Süper Mario Kardeşler Filmi",
+      poster: "assets/img/mario.jpg",
+      file: "https://archive.org/embed/mario-movie",
+      trailer: "https://youtu.be/0h5G56bHnS0",
+      searchTags: "mario, super mario bros, luigi, bowser, nintendo, animasyon, macera, komedi",
+      year: "2023",
+      match: "99%",
+      meta: "HD",
+      rating: "8.0",
+      highlights: "Mario ve Luigi'nin Mantar Krallığı'nı kurtarmak için atıldıkları epik macera.",
+      isNew: true,
+      isYoutube: true
+    },
+    {
+      id: "yanyana-movie",
+      title: "Yanyana",
+      poster: "assets/img/yanyana.jpg",
+      file: "https://archive.org/embed/yanyana",
+      trailer: "https://youtu.be/0h5G56bHnS0",
+      searchTags: "yanyana, animasyon, komedi, macera",
+      year: "2024",
+      match: "95%",
+      meta: "HD",
+      rating: "8.2",
+      highlights: "Sürükleyici ve yepyeni bir animasyon deneyimi.",
+      isNew: true,
       isYoutube: true
     }
   ]
