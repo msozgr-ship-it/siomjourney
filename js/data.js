@@ -46,7 +46,7 @@ const DB = {
       rating: "9.0",
       highlights: "Carl ve Russell'ın binlerce rengarenk balonla çıktığı, her yaştan izleyiciyi büyüleyen Oscar ödüllü Pixar başyapıtı.",
       isYoutube: true,
-      isNew: true
+      isNew: false
     },
     {
       id: "the-wampire-hunter-movie",
