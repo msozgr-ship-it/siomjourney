@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clean JS File</title>
+    <title>Extract JS Functions</title>
 </head>
 <body>
     <pre id="output">Loading...</pre>
@@ -10,11 +10,38 @@
             .then(res => res.text())
             .then(text => {
                 const cleaned = text.trim();
+                
+                // Let's find functions
+                function getFunctionBody(funcName) {
+                    const index = cleaned.indexOf(funcName);
+                    if (index === -1) return `${funcName} not found`;
+                    
+                    // find opening brace
+                    let braceCount = 0;
+                    let started = false;
+                    let body = "";
+                    for (let i = index; i < cleaned.length; i++) {
+                        const char = cleaned[i];
+                        body += char;
+                        if (char === '{') {
+                            braceCount++;
+                            started = true;
+                        } else if (char === '}') {
+                            braceCount--;
+                        }
+                        if (started && braceCount === 0) {
+                            break;
+                        }
+                    }
+                    return body;
+                }
+
+                const renderContentBody = getFunctionBody('function renderContent');
+                const renderOrbitalBody = getFunctionBody('function renderOrbital');
+                
                 document.getElementById('output').textContent = 
-                    `Length: ${text.length}\n` +
-                    `Cleaned Length: ${cleaned.length}\n\n` +
-                    `First 1000 chars of cleaned:\n${cleaned.substring(0, 1000)}\n\n` +
-                    `Last 1000 chars of cleaned:\n${cleaned.substring(cleaned.length - 1000)}`;
+                    `=== renderContent ===\n${renderContentBody}\n\n` +
+                    `=== renderOrbital ===\n${renderOrbitalBody}`;
             })
             .catch(err => {
                 document.getElementById('output').textContent = 'Error: ' + err.message;
