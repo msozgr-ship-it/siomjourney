@@ -112,46 +112,44 @@ function updateOrbitalTransforms() {
     const screenW = window.innerWidth;
     const maxSpanX = (screenW / 2) - 48;
     const radiusX = Math.min(maxSpanX, 115);
-    const radiusY_vertical = 35; // Dikey eliptik kavis derinliği (Arttırıldı!)
+    const radiusY_vertical = 35; // Dikey eliptik kavis derinliği
     const radiusZ = 60; // 3D derinlik projeksiyonu
 
     calculatedAngles.forEach((data, i) => {
       const { item, relAngle } = data;
       const cosVal = Math.cos((relAngle * Math.PI) / 180);
       
-      // Kusursuz kesintisiz 3D dairesel koordinatlar (Y ekseni tersine çevrildi: Önler yukarıda, arkalar aşağıda!)
       const x = Math.sin((relAngle * Math.PI) / 180) * radiusX;
       const y = -cosVal * radiusY_vertical;
       const z = cosVal * radiusZ;
       
-      // Kusursuz Lineer Ölçekleme (Önler büyük, arkalar küçük!)
-      const maxScale = 1.32;
-      const minScale = 0.68;
-      const scale = minScale + (maxScale - minScale) * (cosVal + 1) / 2;
+      const normCos = (cosVal + 1) / 2; // 0 to 1
+      const isCenter = (i === closestIndex);
       
-      // Asil 3D yörünge eğimi
+      let scale;
+      if (isCenter) {
+        scale = 1.35; // Odaktaki kart mobilde de devasa ve belirgin
+      } else {
+        scale = 0.62 + 0.40 * Math.pow(normCos, 4.5); // Diğerleri arkaya doğru hızla küçülür
+      }
+      
       const rotY = relAngle * 0.22;
       item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(0deg)`;
       
-      // Kesintisiz Opaklık (Önler parlak, arkalar loş!)
-      const maxOpacity = 1.0;
-      const minOpacity = 0.22;
-      const opacity = minOpacity + (maxOpacity - minOpacity) * (cosVal + 1) / 2;
-      item.style.opacity = opacity.toFixed(2);
-      
-      // Tek aktif kartı odaklama
-      if (i === closestIndex) {
+      if (isCenter) {
+        item.style.opacity = "1.0";
+        item.style.filter = "brightness(1.1) contrast(1.05)";
         item.classList.add('active');
-        item.style.zIndex = "25000"; // Odaktaki kart her zaman en üstte!
+        item.style.zIndex = "25000";
         item.style.pointerEvents = "auto";
       } else {
+        item.style.opacity = (0.15 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
+        item.style.filter = "blur(1px) brightness(0.4) grayscale(15%)";
         item.classList.remove('active');
         
-        // S logosunun (19000 z-index) önünde veya arkasında olmasına göre kusursuz derinlik sıralaması!
         const zIndexBase = Math.round(19000 + cosVal * 1000);
         item.style.zIndex = zIndexBase;
         
-        // Sadece ön yarımküredeki (S logosunun önündeki) kartlar tıklanabilir, arkadakiler sadece görsellik katar!
         if (cosVal >= 0) {
           item.style.pointerEvents = "auto";
         } else {
@@ -160,10 +158,10 @@ function updateOrbitalTransforms() {
       }
     });
   } else {
-    // MASAÜSTÜ İÇİN SOL DİKEY DÖNME DOLAP (KÜÇÜLTÜLMÜŞ VE DAHA SOLA ALINMIŞ)
-    const radiusY_vertical = 220; // Dikey çap (Çok daha küçük, afişleri kapatmaz)
-    const radiusZ = 160; // 3D derinlik projeksiyonu
-    const leftOffset = -680; // ÇOK DAHA SOLA İTİLDİ (Ekranın tamamen sol kenarına yapıştırıldı)
+    // MASAÜSTÜ İÇİN SOL DİKEY DÖNME DOLAP (BELİRGİN VE SİNEMATİK ODAKLI)
+    const radiusY_vertical = 250; // Dikey çap hafifçe artırıldı, böylece dikeyde daha rahat yayılırlar
+    const radiusZ = 200; // 3D derinlik artırıldı, ön-arka ayrımı güçlendi
+    const leftOffset = -680; // Sol kenara sıfır offset
     const curveX = 30; // Dönüşteki yatay kavis
 
     calculatedAngles.forEach((data, i) => {
@@ -172,34 +170,36 @@ function updateOrbitalTransforms() {
       const cosVal = Math.cos(rad); // Ön/Arka (Z)
       const sinVal = Math.sin(rad); // Yukarı/Aşağı (Y)
       
-      // Dikey Dönüş Koordinatları
       const x = leftOffset + (Math.abs(sinVal) * curveX); 
       const y = sinVal * radiusY_vertical; 
       const z = cosVal * radiusZ; 
       
-      // Küçültülmüş ve optimize edilmiş lineer ölçekleme (Genel boyutlar iyice küçüldü)
-      const maxScale = 0.85; // Odaktaki kartın büyüklüğü
-      const minScale = 0.35; // Arkadaki kartın küçüklüğü
-      const scale = minScale + (maxScale - minScale) * (cosVal + 1) / 2;
+      const normCos = (cosVal + 1) / 2; // 0 to 1
+      const isCenter = (i === closestIndex);
       
-      // Kartlar ekranın ortasına (sağa) hafif dönük olsun
-      const rotY = 20; // Sola daha çok itildiği için merkeze dönüş açısı hafif artırıldı
-      const rotX = -sinVal * 12; // Aşağı indikçe hafif yukarı bakar
+      // Steep focus scaling (Üst üste binmeyi engellemek için aktif olmayanları hızla küçültüyoruz)
+      let scale;
+      if (isCenter) {
+        scale = 1.15; // Odaktaki kart çok daha büyük ve ön planda
+      } else {
+        scale = 0.35 + 0.45 * Math.pow(normCos, 4.5); 
+      }
+      
+      const rotY = 20; 
+      const rotX = -sinVal * 12; 
       
       item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY}deg) rotateX(${rotX.toFixed(2)}deg)`;
       
-      // Arka planı öne çıkarmak için tekerlek elemanlarının opaklığını daha da kıstık
-      const maxOpacity = 0.85;
-      const minOpacity = 0.10;
-      const opacity = minOpacity + (maxOpacity - minOpacity) * (cosVal + 1) / 2;
-      item.style.opacity = opacity.toFixed(2);
-      
-      // Tek aktif kartı odaklama
-      if (i === closestIndex) {
+      // Odaktaki kartı pırıl pırıl yap, arkadakileri loşlaştır ve hafif bulanıklaştır (Cinematic Depth of Field)
+      if (isCenter) {
+        item.style.opacity = "1.0";
+        item.style.filter = "brightness(1.1) contrast(1.05)";
         item.classList.add('active');
-        item.style.zIndex = "25000"; // Odaktaki kart her zaman en üstte!
+        item.style.zIndex = "25000"; // En önde
         item.style.pointerEvents = "auto";
       } else {
+        item.style.opacity = (0.05 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
+        item.style.filter = "blur(1.5px) brightness(0.35) grayscale(20%)";
         item.classList.remove('active');
         
         const zIndexBase = Math.round(19000 + cosVal * 1000);
@@ -213,7 +213,7 @@ function updateOrbitalTransforms() {
       }
     });
 
-    // Arka plan videosunu güncelle (Dönme Dolap Arkası Filmlerden Kesitler)
+    // Arka plan videosunu güncelle
     if (closestIndex !== -1 && orbitalContent[closestIndex]) {
       updateBackgroundVideo(orbitalContent[closestIndex]);
     }
