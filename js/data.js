@@ -273,6 +273,42 @@ const DB = {
           isYoutube: true
         }
       ]
+    },
+    {
+      id: 'm7',
+      title: 'Arabalar Serisi',
+      searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
+      desc: 'Şimşek McQueen ve dostlarının heyecan dolu yarış maceraları tek bir koleksiyonda.',
+      poster: 'assets/img/arabalar.webp',
+      trailer: 'https://youtu.be/0h5G56bHnS0?start=10',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '2 Film',
+      rating: '8.8',
+      highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
+      collection: [
+        {
+          id: 'm7f1',
+          epNum: 1,
+          title: 'Arabalar (2006)',
+          desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
+          poster: 'assets/img/arabalar.webp',
+          trailer: 'https://www.youtube.com/watch?v=SbXIj2T-_uk',
+          file: 'https://archive.org/embed/arabalar-1-izle',
+          isYoutube: true
+        },
+        {
+          id: 'm7f2',
+          epNum: 2,
+          title: 'Arabalar 2 (2011)',
+          desc: 'Şimşek McQueen ve Mater, Dünya Şampiyonası için deniz aşırı bir maceraya atılır.',
+          poster: 'assets/img/arabalariki.webp',
+          trailer: 'https://www.youtube.com/watch?v=0h5G56bHnS0',
+          file: 'https://archive.org/embed/arabalar-2-izle',
+          isYoutube: true
+        }
+      ]
     }
   ]
 };
