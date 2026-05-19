@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clean JS File</title>
+</head>
+<body>
+    <pre id="output">Loading...</pre>
+    <script>
+        fetch('js/app.js')
+            .then(res => res.text())
+            .then(text => {
+                const cleaned = text.trim();
+                document.getElementById('output').textContent = 
+                    `Length: ${text.length}\n` +
+                    `Cleaned Length: ${cleaned.length}\n\n` +
+                    `First 1000 chars of cleaned:\n${cleaned.substring(0, 1000)}\n\n` +
+                    `Last 1000 chars of cleaned:\n${cleaned.substring(cleaned.length - 1000)}`;
+            })
+            .catch(err => {
+                document.getElementById('output').textContent = 'Error: ' + err.message;
+            });
+    </script>
+</body>
+</html>
