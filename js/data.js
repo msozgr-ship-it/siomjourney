@@ -304,7 +304,7 @@ const DB = {
           title: 'Arabalar 2 (2011)',
           desc: 'Şimşek McQueen ve Mater, Dünya Şampiyonası için deniz aşırı bir maceraya atılır.',
           poster: 'assets/img/arabalariki.webp',
-          trailer: 'https://www.youtube.com/watch?v=0h5G56bHnS0',
+          trailer: 'https://www.youtube.com/watch?v=1sD4qkCymtI',
           file: 'https://archive.org/embed/arabalar-2-izle',
           isYoutube: true
         }
