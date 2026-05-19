@@ -307,7 +307,8 @@ const DB = {
       rating: '8.7',
       highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
       file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm2f2-single',
@@ -322,7 +323,8 @@ const DB = {
       rating: '8.7',
       highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
       file: 'https://archive.org/embed/zootropolis-2-izle-hdfilmcehennemi-film-izle-hd-film-izle',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm4f1-single',
@@ -337,7 +339,8 @@ const DB = {
       rating: '8.8',
       highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
       file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-1',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm4f2-single',
@@ -352,7 +355,8 @@ const DB = {
       rating: '8.8',
       highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
       file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm4f3-single',
@@ -367,7 +371,8 @@ const DB = {
       rating: '8.8',
       highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
       file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-3',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm6f1-single',
@@ -382,7 +387,8 @@ const DB = {
       rating: '8.9',
       highlights: 'Dayı\'nın adalet mücadelesi ve efsanevi kabadayılık raconları tek bir çatı altında.',
       file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm6f2-single',
@@ -397,7 +403,8 @@ const DB = {
       rating: '8.9',
       highlights: 'Dayı\'nın adalet mücadelesi ve efsanevi kabadayılık raconları tek bir çatı altında.',
       file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm7f1-single',
@@ -412,7 +419,8 @@ const DB = {
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
       file: 'https://archive.org/embed/arabalar-1-izle',
-      isYoutube: true
+      isYoutube: true,
+      showOnlyInOrbital: true
     },
     {
       id: 'm7f2-single',
@@ -427,7 +435,8 @@ const DB = {
       meta: 'HD',
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
-      isYoutube: false
+      isYoutube: false,
+      showOnlyInOrbital: true
     },
     {
       id: "avatar-ates-ve-kul",

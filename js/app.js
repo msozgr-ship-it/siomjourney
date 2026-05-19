@@ -30,7 +30,6 @@ function initApp() {
 
     window.addEventListener('resize', updateOrbitalTransforms);
   } catch (err) {
-
     console.error("Sistem hatası:", err);
   }
 }
@@ -302,7 +301,6 @@ function updateBackgroundVideo(item) {
 function handleOrbitalClick(index, id) {
   if (isDragging) return;
 
-
   const count = orbitalContent.length;
   const angleStep = 360 / count;
   const targetRotation = -(index * angleStep);
@@ -353,9 +351,9 @@ function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
 
-  // Seri ve tekli filmleri filtrele
+  // Seri ve tekli filmleri filtrele (Sadece dönme dolapta görünmesi gereken tekli filmler elendi!)
   const collections = filteredContent.filter(item => item.isCollection || item.episodes);
-  const singles = filteredContent.filter(item => !(item.isCollection || item.episodes));
+  const singles = filteredContent.filter(item => !(item.isCollection || item.episodes || item.showOnlyInOrbital));
 
   // Kart HTML oluşturucu yardımcı fonksiyon
   const makeCardHtml = (item) => {
@@ -545,8 +543,6 @@ function handleSuggestionClick(id) {
   }
 }
 
-
-
 function clearSearchInput(event) {
   if (event) event.stopPropagation();
   const input = document.getElementById('search-input');
@@ -677,7 +673,6 @@ function openPlayer(file, title, poster) {
   setTimeout(() => modal.classList.add('active'), 10);
 }
 
-
 function openComingSoon(title, poster) {
   const modal = document.getElementById('coming-soon-modal');
   const csTitle = document.getElementById('cs-title');
@@ -715,8 +710,6 @@ function closePlayer() {
     }, 500); 
   }
 }
-
-
 
 function resetFilter() {
   filteredContent = [...allContent];
