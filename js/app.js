@@ -138,19 +138,28 @@ function updateOrbitalTransforms() {
       
       if (isCenter) {
         item.style.opacity = "1.0";
+        item.style.visibility = "visible";
         item.style.filter = "brightness(1.1) contrast(1.05)";
         item.classList.add('active');
         item.style.zIndex = "25000";
         item.style.pointerEvents = "auto";
       } else {
-        item.style.opacity = (0.15 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
-        item.style.filter = "blur(1px) brightness(0.4) grayscale(15%)";
+        // Arka yarımküredeki afişleri gizle (Görsel kirliliği ve yansıma çakışmalarını sıfırlar!)
+        if (cosVal < 0.10) {
+          item.style.opacity = "0";
+          item.style.visibility = "hidden";
+          item.style.pointerEvents = "none";
+        } else {
+          item.style.visibility = "visible";
+          item.style.opacity = (0.15 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
+          item.style.filter = "blur(1px) brightness(0.4) grayscale(15%)";
+        }
         item.classList.remove('active');
         
         const zIndexBase = Math.round(19000 + cosVal * 1000);
         item.style.zIndex = zIndexBase;
         
-        if (cosVal >= 0) {
+        if (cosVal >= 0.10) {
           item.style.pointerEvents = "auto";
         } else {
           item.style.pointerEvents = "none";
@@ -188,24 +197,33 @@ function updateOrbitalTransforms() {
       const rotY = 20; 
       const rotX = -sinVal * 12; 
       
-      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY}deg) rotateX(${rotX.toFixed(2)}deg)`;
+      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
       
       // Odaktaki kartı pırıl pırıl yap, arkadakileri loşlaştır ve hafif bulanıklaştır (Cinematic Depth of Field)
       if (isCenter) {
         item.style.opacity = "1.0";
+        item.style.visibility = "visible";
         item.style.filter = "brightness(1.1) contrast(1.05)";
         item.classList.add('active');
         item.style.zIndex = "25000"; // En önde
         item.style.pointerEvents = "auto";
       } else {
-        item.style.opacity = (0.05 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
-        item.style.filter = "blur(1.5px) brightness(0.35) grayscale(20%)";
+        // Arka yarımküredeki afişleri gizle (Görsel kirliliği ve yansıma çakışmalarını sıfırlar!)
+        if (cosVal < 0.10) {
+          item.style.opacity = "0";
+          item.style.visibility = "hidden";
+          item.style.pointerEvents = "none";
+        } else {
+          item.style.visibility = "visible";
+          item.style.opacity = (0.05 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
+          item.style.filter = "blur(1.5px) brightness(0.35) grayscale(20%)";
+        }
         item.classList.remove('active');
         
         const zIndexBase = Math.round(19000 + cosVal * 1000);
         item.style.zIndex = zIndexBase;
         
-        if (cosVal >= 0) {
+        if (cosVal >= 0.10) {
           item.style.pointerEvents = "auto";
         } else {
           item.style.pointerEvents = "none";
