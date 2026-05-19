@@ -197,7 +197,7 @@ function updateOrbitalTransforms() {
       const rotY = 20; 
       const rotX = -sinVal * 12; 
       
-      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY}deg) rotateX(${rotX.toFixed(2)}deg)`;
+      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
       
       // Odaktaki kartı pırıl pırıl yap, arkadakileri loşlaştır ve hafif bulanıklaştır (Cinematic Depth of Field)
       if (isCenter) {
@@ -355,9 +355,13 @@ function renderOrbital() {
   if (!container) return;
   container.innerHTML = orbitalContent.map((item, index) => {
     const isColl = item.isCollection || item.episodes;
+    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
+    const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
+    
     return `
       <div class="cf-item ${isColl ? 'collection-stack' : ''}" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
         ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+        ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
         <div class="neon-rim"></div>
         <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
       </div>
@@ -376,10 +380,14 @@ function renderContent() {
   // Kart HTML oluşturucu yardımcı fonksiyon
   const makeCardHtml = (item) => {
     const isColl = item.isCollection || item.episodes;
+    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
+    const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
+    
     return `
       <div class="card-wrapper ${isColl ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
         <div class="card">
           ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+          ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
           <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
       </div>
@@ -501,7 +509,8 @@ function setupSearch() {
       if (matches.length > 0) {
         resultsPanel.innerHTML = matches.map(item => {
           const isColl = item.isCollection || item.episodes;
-          const ratingText = item.rating ? `⭐ <span>${item.rating}</span>` : 'Yakında';
+          const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
+          const ratingText = isUpcoming ? 'Yakında' : (item.rating ? `⭐ <span>${item.rating}</span>` : '⭐ 8.0');
           const typeText = isColl ? 'Seri' : 'Film';
           return `
             <div class="search-result-item" onclick="handleSuggestionClick('${item.id}')">
@@ -585,12 +594,20 @@ function openDetails(id) {
   const grid = document.getElementById('details-grid');
   document.getElementById('details-title').textContent = item.title;
   let subItems = item.episodes || item.collection || [];
-  grid.innerHTML = subItems.map(sub => `
-    <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}', '${sub.title}', '${sub.poster || item.poster}')">
-      <div class="card"><img src="${sub.poster || item.poster}" alt=""></div>
-      <h3>${sub.title}</h3>
-    </div>
-  `).join('');
+  grid.innerHTML = subItems.map(sub => {
+    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
+    const isUpcoming = !sub.file || sub.file.includes('ID') || sub.file.includes('coming') || sub.file.includes('COMING');
+    
+    return `
+      <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}', '${sub.title}', '${sub.poster || item.poster}')">
+        <div class="card">
+          ${isUpcoming ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
+          <img src="${sub.poster || item.poster}" alt="">
+        </div>
+        <h3>${sub.title}</h3>
+      </div>
+    `;
+  }).join('');
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
 }
