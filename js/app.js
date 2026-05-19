@@ -197,7 +197,7 @@ function updateOrbitalTransforms() {
       const rotY = 20; 
       const rotX = -sinVal * 12; 
       
-      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
+      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY}deg) rotateX(${rotX.toFixed(2)}deg)`;
       
       // Odaktaki kartı pırıl pırıl yap, arkadakileri loşlaştır ve hafif bulanıklaştır (Cinematic Depth of Field)
       if (isCenter) {
@@ -276,8 +276,8 @@ function updateBackgroundVideo(item) {
         
         // Fragmansa 5. saniyeden başlatır (Play tuşunu atlar), filmse ortadan!
         let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
-        // Tam ekrana tam sığdırıldı, taşırma yok
-        videoHtml = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1&vq=hd1080${startParam}" allow="autoplay; encrypted-media; picture-in-picture" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
+        // Reklam ve çerez takibini en aza indiren youtube-nocookie.com domaini kullanıldı!
+        videoHtml = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1&vq=hd1080${startParam}" allow="autoplay; encrypted-media; picture-in-picture" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
       } else if (sourceUrl.includes('archive.org')) {
         // ARCHIVE.ORG İÇİN KESİN ÇÖZÜM: iframe yerine doğrudan .mp4 dosyasına çeviriyoruz!
         // Böylece tarayıcılar play butonu çıkarmaz, %100 otomatik (autoplay) sessiz oynatır.
@@ -675,7 +675,7 @@ function openPlayer(file, title, poster) {
       let ytId = '';
       if (file.includes('embed/')) ytId = file.split('embed/')[1]?.split('?')[0];
       else ytId = file.split('v=')[1]?.split('&')[0];
-      finalUrl = `https://www.youtube.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0`;
+      finalUrl = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0`;
     } else if (file.includes('dailymotion.com')) {
       let dmId = file.split('video/')[1]?.split('?')[0]?.split('&')[0];
       if (dmId) {
