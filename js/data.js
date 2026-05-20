@@ -278,7 +278,7 @@ const DB = {
           title: 'Arabalar (2006)',
           desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
           poster: 'assets/img/arabalar.webp',
-          trailer: 'https://www.youtube.com/watch?v=SbXIj2T-_uk',
+          trailer: 'https://youtu.be/pQly7_Cj34U',
           file: 'https://archive.org/embed/arabalar-bir',
           isYoutube: true
         },
@@ -412,7 +412,7 @@ const DB = {
       searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
       desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
       poster: 'assets/img/arabalar.webp',
-      trailer: 'https://www.youtube.com/watch?v=SbXIj2T-_uk',
+      trailer: 'https://youtu.be/pQly7_Cj34U',
       year: '2006',
       match: '99%',
       meta: 'HD',
