@@ -529,11 +529,121 @@ const DB = {
       searchTags: "yanyana, animasyon, komedi, macera",
       year: "2024",
       match: "95%",
-      meta: "HD",
+      meta: "4K Ultra HD",
       rating: "8.2",
       highlights: "Sürükleyici ve yepyeni bir animasyon deneyimi.",
       isNew: true,
       isYoutube: true
+    },
+    {
+      id: 'm8',
+      title: 'Atatürk Serisi',
+      searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
+      desc: 'Ulu Önder Mustafa Kemal Atatürk\'ün hayatını konu alan epik film serisi.',
+      poster: 'assets/img/atatürkmain.jpg',
+      trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '4K Ultra HD',
+      rating: '9.5',
+      highlights: 'Mustafa Kemal Atatürk\'ün bir yetimhaneden bir ulusun kurtarıcısına dönüşümünün destanı.',
+      collection: [
+        {
+          id: 'm8f1',
+          epNum: 1,
+          title: 'Atatürk 1881 - 1919 (1. Film)',
+          desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
+          poster: 'assets/img/atatürk1.jpeg',
+          trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+          file: 'https://archive.org/embed/ataturk1_2024',
+          isYoutube: false
+        },
+        {
+          id: 'm8f2',
+          epNum: 2,
+          title: 'Atatürk 1881 - 1919 (2. Film)',
+          desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
+          poster: 'assets/img/atatürk2.jpeg',
+          trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+          file: 'https://archive.org/embed/ataturk2_2024',
+          isYoutube: false
+        }
+      ]
+    },
+    {
+      id: 'm9',
+      title: 'Alvin ve Sincaplar',
+      searchTags: 'alvin ve sincaplar, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Dünyanın en ünlü şarkıcı sincaplarının eğlenceli ve müzik dolu maceraları.',
+      poster: 'assets/img/alvinvesincaplarmain.jpg',
+      trailer: 'https://youtu.be/3M7R01bB9S8',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.4',
+      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar maceraları.',
+      collection: [
+        {
+          id: 'm9f1',
+          epNum: 1,
+          title: 'Alvin ve Sincaplar: Yol Macerası',
+          desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
+          poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+          trailer: 'https://youtu.be/3M7R01bB9S8',
+          file: 'https://archive.org/embed/alvin-yol-macerasi',
+          isYoutube: false
+        }
+      ]
+    },
+    {
+      id: 'm8f1-single',
+      title: 'Atatürk 1881 - 1919 (1. Film)',
+      searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
+      desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
+      poster: 'assets/img/atatürk1.jpeg',
+      trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+      year: '2023',
+      match: '99%',
+      meta: '4K Ultra HD',
+      rating: '9.5',
+      highlights: 'Mustafa Kemal Atatürk\'ün bir yetimhaneden bir ulusun kurtarıcısına dönüşümünün destanı.',
+      file: 'https://archive.org/embed/ataturk1_2024',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm8f2-single',
+      title: 'Atatürk 1881 - 1919 (2. Film)',
+      searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
+      desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
+      poster: 'assets/img/atatürk2.jpeg',
+      trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+      year: '2024',
+      match: '99%',
+      meta: '4K Ultra HD',
+      rating: '9.5',
+      highlights: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
+      file: 'https://archive.org/embed/ataturk2_2024',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f1-single',
+      title: 'Alvin ve Sincaplar: Yol Macerası',
+      searchTags: 'alvin ve sincaplar, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
+      poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+      trailer: 'https://youtu.be/3M7R01bB9S8',
+      year: '2015',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.4',
+      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar maceraları.',
+      file: 'https://archive.org/embed/alvin-yol-macerasi',
+      isYoutube: false,
+      showOnlyInOrbital: true
     }
   ]
 };
