@@ -25,12 +25,8 @@ body {
     max-width: 100%;
 }
 
-/* THE MIRROR FLOOR (Görseldeki Yansımalı Zemin) */
-body::after {
-    content: ''; position: fixed; bottom: 0; left: 0; width: 100%; height: 40vh;
-    background: linear-gradient(to top, rgba(10, 10, 20, 0.8), transparent);
-    z-index: -1; pointer-events: none;
-}
+/* THE MIRROR FLOOR - DEVRE DIŞI (Yansıma kaldırıldı) */
+/* body::after removed to eliminate poster reflection */
 
 /* HARİKA VE BELİRGİN ARKA PLAN VİDEOSU (PROMINENT BACKGROUND VIDEO) */
 .hero-video-bg {
@@ -250,8 +246,12 @@ body::after {
     transform-style: preserve-3d;
 }
 .cf-item img { 
-    width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: 0.5s; border-radius: inherit; 
-    backface-visibility: hidden; transform: translateZ(0); image-rendering: high-quality; /* 3D bulanıklığını giderir */
+    width: 100%; height: 100%; object-fit: cover; opacity: 1; transition: 0.5s; border-radius: inherit; 
+    backface-visibility: hidden; transform: translateZ(0);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: bicubic;
+    /* Afişlerde maksimum çözünürlük ve keskinlik zorlaması */
 }
 
 /* Sürükleme esnasında sıfır gecikme (0ms lag) için geçişleri tamamen kapatıyoruz */
@@ -264,7 +264,7 @@ body::after {
     box-shadow: 0 0 60px rgba(255,15,35,0.6), 0 40px 80px rgba(0,0,0,1);
     z-index: 1000;
 }
-.cf-item.active img { opacity: 1; filter: brightness(1.1); }
+.cf-item.active img { opacity: 1; filter: brightness(1.05) contrast(1.05) saturate(1.05); }
 .cf-item.active .neon-rim { border-color: var(--accent); box-shadow: var(--neon-border); }
 
 /* CONTROLS */

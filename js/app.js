@@ -265,8 +265,9 @@ function updateBackgroundVideo(item) {
       return;
     }
 
-    // Play tuşunu ve logoları atlamak için fragmanlar 5. saniyeden başlar!
-    const midPoint = 5; 
+    // Play tuşu, logo animasyonları ve reklam overlay'lerini tamamen atlamak için
+    // fragmanlar 15. saniyeden başlar (Play butonu %100 atlanır)!
+    const midPoint = 15; 
 
     if (sourceUrl) {
       if (sourceUrl.includes('youtube.com') || sourceUrl.includes('youtu.be')) {
@@ -274,10 +275,9 @@ function updateBackgroundVideo(item) {
         if (sourceUrl.includes('embed/')) ytId = sourceUrl.split('embed/')[1]?.split('?')[0];
         else ytId = sourceUrl.split('v=')[1]?.split('&')[0] || sourceUrl.split('youtu.be/')[1]?.split('?')[0];
         
-        // Fragmansa 5. saniyeden başlatır (Play tuşunu atlar), filmse ortadan!
         let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
-        // Reklam ve çerez takibini en aza indiren youtube-nocookie.com domaini kullanıldı!
-        videoHtml = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1&vq=hd1080${startParam}" allow="autoplay; encrypted-media; picture-in-picture" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
+        // youtube-nocookie.com + maksimum reklam/overlay engelleme parametreleri
+        videoHtml = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&vq=hd1080&cc_load_policy=0&hl=tr${startParam}" allow="autoplay; encrypted-media" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
       } else if (sourceUrl.includes('archive.org')) {
         // ARCHIVE.ORG İÇİN KESİN ÇÖZÜM: iframe yerine doğrudan .mp4 dosyasına çeviriyoruz!
         // Böylece tarayıcılar play butonu çıkarmaz, %100 otomatik (autoplay) sessiz oynatır.
@@ -297,16 +297,16 @@ function updateBackgroundVideo(item) {
         else if (sourceUrl.includes('dai.ly/')) dmId = sourceUrl.split('dai.ly/')[1]?.split('?')[0];
         
         if (dmId) {
-          // HD kalite (quality=1080). Tam ekrana sığdırıldı.
           let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
-          videoHtml = `<iframe src="https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&mute=1&muted=1&controls=0&ui-logo=0&ui-start-screen-info=0&quality=1080&queue-enable=false${startParam}" allow="autoplay; fullscreen; picture-in-picture" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
+          // Dailymotion reklam + logo + başlangıç ekranı tamamen engellendi
+          videoHtml = `<iframe src="https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&mute=1&muted=1&controls=0&ui-logo=0&ui-start-screen-info=0&ui-highlight=000000&quality=1080&queue-enable=false&sharing-enable=false&watchlater-enable=false${startParam}" allow="autoplay" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
         }
       }
     }
 
     if (videoHtml) {
       bgContainer.innerHTML = videoHtml;
-      // Yeni arka planı yumuşakça aydınlat
+      // Yeni arka planı yumuşakça aydınlat (gecikme ile play butonu tamamen gizlenir)
       setTimeout(() => {
         bgContainer.classList.add('active');
       }, 150);
