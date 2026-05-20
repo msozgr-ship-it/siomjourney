@@ -472,7 +472,7 @@ const DB = {
       id: "yanyana-movie",
       title: "Yanyana",
       poster: "assets/img/yanyana.jpg",
-      file: "https://archive.org/embed/yanyana",
+      file: "https://archive.org/embed/yan-yana_202605",
       trailer: "https://youtu.be/0h5G56bHnS0",
       searchTags: "yanyana, animasyon, komedi, macera",
       year: "2024",
