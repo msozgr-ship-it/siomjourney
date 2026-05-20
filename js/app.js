@@ -443,7 +443,7 @@ function handleItemClick(id) {
   if (item.episodes || item.isCollection) {
     openDetails(id);
   } else {
-    openPlayer(item.file, item.title, item.poster);
+    openPlayer(item.file, item.title, item.poster, item.trailer);
   }
 }
 
@@ -559,14 +559,14 @@ function handleSuggestionClick(id) {
   if (item.episodes && item.episodes.length > 0) {
     // Seri ise: İlk bölümü doğrudan oynat!
     const firstEp = item.episodes[0];
-    openPlayer(firstEp.file, firstEp.title, firstEp.poster || item.poster);
+    openPlayer(firstEp.file, firstEp.title, firstEp.poster || item.poster, firstEp.trailer || item.trailer);
   } else if (item.collection && item.collection.length > 0) {
     // Koleksiyon ise: İlk filmi doğrudan oynat!
     const firstMovie = item.collection[0];
-    openPlayer(firstMovie.file, firstMovie.title, firstMovie.poster || item.poster);
+    openPlayer(firstMovie.file, firstMovie.title, firstMovie.poster || item.poster, firstMovie.trailer || item.trailer);
   } else {
     // Tekil film veya alt film ise: Doğrudan oynat!
-    openPlayer(item.file, item.title, item.poster);
+    openPlayer(item.file, item.title, item.poster, item.trailer);
   }
 }
 
@@ -597,9 +597,10 @@ function openDetails(id) {
   grid.innerHTML = subItems.map(sub => {
     // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
     const isUpcoming = !sub.file || sub.file.includes('ID') || sub.file.includes('coming') || sub.file.includes('COMING');
+    const trailerForSub = sub.trailer || item.trailer || '';
     
     return `
-      <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}', '${sub.title}', '${sub.poster || item.poster}')">
+      <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}', '${sub.title}', '${sub.poster || item.poster}', '${trailerForSub}')">
         <div class="card">
           ${isUpcoming ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
           <img src="${sub.poster || item.poster}" alt="">
@@ -617,14 +618,18 @@ function closeDetails() {
   if (modal) { modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 500); }
 }
 
-function openPlayer(file, title, poster) {
+function openPlayer(file, title, poster, trailer) {
   if (!file || file.includes('ID')) {
     openComingSoon(title, poster);
     return;
   }
 
   // Filmi kendi sitemizdeki özel premium player.html sayfasında açıyoruz!
-  const playerUrl = `player.html?file=${encodeURIComponent(file)}&title=${encodeURIComponent(title)}&poster=${encodeURIComponent(poster || '')}`;
+  // Fragman URL'si varsa da ekliyoruz ki player.html içinde geçiş butonu çıksın.
+  let playerUrl = `player.html?file=${encodeURIComponent(file)}&title=${encodeURIComponent(title)}&poster=${encodeURIComponent(poster || '')}`;
+  if (trailer) {
+    playerUrl += `&trailer=${encodeURIComponent(trailer)}`;
+  }
   window.open(playerUrl, '_blank');
 }
 
