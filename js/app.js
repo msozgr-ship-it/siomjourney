@@ -712,9 +712,137 @@ function openComingSoon(title, poster) {
   const modal = document.getElementById('coming-soon-modal');
   const csTitle = document.getElementById('cs-title');
   const csBackdrop = document.getElementById('cs-backdrop');
+  const csPosterImg = document.getElementById('cs-poster-img');
+  
+  const csYear = document.getElementById('cs-year');
+  const csMeta = document.getElementById('cs-meta');
+  const csRating = document.getElementById('cs-rating');
+  const csDesc = document.getElementById('cs-desc');
+  const csPercentVal = document.getElementById('cs-percent-val');
+  const csProgressFill = document.getElementById('cs-progress-fill');
+  const csTrailerBtn = document.getElementById('cs-trailer-btn');
   
   csTitle.textContent = title || "Sinematik İçerik";
-  if (poster) csBackdrop.style.backgroundImage = `url(${poster})`;
+  
+  if (poster) {
+    csBackdrop.style.backgroundImage = `url(${poster})`;
+    csPosterImg.src = poster;
+    csPosterImg.style.display = 'block';
+  } else {
+    csBackdrop.style.backgroundImage = '';
+    csPosterImg.style.display = 'none';
+  }
+
+  // Database'den filmi derin arama ile bulup bilgileri çekiyoruz
+  const item = findItemDeepByTitle(title);
+  if (item) {
+    if (csYear) csYear.textContent = item.year || '2026';
+    if (csMeta) csMeta.textContent = item.meta || '4K Ultra HD';
+    if (csRating) csRating.textContent = item.rating ? `⭐ ${item.rating}` : '⭐ 8.5';
+    if (csDesc && item.desc) csDesc.textContent = item.desc;
+    else if (csDesc) csDesc.textContent = "Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.";
+    
+    // İsme göre dinamik ama sabit bir ilerleme yüzdesi oluşturuyoruz (örneğin %60-90 arası)
+    let percent = 60 + Math.floor((item.title.charCodeAt(0) % 4) * 10);
+    if (csPercentVal) csPercentVal.textContent = `${percent}%`;
+    if (csProgressFill) csProgressFill.style.width = `${percent}%`;
+    
+    // İlerleme yüzdesine göre adımları aktifleştir
+    const steps = document.querySelectorAll('.cs-pipeline-steps .cs-step');
+    steps.forEach((step, idx) => {
+      if (percent >= (idx + 1) * 22) {
+        step.classList.add('active');
+      } else {
+        step.classList.remove('active');
+      }
+    });
+
+    // Fragman butonu aksiyonu
+    if (item.trailer) {
+      if (csTrailerBtn) {
+        csTrailerBtn.classList.remove('disabled');
+        csTrailerBtn.onclick = (e) => {
+          e.stopPropagation();
+          closeComingSoon();
+          openPlayerTrailerOnly(item.trailer, `${item.title} - Fragman`, item.poster);
+        };
+      }
+    } else {
+      if (csTrailerBtn) {
+        csTrailerBtn.classList.add('disabled');
+        csTrailerBtn.onclick = null;
+      }
+    }
+  } else {
+    // Fallback varsayılan değerler
+    if (csYear) csYear.textContent = '2026';
+    if (csMeta) csMeta.textContent = '4K UHD';
+    if (csRating) csRating.textContent = '⭐ 8.5';
+    if (csDesc) csDesc.textContent = "Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.";
+    if (csPercentVal) csPercentVal.textContent = '75%';
+    if (csProgressFill) csProgressFill.style.width = '75%';
+    if (csTrailerBtn) {
+      csTrailerBtn.classList.add('disabled');
+      csTrailerBtn.onclick = null;
+    }
+  }
+  
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function findItemDeepByTitle(title) {
+  if (!title) return null;
+  const cleanTitle = title.toLowerCase().trim();
+  
+  // 1. Üst seviyede ara
+  let found = allContent.find(i => i.title && i.title.toLowerCase().trim() === cleanTitle);
+  if (found) return found;
+
+  // 2. Koleksiyonların içinde ara
+  for (const item of allContent) {
+    if (item.collection) {
+      const nested = item.collection.find(f => f.title && f.title.toLowerCase().trim() === cleanTitle);
+      if (nested) return nested;
+    }
+    // 3. Serilerin bölümlerinin içinde ara
+    if (item.episodes) {
+      const nested = item.episodes.find(e => e.title && e.title.toLowerCase().trim() === cleanTitle);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+
+// Sadece fragmanı açan özel oynatıcı fonksiyonu
+function openPlayerTrailerOnly(trailerUrl, title, poster) {
+  const modal = document.getElementById('player-modal');
+  const playerTitle = document.getElementById('player-title');
+  const playerBackdrop = document.getElementById('player-backdrop');
+  const container = document.querySelector('.player-container');
+  const togglesContainer = document.getElementById('player-source-toggles');
+  
+  if (playerTitle) playerTitle.textContent = title;
+  if (playerBackdrop) playerBackdrop.style.backgroundImage = poster ? `url(${poster})` : '';
+  if (togglesContainer) togglesContainer.style.display = 'none'; // Sadece fragman oynattığımız için butonları gizle
+  
+  container.innerHTML = `
+    <div class="player-logo-blocker" id="logo-blocker" style="display:none;"></div>
+  `;
+
+  let finalUrl = trailerUrl;
+  if (trailerUrl.includes("youtu.be")) {
+    let id = trailerUrl.split("youtu.be/")[1].split("?")[0];
+    let start = trailerUrl.includes("start=") ? "&start=" + trailerUrl.split("start=")[1] : "";
+    finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1${start}`;
+  } else if (trailerUrl.includes("youtube.com")) {
+    let id = trailerUrl.split("v=")[1]?.split("&")[0];
+    finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1`;
+  }
+  
+  container.innerHTML += `
+    <iframe id="player-frame" src="${finalUrl}" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="width:100%; height:100%; border:none; display:block;"></iframe>
+  `;
   
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);

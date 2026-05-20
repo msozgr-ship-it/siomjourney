@@ -85,13 +85,49 @@
         <div class="cs-backdrop" id="cs-backdrop"></div>
         <div class="cs-card" onclick="event.stopPropagation()">
             <div class="cs-close" onclick="closeComingSoon()">✕</div>
-            <div class="cs-content">
-                <div class="cs-badge">YAKINDA</div>
-                <h2 id="cs-title">Film Adı</h2>
-                <div class="cs-divider"></div>
-                <p>Bu sinematik deneyim şu anda ekibimiz tarafından özenle hazırlanıyor.</p>
-                <div class="cs-pulse-line"></div>
-                <span class="cs-subtext">Spatially Tuned & Rendering</span>
+            <div class="cs-layout">
+                <!-- Sol Blok: 3D Holografik Afiş Alanı -->
+                <div class="cs-poster-area">
+                    <div class="cs-poster-glow"></div>
+                    <img id="cs-poster-img" src="" alt="" onerror="this.style.display='none'">
+                </div>
+                <!-- Sağ Blok: Detaylar ve Gelişmiş Hazırlık Aşaması Tracker -->
+                <div class="cs-content">
+                    <div class="cs-badge">YAKINDA SİNEMADA</div>
+                    <h2 id="cs-title">Film Adı</h2>
+                    
+                    <div class="cs-meta-row" id="cs-meta-row">
+                        <span class="cs-meta-tag" id="cs-year">2026</span>
+                        <span class="cs-meta-tag" id="cs-meta">4K UHD</span>
+                        <span class="cs-meta-tag" id="cs-rating">⭐ 9.0</span>
+                    </div>
+                    
+                    <p id="cs-desc">Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.</p>
+                    
+                    <!-- Premium Spatial Pipeline Tracker (Neon İlerleme Çubuğu) -->
+                    <div class="cs-pipeline">
+                        <div class="cs-pipeline-header">
+                            <span class="cs-pipeline-status">SİNEMATİK HAZIRLIK AŞAMASI</span>
+                            <span class="cs-pipeline-percentage" id="cs-percent-val">75%</span>
+                        </div>
+                        <div class="cs-progress-track">
+                            <div class="cs-progress-bar" id="cs-progress-fill" style="width: 75%"></div>
+                        </div>
+                        <div class="cs-pipeline-steps">
+                            <span class="cs-step active">KAYNAK</span>
+                            <span class="cs-step active">SES MOD</span>
+                            <span class="cs-step active">ENCODE</span>
+                            <span class="cs-step">YAYIN</span>
+                        </div>
+                    </div>
+                    
+                    <div class="cs-action-row">
+                        <button id="cs-trailer-btn" class="cs-action-btn">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" style="width:16px; height:16px;"><path d="M8 5v14l11-7z"/></svg>
+                            Fragmanı İzle
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
