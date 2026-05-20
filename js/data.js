@@ -307,8 +307,8 @@ const DB = {
           epNum: 4,
           title: 'Arabalar: Mater\'ın Abartılı Hikayeleri',
           desc: 'Şimşek McQueen\'in en yakın dostu Mater, geçmişte yaşadığı birbirinden komik, heyecanlı ve abartılı maceraları anlatıyor.',
-          poster: 'assets/img/arabalar.webp',
-          trailer: 'https://youtu.be/nOryV2o-lOQ',
+          poster: 'assets/img/arabalarmaters.jpeg',
+          trailer: 'https://youtu.be/NyL7JJfO-NE?si=Bqm8Z9PKD6Z-RJmb',
           file: 'https://www.dailymotion.com/embed/video/k6MYPq3OdmSlgjG4QHI?autoplay=1&queue-enable=false&queue-autoplay-next=false',
           isYoutube: false
         }
@@ -479,8 +479,8 @@ const DB = {
       title: 'Arabalar: Mater\'ın Abartılı Hikayeleri',
       searchTags: 'arabalar, cars, mater, mater\'ın abartılı hikayeleri, cars toons, pixar, animasyon',
       desc: 'Şimşek McQueen\'in en yakın dostu Mater, geçmişte yaşadığı birbirinden komik, heyecanlı ve abartılı maceraları anlatıyor.',
-      poster: 'assets/img/arabalar.webp',
-      trailer: 'https://youtu.be/nOryV2o-lOQ',
+      poster: 'assets/img/arabalarmaters.jpeg',
+      trailer: 'https://youtu.be/NyL7JJfO-NE?si=Bqm8Z9PKD6Z-RJmb',
       year: '2010',
       match: '98%',
       meta: 'HD',
