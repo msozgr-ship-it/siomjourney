@@ -623,37 +623,9 @@ function openPlayer(file, title, poster) {
     return;
   }
 
-  let finalUrl = file;
-
-  // Archive.org linklerini tespit edip DOĞRUDAN ham 1080p/720p HD MP4 akışına dönüştür!
-  if (file.includes('archive.org/embed/') || file.includes('archive.org/details/')) {
-    let identifier = '';
-    if (file.includes('archive.org/embed/')) {
-      identifier = file.split('archive.org/embed/')[1]?.split('?')[0];
-    } else {
-      identifier = file.split('archive.org/details/')[1]?.split('?')[0];
-    }
-    if (identifier) {
-      finalUrl = `https://archive.org/download/${identifier}/${identifier}.mp4`;
-    }
-  } else if (file.includes('pixeldrain.com/u/')) {
-    finalUrl = file.replace('pixeldrain.com/u/', 'pixeldrain.com/u/') + '?embed';
-  } else if (file.includes('youtube.com') || file.includes('youtu.be')) {
-    let ytId = '';
-    if (file.includes('embed/')) ytId = file.split('embed/')[1]?.split('?')[0];
-    else ytId = file.split('v=')[1]?.split('&')[0] || file.split('youtu.be/')[1]?.split('?')[0];
-    finalUrl = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0`;
-  } else if (file.includes('dailymotion.com')) {
-    let dmId = '';
-    if (file.includes('video/')) dmId = file.split('video/')[1]?.split('?')[0]?.split('&')[0];
-    else if (file.includes('dai.ly/')) dmId = file.split('dai.ly/')[1]?.split('?')[0];
-    if (dmId) {
-      finalUrl = `https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&queue-enable=false&queue-autoplay-next=false&ui-logo=false`;
-    }
-  }
-
-  // Filmi ayrı bir sekmede (yeni sayfada) açıyoruz!
-  window.open(finalUrl, '_blank');
+  // Filmi kendi sitemizdeki özel premium player.html sayfasında açıyoruz!
+  const playerUrl = `player.html?file=${encodeURIComponent(file)}&title=${encodeURIComponent(title)}&poster=${encodeURIComponent(poster || '')}`;
+  window.open(playerUrl, '_blank');
 }
 
 function openComingSoon(title, poster) {
