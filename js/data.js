@@ -279,7 +279,7 @@ const DB = {
           desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
           poster: 'assets/img/arabalar.webp',
           trailer: 'https://www.youtube.com/watch?v=SbXIj2T-_uk',
-          file: 'https://archive.org/embed/arabalar-1-izle',
+          file: 'https://archive.org/embed/arabalar-bir',
           isYoutube: true
         },
         {
@@ -418,7 +418,7 @@ const DB = {
       meta: 'HD',
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
-      file: 'https://archive.org/embed/arabalar-1-izle',
+      file: 'https://archive.org/embed/arabalar-bir',
       isYoutube: true,
       showOnlyInOrbital: true
     },
