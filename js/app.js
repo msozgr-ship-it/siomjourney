@@ -112,8 +112,8 @@ function updateOrbitalTransforms() {
     const screenW = window.innerWidth;
     const maxSpanX = (screenW / 2) - 48;
     const radiusX = Math.min(maxSpanX, 115);
-    const radiusY_vertical = 35; // Dikey eliptik kavis derinliği
-    const radiusZ = 60; // 3D derinlik projeksiyonu
+    const radiusY_vertical = 35;
+    const radiusZ = 60;
 
     calculatedAngles.forEach((data, i) => {
       const { item, relAngle } = data;
@@ -123,111 +123,98 @@ function updateOrbitalTransforms() {
       const y = -cosVal * radiusY_vertical;
       const z = cosVal * radiusZ;
       
-      const normCos = (cosVal + 1) / 2; // 0 to 1
+      const normCos = (cosVal + 1) / 2;
       const isCenter = (i === closestIndex);
       
       let scale;
       if (isCenter) {
-        scale = 1.35; // Odaktaki kart mobilde de devasa ve belirgin
+        scale = 1.35;
       } else {
-        scale = 0.62 + 0.40 * Math.pow(normCos, 4.5); // Diğerleri arkaya doğru hızla küçülür
+        scale = 0.55 + 0.35 * Math.pow(normCos, 3);
       }
       
       const rotY = relAngle * 0.22;
       item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(0deg)`;
       
       if (isCenter) {
-        item.style.opacity = "1.0";
+        item.style.opacity = "1";
         item.style.visibility = "visible";
-        item.style.filter = "brightness(1.1) contrast(1.05)";
+        item.style.filter = "brightness(1.12) contrast(1.08) saturate(1.1)";
         item.classList.add('active');
         item.style.zIndex = "25000";
         item.style.pointerEvents = "auto";
       } else {
-        // Arka yarımküredeki afişleri gizle (Görsel kirliliği ve yansıma çakışmalarını sıfırlar!)
-        if (cosVal < 0.10) {
+        if (cosVal < 0.25) {
           item.style.opacity = "0";
           item.style.visibility = "hidden";
           item.style.pointerEvents = "none";
         } else {
           item.style.visibility = "visible";
-          item.style.opacity = (0.15 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
-          item.style.filter = "blur(1px) brightness(0.4) grayscale(15%)";
+          item.style.opacity = (0.4 + 0.55 * Math.pow(normCos, 2)).toFixed(2);
+          item.style.filter = `brightness(${(0.5 + 0.4 * normCos).toFixed(2)}) saturate(0.7)`;
         }
         item.classList.remove('active');
         
         const zIndexBase = Math.round(19000 + cosVal * 1000);
         item.style.zIndex = zIndexBase;
-        
-        if (cosVal >= 0.10) {
-          item.style.pointerEvents = "auto";
-        } else {
-          item.style.pointerEvents = "none";
-        }
+        item.style.pointerEvents = cosVal >= 0.25 ? "auto" : "none";
       }
     });
   } else {
-    // MASAÜSTÜ İÇİN SOL DİKEY DÖNME DOLAP (BELİRGİN VE SİNEMATİK ODAKLI)
-    const radiusY_vertical = 250; // Dikey çap hafifçe artırıldı, böylece dikeyde daha rahat yayılırlar
-    const radiusZ = 200; // 3D derinlik artırıldı, ön-arka ayrımı güçlendi
-    const leftOffset = -680; // Sol kenara sıfır offset
-    const curveX = 30; // Dönüşteki yatay kavis
+    // MASAÜSTÜ İÇİN SOL DİKEY DÖNME DOLAP (PROFESYONELLEŞTİRİLMİŞ SİNEMATİK DOLAP)
+    const radiusY_vertical = 260;
+    const radiusZ = 220;
+    const leftOffset = -680;
+    const curveX = 30;
 
     calculatedAngles.forEach((data, i) => {
       const { item, relAngle } = data;
       const rad = (relAngle * Math.PI) / 180;
-      const cosVal = Math.cos(rad); // Ön/Arka (Z)
-      const sinVal = Math.sin(rad); // Yukarı/Aşağı (Y)
+      const cosVal = Math.cos(rad);
+      const sinVal = Math.sin(rad);
       
       const x = leftOffset + (Math.abs(sinVal) * curveX); 
       const y = sinVal * radiusY_vertical; 
       const z = cosVal * radiusZ; 
       
-      const normCos = (cosVal + 1) / 2; // 0 to 1
+      const normCos = (cosVal + 1) / 2;
       const isCenter = (i === closestIndex);
       
-      // Steep focus scaling (Üst üste binmeyi engellemek için aktif olmayanları hızla küçültüyoruz)
       let scale;
       if (isCenter) {
-        scale = 1.15; // Odaktaki kart çok daha büyük ve ön planda
+        scale = 1.18;
       } else {
-        scale = 0.35 + 0.45 * Math.pow(normCos, 4.5); 
+        scale = 0.40 + 0.42 * Math.pow(normCos, 3);
       }
       
-      const rotY = 20; 
-      const rotX = -sinVal * 12; 
+      const rotY = 18; 
+      const rotX = -sinVal * 10; 
       
       item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
       
-      // Odaktaki kartı pırıl pırıl yap, arkadakileri loşlaştır ve hafif bulanıklaştır (Cinematic Depth of Field)
       if (isCenter) {
-        item.style.opacity = "1.0";
+        item.style.opacity = "1";
         item.style.visibility = "visible";
-        item.style.filter = "brightness(1.1) contrast(1.05)";
+        item.style.filter = "brightness(1.12) contrast(1.08) saturate(1.1)";
         item.classList.add('active');
-        item.style.zIndex = "25000"; // En önde
+        item.style.zIndex = "25000";
         item.style.pointerEvents = "auto";
       } else {
-        // Arka yarımküredeki afişleri gizle (Görsel kirliliği ve yansıma çakışmalarını sıfırlar!)
-        if (cosVal < 0.10) {
+        // Arka yarımküreyi agresif gizle - yansıma sıfır
+        if (cosVal < 0.30) {
           item.style.opacity = "0";
           item.style.visibility = "hidden";
           item.style.pointerEvents = "none";
         } else {
           item.style.visibility = "visible";
-          item.style.opacity = (0.05 + 0.60 * Math.pow(normCos, 4.5)).toFixed(2);
-          item.style.filter = "blur(1.5px) brightness(0.35) grayscale(20%)";
+          item.style.opacity = (0.35 + 0.60 * Math.pow(normCos, 2)).toFixed(2);
+          item.style.filter = `brightness(${(0.50 + 0.45 * normCos).toFixed(2)}) saturate(0.75)`;
         }
         item.classList.remove('active');
         
         const zIndexBase = Math.round(19000 + cosVal * 1000);
         item.style.zIndex = zIndexBase;
-        
-        if (cosVal >= 0.10) {
-          item.style.pointerEvents = "auto";
-        } else {
-          item.style.pointerEvents = "none";
-        }
+        item.style.pointerEvents = cosVal >= 0.30 ? "auto" : "none";
       }
     });
 

@@ -239,11 +239,12 @@ body {
 /* FANTASTIC CARDS IMPROVED */
 .cf-item {
     position: absolute; left: 50%; top: 50%; transform-origin: center center;
-    width: var(--card-w); height: var(--card-h); border-radius: 8px;
+    width: var(--card-w); height: var(--card-h); border-radius: 10px;
     transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    cursor: pointer; background: #000; border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.9);
+    cursor: pointer; background: #000; border: 1.5px solid rgba(255,255,255,0.08);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.85);
     transform-style: preserve-3d;
+    overflow: hidden;
 }
 .cf-item img { 
     width: 100%; height: 100%; object-fit: cover; opacity: 1; transition: 0.5s; border-radius: inherit; 
@@ -251,7 +252,6 @@ body {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
     -ms-interpolation-mode: bicubic;
-    /* Afişlerde maksimum çözünürlük ve keskinlik zorlaması */
 }
 
 /* Sürükleme esnasında sıfır gecikme (0ms lag) için geçişleri tamamen kapatıyoruz */
@@ -260,11 +260,11 @@ body {
 }
 
 .cf-item.active { 
-    border-color: var(--accent);
-    box-shadow: 0 0 60px rgba(255,15,35,0.6), 0 40px 80px rgba(0,0,0,1);
+    border-color: rgba(255,255,255,0.35);
+    box-shadow: 0 0 40px rgba(255,255,255,0.12), 0 25px 60px rgba(0,0,0,0.95);
     z-index: 1000;
 }
-.cf-item.active img { opacity: 1; filter: brightness(1.05) contrast(1.05) saturate(1.05); }
+.cf-item.active img { opacity: 1; filter: brightness(1.1) contrast(1.08) saturate(1.1); }
 .cf-item.active .neon-rim { border-color: var(--accent); box-shadow: var(--neon-border); }
 
 /* CONTROLS */
