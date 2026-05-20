@@ -457,8 +457,8 @@ const DB = {
       id: "mario-movie",
       title: "Süper Mario Kardeşler Filmi",
       poster: "assets/img/mario.jpg",
-      file: "https://archive.org/embed/mario-movie",
-      trailer: "https://youtu.be/0h5G56bHnS0",
+      file: "https://www.dailymotion.com/embed/video/k2z2D4mHPoBwwuG6Cvw?autoplay=1&queue-enable=false&queue-autoplay-next=false",
+      trailer: "https://youtu.be/2I68_eFe0mY?si=Wc1uD6jra8Zv9dd7",
       searchTags: "mario, super mario bros, luigi, bowser, nintendo, animasyon, macera, komedi",
       year: "2023",
       match: "99%",
@@ -466,7 +466,7 @@ const DB = {
       rating: "8.0",
       highlights: "Mario ve Luigi'nin Mantar Krallığı'nı kurtarmak için atıldıkları epik macera.",
       isNew: true,
-      isYoutube: true
+      isYoutube: false
     },
     {
       id: "yanyana-movie",
