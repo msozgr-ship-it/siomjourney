@@ -268,7 +268,7 @@ const DB = {
       isCollection: true,
       year: 'Koleksiyon',
       match: '99%',
-      meta: '2 Film',
+      meta: '3 Film',
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
       collection: [
@@ -290,6 +290,16 @@ const DB = {
           poster: 'assets/img/arabalariki.webp',
           trailer: 'https://www.youtube.com/watch?v=1sD4qkCymtI',
           file: 'https://www.dailymotion.com/embed/video/k1qc1gWN68eyhiG4QGU?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+          isYoutube: false
+        },
+        {
+          id: 'm7f3',
+          epNum: 3,
+          title: 'Arabalar 3 (2017)',
+          desc: 'Yeni nesil hızlı yarışçılar tarafından gafil avlanan efsanevi Şimşek McQueen, sevdiği spordan aniden dışlanır. Oyuna geri dönmek için hevesli bir teknisyenin yardımına ihtiyacı vardır.',
+          poster: 'assets/img/arabalaruc.jpeg',
+          trailer: 'https://youtu.be/2QtgOIpA5y8',
+          file: 'https://www.dailymotion.com/embed/video/k3hIU9RKNptcZ3G4QHg?autoplay=1&queue-enable=false&queue-autoplay-next=false',
           isYoutube: false
         }
       ]
@@ -435,6 +445,22 @@ const DB = {
       meta: 'HD',
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm7f3-single',
+      title: 'Arabalar 3 (2017)',
+      searchTags: 'arabalar, cars 3, arabalar 3, şimşek mcqueen, lightning mcqueen, cruz ramirez, pixar, animasyon',
+      desc: 'Yeni nesil hızlı yarışçılar tarafından gafil avlanan efsanevi Şimşek McQueen, sevdiği spordan aniden dışlanır. Oyuna geri dönmek için hevesli bir teknisyenin yardımına ihtiyacı vardır.',
+      poster: 'assets/img/arabalaruc.jpeg',
+      trailer: 'https://youtu.be/2QtgOIpA5y8',
+      year: '2017',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Şimşek McQueen\'in yeni nesil yarışçılara karşı verdiği efsanevi geri dönüş mücadelesi.',
+      file: 'https://www.dailymotion.com/embed/video/k3hIU9RKNptcZ3G4QHg?autoplay=1&queue-enable=false&queue-autoplay-next=false',
       isYoutube: false,
       showOnlyInOrbital: true
     },
