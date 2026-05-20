@@ -272,44 +272,28 @@
         }
 
         function loadPlayer(file) {
-            let finalUrl = file;
-            let isDirectVideo = false;
-
-            // Archive.org linklerini tespit edip DOĞRUDAN ham 1080p/720p HD MP4 akışına dönüştür!
-            if (file.includes('archive.org/embed/') || file.includes('archive.org/details/')) {
-                let identifier = '';
-                if (file.includes('archive.org/embed/')) {
-                    identifier = file.split('archive.org/embed/')[1]?.split('?')[0];
-                } else {
-                    identifier = file.split('archive.org/details/')[1]?.split('?')[0];
-                }
-                if (identifier) {
-                    finalUrl = `https://archive.org/download/${identifier}/${identifier}.mp4`;
-                    isDirectVideo = true;
-                }
-            } else if (file.endsWith('.mp4') || file.includes('.mp4?')) {
-                isDirectVideo = true;
+            // Archive.org: DOĞRUDAN embed iframe kullan (mp4 download linki güvenilmez ve 404 verir)
+            if (file.includes('archive.org')) {
+                loadIframePlayer(file);
+                return;
             }
 
-            if (isDirectVideo) {
+            // Gerçek .mp4 dosya linkleri için native video oynatıcı
+            if (file.endsWith('.mp4') || file.includes('.mp4?')) {
                 container.innerHTML = `
-                    <video id="player-video" src="${finalUrl}" controls autoplay playsinline style="width:100%; height:100%; object-fit:contain;"></video>
+                    <video id="player-video" src="${file}" controls autoplay playsinline style="width:100%; height:100%; object-fit:contain;"></video>
                 `;
-                
                 const videoEl = document.getElementById('player-video');
-                
-                videoEl.addEventListener('canplay', () => {
-                    fadeOutLoader();
-                });
-
-                // AKILLI HATA TOLERANS LİSENER'I: Doğrudan MP4 bağlantısı 404 (Sayfa bulunamadı) hatası verirse, anında ve kesintisiz iframe embed oynatıcısına geçer!
+                videoEl.addEventListener('canplay', () => { fadeOutLoader(); });
                 videoEl.addEventListener('error', () => {
-                    console.warn("Yerel video oynatıcı hata verdi, iframe embed moduna geçiliyor.");
+                    console.warn("Native video oynatıcı hata verdi, iframe moduna geçiliyor.");
                     loadIframePlayer(file);
                 });
-            } else {
-                loadIframePlayer(file);
+                return;
             }
+
+            // Diğer tüm kaynaklar (Dailymotion, YouTube, vb.) için iframe
+            loadIframePlayer(file);
         }
 
         function loadIframePlayer(file) {
