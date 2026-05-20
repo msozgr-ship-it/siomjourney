@@ -268,7 +268,7 @@ const DB = {
       isCollection: true,
       year: 'Koleksiyon',
       match: '99%',
-      meta: '3 Film',
+      meta: '4 Film',
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
       collection: [
@@ -300,6 +300,16 @@ const DB = {
           poster: 'assets/img/arabalaruc.jpeg',
           trailer: 'https://youtu.be/2QtgOIpA5y8',
           file: 'https://www.dailymotion.com/embed/video/k3hIU9RKNptcZ3G4QHg?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+          isYoutube: false
+        },
+        {
+          id: 'm7f4',
+          epNum: 4,
+          title: 'Arabalar: Mater\'ın Abartılı Hikayeleri',
+          desc: 'Şimşek McQueen\'in en yakın dostu Mater, geçmişte yaşadığı birbirinden komik, heyecanlı ve abartılı maceraları anlatıyor.',
+          poster: 'assets/img/arabalar.webp',
+          trailer: 'https://youtu.be/nOryV2o-lOQ',
+          file: 'https://www.dailymotion.com/embed/video/k6MYPq3OdmSlgjG4QHI?autoplay=1&queue-enable=false&queue-autoplay-next=false',
           isYoutube: false
         }
       ]
@@ -461,6 +471,22 @@ const DB = {
       rating: '8.8',
       highlights: 'Şimşek McQueen\'in yeni nesil yarışçılara karşı verdiği efsanevi geri dönüş mücadelesi.',
       file: 'https://www.dailymotion.com/embed/video/k3hIU9RKNptcZ3G4QHg?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm7f4-single',
+      title: 'Arabalar: Mater\'ın Abartılı Hikayeleri',
+      searchTags: 'arabalar, cars, mater, mater\'ın abartılı hikayeleri, cars toons, pixar, animasyon',
+      desc: 'Şimşek McQueen\'in en yakın dostu Mater, geçmişte yaşadığı birbirinden komik, heyecanlı ve abartılı maceraları anlatıyor.',
+      poster: 'assets/img/arabalar.webp',
+      trailer: 'https://youtu.be/nOryV2o-lOQ',
+      year: '2010',
+      match: '98%',
+      meta: 'HD',
+      rating: '8.5',
+      highlights: 'Mater\'ın boğa güreşçiliğinden astronotluğa uzanan birbirinden komik ve abartılı hikayeleri.',
+      file: 'https://www.dailymotion.com/embed/video/k6MYPq3OdmSlgjG4QHI?autoplay=1&queue-enable=false&queue-autoplay-next=false',
       isYoutube: false,
       showOnlyInOrbital: true
     },
