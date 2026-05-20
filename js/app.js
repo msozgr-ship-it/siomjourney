@@ -622,23 +622,8 @@ function openPlayer(file, title, poster) {
     openComingSoon(title, poster);
     return;
   }
-  const modal = document.getElementById('player-modal');
-  const playerTitle = document.getElementById('player-title');
-  const playerBackdrop = document.getElementById('player-backdrop');
-  const container = document.querySelector('.player-container');
-  
-  if (playerTitle) playerTitle.textContent = title || "Sinematik Deneyim";
-  if (playerBackdrop) playerBackdrop.style.backgroundImage = poster ? `url(${poster})` : '';
-  
-  // Eski içeriği temizle ve logoyu maskeleyen paneli sıfırla
-  container.innerHTML = `
-    <div class="player-logo-blocker" id="logo-blocker">
-      <span class="blocker-dot"></span>
-    </div>
-  `;
 
   let finalUrl = file;
-  let isDirectVideo = false;
 
   // Archive.org linklerini tespit edip DOĞRUDAN ham 1080p/720p HD MP4 akışına dönüştür!
   if (file.includes('archive.org/embed/') || file.includes('archive.org/details/')) {
@@ -650,62 +635,25 @@ function openPlayer(file, title, poster) {
     }
     if (identifier) {
       finalUrl = `https://archive.org/download/${identifier}/${identifier}.mp4`;
-      isDirectVideo = true;
     }
-  } else if (file.endsWith('.mp4') || file.includes('.mp4?')) {
-    isDirectVideo = true;
+  } else if (file.includes('pixeldrain.com/u/')) {
+    finalUrl = file.replace('pixeldrain.com/u/', 'pixeldrain.com/u/') + '?embed';
+  } else if (file.includes('youtube.com') || file.includes('youtu.be')) {
+    let ytId = '';
+    if (file.includes('embed/')) ytId = file.split('embed/')[1]?.split('?')[0];
+    else ytId = file.split('v=')[1]?.split('&')[0] || file.split('youtu.be/')[1]?.split('?')[0];
+    finalUrl = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0`;
+  } else if (file.includes('dailymotion.com')) {
+    let dmId = '';
+    if (file.includes('video/')) dmId = file.split('video/')[1]?.split('?')[0]?.split('&')[0];
+    else if (file.includes('dai.ly/')) dmId = file.split('dai.ly/')[1]?.split('?')[0];
+    if (dmId) {
+      finalUrl = `https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&queue-enable=false&queue-autoplay-next=false&ui-logo=false`;
+    }
   }
 
-  if (isDirectVideo) {
-    // Özel premium, sıfır sıkıştırmalı yerel tarayıcı oynatıcısı (Süper HD Çözünürlük!)
-    container.innerHTML += `
-      <video id="player-video" src="${finalUrl}" controls autoplay playsinline style="width:100%; height:100%; object-fit:contain; border:none; display:block; outline:none; background:#000;"></video>
-    `;
-    
-    // Doğrudan video akışı olduğu için Archive.org logosu bulunmaz, maskeleyicileri gizleyebiliriz!
-    const blocker = document.getElementById('logo-blocker');
-    if (blocker) blocker.style.display = 'none';
-
-    // AKILLI HATA TOLERANS LİSENER'I: Eğer doğrudan MP4 bağlantısı 404/hata verirse, anında ve hissettirmeden güvenli iframe oynatıcısına geri döner!
-    const videoEl = document.getElementById('player-video');
-    if (videoEl) {
-      videoEl.addEventListener('error', () => {
-        console.warn("Doğrudan MP4 akışı başarısız oldu, iframe oynatıcısına geçiş yapılıyor.");
-        // Iframe oynatıcısına geri dön (yedek plan)
-        let iframeUrl = file;
-        if (file.includes('archive.org/embed/')) {
-          iframeUrl = file + (file.includes('?') ? '&' : '?') + 'autoplay=1';
-        }
-        container.innerHTML = `
-          <div class="player-logo-blocker" id="logo-blocker">
-            <span class="blocker-dot"></span>
-          </div>
-          <iframe id="player-frame" src="${iframeUrl}" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" oallowfullscreen="true" msallowfullscreen="true" style="width:100%; height:100%; border:none; display:block;"></iframe>
-        `;
-      });
-    }
-  } else {
-    // YouTube / Pixeldrain vb. için iframe oynatıcısı (varsayılan yedek)
-    if (file.includes('pixeldrain.com/u/')) {
-      finalUrl = file.replace('pixeldrain.com/u/', 'pixeldrain.com/u/') + '?embed';
-    } else if (file.includes('youtube.com') || file.includes('youtu.be')) {
-      let ytId = '';
-      if (file.includes('embed/')) ytId = file.split('embed/')[1]?.split('?')[0];
-      else ytId = file.split('v=')[1]?.split('&')[0];
-      finalUrl = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0`;
-    } else if (file.includes('dailymotion.com')) {
-      let dmId = file.split('video/')[1]?.split('?')[0]?.split('&')[0];
-      if (dmId) {
-        finalUrl = `https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&queue-enable=false&queue-autoplay-next=false&ui-logo=false`;
-      }
-    }
-    container.innerHTML += `
-      <iframe id="player-frame" src="${finalUrl}" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" oallowfullscreen="true" msallowfullscreen="true" style="width:100%; height:100%; border:none; display:block;"></iframe>
-    `;
-  }
-
-  modal.style.display = 'flex';
-  setTimeout(() => modal.classList.add('active'), 10);
+  // Filmi ayrı bir sekmede (yeni sayfada) açıyoruz!
+  window.open(finalUrl, '_blank');
 }
 
 function openComingSoon(title, poster) {
