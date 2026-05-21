@@ -98,7 +98,7 @@
                 </div>
                 <!-- Sağ Blok: Detaylar ve Gelişmiş Hazırlık Aşaması Tracker -->
                 <div class="cs-content">
-                    <div class="cs-badge">YAKINDA SİNEMADA</div>
+                    <div class="cs-badge" id="cs-badge">YAKINDA SİNEMADA</div>
                     <h2 id="cs-title">Film Adı</h2>
                     
                     <div class="cs-meta-row" id="cs-meta-row">
@@ -110,7 +110,7 @@
                     <p id="cs-desc">Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.</p>
                     
                     <!-- Premium Spatial Pipeline Tracker (Neon İlerleme Çubuğu) -->
-                    <div class="cs-pipeline">
+                    <div class="cs-pipeline" id="cs-pipeline-wrapper">
                         <div class="cs-pipeline-header">
                             <span class="cs-pipeline-status">SİNEMATİK HAZIRLIK AŞAMASI</span>
                             <span class="cs-pipeline-percentage" id="cs-percent-val">75%</span>
@@ -127,6 +127,10 @@
                     </div>
                     
                     <div class="cs-action-row">
+                        <button id="cs-movie-btn" class="cs-action-btn" style="background: var(--accent); display: none;">
+                            <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" style="width:16px; height:16px;"><path d="M8 5v14l11-7z"/></svg>
+                            Filmi İzle
+                        </button>
                         <button id="cs-trailer-btn" class="cs-action-btn">
                             <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" style="width:16px; height:16px;"><path d="M8 5v14l11-7z"/></svg>
                             Fragmanı İzle

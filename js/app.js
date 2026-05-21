@@ -557,29 +557,8 @@ function closeDetails() {
   if (modal) { modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 500); }
 }
 
-function openPlayer(file, title, poster, trailer) {
-  if (!file || file.includes('ID')) {
-    openComingSoon(title, poster);
-    return;
-  }
-
-  // Filmi kendi sitemizdeki özel premium player.html sayfasında açıyoruz!
-  // Fragman URL'si varsa da ekliyoruz ki player.html içinde geçiş butonu çıksın.
-  
-  // Öğeyi bulup fileSub olup olmadığını kontrol et
-  let item = allContent.find(i => i.title === title);
-  if (!item) {
-    for (const parent of allContent) {
-      if (parent.collection) {
-        const nested = parent.collection.find(f => f.title === title);
-        if (nested) { item = nested; break; }
-      }
-      if (parent.episodes) {
-        const nested = parent.episodes.find(f => f.title === title);
-        if (nested) { item = nested; break; }
-      }
-    }
-  }
+function launchPlayer(file, title, poster, trailer) {
+  let item = findItemDeepByTitle(title);
   const fileSub = item ? (item.fileSub || '') : '';
   
   let playerUrl = `player.html?file=${encodeURIComponent(file)}&title=${encodeURIComponent(title)}&poster=${encodeURIComponent(poster || '')}`;
@@ -592,7 +571,7 @@ function openPlayer(file, title, poster, trailer) {
   window.open(playerUrl, '_blank');
 }
 
-function openComingSoon(title, poster) {
+function openPlayer(file, title, poster, trailer) {
   const modal = document.getElementById('coming-soon-modal');
   const csTitle = document.getElementById('cs-title');
   const csBackdrop = document.getElementById('cs-backdrop');
@@ -604,6 +583,10 @@ function openComingSoon(title, poster) {
   const csDesc = document.getElementById('cs-desc');
   const csPercentVal = document.getElementById('cs-percent-val');
   const csProgressFill = document.getElementById('cs-progress-fill');
+  
+  const csBadge = document.getElementById('cs-badge');
+  const csPipelineWrapper = document.getElementById('cs-pipeline-wrapper');
+  const csMovieBtn = document.getElementById('cs-movie-btn');
   const csTrailerBtn = document.getElementById('cs-trailer-btn');
   
   csTitle.textContent = title || "Sinematik İçerik";
@@ -619,58 +602,70 @@ function openComingSoon(title, poster) {
 
   // Database'den filmi derin arama ile bulup bilgileri çekiyoruz
   const item = findItemDeepByTitle(title);
+  let resolvedTrailer = trailer || (item ? item.trailer : '');
+  
   if (item) {
     if (csYear) csYear.textContent = item.year || '2026';
     if (csMeta) csMeta.textContent = item.meta || '4K Ultra HD';
     if (csRating) csRating.textContent = item.rating ? `⭐ ${item.rating}` : '⭐ 8.5';
     if (csDesc && item.desc) csDesc.textContent = item.desc;
     else if (csDesc) csDesc.textContent = "Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.";
-    
-    // İsme göre dinamik ama sabit bir ilerleme yüzdesi oluşturuyoruz (örneğin %60-90 arası)
-    let percent = 60 + Math.floor((item.title.charCodeAt(0) % 4) * 10);
-    if (csPercentVal) csPercentVal.textContent = `${percent}%`;
-    if (csProgressFill) csProgressFill.style.width = `${percent}%`;
-    
-    // İlerleme yüzdesine göre adımları aktifleştir
-    const steps = document.querySelectorAll('.cs-pipeline-steps .cs-step');
-    steps.forEach((step, idx) => {
-      if (percent >= (idx + 1) * 22) {
-        step.classList.add('active');
-      } else {
-        step.classList.remove('active');
-      }
-    });
-
-    // Fragman butonu aksiyonu
-    if (item.trailer) {
-      if (csTrailerBtn) {
-        csTrailerBtn.classList.remove('disabled');
-        csTrailerBtn.onclick = (e) => {
-          e.stopPropagation();
-          closeComingSoon();
-          openPlayerTrailerOnly(item.trailer, `${item.title} - Fragman`, item.poster);
-        };
-      }
-    } else {
-      if (csTrailerBtn) {
-        csTrailerBtn.classList.add('disabled');
-        csTrailerBtn.onclick = null;
-      }
-    }
   } else {
-    // Fallback varsayılan değerler
     if (csYear) csYear.textContent = '2026';
     if (csMeta) csMeta.textContent = '4K UHD';
     if (csRating) csRating.textContent = '⭐ 8.5';
     if (csDesc) csDesc.textContent = "Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.";
-    if (csPercentVal) csPercentVal.textContent = '75%';
-    if (csProgressFill) csProgressFill.style.width = '75%';
+  }
+
+  // Yayın Durumuna Göre Modal Ayarları (Video var mı yok mu?)
+  const isUpcoming = !file || file.includes('ID') || file.includes('coming') || file.includes('COMING');
+  
+  if (isUpcoming) {
+    if (csBadge) csBadge.textContent = "YAKINDA SİNEMADA";
+    if (csPipelineWrapper) csPipelineWrapper.style.display = "block";
+    if (csMovieBtn) csMovieBtn.style.display = "none";
+    
+    // İsme göre dinamik ilerleme yüzdesi (Yakında olanlar için)
+    let percent = 60 + Math.floor((title.charCodeAt(0) % 4) * 10);
+    if (csPercentVal) csPercentVal.textContent = `${percent}%`;
+    if (csProgressFill) csProgressFill.style.width = `${percent}%`;
+    
+    const steps = document.querySelectorAll('.cs-pipeline-steps .cs-step');
+    steps.forEach((step, idx) => {
+      if (percent >= (idx + 1) * 22) step.classList.add('active');
+      else step.classList.remove('active');
+    });
+  } else {
+    if (csBadge) csBadge.textContent = "SİNEMATİK İZLEME";
+    if (csPipelineWrapper) csPipelineWrapper.style.display = "none";
+    if (csMovieBtn) {
+      csMovieBtn.style.display = "inline-flex";
+      csMovieBtn.onclick = (e) => {
+        e.stopPropagation();
+        closeComingSoon();
+        launchPlayer(file, title, poster, resolvedTrailer);
+      };
+    }
+  }
+
+  // Fragman Butonu Ayarı
+  if (resolvedTrailer) {
     if (csTrailerBtn) {
-      csTrailerBtn.classList.add('disabled');
+      csTrailerBtn.style.display = "inline-flex";
+      csTrailerBtn.classList.remove('disabled');
+      csTrailerBtn.onclick = (e) => {
+        e.stopPropagation();
+        closeComingSoon();
+        openPlayerTrailerOnly(resolvedTrailer, `${title} - Fragman`, poster);
+      };
+    }
+  } else {
+    if (csTrailerBtn) {
+      csTrailerBtn.style.display = "none";
       csTrailerBtn.onclick = null;
     }
   }
-  
+
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
 }
