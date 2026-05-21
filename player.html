@@ -341,8 +341,8 @@
     }
 
     /* ─── HD kalite yardımcıları ─── */
-    const DM_HD = 'autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false&ui-logo=false&ui-start-screen-info=0';
-    const YT_HD = 'autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&vq=hd1080&hd=1';
+    const DM_HD = 'autoplay=1&quality=1080&queue-enable=false&queue-autoplay-next=false&ui-logo=false&ui-start-screen-info=0&ui-highlight=0';
+    const YT_HD = 'autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&vq=hd2160&hd=1';
 
     function extractArchiveId(url) {
         if (url.includes('archive.org/embed/')) return url.split('archive.org/embed/')[1]?.split('?')[0]?.split('/')[0];
@@ -394,6 +394,8 @@
         if (!embedUrl.includes('autoplay')) {
             embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
         }
+        // Archive.org için en yüksek kalite parametresi
+        embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'format=mp4&quality=high';
         return embedUrl;
     }
 
@@ -429,8 +431,15 @@
             setNativeVideo(currentFileUrl, () => setIframe(currentFileUrl, false));
             return;
         }
-        // Dailymotion → doğrudan embed URL'si kullan
+        // Dailymotion → 1080p kalite
         if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly')) {
+            let dmId = '';
+            if (currentFileUrl.includes('video/')) dmId = currentFileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
+            else if (currentFileUrl.includes('dai.ly/')) dmId = currentFileUrl.split('dai.ly/')[1]?.split('?')[0];
+            if (dmId) {
+                setIframe(`https://www.dailymotion.com/embed/video/${dmId}?${DM_HD}`, false);
+                return;
+            }
             setIframe(currentFileUrl, false);
             return;
         }
