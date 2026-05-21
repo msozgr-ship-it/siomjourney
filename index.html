@@ -1491,13 +1491,6 @@ function launchPlayer(file, title, poster, trailer) {
 function openPlayer(file, title, poster, trailer) {
   const isUpcoming = !file || file.includes('ID') || file.includes('coming') || file.includes('COMING');
 
-  // Yayında olan filmler: modal atlanır, oynatıcı anında açılır
-  if (!isUpcoming) {
-    const item = findItemDeepByTitle(title);
-    launchPlayer(file, title, poster, trailer || (item ? item.trailer : ''));
-    return;
-  }
-
   const modal = document.getElementById('coming-soon-modal');
   const csTitle = document.getElementById('cs-title');
   const csBackdrop = document.getElementById('cs-backdrop');
@@ -1571,7 +1564,7 @@ function openPlayer(file, title, poster, trailer) {
     }
   }
 
-  // Fragman Butonu Ayarı
+  // Fragman Butonu Ayarı - Her film için göster
   if (resolvedTrailer) {
     if (csTrailerBtn) {
       csTrailerBtn.style.display = "inline-flex";
