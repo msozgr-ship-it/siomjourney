@@ -119,7 +119,7 @@ function updateOrbitalTransforms() {
 
     // Ekranda görünecek maksimum kart sayısı (Merkezin üstünde ve altında)
     // Sınırı aşanları fiziksel olarak yok ediyoruz ki yansıma veya taşma yapmasın.
-    const visibleCount = isMobile ? 1.5 : 2.5; 
+    const visibleCount = isMobile ? 2.1 : 2.5; 
     
     if (absOffset > visibleCount) {
         item.style.opacity = "0";
@@ -133,19 +133,19 @@ function updateOrbitalTransforms() {
     item.style.visibility = "visible";
 
     // KUSURSUZ PİKSEL MATEMATİĞİ (Kartların üst üste binmesi fiziksel olarak imkansız)
-    const stepY = isMobile ? 130 : 260; // Her kart dikeyde kesin olarak bu kadar ayrılacak
+    const stepY = isMobile ? 100 : 260; // Mobilde kartlar dikeyde daha sıkı dizilsin
     const y = offset * stepY;
     
-    const stepZ = isMobile ? 150 : 250; // Her kart arkaya doğru kesin olarak bu kadar itilecek
+    const stepZ = isMobile ? 160 : 250; // Mobilde derinlik (arkaya itilme) mesafesi
     const z = -absOffset * stepZ;
     
     // Kavis: Kartlar arkaya gittikçe aynı zamanda sola doğru kıvrılır (gerçek çark hissi)
-    const leftBase = isMobile ? -100 : -550; // Mobilde görünürlük için sağa çekildi
-    const curveStep = isMobile ? 25 : 60;
+    const leftBase = isMobile ? -25 : -550; // Mobilde neredeyse tam merkez (-25px ile logoya hafif uyum)
+    const curveStep = isMobile ? 12 : 60;   // Mobilde arkaya doğru giden kartlar çok hafif kavis yapsın
     const x = leftBase - (absOffset * curveStep);
     
     // Ölçeklendirme: Arkaya gittikçe doğrusal olarak küçülsün
-    let scale = 1 - (absOffset * 0.20); 
+    let scale = 1 - (absOffset * (isMobile ? 0.22 : 0.20)); 
     if (scale < 0) scale = 0;
     
     const isCenter = (i === closestIndex);
