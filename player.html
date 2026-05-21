@@ -416,7 +416,7 @@
         container.innerHTML = `${blockerHtml}<iframe id="player-frame" src="${url}" allow="autoplay; fullscreen; encrypted-media" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>`;
         const fr = document.getElementById('player-frame');
         fr.addEventListener('load', fadeOutLoader);
-        setTimeout(fadeOutLoader, 4000); // güvenlik
+        setTimeout(fadeOutLoader, 500); // Kullanıcıyı bekletmemek için süreyi çok kısa tutuyoruz
     }
 
     /* ─── Loader helpers ─── */
