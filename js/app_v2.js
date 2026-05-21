@@ -558,12 +558,6 @@ function closeDetails() {
 }
 
 function launchPlayer(file, title, poster, trailer) {
-  // VK ve OK.ru için Iframe'de üçüncü parti çerez (robot doğrulama) sorunu olduğundan direkt yeni sekmede açıyoruz.
-  if (file.includes('vkvideo.ru') || file.includes('vk.com') || file.includes('ok.ru')) {
-    window.open(file, '_blank');
-    return;
-  }
-
   let item = findItemDeepByTitle(title);
   const fileSub = item ? (item.fileSub || '') : '';
   

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=5.26">
@@ -79,7 +82,7 @@
                     <span class="blocker-dot"></span>
                 </div>
 
-                <iframe id="player-frame" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" oallowfullscreen="true" msallowfullscreen="true"></iframe>
+                <iframe id="player-frame" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" oallowfullscreen="true" msallowfullscreen="true"></iframe>
             </div>
         </div>
 
@@ -141,8 +144,10 @@
         </div>
     </div>
 
-    <script src="js/data_v2.js"></script>
-    <script src="js/app_v2.js"></script>
+    <script>
+        document.write('<script src="js/data_v2.js?v=' + Date.now() + '"><\/script>');
+        document.write('<script src="js/app_v2.js?v=' + Date.now() + '"><\/script>');
+    </script>
     <script>
         // PLAYER SOURCE TOGGLE LOGIC
         document.addEventListener("DOMContentLoaded", () => {
@@ -210,12 +215,6 @@
                     if(!currentMovieData) return;
                     
                     const fileUrl = currentMovieFileUrl || currentMovieData.file;
-                    
-                    // VK ve OK.ru için iframe bot doğrulamasına (captcha) takılıyor. Direkt sekmede açıyoruz.
-                    if (fileUrl.includes('vkvideo.ru') || fileUrl.includes('vk.com') || fileUrl.includes('ok.ru')) {
-                        window.open(fileUrl, '_blank');
-                        return;
-                    }
 
                     btnMovie.classList.add('active');
                     btnTrailer.classList.remove('active');
