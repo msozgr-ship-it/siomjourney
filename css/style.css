@@ -973,6 +973,8 @@ body {
   }
   .orbital-belt {
       transform: rotateX(45deg) translateY(70px);
+      justify-content: flex-start;
+      padding-left: 20px;
   }
   .giant-s-neon {
       font-size: 45vw;
