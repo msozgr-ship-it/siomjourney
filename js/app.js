@@ -22,6 +22,7 @@ function initApp() {
     renderContent();
     setupSearch();
     setupDragEvents();
+    initLiveTrafficCounter();
     animate();
 
     window.addEventListener('keydown', (e) => {
@@ -765,3 +766,43 @@ function resetFilter() {
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
+
+// ==========================================
+// CANLI TRAFİK (LIVE TRAFFIC) SIMULATION
+// ==========================================
+function initLiveTrafficCounter() {
+  const countElement = document.getElementById('live-count-num');
+  if (!countElement) return;
+
+  countElement.style.transition = 'opacity 0.3s ease';
+
+  // Günün saatine göre gerçekçi taban aktif kullanıcı sayısı
+  function getBaseCount() {
+    const hour = new Date().getHours();
+    if (hour >= 19 && hour <= 23) return Math.floor(Math.random() * 500) + 2500; // Akşam zirve: 2500-3000
+    if (hour >= 0 && hour <= 7) return Math.floor(Math.random() * 200) + 300;   // Gece: 300-500
+    if (hour >= 8 && hour <= 12) return Math.floor(Math.random() * 400) + 800;  // Sabah: 800-1200
+    return Math.floor(Math.random() * 800) + 1200;                              // Gündüz: 1200-2000
+  }
+
+  let currentCount = getBaseCount();
+  countElement.innerText = currentCount.toLocaleString('tr-TR');
+
+  // Her 3-6 saniyede bir organik dalgalanma
+  setInterval(() => {
+    // -6 ile +8 arası rastgele değişim (genelde hafif artış eğilimi)
+    const change = Math.floor(Math.random() * 15) - 6; 
+    currentCount += change;
+    
+    // Güvenlik sınırları
+    if (currentCount < 120) currentCount = 120;
+    if (currentCount > 4000) currentCount = 4000;
+
+    countElement.style.opacity = 0;
+    setTimeout(() => {
+        countElement.innerText = currentCount.toLocaleString('tr-TR');
+        countElement.style.opacity = 1;
+    }, 300);
+
+  }, Math.random() * 3000 + 3000);
+}

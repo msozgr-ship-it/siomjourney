@@ -80,6 +80,46 @@ body {
 }
 .logo-s-small:hover { transform: scale(1.1); }
 
+/* CANLI TRAFİK (LIVE TRAFFIC) UI */
+.live-traffic {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 20, 5, 0.45);
+    border: 1px solid rgba(0, 255, 100, 0.25);
+    padding: 5px 14px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    margin-right: 35px;
+}
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: #00ff64;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00ff64;
+    animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 100, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 255, 100, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 100, 0); }
+}
+#live-count-num {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 5px rgba(0, 255, 100, 0.5);
+}
+.live-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .nav-right {
     flex-grow: 1;
     display: flex;
