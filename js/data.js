@@ -556,7 +556,7 @@ const DB = {
           desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
           poster: 'assets/img/atatürk1.jpeg',
           trailer: 'https://youtu.be/A22H1-i42u4?start=10',
-          file: 'https://archive.org/embed/ataturk1_2024',
+          file: 'https://rumble.com/embed/v7a59c8/',
           isYoutube: false
         },
         {
@@ -619,7 +619,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '9.5',
       highlights: 'Mustafa Kemal Atatürk\'ün bir yetimhaneden bir ulusun kurtarıcısına dönüşümünün destanı.',
-      file: 'https://archive.org/embed/ataturk1_2024',
+      file: 'https://rumble.com/embed/v7a59c8/',
       isYoutube: false,
       showOnlyInOrbital: true
     },
