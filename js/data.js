@@ -670,6 +670,21 @@ const DB = {
       file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
       isYoutube: false,
       showOnlyInOrbital: true
+    },
+    {
+      id: "the-sleeper",
+      title: "The Sleeper",
+      poster: "assets/img/thesleeper.jpg",
+      file: "https://archive.org/embed/the-sleeper-movie",
+      trailer: "https://youtu.be/LKWjfdEioaU?si=OG8_4rYq3juCYpTJ",
+      searchTags: "the sleeper, uyuyan, gerilim, korku, gizem",
+      year: "2024",
+      match: "93%",
+      meta: "4K Ultra HD",
+      rating: "7.8",
+      highlights: "Sürükleyici bir gerilim ve gizem hikayesi.",
+      isNew: true,
+      isYoutube: false
     }
   ]
 };
