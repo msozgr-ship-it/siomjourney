@@ -55,7 +55,6 @@ body {
     transform: translate(-50%, -50%); /* scale iptal edildi, çözünürlük düşüşünü önlemek için fiziksel olarak büyütüldü */
     pointer-events: none;
     border: none;
-    filter: brightness(1) saturate(1.1) contrast(1.05); /* HD, Parlak ve Keskin */
 }
 
 /* PREMIUM TOP NAVIGATION */
@@ -249,9 +248,7 @@ body {
 .cf-item img { 
     width: 100%; height: 100%; object-fit: cover; opacity: 1; transition: 0.5s; border-radius: inherit; 
     backface-visibility: hidden; transform: translateZ(0);
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -ms-interpolation-mode: bicubic;
+    image-rendering: auto;
 }
 
 /* Sürükleme esnasında sıfır gecikme (0ms lag) için geçişleri tamamen kapatıyoruz */
@@ -264,7 +261,7 @@ body {
     box-shadow: 0 0 40px rgba(255,255,255,0.12), 0 25px 60px rgba(0,0,0,0.95);
     z-index: 1000;
 }
-.cf-item.active img { opacity: 1; filter: brightness(1.1) contrast(1.08) saturate(1.1); }
+.cf-item.active img { opacity: 1; filter: none; }
 .cf-item.active .neon-rim { border-color: var(--accent); box-shadow: var(--neon-border); }
 
 /* CONTROLS */

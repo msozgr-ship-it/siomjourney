@@ -152,7 +152,7 @@ function updateOrbitalTransforms() {
     if (isCenter) {
         scale = isMobile ? 1.15 : 1.35;
         item.style.opacity = "1";
-        item.style.filter = "brightness(1.15) contrast(1.1) saturate(1.12)";
+        item.style.filter = "none"; // Kalite kaybını önlemek için filtreleri kaldırdık
         item.style.zIndex = "25000";
         item.style.pointerEvents = "auto";
         item.classList.add('active');
