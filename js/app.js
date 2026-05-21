@@ -139,7 +139,7 @@ function updateOrbitalTransforms() {
     const z = -absOffset * stepZ;
     
     // Kavis: Kartlar arkaya gittikçe aynı zamanda sola doğru kıvrılır (gerçek çark hissi)
-    const leftBase = isMobile ? -140 : -450;
+    const leftBase = isMobile ? -180 : -580; // Dönme dolabı daha sola aldık
     const curveStep = isMobile ? 25 : 60;
     const x = leftBase - (absOffset * curveStep);
     
@@ -159,7 +159,7 @@ function updateOrbitalTransforms() {
         item.style.opacity = (1 - absOffset * 0.35).toFixed(2);
         item.style.filter = `brightness(${(0.6 - absOffset * 0.1).toFixed(2)}) contrast(0.9) saturate(0.8)`;
         item.style.zIndex = Math.round(20000 - absOffset * 1000);
-        item.style.pointerEvents = "none"; 
+        item.style.pointerEvents = "auto"; // Arka afişlerin seçilebilmesi için tıklamayı aktif ettik
         item.classList.remove('active');
     }
 
