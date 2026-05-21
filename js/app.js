@@ -108,7 +108,6 @@ function updateOrbitalTransforms() {
   });
 
   // MOBİL VE MASAÜSTÜ İÇİN KUSURSUZ, TAŞMA YAPMAYAN YENİ DÖNME DOLAP MOTORU
-  const isMobile = window.innerWidth < 768;
 
   calculatedAngles.forEach((data, i) => {
     const { item, relAngle } = data;
