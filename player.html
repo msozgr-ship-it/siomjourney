@@ -102,6 +102,26 @@
             color: #fff;
             box-shadow: 0 0 20px rgba(255,0,85,0.4);
         }
+        
+        /* ── Language toggle buttons ── */
+        .lang-btn {
+            padding: 5px 14px; border-radius: 18px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+            cursor: pointer; transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.4);
+            color: rgba(255,255,255,0.7);
+        }
+        .lang-btn.active {
+            background: rgba(255,255,255,0.85);
+            border-color: #fff;
+            color: #000;
+        }
+        .lang-btn:not(.active):hover {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
 
         /* ── Close button ── */
         .player-close-btn {
@@ -208,6 +228,10 @@
             <button class="toggle-btn active" id="btn-movie" onclick="switchToMovie()">▶ Filmi İzle</button>
             <button class="toggle-btn trailer-btn" id="btn-trailer" onclick="switchToTrailer()">🎬 Fragmanı İzle</button>
         </div>
+        <div class="toggle-row" id="lang-row" style="display:none; margin-left:15px; padding-left:15px; border-left:1px solid rgba(255,255,255,0.1);">
+            <button class="lang-btn active" id="btn-lang-dub" onclick="switchLanguage('dub')">🇹🇷 DUB</button>
+            <button class="lang-btn" id="btn-lang-sub" onclick="switchLanguage('sub')">💬 ALTYAZI</button>
+        </div>
     </div>
     <button class="player-close-btn" onclick="window.close()">✕ Kapat</button>
 </header>
@@ -220,11 +244,13 @@
     /* ─── URL parametrelerini parse et ─── */
     const params     = new URLSearchParams(window.location.search);
     const fileUrl    = params.get('file')    || '';
+    const fileSubUrl = params.get('filesub') || '';
     const trailerUrl = params.get('trailer') || '';
     const movieTitle = params.get('title')   || 'Sinematik Deneyim';
     const moviePoster= params.get('poster')  || '';
 
     let currentMode = 'movie'; // 'movie' | 'trailer'
+    let currentLang = 'dub';   // 'dub' | 'sub'
 
     /* ─── UI kurulumu ─── */
     document.getElementById('player-title').textContent = movieTitle;
@@ -236,6 +262,11 @@
     // Fragman varsa toggle satırını göster
     if (fileUrl && trailerUrl) {
         document.getElementById('toggle-row').style.display = 'flex';
+    }
+    
+    // Altyazı seçeneği varsa dil satırını göster
+    if (fileUrl && fileSubUrl) {
+        document.getElementById('lang-row').style.display = 'flex';
     }
 
     /* ─── Auto-hide header ─── */
@@ -271,6 +302,7 @@
         document.getElementById('btn-movie').classList.add('active');
         document.getElementById('btn-trailer').classList.remove('active');
         document.getElementById('badge-label').textContent = 'SİNEMA MODU';
+        if (fileSubUrl) document.getElementById('lang-row').style.display = 'flex';
         showLoader();
         loadMovie();
     }
@@ -281,15 +313,34 @@
         document.getElementById('btn-trailer').classList.add('active');
         document.getElementById('btn-movie').classList.remove('active');
         document.getElementById('badge-label').textContent = 'FRAGMAN MODU';
+        if (fileSubUrl) document.getElementById('lang-row').style.display = 'none';
         showLoader();
         loadTrailer();
     }
 
+    function switchLanguage(lang) {
+        if (currentLang === lang || currentMode !== 'movie') return;
+        currentLang = lang;
+        
+        if (lang === 'dub') {
+            document.getElementById('btn-lang-dub').classList.add('active');
+            document.getElementById('btn-lang-sub').classList.remove('active');
+        } else {
+            document.getElementById('btn-lang-sub').classList.add('active');
+            document.getElementById('btn-lang-dub').classList.remove('active');
+        }
+        showLoader();
+        loadMovie();
+    }
+
     /* ─── Film yükleyici ─── */
     function loadMovie() {
+        let currentFileUrl = (currentLang === 'sub' && fileSubUrl) ? fileSubUrl : fileUrl;
+        if (!currentFileUrl) return;
+
         // Archive.org → güvenilir embed iframe
-        if (fileUrl.includes('archive.org')) {
-            let embedUrl = fileUrl;
+        if (currentFileUrl.includes('archive.org')) {
+            let embedUrl = currentFileUrl;
             if (!embedUrl.includes('autoplay')) {
                 embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
             }
@@ -297,33 +348,38 @@
             return;
         }
         // Gerçek .mp4
-        if (fileUrl.endsWith('.mp4') || fileUrl.includes('.mp4?')) {
-            container.innerHTML = `<video id="player-video" src="${fileUrl}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
+        if (currentFileUrl.endsWith('.mp4') || currentFileUrl.includes('.mp4?')) {
+            container.innerHTML = `<video id="player-video" src="${currentFileUrl}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
             const v = document.getElementById('player-video');
             v.addEventListener('canplay', fadeOutLoader);
-            v.addEventListener('error', () => { setIframe(fileUrl, false); });
+            v.addEventListener('error', () => { setIframe(currentFileUrl, false); });
             return;
         }
         // Dailymotion
-        if (fileUrl.includes('dailymotion.com') || fileUrl.includes('dai.ly')) {
+        if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly')) {
             let dmId = '';
-            if (fileUrl.includes('video/')) dmId = fileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
-            else if (fileUrl.includes('dai.ly/')) dmId = fileUrl.split('dai.ly/')[1]?.split('?')[0];
+            if (currentFileUrl.includes('video/')) dmId = currentFileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
+            else if (currentFileUrl.includes('dai.ly/')) dmId = currentFileUrl.split('dai.ly/')[1]?.split('?')[0];
             if (dmId) {
                 setIframe(`https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&queue-enable=false&queue-autoplay-next=false&ui-logo=false&quality=1080`, false);
                 return;
             }
         }
         // YouTube
-        if (fileUrl.includes('youtube.com') || fileUrl.includes('youtu.be')) {
+        if (currentFileUrl.includes('youtube.com') || currentFileUrl.includes('youtu.be')) {
             let ytId = '';
-            if (fileUrl.includes('embed/')) ytId = fileUrl.split('embed/')[1]?.split('?')[0];
-            else ytId = fileUrl.split('v=')[1]?.split('&')[0] || fileUrl.split('youtu.be/')[1]?.split('?')[0];
+            if (currentFileUrl.includes('embed/')) ytId = currentFileUrl.split('embed/')[1]?.split('?')[0];
+            else ytId = currentFileUrl.split('v=')[1]?.split('&')[0] || currentFileUrl.split('youtu.be/')[1]?.split('?')[0];
             setIframe(`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0&vq=hd1080`, false);
             return;
         }
+        // Rumble ve diğer iframe platformları
+        if (currentFileUrl.includes('rumble.com')) {
+            setIframe(currentFileUrl, false);
+            return;
+        }
         // Diğer
-        setIframe(fileUrl, false);
+        setIframe(currentFileUrl, false);
     }
 
     /* ─── Fragman yükleyici ─── */

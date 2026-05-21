@@ -620,6 +620,9 @@ function openPlayer(file, title, poster, trailer) {
   if (trailer) {
     playerUrl += `&trailer=${encodeURIComponent(trailer)}`;
   }
+  if (fileSub) {
+    playerUrl += `&filesub=${encodeURIComponent(fileSub)}`;
+  }
   window.open(playerUrl, '_blank');
 }
 
