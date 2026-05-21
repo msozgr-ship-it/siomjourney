@@ -108,7 +108,6 @@ function updateOrbitalTransforms() {
   });
 
   // MOBİL VE MASAÜSTÜ İÇİN ORTAK DİKEY DÖNME DOLAP MOTORU
-  const isMobile = window.innerWidth < 768;
   const radiusY_vertical = isMobile ? 380 : 650; // Mobilde 380px, masaüstünde 650px
   const radiusZ = isMobile ? 280 : 500;
   const leftOffset = isMobile ? -180 : -680; // Sola yaslama
