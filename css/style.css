@@ -63,7 +63,7 @@ body {
 .top-nav {
     position: fixed; top: 0; left: 0; width: 100%; height: 90px;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0 60px; z-index: 15000; /* Navigasyonun tıklanabilir olması için yüksek z-index */
+    padding: 0 60px; z-index: 30000; /* Dönme dolabın (25000) her zaman üstünde kalması için 30000 yapıldı */
     background: linear-gradient(to bottom, rgba(3, 3, 5, 0.95), transparent);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -352,7 +352,7 @@ body {
 .top-nav {
     position: fixed; top: 0; left: 0; width: 100%; height: 80px;
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0 60px; z-index: 1000;
+    padding: 0 60px; z-index: 30000;
 }
 
 /* MODALS */

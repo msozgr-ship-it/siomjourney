@@ -139,7 +139,7 @@ function updateOrbitalTransforms() {
     const z = -absOffset * stepZ;
     
     // Kavis: Kartlar arkaya gittikçe aynı zamanda sola doğru kıvrılır (gerçek çark hissi)
-    const leftBase = isMobile ? -180 : -580; // Dönme dolabı daha sola aldık
+    const leftBase = isMobile ? -100 : -550; // Mobilde görünürlük için sağa çekildi
     const curveStep = isMobile ? 25 : 60;
     const x = leftBase - (absOffset * curveStep);
     
