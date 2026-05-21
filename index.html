@@ -906,7 +906,8 @@ function initApp() {
     allContent = [...DB.movies, ...DB.series];
     
     // DÖNME DOLAPTA ARTIK SADECE TEKLİ FİMLERİN AFİŞLERİ OLACAK (Seriler ve koleksiyonlar elendi!)
-    orbitalContent = allContent.filter(item => !(item.isCollection || item.episodes)); 
+    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper'];
+    orbitalContent = allContent.filter(item => orbitalAllowedIds.includes(item.id)); 
     filteredContent = [...allContent];
 
     renderOrbital();
@@ -1767,6 +1768,7 @@ function initRealVisitCounter() {
     </script>
 </body>
 </html>
+
 
 
 

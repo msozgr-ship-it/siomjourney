@@ -48,13 +48,13 @@ body {
 }
 .hero-video-bg iframe, .hero-video-bg video {
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 50%;
-    width: 115vw;
-    height: 64.68vw; /* 115vw * 9/16 */
-    min-height: 115vh;
-    min-width: 204.44vh; /* 115vh * 16/9 */
-    transform: translate(-50%, -50%); /* scale iptal edildi, çözünürlük düşüşünü önlemek için fiziksel olarak büyütüldü */
+    width: 100vw;
+    height: 56.25vw; /* Tam 16:9 oranı, ekrana taşmadan mükemmel netlik sağlar */
+    min-height: unset;
+    min-width: unset;
+    transform: translateX(-50%);
     pointer-events: none;
     border: none;
 }
