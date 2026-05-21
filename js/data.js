@@ -541,7 +541,7 @@ const DB = {
       searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
       desc: 'Ulu Önder Mustafa Kemal Atatürk\'ün hayatını konu alan epik film serisi.',
       poster: 'assets/img/atatürkmain.jpg',
-      trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+      trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
       isCollection: true,
       year: 'Koleksiyon',
       match: '99%',
@@ -555,7 +555,7 @@ const DB = {
           title: 'Atatürk 1881 - 1919 (1. Film)',
           desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
           poster: 'assets/img/atatürk1.jpeg',
-          trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+          trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
           file: 'https://rumble.com/embed/v7a59c8/',
           isYoutube: false
         },
@@ -565,7 +565,7 @@ const DB = {
           title: 'Atatürk 1881 - 1919 (2. Film)',
           desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
           poster: 'assets/img/atatürk2.jpeg',
-          trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+          trailer: 'https://youtu.be/xoOzqBkDVH4?si=OLYaki0935mRxSSm',
           file: 'https://archive.org/embed/ataturk2_2024',
           isYoutube: false
         }
@@ -601,7 +601,7 @@ const DB = {
           title: 'Alvin ve Sincaplar 2',
           desc: 'Sincapların eğlence dolu maceraları devam ediyor.',
           poster: 'assets/img/alvinvesincaplarmain.jpg',
-          trailer: 'https://youtu.be/3M7R01bB9S8',
+          trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
           file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
           isYoutube: false
         }
@@ -613,7 +613,7 @@ const DB = {
       searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
       desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
       poster: 'assets/img/atatürk1.jpeg',
-      trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+      trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
       year: '2023',
       match: '99%',
       meta: '4K Ultra HD',
@@ -629,7 +629,7 @@ const DB = {
       searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
       desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
       poster: 'assets/img/atatürk2.jpeg',
-      trailer: 'https://youtu.be/A22H1-i42u4?start=10',
+      trailer: 'https://youtu.be/xoOzqBkDVH4?si=OLYaki0935mRxSSm',
       year: '2024',
       match: '99%',
       meta: '4K Ultra HD',
@@ -661,7 +661,7 @@ const DB = {
       searchTags: 'alvin ve sincaplar 2, alvin, simon, theodore, animasyon, komedi, müzikal',
       desc: 'Sincapların eğlence dolu maceraları devam ediyor.',
       poster: 'assets/img/alvinvesincaplarmain.jpg',
-      trailer: 'https://youtu.be/3M7R01bB9S8',
+      trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
       year: '2009',
       match: '98%',
       meta: '4K Ultra HD',
