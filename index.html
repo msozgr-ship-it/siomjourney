@@ -145,9 +145,1542 @@
     </div>
 
     <script>
-        document.write('<script src="js/data_v2.js?v=' + Date.now() + '"><\/script>');
-        document.write('<script src="js/app_v2.js?v=' + Date.now() + '"><\/script>');
-    </script>
+const DB = {
+  series: [
+    {
+      id: 's1',
+      title: 'Mini: The Journey',
+      searchTags: 'mini, the journey, orman',
+      desc: 'Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.',
+      poster: 'assets/img/mini.jpg.png',
+      year: '2026',
+      match: '98%',
+      meta: '4K HDR',
+      rating: '8.9',
+      highlights: 'Karanlık bir orman, gizemli bir ışık ve Mini\'nin destansı yolculuğu.',
+      episodes: [
+        {
+          id: 's1e1',
+          epNum: 1,
+          title: 'Karanlık Ormana Giriş',
+          desc: 'Mini karanlık ormanda yürür. Uzakta gizemli bir ışık görür ve peşine düşer.',
+          file: 'bolum1.mp4',
+          isYoutube: false
+        },
+        {
+          id: 's1e2',
+          epNum: 2,
+          title: 'Işığın Gizemi',
+          desc: 'Işığın gizemi derinleşir. Mini ormanın kalbindeki büyük kütüphaneye ulaşır.',
+          file: 'bolum2.mp4',
+          isYoutube: false
+        }
+      ]
+    }
+  ],
+  movies: [
+    {
+      id: "the-wampire-hunter-movie",
+      title: "The Vampire Hunter",
+      poster: "assets/img/thewampirehunter.jpeg",
+      file: "https://archive.org/embed/vampire-hunter-d-bloodlust_202605",
+      trailer: "https://youtu.be/_felpMOwTzs?si=RSy0VooL-VS6CQ6o&start=10",
+      searchTags: "the vampire hunter, vampir avcısı, aksiyon, macera, korku, fantastik, 2024",
+      isNew: true
+    },
+    {
+      id: "saftirik-greg-movie",
+      title: "Saftirik Greg'in Maceraları",
+      poster: "assets/img/saftirikgrekinmaceraları.webp",
+      file: "https://www.dailymotion.com/embed/video/k5Oh2Kybe4itMzG4JyC?autoplay=1&queue-enable=false&queue-autoplay-next=false",
+      trailer: "https://youtu.be/zb4cQROwt74?si=FKBm5lckBWgB89Ps&start=10",
+      searchTags: "saftirik greg'in maceraları, saftirik, greg, animasyon, komedi, aile, 2024",
+      isNew: true
+    },
+    {
+      id: "ancak-ruyada-olur-movie",
+      title: "Ancak Rüyada Olur",
+      poster: "assets/img/ancakrüyadaolur.jpg",
+      file: "https://archive.org/embed/ancak-ruyada-olur",
+      trailer: "https://youtu.be/asNkphBvqcY?si=2YO14cSkYg6pDDEz&start=10",
+      searchTags: "ancak rüyada olur, rüyalar diyarında, in your dreams, komedi, romantik, dram, 2024",
+      isNew: true
+    },
+    {
+      id: "the-twits-movie",
+      title: "The Twits",
+      poster: "assets/img/thetwits.webp",
+      file: "https://archive.org/embed/the-twits_202605",
+      trailer: "https://youtu.be/dMZI0FkYLEs?si=8OcFu3bK3gh-5qKg&start=10",
+      searchTags: "the twits, twits, belalılar, animasyon, komedi, roald dahl, netflix, 2025",
+      isNew: true
+    },
+    {
+      id: "karaya-movie",
+      title: "Kayara",
+      poster: "assets/img/kayara.webp",
+      file: "https://www.dailymotion.com/embed/video/k6KRWrhctyV9mmG4D0c?autoplay=1&queue-enable=false&queue-autoplay-next=false",
+      trailer: "https://youtu.be/wirJG-bMAuc?si=MHUhMZyp8yf1RCnJ&start=10",
+      searchTags: "kayara, karaya, macera, aksiyon, deniz, 2024",
+      isNew: true
+    },
+    {
+      id: "stitch-head-movie",
+      title: "Stitch Head",
+      poster: "assets/img/Stitchhead.jpg",
+      file: "https://www.dailymotion.com/embed/video/k3xfwFMvJ1FAKaG4D2Y?autoplay=1&queue-enable=false&queue-autoplay-next=false",
+      trailer: "https://youtu.be/iuBqezw7eOM?si=Guz6ic9GhamxKpTV&start=10",
+      searchTags: "stitch head, stitchhead, canavarcıklar, animasyon, macera, korku, komedi, 2024",
+      isNew: true
+    },
+    {
+      id: "swapped-movie",
+      title: "Swapped",
+      poster: "assets/img/swapped.jpg",
+      file: "https://www.dailymotion.com/embed/video/k2ZeOLXS6COHywG4KJ8?autoplay=1&queue-enable=false&queue-autoplay-next=false",
+      trailer: "https://youtu.be/h_ypav1tCHw?si=5iAbRUcYN0RfITVK&start=10",
+      searchTags: "swapped, animasyon, macera, fantastik, aile, 2024",
+      isNew: true
+    },
+    {
+      id: 'm1',
+      title: 'Hoplayanlar',
+      searchTags: 'hoppers, hoplayanlar, disney, pixar, animasyon',
+      desc: 'Eşsiz bir animasyon macerası. Disney ve Pixar\'ın en yeni başyapıtı.',
+      poster: 'assets/img/hoplayanlar.jpg',
+      trailer: 'https://youtu.be/SSE8jaCE6LA?si=f1vsvDbkaQC0si8C&start=10',
+      file: 'https://archive.org/embed/hoplayanlar-izle-2026',
+      isYoutube: true,
+      year: '2026',
+      match: '95%',
+      meta: 'HD',
+      rating: '8.5',
+      highlights: 'Disney ve Pixar\'ın en yeni, eğlence dolu animasyon başyapıtı.'
+    },
+    {
+      id: 'm2',
+      title: 'Zootopia Serisi',
+      searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
+      desc: 'Zootropolis şehrinin maceraları tek bir yerde. Judy Hopps ve Nick Wilde ile efsanevi yolculuk.',
+      poster: 'assets/img/zootopia_main.jpg.jpg',
+      trailer: 'https://youtu.be/d4Ulh142Gx4?si=2dy8xjPm6ctNCwhh&start=10',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '2 Film',
+      rating: '8.7',
+      highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
+      collection: [
+        {
+          id: 'm2f1',
+          epNum: 1,
+          title: 'Zootropolis: Hayvanlar Şehri (2016)',
+          desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. Nick Wilde ile unutulmaz bir macera başlar.',
+          poster: 'assets/img/zootopia1.jpg',
+          trailer: 'https://youtu.be/d4Ulh142Gx4?si=2dy8xjPm6ctNCwhh&start=10',
+          file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+          isYoutube: true
+        },
+        {
+          id: 'm2f2',
+          epNum: 2,
+          title: 'Zootopia 2 (2025)',
+          desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
+          poster: 'assets/img/zootopia2.jpg',
+          trailer: 'https://youtu.be/0I3PcUcREkQ?si=l3Mm5kVjqyFQM4gV&start=10',
+          file: 'https://archive.org/embed/zootropolis-2-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+          isYoutube: true
+        }
+      ]
+    },
+    {
+      id: 'm3',
+      title: 'Coco (Koko)',
+      searchTags: 'coco, koko, miguel, ölüler diyarı, pixar, animasyon, müzikal',
+      desc: '12 yaşındaki Miguel\'in Ölüler Diyarı\'ndaki unutulmaz müzikal yolculuğu.',
+      poster: 'assets/img/coco.jpg.jpg',
+      trailer: 'https://youtu.be/V46MgKE0LsQ?si=idM1EYnPeGq1rlzT&start=10',
+      year: '2017',
+      match: '97%',
+      meta: '4K Ultra HD',
+      rating: '8.5',
+      highlights: 'Miguel\'in Ölüler Diyarı\'ndaki rengarenk ve duygusal müzikal hikayesi.',
+      file: 'https://archive.org/embed/koko_20260511',
+      isYoutube: true
+    },
+    {
+      id: 'm4',
+      title: 'Ejderhanı Nasıl Eğitirsin Serisi',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Hıçkıdık ve Dişsiz\'in Berk adasındaki efsanevi dostluk hikayesi.',
+      poster: 'assets/img/httyd_main.jpg.jpg',
+      trailer: 'https://youtu.be/E73btLlzXmA?si=k7WF5AZC0SNC3Sok&start=10',
+      isCollection: true,
+      year: '2010-2019',
+      match: '99%',
+      meta: 'Koleksiyon',
+      rating: '8.8',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
+      collection: [
+        {
+          id: 'm4f1',
+          epNum: 1,
+          title: 'Ejderhanı Nasıl Eğitirsin 1',
+          desc: 'Genç bir Viking olan Hıçkıdık ve yaralı bir ejderhanın dostluğu.',
+          poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
+          trailer: 'https://youtu.be/E73btLlzXmA?si=k7WF5AZC0SNC3Sok&start=10',
+          file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-1',
+          isYoutube: true
+        },
+        {
+          id: 'm4f2',
+          epNum: 2,
+          title: 'Ejderhanı Nasıl Eğitirsin 2',
+          desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
+          poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
+          trailer: 'https://youtu.be/ev8huwbabX4?si=7JRKNozVL9CxMTnx&start=10',
+          file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
+          isYoutube: true
+        },
+        {
+          id: 'm4f3',
+          epNum: 3,
+          title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
+          desc: 'Hıçkıdık ejderha ütopyasını ararken, Dişsiz kendi türünden birini bulur.',
+          poster: 'assets/img/ejderhanınasıleğitirsin3.jpg',
+          trailer: 'https://youtu.be/EHu-WpiaNHw?si=T_BRR2hxfqnb7bHn&start=10',
+          file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-3',
+          isYoutube: true
+        }
+      ]
+    },
+    {
+      id: 'm5',
+      title: 'Elio',
+      searchTags: 'elio, disney, pixar, uzay, animasyon, 2025',
+      desc: 'Evrenin elçisi seçilen küçük bir çocuğun komik ve heyecan dolu macerası.',
+      poster: 'assets/img/elio.jpg',
+      trailer: 'https://youtu.be/XqnozEexIqE?si=5a5Sr9BPDE_4lzyr&start=10',
+      year: '2025',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.5',
+      highlights: 'Elio\'nun galaksiler arası elçi olarak yaşadığı komik macera.',
+      file: 'https://archive.org/embed/elio_20260516',
+      isYoutube: true
+    },
+    {
+      id: 'm6',
+      title: 'Dayı Serisi',
+      searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi, koleksiyon',
+      desc: 'Dayı\'nın adalet mücadelesi ve efsanevi hikayesi tek bir koleksiyonda. Ufuk Bayraktar\'ın başrolünde yer aldığı aksiyon dolu yapımlar.',
+      poster: 'assets/img/dayımain.jpg',
+      trailer: 'https://youtu.be/kLLQNtSfFZc?si=CnkE2IQvc7plRvAb&start=10',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '2 Film',
+      rating: '8.9',
+      highlights: 'Dayı\'nın adalet mücadelesi ve efsanevi kabadayılık raconları tek bir çatı altında.',
+      collection: [
+        {
+          id: 'm6f1',
+          epNum: 1,
+          title: 'Dayı: Bir Adamın Hikayesi (2021)',
+          desc: 'Adil ve cesur bir adam olan Cevahir\'in, İstanbul sokaklarında adaleti arama ve kabadayılık dünyasına adım atış hikayesi.',
+          poster: 'assets/img/dayı1.jpg',
+          trailer: 'https://youtu.be/kLLQNtSfFZc?si=CnkE2IQvc7plRvAb&start=10',
+          file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi',
+          isYoutube: true
+        },
+        {
+          id: 'm6f2',
+          epNum: 2,
+          title: 'Dayı 2: Bir Adamın Hikayesi (2025)',
+          desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
+          poster: 'assets/img/dayı2.jpg',
+          trailer: 'https://youtu.be/eYrHzCRMCfo?si=htS_UnKcJI4oVu9Y&start=10',
+          file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
+          isYoutube: true
+        }
+      ]
+    },
+    {
+      id: 'm7',
+      title: 'Arabalar Serisi',
+      searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
+      desc: 'Şimşek McQueen ve dostlarının heyecan dolu yarış maceraları tek bir koleksiyonda.',
+      poster: 'assets/img/arabalar.webp',
+      trailer: 'https://youtu.be/0h5G56bHnS0?start=10',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '4 Film',
+      rating: '8.8',
+      highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
+      collection: [
+        {
+          id: 'm7f1',
+          epNum: 1,
+          title: 'Arabalar (2006)',
+          desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
+          poster: 'assets/img/arabalarbir.jpg',
+          trailer: 'https://youtu.be/pQly7_Cj34U',
+          file: 'https://archive.org/embed/arabalar-bir',
+          isYoutube: true
+        },
+        {
+          id: 'm7f2',
+          epNum: 2,
+          title: 'Arabalar 2 (2011)',
+          desc: 'Şimşek McQueen ve Mater, Dünya Şampiyonası için deniz aşırı bir maceraya atılır.',
+          poster: 'assets/img/arabalariki.webp',
+          trailer: 'https://youtu.be/CWhpWi2ePDk?si=SyOlBW4ahp8UcP98',
+          file: 'https://www.dailymotion.com/embed/video/k1qc1gWN68eyhiG4QGU?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+          isYoutube: false
+        },
+        {
+          id: 'm7f3',
+          epNum: 3,
+          title: 'Arabalar 3 (2017)',
+          desc: 'Yeni nesil hızlı yarışçılar tarafından gafil avlanan efsanevi Şimşek McQueen, sevdiği spordan aniden dışlanır. Oyuna geri dönmek için hevesli bir teknisyenin yardımına ihtiyacı vardır.',
+          poster: 'assets/img/arabalaruc.jpeg',
+          trailer: 'https://youtu.be/zWXRrsibsgI?si=ZFTNXkGP-tvIS6zJ',
+          file: 'https://www.dailymotion.com/embed/video/k3hIU9RKNptcZ3G4QHg?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+          isYoutube: false
+        },
+        {
+          id: 'm7f4',
+          epNum: 4,
+          title: 'Arabalar: Mater\'ın Abartılı Hikayeleri',
+          desc: 'Şimşek McQueen\'in en yakın dostu Mater, geçmişte yaşadığı birbirinden komik, heyecanlı ve abartılı maceraları anlatıyor.',
+          poster: 'assets/img/arabalarmaters.jpeg',
+          trailer: 'https://youtu.be/NyL7JJfO-NE?si=Bqm8Z9PKD6Z-RJmb',
+          file: 'https://www.dailymotion.com/embed/video/k6MYPq3OdmSlgjG4QHI?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+          isYoutube: false
+        }
+      ]
+    },
+    {
+      id: 'm2f1-single',
+      title: 'Zootropolis: Hayvanlar Şehri (2016)',
+      searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
+      desc: 'Judy Hopps polis akademisinden mezun olup Zootropolis\'e gelir. Nick Wilde ile unutulmaz bir macera başlar.',
+      poster: 'assets/img/zootopia1.jpg',
+      trailer: 'https://youtu.be/d4Ulh142Gx4?si=2dy8xjPm6ctNCwhh&start=10',
+      year: '2016',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.7',
+      highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
+      file: 'https://archive.org/embed/zootropolis-hayvanlar-sehri-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm2f2-single',
+      title: 'Zootopia 2 (2025)',
+      searchTags: 'zootopia 2, zootropolis, hayvanlar şehri, judy hopps, nick wilde, tavşan, polis, animasyon',
+      desc: 'Judy ve Nick\'in yeni macerası. Çok yakında SiomJourney\'de!',
+      poster: 'assets/img/zootopia2.jpg',
+      trailer: 'https://youtu.be/0I3PcUcREkQ?si=l3Mm5kVjqyFQM4gV&start=10',
+      year: '2025',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.7',
+      highlights: 'Judy ve Nick ile Zootropolis\'in heyecan dolu polisiye macerası.',
+      file: 'https://archive.org/embed/zootropolis-2-izle-hdfilmcehennemi-film-izle-hd-film-izle',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm4f1-single',
+      title: 'Ejderhanı Nasıl Eğitirsin 1',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Genç bir Viking olan Hıçkıdık ve yaralı bir ejderhanın dostluğu.',
+      poster: 'assets/img/ejderhanınasıleğitirsin1.jpg',
+      trailer: 'https://youtu.be/E73btLlzXmA?si=k7WF5AZC0SNC3Sok&start=10',
+      year: '2010',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
+      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-1',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm4f2-single',
+      title: 'Ejderhanı Nasıl Eğitirsin 2',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Hıçkıdık ve Dişsiz yeni dünyalar keşfederken büyük bir tehditle karşılaşır.',
+      poster: 'assets/img/ejderhanınasıleğitirsin2.jpg',
+      trailer: 'https://youtu.be/ev8huwbabX4?si=7JRKNozVL9CxMTnx&start=10',
+      year: '2014',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
+      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-2',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm4f3-single',
+      title: 'Ejderhanı Nasıl Eğitirsin 3: Gizli Dünya',
+      searchTags: 'ejderhanı nasıl eğitirsin, how to train your dragon, htyd, dişsiz, toothless, hıçkıdık, hiccup, ejderha, animasyon',
+      desc: 'Hıçkıdık ejderha ütopyasını ararken, Dişsiz kendi türünden birini bulur.',
+      poster: 'assets/img/ejderhanınasıleğitirsin3.jpg',
+      trailer: 'https://youtu.be/EHu-WpiaNHw?si=T_BRR2hxfqnb7bHn&start=10',
+      year: '2019',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Hıçkıdık ve Dişsiz\'in ejderhalarla dolu efsanevi dostluk destanı.',
+      file: 'https://archive.org/embed/ejderhani-nasil-egitirsin-3',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm6f1-single',
+      title: 'Dayı: Bir Adamın Hikayesi (2021)',
+      searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi',
+      desc: 'Adil ve cesur bir adam olan Cevahir\'in, İstanbul sokaklarında adaleti arama ve kabadayılık dünyasına adım atış hikayesi.',
+      poster: 'assets/img/dayı1.jpg',
+      trailer: 'https://youtu.be/kLLQNtSfFZc?si=CnkE2IQvc7plRvAb&start=10',
+      year: '2021',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.9',
+      highlights: 'Dayı\'nın adalet mücadelesi ve efsanevi kabadayılık raconları tek bir çatı altında.',
+      file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm6f2-single',
+      title: 'Dayı 2: Bir Adamın Hikayesi (2025)',
+      searchTags: 'dayı serisi, dayi, dayı 1, dayı 2, ufuk bayraktar, aksiyon, dram, türk filmi',
+      desc: 'Efsane geri dönüyor. Dayı\'nın adaleti ve hikayesi kaldığı yerden devam ediyor.',
+      poster: 'assets/img/dayı2.jpg',
+      trailer: 'https://youtu.be/eYrHzCRMCfo?si=htS_UnKcJI4oVu9Y&start=10',
+      year: '2025',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.9',
+      highlights: 'Dayı\'nın adalet mücadelesi ve efsanevi kabadayılık raconları tek bir çatı altında.',
+      file: 'https://archive.org/embed/dayi-bir-adamin-hikayesi-2',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm7f1-single',
+      title: 'Arabalar (2006)',
+      searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
+      desc: 'Şimşek McQueen, şampiyona için yola çıkarken kendini Radyatör Kasabası\'nda bulur.',
+      poster: 'assets/img/arabalarbir.jpg',
+      trailer: 'https://youtu.be/pQly7_Cj34U',
+      year: '2006',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
+      file: 'https://archive.org/embed/arabalar-bir',
+      isYoutube: true,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm7f2-single',
+      title: 'Arabalar 2 (2011)',
+      searchTags: 'arabalar, cars, şimşek mcqueen, lightning mcqueen, mater, pixar, animasyon',
+      desc: 'Şimşek McQueen ve Mater, Dünya Şampiyonası için deniz aşırı bir maceraya atılır.',
+      poster: 'assets/img/arabalariki.webp',
+      trailer: 'https://youtu.be/CWhpWi2ePDk?si=SyOlBW4ahp8UcP98',
+      file: 'https://www.dailymotion.com/embed/video/k1qc1gWN68eyhiG4QGU?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+      year: '2011',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Şimşek McQueen\'in kupa kazanmaktan daha fazlasını öğrendiği yarış destanı.',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm7f3-single',
+      title: 'Arabalar 3 (2017)',
+      searchTags: 'arabalar, cars 3, arabalar 3, şimşek mcqueen, lightning mcqueen, cruz ramirez, pixar, animasyon',
+      desc: 'Yeni nesil hızlı yarışçılar tarafından gafil avlanan efsanevi Şimşek McQueen, sevdiği spordan aniden dışlanır. Oyuna geri dönmek için hevesli bir teknisyenin yardımına ihtiyacı vardır.',
+      poster: 'assets/img/arabalaruc.jpeg',
+      trailer: 'https://youtu.be/zWXRrsibsgI?si=ZFTNXkGP-tvIS6zJ',
+      year: '2017',
+      match: '99%',
+      meta: 'HD',
+      rating: '8.8',
+      highlights: 'Şimşek McQueen\'in yeni nesil yarışçılara karşı verdiği efsanevi geri dönüş mücadelesi.',
+      file: 'https://www.dailymotion.com/embed/video/k3hIU9RKNptcZ3G4QHg?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm7f4-single',
+      title: 'Arabalar: Mater\'ın Abartılı Hikayeleri',
+      searchTags: 'arabalar, cars, mater, mater\'ın abartılı hikayeleri, cars toons, pixar, animasyon',
+      desc: 'Şimşek McQueen\'in en yakın dostu Mater, geçmişte yaşadığı birbirinden komik, heyecanlı ve abartılı maceraları anlatıyor.',
+      poster: 'assets/img/arabalarmaters.jpeg',
+      trailer: 'https://youtu.be/NyL7JJfO-NE?si=Bqm8Z9PKD6Z-RJmb',
+      year: '2010',
+      match: '98%',
+      meta: 'HD',
+      rating: '8.5',
+      highlights: 'Mater\'ın boğa güreşçiliğinden astronotluğa uzanan birbirinden komik ve abartılı hikayeleri.',
+      file: 'https://www.dailymotion.com/embed/video/k6MYPq3OdmSlgjG4QHI?autoplay=1&queue-enable=false&queue-autoplay-next=false',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: "avatar-ates-ve-kul",
+      title: "Avatar: Ateş ve Kül",
+      poster: "assets/img/avatarateşvekül.jpeg",
+      file: "",
+      fileSub: "https://archive.org/embed/avatar-ates-ve-kul-altyazi",
+      trailer: "https://youtu.be/56-ZqR4SLh8?si=fCDj6w8vfl_FSimc",
+      searchTags: "avatar, ateş ve kül, pandora, jake sully, aksiyon, bilim kurgu, 2025",
+      year: "2025",
+      match: "98%",
+      meta: "4K HDR",
+      rating: "8.5",
+      highlights: "Pandora'nın keşfedilmemiş karanlık yüzü ve yeni bir maceranın başlangıcı.",
+      isNew: true,
+      isYoutube: true
+    },
+    {
+      id: "mario-movie",
+      title: "Süper Mario Kardeşler Filmi",
+      poster: "assets/img/mario.jpg",
+      file: "https://www.dailymotion.com/embed/video/k2z2D4mHPoBwwuG6Cvw?autoplay=1&queue-enable=false&queue-autoplay-next=false",
+      trailer: "https://youtu.be/UM03JGnBL2A?si=lsNa3QavhSSFTpYZ",
+      searchTags: "mario, super mario bros, luigi, bowser, nintendo, animasyon, macera, komedi",
+      year: "2023",
+      match: "99%",
+      meta: "HD",
+      rating: "8.0",
+      highlights: "Mario ve Luigi'nin Mantar Krallığı'nı kurtarmak için atıldıkları epik macera.",
+      isNew: true,
+      isYoutube: false
+    },
+    {
+      id: "yanyana-movie",
+      title: "Yanyana",
+      poster: "assets/img/yanyana.jpg",
+      file: "https://archive.org/embed/yan-yana_202605",
+      trailer: "https://youtu.be/yXJhwf3QlV8?si=AH-LLLyaHjGwZ4cf",
+      searchTags: "yanyana, animasyon, komedi, macera",
+      year: "2024",
+      match: "95%",
+      meta: "4K Ultra HD",
+      rating: "8.2",
+      highlights: "Sürükleyici ve yepyeni bir animasyon deneyimi.",
+      isNew: true,
+      isYoutube: true
+    },
+    {
+      id: 'm8',
+      title: 'Atatürk Serisi',
+      searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
+      desc: 'Ulu Önder Mustafa Kemal Atatürk\'ün hayatını konu alan epik film serisi.',
+      poster: 'assets/img/atatürkmain.jpg',
+      trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '4K Ultra HD',
+      rating: '9.5',
+      highlights: 'Mustafa Kemal Atatürk\'ün bir yetimhaneden bir ulusun kurtarıcısına dönüşümünün destanı.',
+      collection: [
+        {
+          id: 'm8f1',
+          epNum: 1,
+          title: 'Atatürk 1881 - 1919 (1. Film)',
+          desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
+          poster: 'assets/img/atatürk1.jpeg',
+          trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
+          file: 'https://vkvideo.ru/video_ext.php?oid=-238936467&id=456239017&hash=dd33bd61f986d713&hd=3',
+          isYoutube: false
+        },
+        {
+          id: 'm8f2',
+          epNum: 2,
+          title: 'Atatürk 1881 - 1919 (2. Film)',
+          desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
+          poster: 'assets/img/atatürk2.jpeg',
+          trailer: 'https://youtu.be/xoOzqBkDVH4?si=OLYaki0935mRxSSm',
+          file: 'https://vkvideo.ru/video_ext.php?oid=-238936467&id=456239018&hash=603d3bb584861300&hd=3',
+          isYoutube: false
+        }
+      ]
+    },
+    {
+      id: 'm9',
+      title: 'Alvin ve Sincaplar',
+      searchTags: 'alvin ve sincaplar, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Dünyanın en ünlü şarkıcı sincaplarının eğlenceli ve müzik dolu maceraları.',
+      poster: 'assets/img/alvinvesincaplarmain.jpg',
+      trailer: 'https://youtu.be/3M7R01bB9S8',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '98%',
+      meta: '2 Film',
+      rating: '8.4',
+      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar maceraları.',
+      collection: [
+        {
+          id: 'm9f1',
+          epNum: 1,
+          title: 'Alvin ve Sincaplar 1',
+          desc: 'Dünyanın en ünlü şarkıcı sincaplarının ilk efsanevi macerası.',
+          poster: 'assets/img/alvinvesincaplar1.avif',
+          trailer: 'https://youtu.be/3M7R01bB9S8',
+          file: '',
+          isYoutube: false
+        },
+        {
+          id: 'm9f2',
+          epNum: 2,
+          title: 'Alvin ve Sincaplar 2',
+          desc: 'Sincapların eğlence dolu maceraları okul sıralarında devam ediyor.',
+          poster: 'assets/img/alvinvesincaplar2.avif',
+          trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
+          file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
+          isYoutube: false
+        },
+        {
+          id: 'm9f3',
+          epNum: 3,
+          title: 'Alvin ve Sincaplar 3: Eğlence Adası',
+          desc: 'Sincaplar lüks bir gemi yolculuğunda adaya düşer ve macera başlar.',
+          poster: 'assets/img/alvinvesincaplar3.avif',
+          trailer: 'https://youtu.be/Bs9mPICV3-M?si=DLHf9bWEiP7aLms_',
+          file: '',
+          isYoutube: false
+        },
+        {
+          id: 'm9f4',
+          epNum: 4,
+          title: 'Alvin ve Sincaplar: Yol Macerası',
+          desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
+          poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+          trailer: 'https://youtu.be/3M7R01bB9S8',
+          file: 'https://archive.org/embed/alvin-yol-macerasi',
+          isYoutube: false
+        }
+      ]
+    },
+    {
+      id: 'm8f1-single',
+      title: 'Atatürk 1881 - 1919 (1. Film)',
+      searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
+      desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
+      poster: 'assets/img/atatürk1.jpeg',
+      trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
+      year: '2023',
+      match: '99%',
+      meta: '4K Ultra HD',
+      rating: '9.5',
+      highlights: 'Mustafa Kemal Atatürk\'ün bir yetimhaneden bir ulusun kurtarıcısına dönüşümünün destanı.',
+      file: 'https://vkvideo.ru/video_ext.php?oid=-238936467&id=456239017&hash=dd33bd61f986d713&hd=3',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm8f2-single',
+      title: 'Atatürk 1881 - 1919 (2. Film)',
+      searchTags: 'atatürk, mustafa kemal atatürk, 1881-1919, aras bulut iynemli, tarih, biyografi',
+      desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
+      poster: 'assets/img/atatürk2.jpeg',
+      trailer: 'https://youtu.be/xoOzqBkDVH4?si=OLYaki0935mRxSSm',
+      year: '2024',
+      match: '99%',
+      meta: '4K Ultra HD',
+      rating: '9.5',
+      highlights: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
+      file: 'https://vkvideo.ru/video_ext.php?oid=-238936467&id=456239018&hash=603d3bb584861300&hd=3',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f1-single',
+      title: 'Alvin ve Sincaplar 1',
+      searchTags: 'alvin ve sincaplar 1, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Dünyanın en ünlü şarkıcı sincaplarının ilk efsanevi macerası.',
+      poster: 'assets/img/alvinvesincaplar1.avif',
+      trailer: 'https://youtu.be/3M7R01bB9S8',
+      year: '2007',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.4',
+      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar macerasının başlangıcı.',
+      file: '',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f2-single',
+      title: 'Alvin ve Sincaplar 2',
+      searchTags: 'alvin ve sincaplar 2, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Sincapların eğlence dolu maceraları devam ediyor.',
+      poster: 'assets/img/alvinvesincaplar2.avif',
+      trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
+      year: '2009',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.2',
+      highlights: 'Alvin ve Sincaplar geri dönüyor, bu sefer daha eğlenceli!',
+      file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f3-single',
+      title: 'Alvin ve Sincaplar 3',
+      searchTags: 'alvin ve sincaplar 3, alvin, simon, theodore, animasyon, komedi, müzikal, eğlence adası',
+      desc: 'Sincaplar lüks bir gemi yolculuğunda adaya düşer ve macera başlar.',
+      poster: 'assets/img/alvinvesincaplar3.avif',
+      trailer: 'https://youtu.be/Bs9mPICV3-M?si=DLHf9bWEiP7aLms_',
+      year: '2011',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.3',
+      highlights: 'Adada mahsur kalan Sincaplar için devasa macera!',
+      file: '',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f4-single',
+      title: 'Alvin ve Sincaplar: Yol Macerası',
+      searchTags: 'alvin ve sincaplar 4, yol macerası, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
+      poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+      trailer: 'https://youtu.be/3M7R01bB9S8',
+      year: '2015',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.4',
+      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar yol macerası.',
+      file: 'https://archive.org/embed/alvin-yol-macerasi',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: "the-sleeper",
+      title: "The Sleeper",
+      poster: "assets/img/thesleeper.jpg",
+      file: "https://archive.org/embed/the-sleeper_202605",
+      trailer: "https://youtu.be/LKWjfdEioaU?si=OG8_4rYq3juCYpTJ",
+      searchTags: "the sleeper, uyuyan, gerilim, korku, gizem",
+      year: "2024",
+      match: "93%",
+      meta: "4K Ultra HD",
+      rating: "7.8",
+      highlights: "Sürükleyici bir gerilim ve gizem hikayesi.",
+      isNew: true,
+      isYoutube: false
+    }
+  ]
+};
+
+let allContent = [];
+let orbitalContent = [];
+let filteredContent = [];
+let currentRotation = 0;
+let autoRotateSpeed = 0.003; // İnanılmaz yavaşlatıldı (0.05'ten 0.003'e düştü - 1 fragman bitene kadar ancak 1 kart döner)
+let isDragging = false;
+let startX = 0;
+let startRotation = 0;
+let pauseAutoRotate = false;
+let pauseTimeout = null;
+
+function initApp() {
+  try {
+    if (typeof DB === 'undefined') return;
+    allContent = [...DB.movies, ...DB.series];
+    
+    // DÖNME DOLAPTA ARTIK SADECE TEKLİ FİMLERİN AFİŞLERİ OLACAK (Seriler ve koleksiyonlar elendi!)
+    orbitalContent = allContent.filter(item => !(item.isCollection || item.episodes)); 
+    filteredContent = [...allContent];
+
+    renderOrbital();
+    renderContent();
+    setupSearch();
+    setupDragEvents();
+    initRealVisitCounter();
+    animate();
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closePlayer(); closeDetails(); }
+    });
+
+    window.addEventListener('resize', updateOrbitalTransforms);
+  } catch (err) {
+    console.error("Sistem hatası:", err);
+  }
+}
+
+function animate() {
+  if (!isDragging && !pauseAutoRotate) {
+    currentRotation -= autoRotateSpeed;
+    updateOrbitalTransforms();
+  }
+  requestAnimationFrame(animate);
+}
+
+function setupDragEvents() {
+  const dragArea = document.getElementById('hero-drag-area');
+  if (!dragArea) return;
+
+  const onStart = (e) => {
+    isDragging = true;
+    dragArea.classList.add('dragging'); // Sürükleme esnasında CSS geçişlerini kapatarak 0ms gecikme sağlarız!
+    startX = e.pageX || (e.touches && e.touches[0] ? e.touches[0].pageX : 0);
+    startRotation = currentRotation;
+    clearTimeout(pauseTimeout);
+    pauseAutoRotate = true; // Sürüklerken durdur
+  };
+
+  const onMove = (e) => {
+    if (!isDragging) return;
+    
+    // Mobilde yatay yörünge sürüklemesi yaparken tüm ekranın sağa sola kaymasını önlüyoruz!
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    
+    const x = e.pageX || (e.touches && e.touches[0] ? e.touches[0].pageX : 0);
+    const diff = (x - startX) * 0.1;
+    currentRotation = startRotation + diff;
+    updateOrbitalTransforms();
+  };
+
+  const onEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    dragArea.classList.remove('dragging'); // Sürükleme bittiğinde yumuşak animasyonları geri açarız!
+    // Bıraktıktan 3 saniye sonra dönmeye devam etsin (kullanıcı etkileşimi bittiyse)
+    startPauseTimer(3000);
+  };
+
+  dragArea.addEventListener('mousedown', onStart);
+  dragArea.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onEnd);
+  dragArea.addEventListener('touchstart', onStart, { passive: true });
+  dragArea.addEventListener('touchmove', onMove, { passive: false });
+  window.addEventListener('touchend', onEnd, { passive: true });
+}
+
+function updateOrbitalTransforms() {
+  const items = document.querySelectorAll('.cf-item');
+  if (!items.length) return;
+  const count = items.length;
+  const angleStep = 360 / count;
+  const isMobile = window.innerWidth < 768;
+
+  // 1. ADIM: Merkez odak noktasını belirle (Tek aktif kart garantisi)
+  let closestIndex = -1;
+  let minAbsAngle = 999999;
+  
+  const calculatedAngles = Array.from(items).map((item, i) => {
+    let relAngle = (i * angleStep) + currentRotation;
+    relAngle = ((relAngle + 180) % 360 + 360) % 360 - 180;
+    const absAngle = Math.abs(relAngle);
+    if (absAngle < minAbsAngle) {
+      minAbsAngle = absAngle;
+      closestIndex = i;
+    }
+    return { item, relAngle, absAngle };
+  });
+
+  // MOBİL VE MASAÜSTÜ İÇİN KUSURSUZ, TAŞMA YAPMAYAN YENİ DÖNME DOLAP MOTORU
+
+  calculatedAngles.forEach((data, i) => {
+    const { item, relAngle } = data;
+    
+    // Merkez noktaya tam uzaklık birimi (0: Merkez, 1: Bir sonraki kart, 2: İki sonraki kart)
+    const offset = relAngle / angleStep; 
+    const absOffset = Math.abs(offset);
+
+    // Ekranda görünecek maksimum kart sayısı (Merkezin üstünde ve altında)
+    // Sınırı aşanları fiziksel olarak yok ediyoruz ki yansıma veya taşma yapmasın.
+    const visibleCount = isMobile ? 2.1 : 2.5; 
+    
+    if (absOffset > visibleCount) {
+        item.style.opacity = "0";
+        item.style.visibility = "hidden";
+        item.style.pointerEvents = "none";
+        item.style.transform = `translate3d(-2000px, 0, -2000px)`; // Ekranda kesinlikle yer kaplamaz
+        item.classList.remove('active');
+        return;
+    }
+
+    item.style.visibility = "visible";
+
+    // KUSURSUZ PİKSEL MATEMATİĞİ (Kartların üst üste binmesi fiziksel olarak imkansız)
+    const stepY = isMobile ? 100 : 260; // Mobilde kartlar dikeyde daha sıkı dizilsin
+    const y = offset * stepY;
+    
+    const stepZ = isMobile ? 160 : 250; // Mobilde derinlik (arkaya itilme) mesafesi
+    const z = -absOffset * stepZ;
+    
+    // Kavis: Kartlar arkaya gittikçe aynı zamanda sola doğru kıvrılır (gerçek çark hissi)
+    const leftBase = isMobile ? 0 : -550; // Mobilde KAYMA SIFIR. Tam merkeze hizalandı.
+    const curveStep = isMobile ? 0 : 60;   // Mobilde arkaya giden kartlar kavis YAMASIN, dümdüz arkaya gitsin.
+    const x = leftBase - (absOffset * curveStep);
+    
+    // Ölçeklendirme: Arkaya gittikçe doğrusal olarak küçülsün
+    let scale = 1 - (absOffset * (isMobile ? 0.22 : 0.20)); 
+    if (scale < 0) scale = 0;
+    
+    const isCenter = (i === closestIndex);
+    if (isCenter) {
+        scale = isMobile ? 1.15 : 1.35;
+        item.style.opacity = "1";
+        item.style.filter = "none"; // Kalite kaybını önlemek için filtreleri kaldırdık
+        item.style.zIndex = "25000";
+        item.style.pointerEvents = "auto";
+        item.classList.add('active');
+    } else {
+        item.style.opacity = (1 - absOffset * 0.35).toFixed(2);
+        item.style.filter = `brightness(${(0.6 - absOffset * 0.1).toFixed(2)}) contrast(0.9) saturate(0.8)`;
+        item.style.zIndex = Math.round(20000 - absOffset * 1000);
+        item.style.pointerEvents = "auto"; // Arka afişlerin seçilebilmesi için tıklamayı aktif ettik
+        item.classList.remove('active');
+    }
+
+    // Doğal eğim açıları
+    const rotX = -offset * 12; // Kartların üst üste binerken değil, yukarı/aşağı bakarken eğilmesi
+    const rotY = 15 + absOffset * 8; // Kartların ekrana doğru değil, sola doğru bakması
+    
+    item.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
+  });
+
+  // Arka plan videosunu güncelle
+  if (closestIndex !== -1 && orbitalContent[closestIndex]) {
+    updateBackgroundVideo(orbitalContent[closestIndex]);
+  }
+}
+
+
+// BREATHTAKING AMBIENT VIDEO BACKDROP GENERATOR
+let bgVideoTimeout = null;
+let currentBgVideoId = null;
+
+function updateBackgroundVideo(item) {
+  if (!item) return;
+  if (currentBgVideoId === item.id) return;
+  currentBgVideoId = item.id;
+
+  const bgContainer = document.getElementById('hero-video-bg');
+  if (!bgContainer) return;
+
+  // Mevcut arka planı yumuşakça soldur
+  bgContainer.classList.remove('active');
+
+  clearTimeout(bgVideoTimeout);
+  bgVideoTimeout = setTimeout(() => {
+    let videoHtml = '';
+    // YALNIZCA FRAGMANI OLAN FİLMLER ARKA PLANDA OYNATILSIN
+    const sourceUrl = item.trailer;
+    
+    if (!sourceUrl) {
+      bgContainer.innerHTML = ''; // Fragman yoksa arka planı temizle
+      return;
+    }
+
+    // Play tuşu, logo animasyonları ve reklam overlay'lerini tamamen atlamak için
+    // fragmanlar 15. saniyeden başlar (Play butonu %100 atlanır)!
+    const midPoint = 15; 
+
+    if (sourceUrl) {
+      if (sourceUrl.includes('youtube.com') || sourceUrl.includes('youtu.be')) {
+        let ytId = '';
+        if (sourceUrl.includes('embed/')) ytId = sourceUrl.split('embed/')[1]?.split('?')[0];
+        else ytId = sourceUrl.split('v=')[1]?.split('&')[0] || sourceUrl.split('youtu.be/')[1]?.split('?')[0];
+        
+        let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
+        // youtube-nocookie.com + maksimum reklam/overlay engelleme parametreleri
+        videoHtml = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&vq=hd1080&cc_load_policy=0&hl=tr${startParam}" allow="autoplay; encrypted-media" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
+      } else if (sourceUrl.includes('archive.org')) {
+        // ARCHIVE.ORG İÇİN KESİN ÇÖZÜM: iframe yerine doğrudan .mp4 dosyasına çeviriyoruz!
+        // Böylece tarayıcılar play butonu çıkarmaz, %100 otomatik (autoplay) sessiz oynatır.
+        let identifier = '';
+        if (sourceUrl.includes('archive.org/embed/')) identifier = sourceUrl.split('archive.org/embed/')[1]?.split('?')[0];
+        else identifier = sourceUrl.split('archive.org/details/')[1]?.split('?')[0];
+        
+        let directMp4 = `https://archive.org/download/${identifier}/${identifier}.mp4`;
+        let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
+        videoHtml = `<video src="${directMp4}${fragParam}" autoplay muted loop playsinline style="width:100vw; height:56.25vw; min-height:100vh; min-width:177.77vh; object-fit:cover; pointer-events: none;"></video>`;
+      } else if (sourceUrl.endsWith('.mp4') || sourceUrl.includes('.mp4?')) {
+        let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
+        videoHtml = `<video src="${sourceUrl}${fragParam}" autoplay muted loop playsinline style="width:100vw; height:56.25vw; min-height:100vh; min-width:177.77vh; object-fit:cover; pointer-events: none;"></video>`;
+      } else if (sourceUrl.includes('dailymotion.com') || sourceUrl.includes('dai.ly')) {
+        let dmId = '';
+        if (sourceUrl.includes('video/')) dmId = sourceUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
+        else if (sourceUrl.includes('dai.ly/')) dmId = sourceUrl.split('dai.ly/')[1]?.split('?')[0];
+        
+        if (dmId) {
+          let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
+          // Dailymotion reklam + logo + başlangıç ekranı tamamen engellendi
+          videoHtml = `<iframe src="https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&mute=1&muted=1&controls=0&ui-logo=0&ui-start-screen-info=0&ui-highlight=000000&quality=1080&queue-enable=false&sharing-enable=false&watchlater-enable=false${startParam}" allow="autoplay" style="width: 100%; height: 100vh; border: none; pointer-events: none;"></iframe>`;
+        }
+      }
+    }
+
+    if (videoHtml) {
+      bgContainer.innerHTML = videoHtml;
+      // Yeni arka planı yumuşakça aydınlat (gecikme ile play butonu tamamen gizlenir)
+      setTimeout(() => {
+        bgContainer.classList.add('active');
+      }, 150);
+    } else {
+      bgContainer.innerHTML = '';
+    }
+  }, 1200); // 1.2 saniye gecikme (drag/sürükleme esnasında kasmayı %100 önler!)
+}
+
+function handleOrbitalClick(index, id) {
+  if (isDragging) return;
+
+  const count = orbitalContent.length;
+  const angleStep = 360 / count;
+  const targetRotation = -(index * angleStep);
+  
+  const currentNorm = ((currentRotation % 360) + 360) % 360;
+  const targetNorm = ((targetRotation % 360) + 360) % 360;
+  const diff = Math.abs(currentNorm - targetNorm);
+
+  // EĞER KART ZATEN MERKEZDEYSE (Filmi Aç)
+  if (diff < 5 || diff > 355) {
+    const item = allContent.find(i => i.id === id);
+    if (!item) return;
+    if (item.episodes || item.isCollection) openDetails(id);
+    else openPlayer(item.file, item.title, item.poster);
+  } 
+  // EĞER KART MERKEZDE DEĞİLSE (Merkeze Getir ve 5sn durdur)
+  else {
+    currentRotation = targetRotation;
+    updateOrbitalTransforms();
+    startPauseTimer(5000);
+  }
+}
+
+function startPauseTimer(ms) {
+  clearTimeout(pauseTimeout);
+  pauseAutoRotate = true;
+  pauseTimeout = setTimeout(() => {
+    pauseAutoRotate = false;
+  }, ms);
+}
+
+function renderOrbital() {
+  const container = document.getElementById('orbital-container');
+  if (!container) return;
+  container.innerHTML = orbitalContent.map((item, index) => {
+    const isColl = item.isCollection || item.episodes;
+    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
+    const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
+    
+    return `
+      <div class="cf-item ${isColl ? 'collection-stack' : ''}" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
+        ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+        ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
+        <div class="neon-rim"></div>
+        <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+      </div>
+    `;
+  }).join('');
+}
+
+function renderContent() {
+  const content = document.getElementById('content-matrix');
+  if (!content) return;
+
+  // Seri ve tekli filmleri filtrele (Sadece dönme dolapta görünmesi gereken tekli filmler elendi!)
+  const collections = filteredContent.filter(item => item.isCollection || item.episodes);
+  const singles = filteredContent.filter(item => !(item.isCollection || item.episodes || item.showOnlyInOrbital));
+
+  // Kart HTML oluşturucu yardımcı fonksiyon
+  const makeCardHtml = (item) => {
+    const isColl = item.isCollection || item.episodes;
+    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
+    const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
+    
+    return `
+      <div class="card-wrapper ${isColl ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
+        <div class="card">
+          ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+          ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
+          <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+        </div>
+      </div>
+    `;
+  };
+
+  content.innerHTML = `
+    <div class="split-matrix-container">
+      <!-- SOL BLOK: SERİ FİLMLER & KOLEKSİYONLAR -->
+      <div class="matrix-column">
+        <h3 class="matrix-column-title">SERİ FİLMLER & KOLEKSİYONLAR</h3>
+        <div class="split-grid">
+          ${collections.length > 0 ? collections.map(makeCardHtml).join('') : '<div class="no-results-text">Seri film bulunamadı.</div>'}
+        </div>
+      </div>
+
+      <!-- SAĞ BLOK: TEKLİ FİLMLER -->
+      <div class="matrix-column">
+        <h3 class="matrix-column-title">TEKLİ FİLMLER</h3>
+        <div class="split-grid">
+          ${singles.length > 0 ? singles.map(makeCardHtml).join('') : '<div class="no-results-text">Tekli film bulunamadı.</div>'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// DEEP ITEM LOCATOR (Tüm seri bölümlerini ve koleksiyon alt filmlerini de bulur!)
+function findItemDeep(id) {
+  // 1. Üst seviyede ara
+  let found = allContent.find(i => i.id === id);
+  if (found) return found;
+
+  // 2. Koleksiyonların içinde ara
+  for (const item of allContent) {
+    if (item.collection) {
+      const nested = item.collection.find(f => f.id === id);
+      if (nested) return nested;
+    }
+    // 3. Serilerin bölümlerinin içinde ara
+    if (item.episodes) {
+      const nested = item.episodes.find(e => e.id === id);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+
+function handleItemClick(id) {
+  const item = findItemDeep(id);
+  if (!item) return;
+
+  if (item.episodes || item.isCollection) {
+    openDetails(id);
+  } else {
+    openPlayer(item.file, item.title, item.poster, item.trailer);
+  }
+}
+
+function setupSearch() {
+  const input = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear');
+  const resultsPanel = document.getElementById('search-results-panel');
+  if (!input) return;
+
+  input.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase().trim();
+    
+    // Temizleme butonu kontrolü
+    if (q.length > 0) {
+      if (clearBtn) clearBtn.classList.add('active');
+      if (resultsPanel) {
+        resultsPanel.style.display = 'flex';
+        setTimeout(() => resultsPanel.classList.add('active'), 10);
+      }
+    } else {
+      if (clearBtn) clearBtn.classList.remove('active');
+      if (resultsPanel) {
+        resultsPanel.classList.remove('active');
+        setTimeout(() => resultsPanel.style.display = 'none', 300);
+      }
+    }
+
+    // Ana kütüphane grid filtreleme
+    filteredContent = allContent.filter(item => 
+      (item.title && item.title.toLowerCase().includes(q)) || 
+      (item.searchTags && item.searchTags.toLowerCase().includes(q))
+    );
+    renderContent();
+
+    // Spotlight hızlı öneriler panelini render etme (Koleksiyon alt filmleri dahil!)
+    if (q.length > 0 && resultsPanel) {
+      const searchableItems = [];
+      allContent.forEach(item => {
+        searchableItems.push(item);
+        if (item.collection) {
+          item.collection.forEach(sub => {
+            searchableItems.push({
+              ...sub,
+              searchTags: (sub.searchTags || '') + ' ' + (item.searchTags || '')
+            });
+          });
+        }
+        if (item.episodes) {
+          item.episodes.forEach(sub => {
+            searchableItems.push({
+              ...sub,
+              searchTags: (sub.searchTags || '') + ' ' + (item.searchTags || '')
+            });
+          });
+        }
+      });
+
+      const matches = searchableItems.filter(item => 
+        (item.title && item.title.toLowerCase().includes(q)) || 
+        (item.searchTags && item.searchTags.toLowerCase().includes(q))
+      ).slice(0, 5); // En iyi 5 eşleşmeyi al
+
+      if (matches.length > 0) {
+        resultsPanel.innerHTML = matches.map(item => {
+          const isColl = item.isCollection || item.episodes;
+          const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
+          const ratingText = isUpcoming ? 'Yakında' : (item.rating ? `⭐ <span>${item.rating}</span>` : '⭐ 8.0');
+          const typeText = isColl ? 'Seri' : 'Film';
+          return `
+            <div class="search-result-item" onclick="handleSuggestionClick('${item.id}')">
+              <img src="${item.poster}" alt="">
+              <div class="search-result-info">
+                <div class="search-result-title">${item.title}</div>
+                <div class="search-result-meta">${item.year || '2024'} • ${typeText} • ${ratingText}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        resultsPanel.innerHTML = `<div class="search-no-results">Aradığınız kriterlere uygun sonuç bulunamadı.</div>`;
+      }
+    }
+  });
+
+  // Dışarı tıklandığında paneli gizleme
+  document.addEventListener('click', (e) => {
+    if (resultsPanel && !e.target.closest('#search-container')) {
+      resultsPanel.classList.remove('active');
+      setTimeout(() => resultsPanel.style.display = 'none', 300);
+    }
+  });
+
+  // Odaklanıldığında sorgu varsa paneli tekrar açma
+  input.addEventListener('focus', () => {
+    if (input.value.trim().length > 0 && resultsPanel) {
+      resultsPanel.style.display = 'flex';
+      setTimeout(() => resultsPanel.classList.add('active'), 10);
+    }
+  });
+}
+
+function handleSuggestionClick(id) {
+  const resultsPanel = document.getElementById('search-results-panel');
+  if (resultsPanel) {
+    resultsPanel.classList.remove('active');
+    setTimeout(() => resultsPanel.style.display = 'none', 300);
+  }
+  
+  const item = findItemDeep(id);
+  if (!item) return;
+
+  // Arama sonucundan gelen tıklamalarda HER ZAMAN doğrudan oynatıcıyı aç!
+  if (item.episodes && item.episodes.length > 0) {
+    // Seri ise: İlk bölümü doğrudan oynat!
+    const firstEp = item.episodes[0];
+    openPlayer(firstEp.file, firstEp.title, firstEp.poster || item.poster, firstEp.trailer || item.trailer);
+  } else if (item.collection && item.collection.length > 0) {
+    // Koleksiyon ise: İlk filmi doğrudan oynat!
+    const firstMovie = item.collection[0];
+    openPlayer(firstMovie.file, firstMovie.title, firstMovie.poster || item.poster, firstMovie.trailer || item.trailer);
+  } else {
+    // Tekil film veya alt film ise: Doğrudan oynat!
+    openPlayer(item.file, item.title, item.poster, item.trailer);
+  }
+}
+
+function clearSearchInput(event) {
+  if (event) event.stopPropagation();
+  const input = document.getElementById('search-input');
+  const clearBtn = document.getElementById('search-clear');
+  const resultsPanel = document.getElementById('search-results-panel');
+  
+  if (input) input.value = '';
+  if (clearBtn) clearBtn.classList.remove('active');
+  if (resultsPanel) {
+    resultsPanel.classList.remove('active');
+    setTimeout(() => resultsPanel.style.display = 'none', 300);
+  }
+  
+  resetFilter();
+  if (input) input.focus();
+}
+
+function openDetails(id) {
+  const item = allContent.find(i => i.id === id);
+  if (!item) return;
+  const modal = document.getElementById('details-modal');
+  const grid = document.getElementById('details-grid');
+  document.getElementById('details-title').textContent = item.title;
+  let subItems = item.episodes || item.collection || [];
+  grid.innerHTML = subItems.map(sub => {
+    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
+    const isUpcoming = !sub.file || sub.file.includes('ID') || sub.file.includes('coming') || sub.file.includes('COMING');
+    const trailerForSub = sub.trailer || item.trailer || '';
+    
+    return `
+      <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}', '${sub.title}', '${sub.poster || item.poster}', '${trailerForSub}')">
+        <div class="card">
+          ${isUpcoming ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
+          <img src="${sub.poster || item.poster}" alt="">
+        </div>
+        <h3>${sub.title}</h3>
+      </div>
+    `;
+  }).join('');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeDetails() {
+  const modal = document.getElementById('details-modal');
+  if (modal) { modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 500); }
+}
+
+function launchPlayer(file, title, poster, trailer) {
+  let item = findItemDeepByTitle(title);
+  const fileSub = item ? (item.fileSub || '') : '';
+  
+  let playerUrl = `player.html?file=${encodeURIComponent(file)}&title=${encodeURIComponent(title)}&poster=${encodeURIComponent(poster || '')}`;
+  if (trailer) {
+    playerUrl += `&trailer=${encodeURIComponent(trailer)}`;
+  }
+  if (fileSub) {
+    playerUrl += `&filesub=${encodeURIComponent(fileSub)}`;
+  }
+  window.open(playerUrl, '_blank');
+}
+
+function openPlayer(file, title, poster, trailer) {
+  const modal = document.getElementById('coming-soon-modal');
+  const csTitle = document.getElementById('cs-title');
+  const csBackdrop = document.getElementById('cs-backdrop');
+  const csPosterImg = document.getElementById('cs-poster-img');
+  
+  const csYear = document.getElementById('cs-year');
+  const csMeta = document.getElementById('cs-meta');
+  const csRating = document.getElementById('cs-rating');
+  const csDesc = document.getElementById('cs-desc');
+  const csPercentVal = document.getElementById('cs-percent-val');
+  const csProgressFill = document.getElementById('cs-progress-fill');
+  
+  const csBadge = document.getElementById('cs-badge');
+  const csPipelineWrapper = document.getElementById('cs-pipeline-wrapper');
+  const csMovieBtn = document.getElementById('cs-movie-btn');
+  const csTrailerBtn = document.getElementById('cs-trailer-btn');
+  
+  csTitle.textContent = title || "Sinematik İçerik";
+  
+  if (poster) {
+    csBackdrop.style.backgroundImage = `url(${poster})`;
+    csPosterImg.src = poster;
+    csPosterImg.style.display = 'block';
+  } else {
+    csBackdrop.style.backgroundImage = '';
+    csPosterImg.style.display = 'none';
+  }
+
+  // Database'den filmi derin arama ile bulup bilgileri çekiyoruz
+  const item = findItemDeepByTitle(title);
+  let resolvedTrailer = trailer || (item ? item.trailer : '');
+  
+  if (item) {
+    if (csYear) csYear.textContent = item.year || '2026';
+    if (csMeta) csMeta.textContent = item.meta || '4K Ultra HD';
+    if (csRating) csRating.textContent = item.rating ? `⭐ ${item.rating}` : '⭐ 8.5';
+    if (csDesc && item.desc) csDesc.textContent = item.desc;
+    else if (csDesc) csDesc.textContent = "Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.";
+  } else {
+    if (csYear) csYear.textContent = '2026';
+    if (csMeta) csMeta.textContent = '4K UHD';
+    if (csRating) csRating.textContent = '⭐ 8.5';
+    if (csDesc) csDesc.textContent = "Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.";
+  }
+
+  // Yayın Durumuna Göre Modal Ayarları (Video var mı yok mu?)
+  const isUpcoming = !file || file.includes('ID') || file.includes('coming') || file.includes('COMING');
+  
+  if (isUpcoming) {
+    if (csBadge) csBadge.textContent = "YAKINDA SİNEMADA";
+    if (csPipelineWrapper) csPipelineWrapper.style.display = "block";
+    if (csMovieBtn) csMovieBtn.style.display = "none";
+    
+    // İsme göre dinamik ilerleme yüzdesi (Yakında olanlar için)
+    let percent = 60 + Math.floor((title.charCodeAt(0) % 4) * 10);
+    if (csPercentVal) csPercentVal.textContent = `${percent}%`;
+    if (csProgressFill) csProgressFill.style.width = `${percent}%`;
+    
+    const steps = document.querySelectorAll('.cs-pipeline-steps .cs-step');
+    steps.forEach((step, idx) => {
+      if (percent >= (idx + 1) * 22) step.classList.add('active');
+      else step.classList.remove('active');
+    });
+  } else {
+    if (csBadge) csBadge.textContent = "SİNEMATİK İZLEME";
+    if (csPipelineWrapper) csPipelineWrapper.style.display = "none";
+    if (csMovieBtn) {
+      csMovieBtn.style.display = "inline-flex";
+      csMovieBtn.onclick = (e) => {
+        e.stopPropagation();
+        closeComingSoon();
+        launchPlayer(file, title, poster, resolvedTrailer);
+      };
+    }
+  }
+
+  // Fragman Butonu Ayarı
+  if (resolvedTrailer) {
+    if (csTrailerBtn) {
+      csTrailerBtn.style.display = "inline-flex";
+      csTrailerBtn.classList.remove('disabled');
+      csTrailerBtn.onclick = (e) => {
+        e.stopPropagation();
+        closeComingSoon();
+        openPlayerTrailerOnly(resolvedTrailer, `${title} - Fragman`, poster);
+      };
+    }
+  } else {
+    if (csTrailerBtn) {
+      csTrailerBtn.style.display = "none";
+      csTrailerBtn.onclick = null;
+    }
+  }
+
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function findItemDeepByTitle(title) {
+  if (!title) return null;
+  const cleanTitle = title.toLowerCase().trim();
+  
+  // 1. Üst seviyede ara
+  let found = allContent.find(i => i.title && i.title.toLowerCase().trim() === cleanTitle);
+  if (found) return found;
+
+  // 2. Koleksiyonların içinde ara
+  for (const item of allContent) {
+    if (item.collection) {
+      const nested = item.collection.find(f => f.title && f.title.toLowerCase().trim() === cleanTitle);
+      if (nested) return nested;
+    }
+    // 3. Serilerin bölümlerinin içinde ara
+    if (item.episodes) {
+      const nested = item.episodes.find(e => e.title && e.title.toLowerCase().trim() === cleanTitle);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+
+// Sadece fragmanı açan özel oynatıcı fonksiyonu
+function openPlayerTrailerOnly(trailerUrl, title, poster) {
+  const modal = document.getElementById('player-modal');
+  const playerTitle = document.getElementById('player-title');
+  const playerBackdrop = document.getElementById('player-backdrop');
+  const container = document.querySelector('.player-container');
+  const togglesContainer = document.getElementById('player-source-toggles');
+  
+  if (playerTitle) playerTitle.textContent = title;
+  if (playerBackdrop) playerBackdrop.style.backgroundImage = poster ? `url(${poster})` : '';
+  if (togglesContainer) togglesContainer.style.display = 'none'; // Sadece fragman oynattığımız için butonları gizle
+  
+  container.innerHTML = `
+    <div class="player-logo-blocker" id="logo-blocker" style="display:none;"></div>
+  `;
+
+  let finalUrl = trailerUrl;
+  if (trailerUrl.includes("youtu.be")) {
+    let id = trailerUrl.split("youtu.be/")[1].split("?")[0];
+    let start = trailerUrl.includes("start=") ? "&start=" + trailerUrl.split("start=")[1] : "";
+    finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1${start}`;
+  } else if (trailerUrl.includes("youtube.com")) {
+    let id = trailerUrl.split("v=")[1]?.split("&")[0];
+    finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1`;
+  }
+  
+  container.innerHTML += `
+    <iframe id="player-frame" src="${finalUrl}" allow="autoplay; fullscreen" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="width:100%; height:100%; border:none; display:block;"></iframe>
+  `;
+  
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function closeComingSoon() {
+  const modal = document.getElementById('coming-soon-modal');
+  if (modal) {
+    modal.classList.remove('active');
+    setTimeout(() => modal.style.display = 'none', 600);
+  }
+}
+
+function closePlayer() {
+  const modal = document.getElementById('player-modal');
+  
+  // Tam ekrandan çıkış yap (aktifse)
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  }
+  
+  if (modal) { 
+    modal.classList.remove('active'); 
+    setTimeout(() => { 
+      modal.style.display = 'none'; 
+      const container = document.querySelector('.player-container');
+      if (container) container.innerHTML = ''; // Videoyu durdur ve hafızayı temizle!
+    }, 500); 
+  }
+}
+
+function resetFilter() {
+  filteredContent = [...allContent];
+  const input = document.getElementById('search-input');
+  if (input) input.value = '';
+  renderContent();
+}
+
+document.addEventListener('DOMContentLoaded', initApp);
+
+// ==========================================
+// GERÇEK ZİYARETÇİ SAYACI (REAL VISIT COUNTER)
+// ==========================================
+function initRealVisitCounter() {
+  const countElement = document.getElementById('live-count-num');
+  if (!countElement) return;
+
+  countElement.style.transition = 'opacity 0.3s ease';
+
+  // api.counterapi.dev üzerinden gerçek görüntülenme sayısını çeker ve her girişte +1 artırır.
+  fetch('https://api.counterapi.dev/v1/siomjourney/mainpage/up')
+    .then(response => response.json())
+    .then(data => {
+        // Gerçek sayaç 0'dan başlıyor
+        const realCount = data.count; 
+        
+        countElement.style.opacity = 0;
+        setTimeout(() => {
+            countElement.innerText = realCount.toLocaleString('tr-TR');
+            countElement.style.opacity = 1;
+        }, 300);
+    })
+    .catch(err => {
+        console.error("Ziyaretçi sayacı yüklenemedi:", err);
+        countElement.innerText = "0"; // Hata durumunda yedek (fallback) değer
+    });
+}
+</script>
     <script>
         // PLAYER SOURCE TOGGLE LOGIC
         document.addEventListener("DOMContentLoaded", () => {
@@ -234,6 +1767,7 @@
     </script>
 </body>
 </html>
+
 
 
 
