@@ -567,7 +567,7 @@ const DB = {
           desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
           poster: 'assets/img/atatürk2.jpeg',
           trailer: 'https://youtu.be/xoOzqBkDVH4?si=OLYaki0935mRxSSm',
-          file: '',
+          file: 'https://vkvideo.ru/video_ext.php?oid=-238936467&id=456239018&hash=603d3bb584861300&hd=3',
           isYoutube: false
         }
       ]
@@ -656,7 +656,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '9.5',
       highlights: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
-      file: '',
+      file: 'https://vkvideo.ru/video_ext.php?oid=-238936467&id=456239018&hash=603d3bb584861300&hd=3',
       isYoutube: false,
       showOnlyInOrbital: true
     },
