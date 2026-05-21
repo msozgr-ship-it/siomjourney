@@ -31,32 +31,45 @@ body {
 /* HARİKA VE BELİRGİN ARKA PLAN VİDEOSU (PROMINENT BACKGROUND VIDEO) */
 .hero-video-bg {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 0;
     opacity: 0;
-    transition: opacity 1.5s ease-in-out 1.2s; /* 1.2 saniye gecikme ile Play ikonunu tamamen gizler */
+    transition: opacity 1.5s ease-in-out 1.2s;
     pointer-events: none;
     overflow: hidden;
-    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    /* Sadece alt kenarda hafif solma — videonun tamamı çerçeveye cover ile oturur */
+    mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
 }
 .hero-video-bg.active {
-    opacity: 1; /* Tam parlaklık ve netlik */
+    opacity: 1;
 }
-.hero-video-bg iframe, .hero-video-bg video {
+/* Tüm arka plan medyası: hero alanını tam doldur (crop, ortalı, kesilmeden cover) */
+.hero-video-bg iframe,
+.hero-video-bg video {
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 50%;
-    width: 100vw;
-    height: 56.25vw; /* Tam 16:9 oranı, ekrana taşmadan mükemmel netlik sağlar */
-    min-height: unset;
-    min-width: unset;
-    transform: translateX(-50%);
-    pointer-events: none;
+    transform: translate(-50%, -50%);
     border: none;
+    pointer-events: none;
+    aspect-ratio: 16 / 9;
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    max-width: none;
+}
+.hero-video-bg video {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+}
+/* iframe içindeki platform letterbox'ını kırp — hafif zoom ile tam çerçeve */
+.hero-video-bg iframe {
+    transform: translate(-50%, -50%) scale(1.12);
 }
 
 /* PREMIUM TOP NAVIGATION */
@@ -1043,16 +1056,8 @@ body {
   }
 
   .hero-video-bg {
-      height: 70vh;
-      mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
-  }
-  .hero-video-bg iframe, .hero-video-bg video {
-      min-height: unset;
-      min-width: unset;
-      width: 150vw;
-      height: 84.37vw; /* 150vw * 9/16 */
-      top: 30%;
+      mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
   }
   .cs-close {
       top: 15px;
