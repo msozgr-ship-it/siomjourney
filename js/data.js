@@ -494,7 +494,7 @@ const DB = {
       id: "avatar-ates-ve-kul",
       title: "Avatar: Ateş ve Kül",
       poster: "assets/img/avatarateşvekül.jpeg",
-      file: "https://rumble.com/embed/v77zk28/?pub=4pj11k",
+      file: "",
       fileSub: "https://archive.org/embed/avatar-ates-ve-kul-altyazi",
       trailer: "https://youtu.be/56-ZqR4SLh8?si=fCDj6w8vfl_FSimc",
       searchTags: "avatar, ateş ve kül, pandora, jake sully, aksiyon, bilim kurgu, 2025",
@@ -557,7 +557,7 @@ const DB = {
           desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
           poster: 'assets/img/atatürk1.jpeg',
           trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
-          file: 'https://rumble.com/embed/v77ylc0/?pub=4pj11k',
+          file: '',
           isYoutube: false
         },
         {
@@ -567,7 +567,7 @@ const DB = {
           desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
           poster: 'assets/img/atatürk2.jpeg',
           trailer: 'https://youtu.be/xoOzqBkDVH4?si=OLYaki0935mRxSSm',
-          file: 'https://rumble.com/embed/v77zooy/?pub=4pj11k',
+          file: '',
           isYoutube: false
         }
       ]
@@ -613,7 +613,7 @@ const DB = {
           desc: 'Sincaplar lüks bir gemi yolculuğunda adaya düşer ve macera başlar.',
           poster: 'assets/img/alvinvesincaplar3.avif',
           trailer: 'https://youtu.be/Bs9mPICV3-M?si=DLHf9bWEiP7aLms_',
-          file: 'https://rumble.com/embed/v77zn12/?pub=4pj11k',
+          file: '',
           isYoutube: false
         },
         {
@@ -640,7 +640,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '9.5',
       highlights: 'Mustafa Kemal Atatürk\'ün bir yetimhaneden bir ulusun kurtarıcısına dönüşümünün destanı.',
-      file: 'https://rumble.com/embed/v7a59c8/',
+      file: '',
       isYoutube: false,
       showOnlyInOrbital: true
     },
@@ -656,7 +656,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '9.5',
       highlights: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
-      file: 'https://rumble.com/embed/v77zooy/?pub=4pj11k',
+      file: '',
       isYoutube: false,
       showOnlyInOrbital: true
     },
@@ -704,7 +704,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '8.3',
       highlights: 'Adada mahsur kalan Sincaplar için devasa macera!',
-      file: 'https://rumble.com/embed/v77zn12/?pub=4pj11k',
+      file: '',
       isYoutube: false,
       showOnlyInOrbital: true
     },
@@ -728,7 +728,7 @@ const DB = {
       id: "the-sleeper",
       title: "The Sleeper",
       poster: "assets/img/thesleeper.jpg",
-      file: "https://rumble.com/embed/v77zllg/?pub=4pj11k",
+      file: "",
       trailer: "https://youtu.be/LKWjfdEioaU?si=OG8_4rYq3juCYpTJ",
       searchTags: "the sleeper, uyuyan, gerilim, korku, gizem",
       year: "2024",
