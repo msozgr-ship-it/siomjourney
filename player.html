@@ -340,13 +340,78 @@
         loadMovie();
     }
 
-    /* ─── Film yükleyici ─── */
-    function loadMovie() {
+    /* ─── HD kalite yardımcıları ─── */
+    const DM_HD = 'autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false&ui-logo=false&ui-start-screen-info=0';
+    const YT_HD = 'autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&vq=hd1080&hd=1';
+
+    function extractArchiveId(url) {
+        if (url.includes('archive.org/embed/')) return url.split('archive.org/embed/')[1]?.split('?')[0]?.split('/')[0];
+        if (url.includes('archive.org/details/')) return url.split('archive.org/details/')[1]?.split('?')[0]?.split('/')[0];
+        if (url.includes('archive.org/download/')) return url.split('archive.org/download/')[1]?.split('/')[0];
+        return '';
+    }
+
+    function pickBestArchiveFile(files) {
+        return (files || [])
+            .filter(f => {
+                const n = (f.name || '').toLowerCase();
+                return /\.(mp4|mkv|webm|ogv|m4v)$/i.test(n)
+                    && !n.includes('sample')
+                    && !n.includes('thumb')
+                    && !n.includes('gif')
+                    && (f.size || 0) > 500000;
+            })
+            .sort((a, b) => (b.size || 0) - (a.size || 0))[0];
+    }
+
+    async function getArchiveHdStreamUrl(url) {
+        const id = extractArchiveId(url);
+        if (!id) return null;
+        try {
+            const res = await fetch(`https://archive.org/metadata/${id}`);
+            const data = await res.json();
+            const best = pickBestArchiveFile(data.files);
+            if (best) {
+                return `https://archive.org/download/${id}/${encodeURIComponent(best.name)}`;
+            }
+        } catch (e) {
+            console.warn('Archive HD metadata:', e);
+        }
+        return null;
+    }
+
+    function ensureVkHd(url) {
+        if (!url.includes('vkvideo.ru') && !url.includes('vk.com')) return url;
+        if (/[?&]hd=3/.test(url)) return url;
+        if (/[?&]hd=[12]/.test(url)) return url.replace(/hd=[12]/, 'hd=3');
+        return url + (url.includes('?') ? '&' : '?') + 'hd=3';
+    }
+
+    function setNativeVideo(src, onError) {
+        container.innerHTML = `<video id="player-video" src="${src}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
+        const v = document.getElementById('player-video');
+        v.addEventListener('canplay', fadeOutLoader);
+        if (onError) v.addEventListener('error', onError, { once: true });
+    }
+
+    /* ─── Film yükleyici (HD öncelikli) ─── */
+    async function loadMovie() {
         let currentFileUrl = (currentLang === 'sub' && fileSubUrl) ? fileSubUrl : fileUrl;
         if (!currentFileUrl) return;
+        showLoader();
 
-        // Archive.org → güvenilir embed iframe
+        // Archive.org → metadata API ile en büyük (en yüksek kalite) dosyayı doğrudan oynat
         if (currentFileUrl.includes('archive.org')) {
+            const hdStream = await getArchiveHdStreamUrl(currentFileUrl);
+            if (hdStream) {
+                setNativeVideo(hdStream, () => {
+                    const id = extractArchiveId(currentFileUrl);
+                    let embedUrl = currentFileUrl.includes('/embed/') ? currentFileUrl : `https://archive.org/embed/${id}`;
+                    if (!embedUrl.includes('autoplay')) embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+                    setIframe(embedUrl, true);
+                });
+                return;
+            }
             let embedUrl = currentFileUrl;
             if (!embedUrl.includes('autoplay')) {
                 embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
@@ -354,21 +419,18 @@
             setIframe(embedUrl, true);
             return;
         }
-        // Gerçek .mp4
-        if (currentFileUrl.endsWith('.mp4') || currentFileUrl.includes('.mp4?')) {
-            container.innerHTML = `<video id="player-video" src="${currentFileUrl}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
-            const v = document.getElementById('player-video');
-            v.addEventListener('canplay', fadeOutLoader);
-            v.addEventListener('error', () => { setIframe(currentFileUrl, false); });
+        // Gerçek .mp4 / stream
+        if (currentFileUrl.endsWith('.mp4') || currentFileUrl.includes('.mp4?') || currentFileUrl.includes('.mkv') || currentFileUrl.includes('.webm')) {
+            setNativeVideo(currentFileUrl, () => setIframe(currentFileUrl, false));
             return;
         }
-        // Dailymotion
+        // Dailymotion → quality=best (1080p ve üzeri varsa en yüksek)
         if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly')) {
             let dmId = '';
             if (currentFileUrl.includes('video/')) dmId = currentFileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
             else if (currentFileUrl.includes('dai.ly/')) dmId = currentFileUrl.split('dai.ly/')[1]?.split('?')[0];
             if (dmId) {
-                setIframe(`https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&queue-enable=false&queue-autoplay-next=false&ui-logo=false&quality=1080`, false);
+                setIframe(`https://www.dailymotion.com/embed/video/${dmId}?${DM_HD}`, false);
                 return;
             }
         }
@@ -377,12 +439,12 @@
             let ytId = '';
             if (currentFileUrl.includes('embed/')) ytId = currentFileUrl.split('embed/')[1]?.split('?')[0];
             else ytId = currentFileUrl.split('v=')[1]?.split('&')[0] || currentFileUrl.split('youtu.be/')[1]?.split('?')[0];
-            setIframe(`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0&vq=hd1080`, false);
+            setIframe(`https://www.youtube-nocookie.com/embed/${ytId}?${YT_HD}`, false);
             return;
         }
-        // OK.ru ve VK.com (Autoplay eklenirse bot kontrolüne (captcha) takılıyor, bu yüzden saf link yüklenmeli)
+        // VK → hd=3 (1080p)
         if (currentFileUrl.includes('ok.ru') || currentFileUrl.includes('vkvideo.ru') || currentFileUrl.includes('vk.com')) {
-            setIframe(currentFileUrl, false);
+            setIframe(ensureVkHd(currentFileUrl), false);
             return;
         }
         // Rumble ve diğer iframe platformları
@@ -390,7 +452,6 @@
             setIframe(currentFileUrl, false);
             return;
         }
-        // Diğer
         setIframe(currentFileUrl, false);
     }
 
@@ -404,12 +465,12 @@
         if (trailerUrl.includes('youtu.be')) {
             const id    = trailerUrl.split('youtu.be/')[1]?.split('?')[0];
             const siParam = trailerUrl.includes('si=') ? '' : '';
-            finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1&vq=hd1080`;
+            finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1&vq=hd1080&hd=1`;
         } else if (trailerUrl.includes('youtube.com/watch')) {
             const id = trailerUrl.split('v=')[1]?.split('&')[0];
-            finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1&vq=hd1080`;
+            finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&playsinline=1&vq=hd1080&hd=1`;
         } else if (trailerUrl.includes('youtube.com/embed/')) {
-            finalUrl = trailerUrl + (trailerUrl.includes('?') ? '&' : '?') + 'autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&vq=hd1080';
+            finalUrl = trailerUrl + (trailerUrl.includes('?') ? '&' : '?') + 'autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&vq=hd1080&hd=1';
         }
 
         setIframe(finalUrl, false);
