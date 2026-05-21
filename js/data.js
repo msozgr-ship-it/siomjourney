@@ -494,7 +494,7 @@ const DB = {
       id: "avatar-ates-ve-kul",
       title: "Avatar: Ateş ve Kül",
       poster: "assets/img/avatarateşvekül.jpeg",
-      file: "https://archive.org/embed/avatar-ates-ve-kul",
+      file: "https://archive.org/embed/avatar-ates-ve-kul-altyazi",
       trailer: "https://youtu.be/0h5G56bHnS0",
       searchTags: "avatar, ateş ve kül, pandora, jake sully, aksiyon, bilim kurgu, 2025",
       year: "2025",
