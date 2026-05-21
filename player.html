@@ -380,13 +380,9 @@
             setIframe(`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0&vq=hd1080`, false);
             return;
         }
-        // OK.ru ve VK.com
+        // OK.ru ve VK.com (Autoplay eklenirse bot kontrolüne (captcha) takılıyor, bu yüzden saf link yüklenmeli)
         if (currentFileUrl.includes('ok.ru') || currentFileUrl.includes('vkvideo.ru') || currentFileUrl.includes('vk.com')) {
-            let embedUrl = currentFileUrl;
-            if (!embedUrl.includes('autoplay')) {
-                embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
-            }
-            setIframe(embedUrl, false);
+            setIframe(currentFileUrl, false);
             return;
         }
         // Rumble ve diğer iframe platformları
