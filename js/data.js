@@ -676,7 +676,7 @@ const DB = {
       id: "the-sleeper",
       title: "The Sleeper",
       poster: "assets/img/thesleeper.jpg",
-      file: "https://archive.org/embed/the-sleeper-movie",
+      file: "https://rumble.com/embed/v77zllg/?pub=4pj11k",
       trailer: "https://youtu.be/LKWjfdEioaU?si=OG8_4rYq3juCYpTJ",
       searchTags: "the sleeper, uyuyan, gerilim, korku, gizem",
       year: "2024",
