@@ -1443,10 +1443,9 @@ function openDetails(id) {
   grid.innerHTML = subItems.map(sub => {
     // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
     const isUpcoming = !sub.file || sub.file.includes('ID') || sub.file.includes('coming') || sub.file.includes('COMING');
-    const trailerForSub = sub.trailer || item.trailer || '';
     
     return `
-      <div class="series-item" onclick="event.stopPropagation(); openPlayer('${sub.file}', '${sub.title}', '${sub.poster || item.poster}', '${trailerForSub}')">
+      <div class="series-item" data-sub-id="${sub.id}" role="button" tabindex="0">
         <div class="card">
           ${isUpcoming ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
           <img src="${sub.poster || item.poster}" alt="">
@@ -1455,6 +1454,16 @@ function openDetails(id) {
       </div>
     `;
   }).join('');
+
+  grid.querySelectorAll('.series-item').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const sub = subItems.find(s => s.id === el.dataset.subId);
+      if (!sub) return;
+      openPlayer(sub.file, sub.title, sub.poster || item.poster, sub.trailer || item.trailer || '');
+    });
+  });
+
   modal.style.display = 'flex';
   setTimeout(() => modal.classList.add('active'), 10);
 }
