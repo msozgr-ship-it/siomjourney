@@ -182,7 +182,7 @@
             position: absolute; inset: 0; background: #050508;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            z-index: 1000; gap: 20px; transition: opacity 0.8s ease;
+            z-index: 1000; gap: 20px; transition: opacity 0.22s ease;
         }
         .loader-spinner {
             width: 48px; height: 48px;
@@ -367,17 +367,34 @@
     async function getArchiveHdStreamUrl(url) {
         const id = extractArchiveId(url);
         if (!id) return null;
+        const cacheKey = `sj_archive_hd_${id}`;
+        try {
+            const cached = sessionStorage.getItem(cacheKey);
+            if (cached) return cached;
+        } catch (e) { /* ignore */ }
         try {
             const res = await fetch(`https://archive.org/metadata/${id}`);
             const data = await res.json();
             const best = pickBestArchiveFile(data.files);
             if (best) {
-                return `https://archive.org/download/${id}/${encodeURIComponent(best.name)}`;
+                const streamUrl = `https://archive.org/download/${id}/${encodeURIComponent(best.name)}`;
+                try { sessionStorage.setItem(cacheKey, streamUrl); } catch (e) { /* ignore */ }
+                return streamUrl;
             }
         } catch (e) {
             console.warn('Archive HD metadata:', e);
         }
         return null;
+    }
+
+    function getArchiveEmbedUrl(url) {
+        const id = extractArchiveId(url);
+        if (!id) return url;
+        let embedUrl = url.includes('/embed/') ? url : `https://archive.org/embed/${id}`;
+        if (!embedUrl.includes('autoplay')) {
+            embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+        }
+        return embedUrl;
     }
 
     function ensureVkHd(url) {
@@ -394,31 +411,31 @@
         if (onError) v.addEventListener('error', onError, { once: true });
     }
 
-    /* ─── Film yükleyici (HD öncelikli) ─── */
+    /* ─── Film yükleyici (HD öncelikli, hızlı açılış) ─── */
     async function loadMovie() {
         let currentFileUrl = (currentLang === 'sub' && fileSubUrl) ? fileSubUrl : fileUrl;
         if (!currentFileUrl) return;
-        showLoader();
 
-        // Archive.org → metadata API ile en büyük (en yüksek kalite) dosyayı doğrudan oynat
+        // Archive.org → önbellek varsa doğrudan HD; yoksa önce embed (anında), arka planda HD
         if (currentFileUrl.includes('archive.org')) {
-            const hdStream = await getArchiveHdStreamUrl(currentFileUrl);
-            if (hdStream) {
-                setNativeVideo(hdStream, () => {
-                    const id = extractArchiveId(currentFileUrl);
-                    let embedUrl = currentFileUrl.includes('/embed/') ? currentFileUrl : `https://archive.org/embed/${id}`;
-                    if (!embedUrl.includes('autoplay')) embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
-                    setIframe(embedUrl, true);
-                });
+            showLoader();
+            const archiveId = extractArchiveId(currentFileUrl);
+            let cachedHd = null;
+            try {
+                if (archiveId) cachedHd = sessionStorage.getItem(`sj_archive_hd_${archiveId}`);
+            } catch (e) { /* ignore */ }
+            if (cachedHd) {
+                setNativeVideo(cachedHd, () => setIframe(getArchiveEmbedUrl(currentFileUrl), true));
                 return;
             }
-            let embedUrl = currentFileUrl;
-            if (!embedUrl.includes('autoplay')) {
-                embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
-            }
-            setIframe(embedUrl, true);
+            setIframe(getArchiveEmbedUrl(currentFileUrl), true);
+            getArchiveHdStreamUrl(currentFileUrl).then(hdStream => {
+                if (hdStream) setNativeVideo(hdStream, null);
+            });
             return;
         }
+
+        showLoader();
         // Gerçek .mp4 / stream
         if (currentFileUrl.endsWith('.mp4') || currentFileUrl.includes('.mp4?') || currentFileUrl.includes('.mkv') || currentFileUrl.includes('.webm')) {
             setNativeVideo(currentFileUrl, () => setIframe(currentFileUrl, false));
@@ -481,8 +498,8 @@
         const blockerHtml = showBlocker ? `<div class="logo-blocker"><span class="blocker-dot"></span></div>` : '';
         container.innerHTML = `${blockerHtml}<iframe id="player-frame" src="${url}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture; screen-wake-lock" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>`;
         const fr = document.getElementById('player-frame');
-        fr.addEventListener('load', fadeOutLoader);
-        setTimeout(fadeOutLoader, 500); // Kullanıcıyı bekletmemek için süreyi çok kısa tutuyoruz
+        fr.addEventListener('load', fadeOutLoader, { once: true });
+        setTimeout(fadeOutLoader, 180);
     }
 
     /* ─── Loader helpers ─── */
@@ -493,9 +510,9 @@
     }
     function fadeOutLoader() {
         const l = document.getElementById('player-loader');
-        if (!l) return;
+        if (!l || l.style.display === 'none') return;
         l.style.opacity = '0';
-        setTimeout(() => { l.style.display = 'none'; }, 800);
+        setTimeout(() => { l.style.display = 'none'; }, 220);
     }
 </script>
 </body>

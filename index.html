@@ -9,6 +9,7 @@
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=5.27">
+    <link rel="prefetch" href="player.html">
 </head>
 <body>
     <div class="bg-spatial"></div>
@@ -1488,6 +1489,15 @@ function launchPlayer(file, title, poster, trailer) {
 }
 
 function openPlayer(file, title, poster, trailer) {
+  const isUpcoming = !file || file.includes('ID') || file.includes('coming') || file.includes('COMING');
+
+  // Yayında olan filmler: modal atlanır, oynatıcı anında açılır
+  if (!isUpcoming) {
+    const item = findItemDeepByTitle(title);
+    launchPlayer(file, title, poster, trailer || (item ? item.trailer : ''));
+    return;
+  }
+
   const modal = document.getElementById('coming-soon-modal');
   const csTitle = document.getElementById('cs-title');
   const csBackdrop = document.getElementById('cs-backdrop');
@@ -1533,9 +1543,6 @@ function openPlayer(file, title, poster, trailer) {
     if (csDesc) csDesc.textContent = "Bu premium sinematik başyapıt, ultra yüksek çözünürlük, özel ses tasarımı ve pürüzsüz akış optimizasyonları ile SiomJourney kütüphanesine eklenmek üzere özenle hazırlanıyor.";
   }
 
-  // Yayın Durumuna Göre Modal Ayarları (Video var mı yok mu?)
-  const isUpcoming = !file || file.includes('ID') || file.includes('coming') || file.includes('COMING');
-  
   if (isUpcoming) {
     if (csBadge) csBadge.textContent = "YAKINDA SİNEMADA";
     if (csPipelineWrapper) csPipelineWrapper.style.display = "block";
