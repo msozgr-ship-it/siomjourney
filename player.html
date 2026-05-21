@@ -217,6 +217,7 @@
     <div class="loader-text">Premium Sinema Yükleniyor...</div>
 </div>
 
+<div id="mouse-catcher" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:90; pointer-events:none;"></div>
 <header class="player-header" id="player-header">
     <div class="player-title-area">
         <span class="player-badge" id="player-badge">
@@ -272,17 +273,23 @@
     /* ─── Auto-hide header ─── */
     let idleTimer;
     const header = document.getElementById('player-header');
+    const mouseCatcher = document.getElementById('mouse-catcher');
+    
     function resetIdle() {
         header.classList.remove('hidden');
         document.body.style.cursor = 'default';
+        if (mouseCatcher) mouseCatcher.style.pointerEvents = 'none';
+        
         clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
             header.classList.add('hidden');
             document.body.style.cursor = 'none';
+            if (mouseCatcher) mouseCatcher.style.pointerEvents = 'auto';
         }, 3500);
     }
     document.addEventListener('mousemove', resetIdle);
     document.addEventListener('touchstart', resetIdle);
+    if (mouseCatcher) mouseCatcher.addEventListener('mousemove', resetIdle);
     resetIdle();
 
     /* ─── İlk yükleme ─── */
