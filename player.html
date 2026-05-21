@@ -416,40 +416,23 @@
         let currentFileUrl = (currentLang === 'sub' && fileSubUrl) ? fileSubUrl : fileUrl;
         if (!currentFileUrl) return;
 
-        // Archive.org → önbellek varsa doğrudan HD; yoksa önce embed (anında), arka planda HD
+        showLoader();
+
+        // Archive.org → doğrudan embed kullan (metadata API'si yerine)
         if (currentFileUrl.includes('archive.org')) {
-            showLoader();
-            const archiveId = extractArchiveId(currentFileUrl);
-            let cachedHd = null;
-            try {
-                if (archiveId) cachedHd = sessionStorage.getItem(`sj_archive_hd_${archiveId}`);
-            } catch (e) { /* ignore */ }
-            if (cachedHd) {
-                setNativeVideo(cachedHd, () => setIframe(getArchiveEmbedUrl(currentFileUrl), true));
-                return;
-            }
             setIframe(getArchiveEmbedUrl(currentFileUrl), true);
-            getArchiveHdStreamUrl(currentFileUrl).then(hdStream => {
-                if (hdStream) setNativeVideo(hdStream, null);
-            });
             return;
         }
 
-        showLoader();
         // Gerçek .mp4 / stream
         if (currentFileUrl.endsWith('.mp4') || currentFileUrl.includes('.mp4?') || currentFileUrl.includes('.mkv') || currentFileUrl.includes('.webm')) {
             setNativeVideo(currentFileUrl, () => setIframe(currentFileUrl, false));
             return;
         }
-        // Dailymotion → quality=best (1080p ve üzeri varsa en yüksek)
+        // Dailymotion → doğrudan embed URL'si kullan
         if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly')) {
-            let dmId = '';
-            if (currentFileUrl.includes('video/')) dmId = currentFileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
-            else if (currentFileUrl.includes('dai.ly/')) dmId = currentFileUrl.split('dai.ly/')[1]?.split('?')[0];
-            if (dmId) {
-                setIframe(`https://www.dailymotion.com/embed/video/${dmId}?${DM_HD}`, false);
-                return;
-            }
+            setIframe(currentFileUrl, false);
+            return;
         }
         // YouTube
         if (currentFileUrl.includes('youtube.com') || currentFileUrl.includes('youtu.be')) {
