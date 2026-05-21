@@ -107,61 +107,68 @@ function updateOrbitalTransforms() {
     return { item, relAngle, absAngle };
   });
 
-  // MOBİL VE MASAÜSTÜ İÇİN ORTAK DİKEY DÖNME DOLAP MOTORU
-  const radiusY_vertical = isMobile ? 380 : 650; // Mobilde 380px, masaüstünde 650px
-  const radiusZ = isMobile ? 280 : 500;
-  const leftOffset = isMobile ? -180 : -680; // Sola yaslama
-  const curveX = isMobile ? 25 : 60;
+  // MOBİL VE MASAÜSTÜ İÇİN KUSURSUZ, TAŞMA YAPMAYAN YENİ DÖNME DOLAP MOTORU
+  const isMobile = window.innerWidth < 768;
 
   calculatedAngles.forEach((data, i) => {
     const { item, relAngle } = data;
-    const rad = (relAngle * Math.PI) / 180;
-    const cosVal = Math.cos(rad);
-    const sinVal = Math.sin(rad);
     
-    const x = leftOffset + (Math.abs(sinVal) * curveX); 
-    const y = sinVal * radiusY_vertical; 
-    const z = cosVal * radiusZ; 
+    // Merkez noktaya tam uzaklık birimi (0: Merkez, 1: Bir sonraki kart, 2: İki sonraki kart)
+    const offset = relAngle / angleStep; 
+    const absOffset = Math.abs(offset);
+
+    // Ekranda görünecek maksimum kart sayısı (Merkezin üstünde ve altında)
+    // Sınırı aşanları fiziksel olarak yok ediyoruz ki yansıma veya taşma yapmasın.
+    const visibleCount = isMobile ? 1.5 : 2.5; 
     
-    const normCos = (cosVal + 1) / 2;
-    const isCenter = (i === closestIndex);
-    
-    let scale;
-    if (isCenter) {
-      scale = 1.15;
-    } else {
-      scale = 0.35 + 0.35 * Math.pow(normCos, 2);
-    }
-    
-    const rotY = 12; 
-    const rotX = -sinVal * 15; 
-    
-    item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
-    
-    if (isCenter) {
-      item.style.opacity = "1";
-      item.style.visibility = "visible";
-      item.style.filter = "brightness(1.15) contrast(1.1) saturate(1.12)";
-      item.classList.add('active');
-      item.style.zIndex = "25000";
-      item.style.pointerEvents = "auto";
-    } else {
-      if (cosVal < 0.65) {
+    if (absOffset > visibleCount) {
         item.style.opacity = "0";
         item.style.visibility = "hidden";
         item.style.pointerEvents = "none";
-      } else {
-        item.style.visibility = "visible";
-        const cardOpacity = Math.max(0.15, (normCos - 0.6) * 2.5);
-        item.style.opacity = cardOpacity.toFixed(2);
-        item.style.filter = `brightness(${(0.45 + 0.50 * normCos).toFixed(2)}) saturate(0.8)`;
-      }
-      item.classList.remove('active');
-      
-      const zIndexBase = Math.round(19000 + cosVal * 1000);
-      item.style.zIndex = zIndexBase;
-      item.style.pointerEvents = cosVal >= 0.85 ? "auto" : "none";
+        item.style.transform = `translate3d(-2000px, 0, -2000px)`; // Ekranda kesinlikle yer kaplamaz
+        item.classList.remove('active');
+        return;
     }
+
+    item.style.visibility = "visible";
+
+    // KUSURSUZ PİKSEL MATEMATİĞİ (Kartların üst üste binmesi fiziksel olarak imkansız)
+    const stepY = isMobile ? 130 : 260; // Her kart dikeyde kesin olarak bu kadar ayrılacak
+    const y = offset * stepY;
+    
+    const stepZ = isMobile ? 150 : 250; // Her kart arkaya doğru kesin olarak bu kadar itilecek
+    const z = -absOffset * stepZ;
+    
+    // Kavis: Kartlar arkaya gittikçe aynı zamanda sola doğru kıvrılır (gerçek çark hissi)
+    const leftBase = isMobile ? -140 : -450;
+    const curveStep = isMobile ? 25 : 60;
+    const x = leftBase - (absOffset * curveStep);
+    
+    // Ölçeklendirme: Arkaya gittikçe doğrusal olarak küçülsün
+    let scale = 1 - (absOffset * 0.20); 
+    if (scale < 0) scale = 0;
+    
+    const isCenter = (i === closestIndex);
+    if (isCenter) {
+        scale = isMobile ? 1.15 : 1.35;
+        item.style.opacity = "1";
+        item.style.filter = "brightness(1.15) contrast(1.1) saturate(1.12)";
+        item.style.zIndex = "25000";
+        item.style.pointerEvents = "auto";
+        item.classList.add('active');
+    } else {
+        item.style.opacity = (1 - absOffset * 0.35).toFixed(2);
+        item.style.filter = `brightness(${(0.6 - absOffset * 0.1).toFixed(2)}) contrast(0.9) saturate(0.8)`;
+        item.style.zIndex = Math.round(20000 - absOffset * 1000);
+        item.style.pointerEvents = "none"; 
+        item.classList.remove('active');
+    }
+
+    // Doğal eğim açıları
+    const rotX = -offset * 12; // Kartların üst üste binerken değil, yukarı/aşağı bakarken eğilmesi
+    const rotY = 15 + absOffset * 8; // Kartların ekrana doğru değil, sola doğru bakması
+    
+    item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
   });
 
   // Arka plan videosunu güncelle
