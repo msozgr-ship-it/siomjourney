@@ -556,7 +556,7 @@ const DB = {
           desc: 'Mustafa Kemal\'in çocukluğundan milli mücadelenin başlangıcına uzanan efsanevi yolculuk.',
           poster: 'assets/img/atatürk1.jpeg',
           trailer: 'https://youtu.be/J6YdxsvH9j4?si=uL8pejxvae5pC7Td',
-          file: 'https://rumble.com/embed/v7a59c8/',
+          file: 'https://rumble.com/embed/v77ylc0/?pub=4pj11k',
           isYoutube: false
         },
         {
