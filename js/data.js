@@ -581,7 +581,7 @@ const DB = {
       isCollection: true,
       year: 'Koleksiyon',
       match: '98%',
-      meta: '4K Ultra HD',
+      meta: '2 Film',
       rating: '8.4',
       highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar maceraları.',
       collection: [
@@ -593,6 +593,16 @@ const DB = {
           poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
           trailer: 'https://youtu.be/3M7R01bB9S8',
           file: 'https://archive.org/embed/alvin-yol-macerasi',
+          isYoutube: false
+        },
+        {
+          id: 'm9f2',
+          epNum: 2,
+          title: 'Alvin ve Sincaplar 2',
+          desc: 'Sincapların eğlence dolu maceraları devam ediyor.',
+          poster: 'assets/img/alvinvesincaplarmain.jpg',
+          trailer: 'https://youtu.be/3M7R01bB9S8',
+          file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
           isYoutube: false
         }
       ]
@@ -642,6 +652,22 @@ const DB = {
       rating: '8.4',
       highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar maceraları.',
       file: 'https://archive.org/embed/alvin-yol-macerasi',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f2-single',
+      title: 'Alvin ve Sincaplar 2',
+      searchTags: 'alvin ve sincaplar 2, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Sincapların eğlence dolu maceraları devam ediyor.',
+      poster: 'assets/img/alvinvesincaplarmain.jpg',
+      trailer: 'https://youtu.be/3M7R01bB9S8',
+      year: '2009',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.2',
+      highlights: 'Alvin ve Sincaplar geri dönüyor, bu sefer daha eğlenceli!',
+      file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
       isYoutube: false,
       showOnlyInOrbital: true
     }
