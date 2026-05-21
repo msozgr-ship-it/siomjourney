@@ -605,6 +605,16 @@ const DB = {
           trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
           file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
           isYoutube: false
+        },
+        {
+          id: 'm9f3',
+          epNum: 3,
+          title: 'Alvin ve Sincaplar 3: Eğlence Adası',
+          desc: 'Sincaplar lüks bir gemi yolculuğunda adaya düşer ve macera başlar.',
+          poster: 'assets/img/alvinvesincaplarmain.jpg',
+          trailer: 'https://youtu.be/Bs9mPICV3-M?si=DLHf9bWEiP7aLms_',
+          file: 'https://rumble.com/embed/v77zn12/?pub=4pj11k',
+          isYoutube: false
         }
       ]
     },
@@ -669,6 +679,22 @@ const DB = {
       rating: '8.2',
       highlights: 'Alvin ve Sincaplar geri dönüyor, bu sefer daha eğlenceli!',
       file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f3-single',
+      title: 'Alvin ve Sincaplar 3',
+      searchTags: 'alvin ve sincaplar 3, alvin, simon, theodore, animasyon, komedi, müzikal, eğlence adası',
+      desc: 'Sincaplar lüks bir gemi yolculuğunda adaya düşer ve macera başlar.',
+      poster: 'assets/img/alvinvesincaplarmain.jpg',
+      trailer: 'https://youtu.be/Bs9mPICV3-M?si=DLHf9bWEiP7aLms_',
+      year: '2011',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.3',
+      highlights: 'Adada mahsur kalan Sincaplar için devasa macera!',
+      file: 'https://rumble.com/embed/v77zn12/?pub=4pj11k',
       isYoutube: false,
       showOnlyInOrbital: true
     },
