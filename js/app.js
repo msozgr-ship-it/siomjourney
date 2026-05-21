@@ -140,8 +140,8 @@ function updateOrbitalTransforms() {
     const z = -absOffset * stepZ;
     
     // Kavis: Kartlar arkaya gittikçe aynı zamanda sola doğru kıvrılır (gerçek çark hissi)
-    const leftBase = isMobile ? -25 : -550; // Mobilde neredeyse tam merkez (-25px ile logoya hafif uyum)
-    const curveStep = isMobile ? 12 : 60;   // Mobilde arkaya doğru giden kartlar çok hafif kavis yapsın
+    const leftBase = isMobile ? 0 : -550; // Mobilde KAYMA SIFIR. Tam merkeze hizalandı.
+    const curveStep = isMobile ? 0 : 60;   // Mobilde arkaya giden kartlar kavis YAMASIN, dümdüz arkaya gitsin.
     const x = leftBase - (absOffset * curveStep);
     
     // Ölçeklendirme: Arkaya gittikçe doğrusal olarak küçülsün
