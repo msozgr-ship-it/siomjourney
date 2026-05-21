@@ -208,10 +208,19 @@
             if(btnMovie && btnTrailer) {
                 btnMovie.addEventListener('click', () => {
                     if(!currentMovieData) return;
+                    
+                    const fileUrl = currentMovieFileUrl || currentMovieData.file;
+                    
+                    // VK ve OK.ru için iframe bot doğrulamasına (captcha) takılıyor. Direkt sekmede açıyoruz.
+                    if (fileUrl.includes('vkvideo.ru') || fileUrl.includes('vk.com') || fileUrl.includes('ok.ru')) {
+                        window.open(fileUrl, '_blank');
+                        return;
+                    }
+
                     btnMovie.classList.add('active');
                     btnTrailer.classList.remove('active');
                     badgeEl.innerText = "SİNEMA MODU";
-                    iframe.src = currentMovieFileUrl || currentMovieData.file;
+                    iframe.src = fileUrl;
                 });
 
                 btnTrailer.addEventListener('click', () => {
