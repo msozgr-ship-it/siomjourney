@@ -107,124 +107,67 @@ function updateOrbitalTransforms() {
     return { item, relAngle, absAngle };
   });
 
-  if (isMobile) {
-    // MOBİL İÇİN KUSURSUZ KESİNTİSİZ 3D ELİPS DÖNME DOLAP MOTORU
-    const screenW = window.innerWidth;
-    const maxSpanX = (screenW / 2) - 48;
-    const radiusX = Math.min(maxSpanX, 115);
-    const radiusY_vertical = 35;
-    const radiusZ = 60;
+  // MOBİL VE MASAÜSTÜ İÇİN ORTAK DİKEY DÖNME DOLAP MOTORU
+  const isMobile = window.innerWidth < 768;
+  const radiusY_vertical = isMobile ? 380 : 650; // Mobilde 380px, masaüstünde 650px
+  const radiusZ = isMobile ? 280 : 500;
+  const leftOffset = isMobile ? -180 : -680; // Sola yaslama
+  const curveX = isMobile ? 25 : 60;
 
-    calculatedAngles.forEach((data, i) => {
-      const { item, relAngle } = data;
-      const cosVal = Math.cos((relAngle * Math.PI) / 180);
-      
-      const x = Math.sin((relAngle * Math.PI) / 180) * radiusX;
-      const y = -cosVal * radiusY_vertical;
-      const z = cosVal * radiusZ;
-      
-      const normCos = (cosVal + 1) / 2;
-      const isCenter = (i === closestIndex);
-      
-      let scale;
-      if (isCenter) {
-        scale = 1.35;
-      } else {
-        scale = 0.55 + 0.35 * Math.pow(normCos, 3);
-      }
-      
-      const rotY = relAngle * 0.22;
-      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(0deg)`;
-      
-      if (isCenter) {
-        item.style.opacity = "1";
-        item.style.visibility = "visible";
-        item.style.filter = "brightness(1.12) contrast(1.08) saturate(1.1)";
-        item.classList.add('active');
-        item.style.zIndex = "25000";
-        item.style.pointerEvents = "auto";
-      } else {
-        if (cosVal < 0.25) {
-          item.style.opacity = "0";
-          item.style.visibility = "hidden";
-          item.style.pointerEvents = "none";
-        } else {
-          item.style.visibility = "visible";
-          item.style.opacity = (0.4 + 0.55 * Math.pow(normCos, 2)).toFixed(2);
-          item.style.filter = `brightness(${(0.5 + 0.4 * normCos).toFixed(2)}) saturate(0.7)`;
-        }
-        item.classList.remove('active');
-        
-        const zIndexBase = Math.round(19000 + cosVal * 1000);
-        item.style.zIndex = zIndexBase;
-        item.style.pointerEvents = cosVal >= 0.25 ? "auto" : "none";
-      }
-    });
-  } else {
-    // MASAÜSTÜ - PROFESYONEL SİNEMATİK DİKEY DOLAP (ÜST ÜSTE BİNME ENGELLENDİ)
-    const radiusY_vertical = 650; // Kartların birbirinin içine girmemesi için devasa dikey yarıçap
-    const radiusZ = 500; // Güçlü 3D derinlik ayrımı
-    const leftOffset = -680;
-    const curveX = 60; // Yatayda kavis oluşturarak uzak kartları sola doğru açar
-
-    calculatedAngles.forEach((data, i) => {
-      const { item, relAngle } = data;
-      const rad = (relAngle * Math.PI) / 180;
-      const cosVal = Math.cos(rad);
-      const sinVal = Math.sin(rad);
-      
-      const x = leftOffset + (Math.abs(sinVal) * curveX); 
-      const y = sinVal * radiusY_vertical; 
-      const z = cosVal * radiusZ; 
-      
-      const normCos = (cosVal + 1) / 2;
-      const isCenter = (i === closestIndex);
-      
-      let scale;
-      if (isCenter) {
-        scale = 1.15;
-      } else {
-        // Kartlar küçülerek üst üste binme ihtimalini ortadan kaldırır
-        scale = 0.35 + 0.35 * Math.pow(normCos, 2);
-      }
-      
-      const rotY = 12; 
-      const rotX = -sinVal * 15; 
-      
-      item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
-      
-      if (isCenter) {
-        item.style.opacity = "1";
-        item.style.visibility = "visible";
-        item.style.filter = "brightness(1.15) contrast(1.1) saturate(1.12)";
-        item.classList.add('active');
-        item.style.zIndex = "25000";
-        item.style.pointerEvents = "auto";
-      } else {
-        // Sadece ön taraftaki en yakın kartları göster, diğerlerini gizle (üst üste binmeyi tamamen engeller)
-        if (cosVal < 0.65) {
-          item.style.opacity = "0";
-          item.style.visibility = "hidden";
-          item.style.pointerEvents = "none";
-        } else {
-          item.style.visibility = "visible";
-          // Opaklık
-          const cardOpacity = Math.max(0.15, (normCos - 0.6) * 2.5);
-          item.style.opacity = cardOpacity.toFixed(2);
-          item.style.filter = `brightness(${(0.45 + 0.50 * normCos).toFixed(2)}) saturate(0.8)`;
-        }
-        item.classList.remove('active');
-        
-        const zIndexBase = Math.round(19000 + cosVal * 1000);
-        item.style.zIndex = zIndexBase;
-        item.style.pointerEvents = cosVal >= 0.85 ? "auto" : "none";
-      }
-    });
-
-    // Arka plan videosunu güncelle
-    if (closestIndex !== -1 && orbitalContent[closestIndex]) {
-      updateBackgroundVideo(orbitalContent[closestIndex]);
+  calculatedAngles.forEach((data, i) => {
+    const { item, relAngle } = data;
+    const rad = (relAngle * Math.PI) / 180;
+    const cosVal = Math.cos(rad);
+    const sinVal = Math.sin(rad);
+    
+    const x = leftOffset + (Math.abs(sinVal) * curveX); 
+    const y = sinVal * radiusY_vertical; 
+    const z = cosVal * radiusZ; 
+    
+    const normCos = (cosVal + 1) / 2;
+    const isCenter = (i === closestIndex);
+    
+    let scale;
+    if (isCenter) {
+      scale = 1.15;
+    } else {
+      scale = 0.35 + 0.35 * Math.pow(normCos, 2);
     }
+    
+    const rotY = 12; 
+    const rotX = -sinVal * 15; 
+    
+    item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
+    
+    if (isCenter) {
+      item.style.opacity = "1";
+      item.style.visibility = "visible";
+      item.style.filter = "brightness(1.15) contrast(1.1) saturate(1.12)";
+      item.classList.add('active');
+      item.style.zIndex = "25000";
+      item.style.pointerEvents = "auto";
+    } else {
+      if (cosVal < 0.65) {
+        item.style.opacity = "0";
+        item.style.visibility = "hidden";
+        item.style.pointerEvents = "none";
+      } else {
+        item.style.visibility = "visible";
+        const cardOpacity = Math.max(0.15, (normCos - 0.6) * 2.5);
+        item.style.opacity = cardOpacity.toFixed(2);
+        item.style.filter = `brightness(${(0.45 + 0.50 * normCos).toFixed(2)}) saturate(0.8)`;
+      }
+      item.classList.remove('active');
+      
+      const zIndexBase = Math.round(19000 + cosVal * 1000);
+      item.style.zIndex = zIndexBase;
+      item.style.pointerEvents = cosVal >= 0.85 ? "auto" : "none";
+    }
+  });
+
+  // Arka plan videosunu güncelle
+  if (closestIndex !== -1 && orbitalContent[closestIndex]) {
+    updateBackgroundVideo(orbitalContent[closestIndex]);
   }
 }
 
@@ -616,6 +559,23 @@ function openPlayer(file, title, poster, trailer) {
 
   // Filmi kendi sitemizdeki özel premium player.html sayfasında açıyoruz!
   // Fragman URL'si varsa da ekliyoruz ki player.html içinde geçiş butonu çıksın.
+  
+  // Öğeyi bulup fileSub olup olmadığını kontrol et
+  let item = allContent.find(i => i.title === title);
+  if (!item) {
+    for (const parent of allContent) {
+      if (parent.collection) {
+        const nested = parent.collection.find(f => f.title === title);
+        if (nested) { item = nested; break; }
+      }
+      if (parent.episodes) {
+        const nested = parent.episodes.find(f => f.title === title);
+        if (nested) { item = nested; break; }
+      }
+    }
+  }
+  const fileSub = item ? (item.fileSub || '') : '';
+  
   let playerUrl = `player.html?file=${encodeURIComponent(file)}&title=${encodeURIComponent(title)}&poster=${encodeURIComponent(poster || '')}`;
   if (trailer) {
     playerUrl += `&trailer=${encodeURIComponent(trailer)}`;
