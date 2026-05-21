@@ -1059,7 +1059,7 @@ function updateOrbitalTransforms() {
     const rotX = -offset * 12; // Kartların üst üste binerken değil, yukarı/aşağı bakarken eğilmesi
     const rotY = 15 + absOffset * 8; // Kartların ekrana doğru değil, sola doğru bakması
     
-    item.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
+    item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
   });
 
   // Arka plan videosunu güncelle
