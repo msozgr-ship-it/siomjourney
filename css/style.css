@@ -280,6 +280,8 @@ body {
 /* FANTASTIC CARDS IMPROVED */
 .cf-item {
     position: absolute; left: 50%; top: 50%; transform-origin: center center;
+    margin-left: calc(var(--card-w) / -2);
+    margin-top: calc(var(--card-h) / -2);
     width: var(--card-w); height: var(--card-h); border-radius: 10px;
     transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     cursor: pointer; background: #000; border: 1.5px solid rgba(255,255,255,0.08);
