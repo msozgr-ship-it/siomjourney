@@ -567,7 +567,7 @@ const DB = {
           desc: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
           poster: 'assets/img/atatürk2.jpeg',
           trailer: 'https://youtu.be/xoOzqBkDVH4?si=OLYaki0935mRxSSm',
-          file: 'https://archive.org/embed/ataturk2_2024',
+          file: 'https://rumble.com/embed/v77zooy/?pub=4pj11k',
           isYoutube: false
         }
       ]
@@ -589,19 +589,19 @@ const DB = {
         {
           id: 'm9f1',
           epNum: 1,
-          title: 'Alvin ve Sincaplar: Yol Macerası',
-          desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
-          poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+          title: 'Alvin ve Sincaplar 1',
+          desc: 'Dünyanın en ünlü şarkıcı sincaplarının ilk efsanevi macerası.',
+          poster: 'assets/img/alvinvesincaplar1.avif',
           trailer: 'https://youtu.be/3M7R01bB9S8',
-          file: 'https://archive.org/embed/alvin-yol-macerasi',
+          file: '',
           isYoutube: false
         },
         {
           id: 'm9f2',
           epNum: 2,
           title: 'Alvin ve Sincaplar 2',
-          desc: 'Sincapların eğlence dolu maceraları devam ediyor.',
-          poster: 'assets/img/alvinvesincaplarmain.jpg',
+          desc: 'Sincapların eğlence dolu maceraları okul sıralarında devam ediyor.',
+          poster: 'assets/img/alvinvesincaplar2.avif',
           trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
           file: 'https://dai.ly/k5FWF0kR4YgXqqG6NQ6',
           isYoutube: false
@@ -611,9 +611,19 @@ const DB = {
           epNum: 3,
           title: 'Alvin ve Sincaplar 3: Eğlence Adası',
           desc: 'Sincaplar lüks bir gemi yolculuğunda adaya düşer ve macera başlar.',
-          poster: 'assets/img/alvinvesincaplarmain.jpg',
+          poster: 'assets/img/alvinvesincaplar3.avif',
           trailer: 'https://youtu.be/Bs9mPICV3-M?si=DLHf9bWEiP7aLms_',
           file: 'https://rumble.com/embed/v77zn12/?pub=4pj11k',
+          isYoutube: false
+        },
+        {
+          id: 'm9f4',
+          epNum: 4,
+          title: 'Alvin ve Sincaplar: Yol Macerası',
+          desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
+          poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+          trailer: 'https://youtu.be/3M7R01bB9S8',
+          file: 'https://archive.org/embed/alvin-yol-macerasi',
           isYoutube: false
         }
       ]
@@ -646,23 +656,23 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '9.5',
       highlights: 'Milli mücadelenin ateşi yanıyor. Bir ulusun küllerinden doğuş destanı.',
-      file: 'https://archive.org/embed/ataturk2_2024',
+      file: 'https://rumble.com/embed/v77zooy/?pub=4pj11k',
       isYoutube: false,
       showOnlyInOrbital: true
     },
     {
       id: 'm9f1-single',
-      title: 'Alvin ve Sincaplar: Yol Macerası',
-      searchTags: 'alvin ve sincaplar, alvin, simon, theodore, animasyon, komedi, müzikal',
-      desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
-      poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+      title: 'Alvin ve Sincaplar 1',
+      searchTags: 'alvin ve sincaplar 1, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Dünyanın en ünlü şarkıcı sincaplarının ilk efsanevi macerası.',
+      poster: 'assets/img/alvinvesincaplar1.avif',
       trailer: 'https://youtu.be/3M7R01bB9S8',
-      year: '2015',
+      year: '2007',
       match: '98%',
       meta: '4K Ultra HD',
       rating: '8.4',
-      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar maceraları.',
-      file: 'https://archive.org/embed/alvin-yol-macerasi',
+      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar macerasının başlangıcı.',
+      file: '',
       isYoutube: false,
       showOnlyInOrbital: true
     },
@@ -671,7 +681,7 @@ const DB = {
       title: 'Alvin ve Sincaplar 2',
       searchTags: 'alvin ve sincaplar 2, alvin, simon, theodore, animasyon, komedi, müzikal',
       desc: 'Sincapların eğlence dolu maceraları devam ediyor.',
-      poster: 'assets/img/alvinvesincaplarmain.jpg',
+      poster: 'assets/img/alvinvesincaplar2.avif',
       trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
       year: '2009',
       match: '98%',
@@ -687,7 +697,7 @@ const DB = {
       title: 'Alvin ve Sincaplar 3',
       searchTags: 'alvin ve sincaplar 3, alvin, simon, theodore, animasyon, komedi, müzikal, eğlence adası',
       desc: 'Sincaplar lüks bir gemi yolculuğunda adaya düşer ve macera başlar.',
-      poster: 'assets/img/alvinvesincaplarmain.jpg',
+      poster: 'assets/img/alvinvesincaplar3.avif',
       trailer: 'https://youtu.be/Bs9mPICV3-M?si=DLHf9bWEiP7aLms_',
       year: '2011',
       match: '98%',
@@ -695,6 +705,22 @@ const DB = {
       rating: '8.3',
       highlights: 'Adada mahsur kalan Sincaplar için devasa macera!',
       file: 'https://rumble.com/embed/v77zn12/?pub=4pj11k',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'm9f4-single',
+      title: 'Alvin ve Sincaplar: Yol Macerası',
+      searchTags: 'alvin ve sincaplar 4, yol macerası, alvin, simon, theodore, animasyon, komedi, müzikal',
+      desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
+      poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
+      trailer: 'https://youtu.be/3M7R01bB9S8',
+      year: '2015',
+      match: '98%',
+      meta: '4K Ultra HD',
+      rating: '8.4',
+      highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar yol macerası.',
+      file: 'https://archive.org/embed/alvin-yol-macerasi',
       isYoutube: false,
       showOnlyInOrbital: true
     },

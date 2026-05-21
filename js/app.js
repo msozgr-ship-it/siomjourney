@@ -780,9 +780,8 @@ function initRealVisitCounter() {
   fetch('https://api.counterapi.dev/v1/siomjourney/mainpage/up')
     .then(response => response.json())
     .then(data => {
-        // Profesyonel görünmesi için başlangıçta +12500 taban eklenmiştir, 
-        // ancak her yeni girişte sayı gerçek anlamda 1 artacaktır.
-        const realCount = data.count + 12500; 
+        // Gerçek sayaç 0'dan başlıyor
+        const realCount = data.count; 
         
         countElement.style.opacity = 0;
         setTimeout(() => {
@@ -792,6 +791,6 @@ function initRealVisitCounter() {
     })
     .catch(err => {
         console.error("Ziyaretçi sayacı yüklenemedi:", err);
-        countElement.innerText = "12.500+"; // Hata durumunda yedek (fallback) değer
+        countElement.innerText = "0"; // Hata durumunda yedek (fallback) değer
     });
 }
