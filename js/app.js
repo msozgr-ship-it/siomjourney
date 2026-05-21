@@ -161,11 +161,11 @@ function updateOrbitalTransforms() {
       }
     });
   } else {
-    // MASAÜSTÜ - PROFESYONEL SİNEMATİK DİKEY DOLAP (YANSIMA SIFIR)
-    const radiusY_vertical = 280;
-    const radiusZ = 300; // Çok güçlü derinlik ayrımı - arka kartlar fiziksel olarak geride
+    // MASAÜSTÜ - PROFESYONEL SİNEMATİK DİKEY DOLAP (ÜST ÜSTE BİNME ENGELLENDİ)
+    const radiusY_vertical = 650; // Kartların birbirinin içine girmemesi için devasa dikey yarıçap
+    const radiusZ = 500; // Güçlü 3D derinlik ayrımı
     const leftOffset = -680;
-    const curveX = 25;
+    const curveX = 60; // Yatayda kavis oluşturarak uzak kartları sola doğru açar
 
     calculatedAngles.forEach((data, i) => {
       const { item, relAngle } = data;
@@ -182,14 +182,14 @@ function updateOrbitalTransforms() {
       
       let scale;
       if (isCenter) {
-        scale = 1.20;
+        scale = 1.15;
       } else {
-        // Aktif olmayan kartları küçük tut - üst üste binme imkansız
-        scale = 0.30 + 0.35 * Math.pow(normCos, 2);
+        // Kartlar küçülerek üst üste binme ihtimalini ortadan kaldırır
+        scale = 0.35 + 0.35 * Math.pow(normCos, 2);
       }
       
-      const rotY = 15; 
-      const rotX = -sinVal * 8; 
+      const rotY = 12; 
+      const rotX = -sinVal * 15; 
       
       item.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), ${z}px) scale(${scale.toFixed(3)}) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg)`;
       
@@ -201,15 +201,15 @@ function updateOrbitalTransforms() {
         item.style.zIndex = "25000";
         item.style.pointerEvents = "auto";
       } else {
-        // cosVal < 0.50 → kartın yarısından fazlası arkada = tamamen gizle
-        if (cosVal < 0.50) {
+        // Sadece ön taraftaki en yakın kartları göster, diğerlerini gizle (üst üste binmeyi tamamen engeller)
+        if (cosVal < 0.65) {
           item.style.opacity = "0";
           item.style.visibility = "hidden";
           item.style.pointerEvents = "none";
         } else {
           item.style.visibility = "visible";
-          // Opaklık: sadece en yakın 2-3 kart görünür, geri kalanlar soluk
-          const cardOpacity = Math.max(0.25, (normCos - 0.5) * 2);
+          // Opaklık
+          const cardOpacity = Math.max(0.15, (normCos - 0.6) * 2.5);
           item.style.opacity = cardOpacity.toFixed(2);
           item.style.filter = `brightness(${(0.45 + 0.50 * normCos).toFixed(2)}) saturate(0.8)`;
         }
@@ -217,7 +217,7 @@ function updateOrbitalTransforms() {
         
         const zIndexBase = Math.round(19000 + cosVal * 1000);
         item.style.zIndex = zIndexBase;
-        item.style.pointerEvents = cosVal >= 0.50 ? "auto" : "none";
+        item.style.pointerEvents = cosVal >= 0.85 ? "auto" : "none";
       }
     });
 
