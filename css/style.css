@@ -1039,6 +1039,14 @@ body {
       font-size: 8px;
       padding: 4px 10px;
   }
+
+  /* Optimize Background Trailer Size for Mobile Portrait */
+  .hero-video-bg iframe, .hero-video-bg video {
+      min-height: 100vh;
+      min-width: 177.77vh; /* Minimum 16:9 ratio to cover the height */
+      width: auto;
+      height: auto;
+  }
   .cs-close {
       top: 15px;
       right: 15px;
