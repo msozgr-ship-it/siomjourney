@@ -1040,12 +1040,17 @@ body {
       padding: 4px 10px;
   }
 
-  /* Optimize Background Trailer Size for Mobile Portrait */
+  .hero-video-bg {
+      height: 70vh;
+      mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+  }
   .hero-video-bg iframe, .hero-video-bg video {
-      min-height: 100vh;
-      min-width: 177.77vh; /* Minimum 16:9 ratio to cover the height */
-      width: auto;
-      height: auto;
+      min-height: unset;
+      min-width: unset;
+      width: 150vw;
+      height: 84.37vw; /* 150vw * 9/16 */
+      top: 30%;
   }
   .cs-close {
       top: 15px;
