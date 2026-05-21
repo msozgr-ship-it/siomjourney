@@ -907,6 +907,7 @@ body {
     }
     .cs-action-row {
         width: 100%;
+        flex-direction: column;
     }
     .cs-action-btn {
         width: 100%; padding: 12px 20px; font-size: 12px;
@@ -960,6 +961,7 @@ body {
   }
   .giant-s-neon {
       font-size: 45vw;
+      left: 50%;
       transform: translate(-50%, -50%) translateZ(-350px);
   }
   .orbital-wrapper::after {

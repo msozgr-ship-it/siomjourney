@@ -380,6 +380,15 @@
             setIframe(`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&modestbranding=1&rel=0&vq=hd1080`, false);
             return;
         }
+        // OK.ru
+        if (currentFileUrl.includes('ok.ru')) {
+            let embedUrl = currentFileUrl;
+            if (!embedUrl.includes('autoplay')) {
+                embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+            }
+            setIframe(embedUrl, false);
+            return;
+        }
         // Rumble ve diğer iframe platformları
         if (currentFileUrl.includes('rumble.com')) {
             setIframe(currentFileUrl, false);
