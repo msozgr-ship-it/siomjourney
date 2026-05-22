@@ -411,6 +411,9 @@
         const v = document.getElementById('player-video');
         v.addEventListener('canplay', fadeOutLoader);
         if (onError) v.addEventListener('error', onError, { once: true });
+        
+        // Tarayıcı otomatik oynatma (autoplay) engeline takılırsa yükleniyorda kalmaması için 1.5 sn yedek zaman aşımı
+        setTimeout(fadeOutLoader, 1500);
     }
 
     /* ─── Film yükleyici (HD öncelikli, hızlı açılış) ─── */
