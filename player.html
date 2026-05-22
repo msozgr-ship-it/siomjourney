@@ -341,7 +341,7 @@
     }
 
     /* ─── HD kalite yardımcıları ─── */
-    const DM_HD = 'autoplay=1&quality=1080&queue-enable=false&queue-autoplay-next=false&ui-logo=false&ui-start-screen-info=0&ui-highlight=0';
+    const DM_HD = 'autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false';
     const YT_HD = 'autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&vq=hd2160&hd=1';
 
     function extractArchiveId(url) {
@@ -436,6 +436,16 @@
         }
         // Dailymotion → 1080p kalite
         if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly')) {
+            if (currentFileUrl.includes('dailymotion.com/embed/')) {
+                let finalUrl = currentFileUrl;
+                if (!finalUrl.includes('?')) {
+                    finalUrl += '?' + DM_HD;
+                } else if (!finalUrl.includes('autoplay=')) {
+                    finalUrl += '&' + DM_HD;
+                }
+                setIframe(finalUrl, false);
+                return;
+            }
             let dmId = '';
             if (currentFileUrl.includes('video/')) dmId = currentFileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
             else if (currentFileUrl.includes('dai.ly/')) dmId = currentFileUrl.split('dai.ly/')[1]?.split('?')[0];
