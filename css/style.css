@@ -970,14 +970,14 @@ body {
   .hero-spatial {
       height: 40vh;
       margin-top: 65px;
-      align-items: flex-start;
+      align-items: center;
       padding-left: 0;
   }
   .orbital-belt {
       transform: rotateX(45deg) translateY(70px);
-      justify-content: flex-start;
+      justify-content: center;
       padding-left: 0;
-      margin-left: -50px;
+      margin-left: 0;
   }
   .giant-s-neon {
       font-size: 45vw;
