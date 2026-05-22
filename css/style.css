@@ -254,6 +254,7 @@ body {
 
 /* THE ULTRA-PROFESSIONAL GEOMETRIC 3D NEON S EMBLEM */
 .giant-s-neon {
+    display: none !important;
     position: absolute; left: 20%; top: 50%; /* Tekerlekle hizalanması için sola kaydırıldı */
     transform: translate(-50%, -50%) translateZ(-600px);
     width: 32vw;
