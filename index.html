@@ -1407,10 +1407,18 @@ function renderOrbital() {
   if (!container) return;
   container.innerHTML = orbitalContent.map((item, index) => {
     const isColl = item.isCollection || item.episodes;
+    const viewCount = !isColl ? getMovieViews(item.id) : 0;
+    const viewsBadge = !isColl ? `
+      <div class="movie-view-badge" data-views-id="${item.id}">
+        <span class="view-dot"></span>
+        <span class="view-count-val">${viewCount.toLocaleString('tr-TR')}</span> İzlenme
+      </div>
+    ` : '';
     
     return `
       <div class="cf-item ${isColl ? 'collection-stack' : ''}" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
         <div class="neon-rim"></div>
+        ${viewsBadge}
         <img src="${item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
       </div>
     `;
@@ -1698,11 +1706,19 @@ function openDetails(id, isBack = false) {
   let subItems = item.episodes || item.collection || [];
   grid.innerHTML = subItems.map(sub => {
     const isColl = sub.isCollection || sub.episodes;
+    const viewCount = !isColl ? getMovieViews(sub.id) : 0;
+    const viewsBadge = !isColl ? `
+      <div class="movie-view-badge" data-views-id="${sub.id}">
+        <span class="view-dot"></span>
+        <span class="view-count-val">${viewCount.toLocaleString('tr-TR')}</span> İzlenme
+      </div>
+    ` : '';
     
     return `
       <div class="series-item" data-sub-id="${sub.id}" role="button" tabindex="0">
         <div class="card ${isColl ? 'collection-stack' : ''}">
           ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+          ${viewsBadge}
           <img src="${sub.poster || item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
         <h3>${sub.title}</h3>
