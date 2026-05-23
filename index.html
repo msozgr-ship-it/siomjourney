@@ -934,6 +934,22 @@ const DB = {
       highlights: "Sinema tarihimizin kaybolmuş ve gün yüzüne çıkmamış gizemli yapıtlarının izinde büyüleyici bir yolculuk.",
       isNew: true,
       isYoutube: false
+    },
+    {
+      id: "kpop-iblis-avilari-movie",
+      title: "K-Pop: İblis Avcıları",
+      poster: "assets/img/kpopiblisavıları.webp",
+      file: "COMING_SOON",
+      trailer: "https://youtu.be/7dJAYXlc__Y?si=fAgCLo4V9nh1LOpv",
+      searchTags: "kpop iblis avcıları, kpop, iblis, avcıları, demon hunters, animasyon, aksiyon, macera, 2026",
+      desc: "Müzik dünyasının parlayan yıldızları olan K-Pop grubu üyelerinin, sahne arkasında dünyayı tehdit eden kötü ruhlar ve iblislerle verdikleri amansız, fantastik ve yüksek enerjili mücadele.",
+      year: "2026",
+      match: "96%",
+      meta: "Full HD",
+      rating: "8.0",
+      highlights: "Renkli K-Pop ritimleri ile fantastik iblis avı aksiyonunun büyüleyici birleşimi.",
+      isNew: true,
+      isYoutube: false
     }
   ]
 };
@@ -1027,6 +1043,9 @@ function initApp() {
           }
           else if (sub.id === 'hayalet-filmler-movie' || title.includes('hayalet filmler')) {
             assignedKey = 'belgesel';
+          }
+          else if (sub.id === 'kpop-iblis-avilari-movie' || title.includes('kpop') || title.includes('iblis avcıları')) {
+            assignedKey = 'animasyon';
           }
           
           // Genel Kural Eşleşmeleri
