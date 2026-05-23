@@ -254,7 +254,12 @@
             <button class="lang-btn" id="btn-lang-sub" onclick="switchLanguage('sub')">💬 ALTYAZI</button>
         </div>
     </div>
-    <button class="player-close-btn" onclick="window.close()">✕ Kapat</button>
+    <div style="display: flex; gap: 15px; align-items: center;">
+        <button class="player-close-btn" id="btn-external-play" onclick="openExternal()" style="display: none; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #fff;">
+            🔗 Harici Kaynakta Aç
+        </button>
+        <button class="player-close-btn" onclick="window.close()">✕ Kapat</button>
+    </div>
 </header>
 
 <div class="player-canvas">
@@ -421,9 +426,11 @@
 
     function ensureVkHd(url) {
         if (!url.includes('vkvideo.ru') && !url.includes('vk.com')) return url;
-        if (/[?&]hd=3/.test(url)) return url;
-        if (/[?&]hd=[12]/.test(url)) return url.replace(/hd=[12]/, 'hd=3');
-        return url + (url.includes('?') ? '&' : '?') + 'hd=3';
+        // vkvideo.ru'yu daha hızlı ve engellenmemiş olan ana vk.com ile değiştir
+        let newUrl = url.replace('vkvideo.ru', 'vk.com');
+        if (/[?&]hd=2/.test(newUrl)) return newUrl;
+        if (/[?&]hd=[134]/.test(newUrl)) return newUrl.replace(/hd=[134]/, 'hd=2');
+        return newUrl + (newUrl.includes('?') ? '&' : '?') + 'hd=2';
     }
 
     function setNativeVideo(src, onError) {
