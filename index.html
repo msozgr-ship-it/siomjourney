@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.29">
+    <link rel="stylesheet" href="css/style.css?v=5.30">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -2061,64 +2061,57 @@ document.addEventListener('DOMContentLoaded', initApp);
 // ==========================================
 // KÜRESEL İZLENME SAYACI (GLOBAL MOVIE VIEW COUNTER)
 // ==========================================
-const COUNTER_NAMESPACE = 'siomjourney_movies';
+const IM_APP_KEY = "0y2l63w9";
+const IM_KEY_NAME = "movie_views";
+let globalMovieViews = {};
 
 function getMovieViews(id) {
   if (!id) return 0;
+  if (typeof globalMovieViews[id] === 'number') {
+    return globalMovieViews[id];
+  }
   const key = `siom_views_${id}`;
   let count = localStorage.getItem(key);
   return count === null ? 0 : parseInt(count, 10);
 }
 
-// Tüm filmlerin küresel izlenme sayılarını arka planda çek ve güncelle (Throttling'i önlemek için hafif gecikmeli)
+// Tüm filmlerin küresel izlenme sayılarını tek bir ağ isteğiyle çeker ve günceller
 function syncAllMovieViews() {
-  const playableItems = [];
-  allContent.forEach(item => {
-    if (item.isCollection) {
-      if (item.collection) {
-        item.collection.forEach(sub => playableItems.push(sub.id));
-      }
-    } else if (item.episodes) {
-      item.episodes.forEach(sub => playableItems.push(sub.id));
-    } else if (!item.isCategory && !item.showOnlyInOrbital) {
-      playableItems.push(item.id);
-    }
-  });
-
-  const uniqueIds = [...new Set(playableItems.filter(Boolean))];
-
-  uniqueIds.forEach((id, index) => {
-    setTimeout(() => {
-      fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${id}`)
-        .then(res => {
-          if (res.status === 404) {
-            // Henüz sayaç oluşturulmamışsa 0 olarak başlat
-            return fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${id}/set?count=0`).then(r => r.json());
-          }
-          return res.json();
-        })
-        .then(data => {
-          if (data && typeof data.count === 'number') {
-            const oldViews = getMovieViews(id);
-            const newViews = data.count;
-            localStorage.setItem(`siom_views_${id}`, newViews.toString());
+  fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/${IM_APP_KEY}/${IM_KEY_NAME}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data) {
+        try {
+          const parsed = typeof data === 'object' ? data : JSON.parse(data);
+          if (parsed && typeof parsed === 'object') {
+            globalMovieViews = parsed;
+            let needsRender = false;
             
-            const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
-            badges.forEach(badge => {
-              badge.innerText = newViews.toLocaleString('tr-TR');
+            Object.keys(parsed).forEach(id => {
+              const oldViews = getMovieViews(id);
+              const newViews = parsed[id];
+              localStorage.setItem(`siom_views_${id}`, newViews.toString());
+              
+              if (newViews !== oldViews) {
+                needsRender = true;
+              }
+              
+              const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
+              badges.forEach(badge => {
+                badge.innerText = newViews.toLocaleString('tr-TR');
+              });
             });
-
-            // Eğer izlenme sayısı değiştiyse ve kütüphane render edilmişse sıralamayı güncelle
-            const input = document.getElementById('search-input');
-            const isSearching = input && input.value.trim().length > 0;
-            if (newViews !== oldViews && !isSearching) {
+            
+            if (needsRender) {
               renderContent();
             }
           }
-        })
-        .catch(err => console.warn(`Global views sync error for ${id}:`, err));
-    }, index * 120); // rate limit engellemek için 120ms aralıklı
-  });
+        } catch (e) {
+          console.error("JSON parsing error for views:", e);
+        }
+      }
+    })
+    .catch(err => console.warn("Global views sync error:", err));
 }
 
 function incrementMovieViews(id) {
@@ -2126,8 +2119,9 @@ function incrementMovieViews(id) {
   const localKey = `siom_views_${id}`;
   let count = getMovieViews(id);
   
-  // Yerel olarak anında artır (anlık tepki için)
+  // Yerel anlık görsel güncelleme (sıfır gecikmeli reaksiyon)
   count += 1;
+  globalMovieViews[id] = count;
   localStorage.setItem(localKey, count.toString());
   
   const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
@@ -2135,24 +2129,40 @@ function incrementMovieViews(id) {
     badge.innerText = count.toLocaleString('tr-TR');
   });
 
-  // Küresel olarak artır
-  fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${id}/up`)
+  const input = document.getElementById('search-input');
+  if (!input || input.value.trim().length === 0) {
+    renderContent();
+  }
+
+  // Küresel veritabanını oku, değeri güvenli şekilde birleştir (merge) ve geri yaz
+  fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/${IM_APP_KEY}/${IM_KEY_NAME}`)
     .then(res => res.json())
     .then(data => {
-      if (data && typeof data.count === 'number') {
-        localStorage.setItem(localKey, data.count.toString());
-        badges.forEach(badge => {
-          badge.innerText = data.count.toLocaleString('tr-TR');
-        });
-        
-        // Sıralamayı güncelle
-        const input = document.getElementById('search-input');
-        if (!input || input.value.trim().length === 0) {
-          renderContent();
-        }
+      let dbViews = {};
+      if (data) {
+        try {
+          dbViews = typeof data === 'object' ? data : JSON.parse(data);
+        } catch (e) {}
       }
+      
+      // İzleme değerini küresel veri üstünden artır
+      dbViews[id] = (dbViews[id] || 0) + 1;
+      globalMovieViews[id] = dbViews[id];
+      localStorage.setItem(localKey, dbViews[id].toString());
+      
+      const viewsString = JSON.stringify(dbViews);
+      fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${IM_APP_KEY}/${IM_KEY_NAME}/${encodeURIComponent(viewsString)}`, {
+        method: 'POST',
+        headers: { 'Content-Length': '0' }
+      })
+      .then(res => res.json())
+      .then(ok => {
+        if (ok) {
+          syncAllMovieViews();
+        }
+      });
     })
-    .catch(err => console.error(`Global view increment error for ${id}:`, err));
+    .catch(err => console.error("Global increment error:", err));
 }
 
 // ==========================================
