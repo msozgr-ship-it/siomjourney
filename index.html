@@ -1411,7 +1411,7 @@ function renderOrbital() {
     return `
       <div class="cf-item ${isColl ? 'collection-stack' : ''}" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
         <div class="neon-rim"></div>
-        <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+        <img src="${item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
       </div>
     `;
   }).join('');
@@ -1428,15 +1428,12 @@ function renderContent() {
   // Kart HTML oluşturucu yardımcı fonksiyon
   const makeCardHtml = (item) => {
     const isColl = item.isCollection || item.episodes;
-    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
-    const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
     
     return `
       <div class="card-wrapper ${isColl ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
         <div class="card">
           ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
-          ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
-          <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+          <img src="${item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
       </div>
     `;
@@ -1447,7 +1444,7 @@ function renderContent() {
     return `
       <div class="card-wrapper category-card" onclick="handleItemClick('${cat.id}')">
         <div class="card">
-          <img src="${cat.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+          <img src="${cat.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
           <div class="category-overlay-title">${cat.title}</div>
         </div>
       </div>
@@ -1691,15 +1688,12 @@ function openDetails(id, isBack = false) {
   let subItems = item.episodes || item.collection || [];
   grid.innerHTML = subItems.map(sub => {
     const isColl = sub.isCollection || sub.episodes;
-    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
-    const isUpcoming = !sub.file || sub.file.includes('ID') || sub.file.includes('coming') || sub.file.includes('COMING');
     
     return `
       <div class="series-item" data-sub-id="${sub.id}" role="button" tabindex="0">
         <div class="card ${isColl ? 'collection-stack' : ''}">
           ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
-          ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
-          <img src="${sub.poster || item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+          <img src="${sub.poster || item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
         <h3>${sub.title}</h3>
       </div>
