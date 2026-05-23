@@ -1018,6 +1018,22 @@ const DB = {
       file: 'https://vkvideo.ru/video_ext.php?oid=-238936467&id=456239024&hash=c63b861c24fd0fc8&hd=3',
       isYoutube: false,
       showOnlyInOrbital: true
+    },
+    {
+      id: 'sadece-sen-movie',
+      title: 'Sadece Sen',
+      poster: 'assets/img/sadecesen.webp',
+      file: 'COMING_SOON',
+      trailer: 'https://youtu.be/4z3noz0es2c?si=3KjviCDk2alBK2rh',
+      searchTags: 'sadece sen, sadece, sen, türk filmi, yerli sinema, aşk, dram, romantik, belçim bilgin, ibrahim çelikkol, 2014',
+      desc: 'Eski bir boksör ile görme engelli bir kadının aşkını ve bu aşk uğruna boksörün hayatını tehlikeye atmasını anlatan duygu dolu, dokunaklı bir Türk aşk dramı.',
+      year: '2014',
+      match: '98%',
+      meta: 'Full HD',
+      rating: '7.2',
+      highlights: 'Görme engelli bir kadın ve onun için hayatını tehlikeye atan eski bir boksörün unutulmaz aşk hikayesi.',
+      isNew: true,
+      isYoutube: false
     }
   ]
 };
@@ -1115,6 +1131,9 @@ function initApp() {
           }
           else if (sub.id === 'kpop-iblis-avilari-movie' || title.includes('kpop') || title.includes('iblis avcıları')) {
             assignedKey = 'animasyon';
+          }
+          else if (sub.id === 'sadece-sen-movie' || title.includes('sadece sen')) {
+            assignedKey = 'turk-filmleri';
           }
           else if (sub.id && (sub.id.includes('dag') || sub.id.includes('dağ'))) {
             assignedKey = 'turk-filmleri';
@@ -2102,6 +2121,8 @@ const DEFAULTS = {
   "raya-ve-son-ejderha-movie": 0,
   "hayalet-filmler-movie": 0,
   "kpop-iblis-avilari-movie": 0,
+  "sadece-sen-movie": 0,
+  "sadece-sen-single": 0,
   "dag1-single": 0,
   "dag2-single": 0,
   "s1e1": 0,
