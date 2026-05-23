@@ -975,7 +975,7 @@ body {
       padding-left: 0;
   }
   .orbital-belt {
-      transform: rotateX(45deg) translateY(-15px);
+      transform: rotateX(45deg) translateY(-30px);
       justify-content: center;
       padding-left: 0;
       margin-left: 0;
@@ -1179,8 +1179,8 @@ body {
         margin-bottom: 30px;
     }
     .category-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
     }
     .category-overlay-title {
         font-size: 9px;
