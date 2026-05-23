@@ -924,31 +924,45 @@ const DB = {
 const CATEGORIES = [
   {
     id: 'cat-animasyon',
-    title: 'Animasyon Dünyası',
-    poster: 'assets/img/zootopia_main.jpg.jpg',
-    desc: 'En sevilen, ödüllü animasyon ve aile filmleri bir arada.',
-    filter: (item) => item.searchTags && (item.searchTags.includes('animasyon') || item.searchTags.includes('sincap') || item.searchTags.includes('karınca') || item.searchTags.includes('mario') || item.searchTags.includes('ejderha') || item.searchTags.includes('coco') || item.searchTags.includes('saftirik'))
+    title: 'Animasyon',
+    poster: 'assets/img/animasyondünyası.png',
+    desc: 'En sevilen, ödüllü animasyon ve aile filmleri.',
+    key: 'animasyon'
   },
   {
-    id: 'cat-aksiyon-macera',
-    title: 'Aksiyon & Macera',
-    poster: 'assets/img/dayımain.jpg',
-    desc: 'Nefes kesen aksiyon sahneleri ve destansı maceralar.',
-    filter: (item) => item.searchTags && (item.searchTags.includes('aksiyon') || item.searchTags.includes('macera') || item.searchTags.includes('avcı') || item.searchTags.includes('atatürk') || item.searchTags.includes('dayı') || item.searchTags.includes('yarış'))
+    id: 'cat-turk-filmleri',
+    title: 'Türk Filmleri',
+    poster: 'assets/img/türkfilmleri.png',
+    desc: 'Yerli sinemanın en seçkin ve ödüllü başyapıtları.',
+    key: 'turk-filmleri'
   },
   {
-    id: 'cat-dram-tarih',
-    title: 'Dram & Tarih / Biyografi',
-    poster: 'assets/img/atatürkmain.jpg',
-    desc: 'Tarihe yön veren karakterler ve duygusal derinliğe sahip dramatik yapıtlar.',
-    filter: (item) => item.searchTags && (item.searchTags.includes('tarih') || item.searchTags.includes('biyografi') || item.searchTags.includes('dram') || item.searchTags.includes('atatürk') || item.searchTags.includes('dayı'))
+    id: 'cat-belgesel',
+    title: 'Belgesel',
+    poster: 'assets/img/belgesel.png',
+    desc: 'Gerçek hayattan ilham alan, ufuk açıcı hikayeler.',
+    key: 'belgesel'
   },
   {
-    id: 'cat-gizem-gerilim',
-    title: 'Gizem & Gerilim',
-    poster: 'assets/img/thesleeper.jpg',
-    desc: 'Gizem dolu olaylar, sürükleyici gerilim ve karanlık sırlar.',
-    filter: (item) => item.searchTags && (item.searchTags.includes('gerilim') || item.searchTags.includes('korku') || item.searchTags.includes('gizem') || item.searchTags.includes('sleeper'))
+    id: 'cat-gerilim-korku',
+    title: 'Gerilim - Korku',
+    poster: 'assets/img/gerilimkorku.png',
+    desc: 'Adrenalin dolu anlar, karanlık sırlar ve tüyler ürpertici gizemler.',
+    key: 'gerilim-korku'
+  },
+  {
+    id: 'cat-fantastik-bilim-kurgu',
+    title: 'Fantastik - Bilim Kurgu',
+    poster: 'assets/img/fantastikbilimkurgu.png',
+    desc: 'Hayal gücünün sınırlarını zorlayan olağanüstü dünyalar ve gelecek vizyonları.',
+    key: 'fantastik-bilim-kurgu'
+  },
+  {
+    id: 'cat-aksiyon',
+    title: 'Aksiyon',
+    poster: 'assets/img/aksiyon.png',
+    desc: 'Nefes kesici dövüş sahneleri, hızlı kovalamacalar ve yüksek tempolu maceralar.',
+    key: 'aksiyon'
   }
 ];
 
@@ -969,22 +983,55 @@ function initApp() {
     if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
     
-    // Dinamik Kategori Oluşturucu
+    // Dinamik Kategori Oluşturucu (Karşılıklı Özel - Mutually Exclusive)
     categories = CATEGORIES.map(cat => {
       let matches = [];
       allContent.forEach(item => {
+        const processItem = (sub, parent) => {
+          const tags = ((sub.searchTags || '') + ' ' + (parent ? (parent.searchTags || '') : '')).toLowerCase();
+          const title = ((sub.title || '') + ' ' + (parent ? (parent.title || '') : '')).toLowerCase();
+          
+          let assignedKey = 'aksiyon';
+          
+          // 1. ANİMASYON
+          if (tags.includes('animasyon') || tags.includes('sincap') || tags.includes('karınca') || tags.includes('mario') || tags.includes('ejderha') || tags.includes('coco') || tags.includes('saftirik') || title.includes('alvin') || title.includes('ejderha') || title.includes('zooto') || title.includes('saftirik') || title.includes('coco') || title.includes('karınca') || title.includes('raya') || title.includes('elio') || title.includes('swapped') || title.includes('stitch') || title.includes('mario') || title.includes('arabalar') || title.includes('ant bully') || title.includes('anime')) {
+            assignedKey = 'animasyon';
+          }
+          // 2. GERİLİM-KORKU
+          else if (tags.includes('gerilim') || tags.includes('korku') || tags.includes('gizem') || title.includes('sleeper')) {
+            assignedKey = 'gerilim-korku';
+          }
+          // 3. TÜRK FİLMLERİ
+          else if (tags.includes('türk filmi') || tags.includes('türk') || tags.includes('dayı') || tags.includes('atatürk') || title.includes('atatürk') || title.includes('dayı') || title.includes('yanyana') || title.includes('rüyada')) {
+            assignedKey = 'turk-filmleri';
+          }
+          // 4. FANTASTİK-BİLİM KURGU
+          else if (tags.includes('fantastik') || tags.includes('bilim kurgu') || tags.includes('uzay') || tags.includes('vampir') || title.includes('vampire') || title.includes('avatar') || title.includes('mini') || title.includes('journey')) {
+            assignedKey = 'fantastik-bilim-kurgu';
+          }
+          // 5. BELGESEL
+          else if (tags.includes('belgesel') || title.includes('belgesel')) {
+            assignedKey = 'belgesel';
+          }
+          // 6. AKSİYON (Varsayılan ve geri kalanlar)
+          else {
+            assignedKey = 'aksiyon';
+          }
+          
+          if (assignedKey === cat.key) {
+            matches.push(sub);
+          }
+        };
+
         if (item.collection) {
-          item.collection.forEach(sub => {
-            if (cat.filter(sub)) matches.push(sub);
-          });
+          item.collection.forEach(sub => processItem(sub, item));
         } else if (item.episodes) {
-          item.episodes.forEach(sub => {
-            if (cat.filter(sub)) matches.push(sub);
-          });
+          item.episodes.forEach(sub => processItem(sub, item));
         } else {
-          if (cat.filter(item)) matches.push(item);
+          processItem(item, null);
         }
       });
+      
       // Remove duplicates
       matches = matches.filter((val, idx, self) => self.findIndex(t => t.id === val.id) === idx);
       
