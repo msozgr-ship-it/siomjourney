@@ -950,6 +950,74 @@ const DB = {
       highlights: "Renkli K-Pop ritimleri ile fantastik iblis avı aksiyonunun büyüleyici birleşimi.",
       isNew: true,
       isYoutube: false
+    },
+    {
+      id: 'dag-serisi',
+      title: 'Dağ Serisi',
+      searchTags: 'dağ serisi, dağ 1, dağ 2, dag, caglar ertugrul, ufuk bayraktar, asker, aksiyon, dram, türk filmi, koleksiyon',
+      desc: 'Türk sinemasının en önemli askeri aksiyon ve dostluk destanı. Fırtına Getiren kahramanlarının epik hikayesi.',
+      poster: 'assets/img/dağmain.png',
+      trailer: 'https://youtu.be/bax_z2dhdfI?si=7dhFASpYxzj86Q93',
+      isCollection: true,
+      year: 'Koleksiyon',
+      match: '99%',
+      meta: '2 Film',
+      rating: '9.6',
+      highlights: 'Oğuz ve Bekir\'in omuz omuza verdiği destansı mücadele ve efsanevi askeri kardeşlik.',
+      collection: [
+        {
+          id: 'dag1-movie',
+          epNum: 1,
+          title: 'Dağ (2012)',
+          desc: 'İki askerin, teröristlerin pususuna düştükten sonra hayatta kalmak için omuz omuza verdikleri destansı mücadele.',
+          poster: 'assets/img/dağ.avif',
+          trailer: 'https://youtu.be/zJ5T87VH2WU?si=ZQY8DlG9TtxYlbbz',
+          file: 'COMING_SOON',
+          isYoutube: false
+        },
+        {
+          id: 'dag2-movie',
+          epNum: 2,
+          title: 'Dağ II (2016)',
+          desc: 'Özel Kuvvetler Timi olan Fırtına Getiren\'in, sınır ötesi gizli bir operasyonla esir bir gazeteciyi kurtarma yolculuğu.',
+          poster: 'assets/img/dağ2.jpg',
+          trailer: 'https://youtu.be/bax_z2dhdfI?si=7dhFASpYxzj86Q93',
+          file: 'COMING_SOON',
+          isYoutube: false
+        }
+      ]
+    },
+    {
+      id: 'dag1-single',
+      title: 'Dağ (2012)',
+      searchTags: 'dağ serisi, dağ 1, dag, asker, aksiyon, dram, türk filmi',
+      desc: 'İki askerin, teröristlerin pususuna düştükten sonra hayatta kalmak için omuz omuza verdikleri destansı mücadele.',
+      poster: 'assets/img/dağ.avif',
+      trailer: 'https://youtu.be/zJ5T87VH2WU?si=ZQY8DlG9TtxYlbbz',
+      year: '2012',
+      match: '99%',
+      meta: 'Full HD',
+      rating: '8.4',
+      highlights: 'Oğuz ve Bekir\'in hayatta kalmak için omuz omuza verdiği efsanevi mücadele.',
+      file: 'COMING_SOON',
+      isYoutube: false,
+      showOnlyInOrbital: true
+    },
+    {
+      id: 'dag2-single',
+      title: 'Dağ II (2016)',
+      searchTags: 'dağ serisi, dağ 2, dag, asker, aksiyon, dram, türk filmi',
+      desc: 'Özel Kuvvetler Timi olan Fırtına Getiren\'in, sınır ötesi gizli bir operasyonla esir bir gazeteciyi kurtarma yolculuğu.',
+      poster: 'assets/img/dağ2.jpg',
+      trailer: 'https://youtu.be/bax_z2dhdfI?si=7dhFASpYxzj86Q93',
+      year: '2016',
+      match: '99%',
+      meta: 'Full HD',
+      rating: '9.6',
+      highlights: 'Fırtına Getiren Timi\'nin sınır ötesindeki nefes kesen özel operasyonu.',
+      file: 'COMING_SOON',
+      isYoutube: false,
+      showOnlyInOrbital: true
     }
   ]
 };
@@ -1048,6 +1116,9 @@ function initApp() {
           else if (sub.id === 'kpop-iblis-avilari-movie' || title.includes('kpop') || title.includes('iblis avcıları')) {
             assignedKey = 'animasyon';
           }
+          else if (sub.id && (sub.id.includes('dag') || sub.id.includes('dağ'))) {
+            assignedKey = 'turk-filmleri';
+          }
           
           // Genel Kural Eşleşmeleri
           if (!assignedKey) {
@@ -1104,7 +1175,7 @@ function initApp() {
     allContent = [...allContent, ...categories];
     
     // DÖNME DOLAPTA ARTIK SADECE TEKLİ FİMLERİN AFİŞLERİ OLACAK (Seriler ve koleksiyonlar elendi!)
-    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper', 'raya-ve-son-ejderha-movie'];
+    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper', 'raya-ve-son-ejderha-movie', 'dag1-single', 'dag2-single'];
     orbitalContent = allContent.filter(item => orbitalAllowedIds.includes(item.id)); 
     filteredContent = [...allContent];
 
