@@ -1247,16 +1247,25 @@ function updateOrbitalTransforms() {
     if (scale < 0) scale = 0;
     
     const isCenter = (i === closestIndex);
+    const img = item.querySelector('img');
     if (isCenter) {
         scale = isMobile ? 1.15 : 1.35;
         item.style.opacity = "1";
-        item.style.filter = "none"; // Kalite kaybını önlemek için filtreleri kaldırdık
+        item.style.filter = "none";
+        if (img) {
+            img.style.opacity = "1";
+            img.style.filter = "none";
+        }
         item.style.zIndex = "25000";
         item.style.pointerEvents = "auto";
         item.classList.add('active');
     } else {
-        item.style.opacity = (1 - absOffset * 0.35).toFixed(2);
-        item.style.filter = `brightness(${(0.6 - absOffset * 0.1).toFixed(2)}) contrast(0.9) saturate(0.8)`;
+        item.style.opacity = "1"; // Container remains fully opaque so the view badge is crystal clear and permanent!
+        item.style.filter = "none";
+        if (img) {
+            img.style.opacity = (1 - absOffset * 0.35).toFixed(2);
+            img.style.filter = `brightness(${(0.6 - absOffset * 0.1).toFixed(2)}) contrast(0.9) saturate(0.8)`;
+        }
         item.style.zIndex = Math.round(20000 - absOffset * 1000);
         item.style.pointerEvents = "auto"; // Arka afişlerin seçilebilmesi için tıklamayı aktif ettik
         item.classList.remove('active');

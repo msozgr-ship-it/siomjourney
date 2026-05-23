@@ -495,7 +495,9 @@ body {
     letter-spacing: 1.5px; text-transform: uppercase;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateZ(10px); /* Ensures 3D layering is always on top of poster images */
 }
+
 .movie-view-badge .view-dot {
     width: 5px; height: 5px; border-radius: 50%;
     background: #00ff66; box-shadow: 0 0 8px #00ff66;
