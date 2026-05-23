@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.31">
+    <link rel="stylesheet" href="css/style.css?v=5.32">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -2106,6 +2106,29 @@ const DEFAULTS = {
   "dag2-single": 9680
 };
 
+function encodeSafeBase64(obj) {
+  const str = JSON.stringify(obj);
+  return btoa(unescape(encodeURIComponent(str)))
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '');
+}
+
+function decodeSafeBase64(safeBase64) {
+  if (!safeBase64) return {};
+  let base64 = safeBase64.replace(/-/g, '+').replace(/_/g, '/');
+  while (base64.length % 4) {
+    base64 += '=';
+  }
+  try {
+    const decodedStr = decodeURIComponent(escape(atob(base64)));
+    return JSON.parse(decodedStr);
+  } catch (e) {
+    console.error("decodeSafeBase64 decoding/parsing error:", e);
+    return {};
+  }
+}
+
 function getMovieViews(id) {
   if (!id) return 0;
   if (typeof globalMovieViews[id] === 'number') {
@@ -2121,9 +2144,14 @@ function syncAllMovieViews() {
   fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/${IM_APP_KEY}/${IM_KEY_NAME}`)
     .then(res => res.json())
     .then(data => {
-      if (data) {
+      if (data && data !== '""' && data !== 'null') {
         try {
-          const parsed = typeof data === 'object' ? data : JSON.parse(data);
+          let rawStr = data;
+          if (typeof rawStr === 'string' && rawStr.startsWith('"') && rawStr.endsWith('"')) {
+            rawStr = JSON.parse(rawStr);
+          }
+          
+          const parsed = decodeSafeBase64(rawStr);
           if (parsed && typeof parsed === 'object') {
             globalMovieViews = parsed;
             let needsRender = false;
@@ -2180,9 +2208,13 @@ function incrementMovieViews(id) {
     .then(res => res.json())
     .then(data => {
       let dbViews = {};
-      if (data) {
+      if (data && data !== '""' && data !== 'null') {
         try {
-          dbViews = typeof data === 'object' ? data : JSON.parse(data);
+          let rawStr = data;
+          if (typeof rawStr === 'string' && rawStr.startsWith('"') && rawStr.endsWith('"')) {
+            rawStr = JSON.parse(rawStr);
+          }
+          dbViews = decodeSafeBase64(rawStr) || {};
         } catch (e) {}
       }
       
@@ -2191,8 +2223,8 @@ function incrementMovieViews(id) {
       globalMovieViews[id] = dbViews[id];
       localStorage.setItem(localKey, dbViews[id].toString());
       
-      const viewsString = JSON.stringify(dbViews);
-      fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${IM_APP_KEY}/${IM_KEY_NAME}/${encodeURIComponent(viewsString)}`, {
+      const safePayload = encodeSafeBase64(dbViews);
+      fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${IM_APP_KEY}/${IM_KEY_NAME}/${safePayload}`, {
         method: 'POST',
         headers: { 'Content-Length': '0' }
       })
