@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.32">
+    <link rel="stylesheet" href="css/style.css?v=5.33">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -2225,12 +2225,11 @@ function incrementMovieViews(id) {
       
       const safePayload = encodeSafeBase64(dbViews);
       fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${IM_APP_KEY}/${IM_KEY_NAME}/${safePayload}`, {
-        method: 'POST',
-        headers: { 'Content-Length': '0' }
+        method: 'POST'
       })
-      .then(res => res.json())
-      .then(ok => {
-        if (ok) {
+      .then(res => res.text())
+      .then(text => {
+        if (text && text.toLowerCase().includes('true')) {
           syncAllMovieViews();
         }
       });
