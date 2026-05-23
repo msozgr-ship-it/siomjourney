@@ -220,9 +220,231 @@
             .player-close-btn { padding: 8px 16px; font-size: 11px; }
             .toggle-btn { padding: 5px 14px; font-size: 10px; }
         }
+
+        /* ── Sinematik Ambilight Frame ── */
+        .player-container {
+            transition: box-shadow 1.5s ease;
+        }
+        .player-container.ambilight {
+            box-shadow: 0 0 100px rgba(255, 0, 85, 0.22), 0 0 40px rgba(255, 85, 0, 0.12);
+        }
+
+        /* ── Premium Details Dock (frosted glass) ── */
+        .details-dock {
+            position: absolute;
+            bottom: 40px;
+            left: 44px;
+            max-width: 480px;
+            background: rgba(5, 5, 8, 0.58);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            z-index: 100;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.01) inset;
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: auto;
+        }
+        .details-dock.hidden {
+            opacity: 0;
+            transform: translateY(22px);
+            pointer-events: none;
+        }
+        .dock-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .dock-match {
+            color: #00ff66;
+            text-shadow: 0 0 10px rgba(0,255,102,0.3);
+        }
+        .dock-year {
+            color: rgba(255,255,255,0.7);
+        }
+        .dock-quality {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            font-weight: 800;
+            color: #ffaa00;
+        }
+        .dock-rating-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #ffdd00;
+        }
+        .dock-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            font-weight: 400;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+        .dock-highlights {
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(90deg, rgba(255, 0, 85, 0.08) 0%, rgba(255, 85, 0, 0.04) 100%);
+            border-left: 3px solid #ff0055;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* ── Ticket Intro Overlay ── */
+        .ticket-overlay {
+            position: fixed; inset: 0;
+            background: #050508;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000;
+            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), visibility 1s;
+        }
+        .ticket-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .ticket-card {
+            display: flex;
+            width: 620px; height: 310px;
+            background: rgba(18, 18, 26, 0.72);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.9), 0 0 50px rgba(255,215,0,0.06);
+            transform: scale(0.92);
+            opacity: 0;
+            animation: ticketEntrance 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.1s;
+            position: relative;
+        }
+        @keyframes ticketEntrance {
+            to { transform: scale(1); opacity: 1; }
+        }
+        .ticket-card::before, .ticket-card::after {
+            content: '';
+            position: absolute;
+            width: 32px; height: 32px;
+            background: #050508;
+            border-radius: 50%;
+            left: 184px;
+            z-index: 10;
+            border: 1px solid rgba(255, 215, 0, 0.25);
+        }
+        .ticket-card::before { top: -16px; box-shadow: 0 5px 10px rgba(0,0,0,0.5) inset; }
+        .ticket-card::after { bottom: -16px; box-shadow: 0 -5px 10px rgba(0,0,0,0.5) inset; }
+        
+        .ticket-left {
+            width: 200px; height: 100%;
+            border-right: 1px dashed rgba(255, 215, 0, 0.25);
+            position: relative;
+        }
+        .ticket-poster {
+            width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+        }
+        .ticket-right {
+            flex: 1;
+            padding: 32px 36px;
+            display: flex; flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        .ticket-badge {
+            font-size: 10px; font-weight: 800; letter-spacing: 2px;
+            color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.3);
+            text-transform: uppercase;
+        }
+        .ticket-title-display {
+            font-size: 28px; font-weight: 900;
+            line-height: 1.2;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #fff 40%, #ffd700 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .ticket-meta-row {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6);
+            margin-top: 8px;
+        }
+        .ticket-dot {
+            width: 4px; height: 4px; background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+        }
+        .ticket-quality-badge {
+            background: rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            padding: 1px 6px; border-radius: 4px;
+            color: #ffd700; font-size: 10px; font-weight: 800;
+        }
+        .ticket-footer {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-top: auto;
+        }
+        .ticket-barcode {
+            font-family: monospace; font-size: 13px;
+            color: rgba(255,255,255,0.25); letter-spacing: 1px;
+        }
+        .ticket-logo {
+            font-size: 11px; font-weight: 900; letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.35);
+        }
+
+        @media (max-width: 768px) {
+            .details-dock {
+                left: 20px; bottom: 20px; max-width: calc(100% - 40px);
+                padding: 16px;
+            }
+            .ticket-card {
+                width: 90%; height: auto; flex-direction: column;
+            }
+            .ticket-left {
+                width: 100%; height: 160px; border-right: none;
+                border-bottom: 1px dashed rgba(255, 215, 0, 0.25);
+            }
+            .ticket-card::before, .ticket-card::after { display: none; }
+        }
     </style>
 </head>
 <body>
+
+<!-- ── Premium Ticket Intro Overlay ── -->
+<div class="ticket-overlay" id="ticket-overlay">
+    <div class="ticket-card">
+        <div class="ticket-left">
+            <div class="ticket-poster" id="ticket-poster"></div>
+        </div>
+        <div class="ticket-right">
+            <div>
+                <div class="ticket-badge">VIP GİRİŞ BİLETİ</div>
+                <div class="ticket-title-display" id="ticket-title-display">Yükleniyor...</div>
+                <div class="ticket-meta-row">
+                    <span id="ticket-year">2024</span>
+                    <span class="ticket-dot"></span>
+                    <span class="ticket-quality-badge" id="ticket-quality">4K HDR</span>
+                </div>
+            </div>
+            <div class="ticket-footer">
+                <div class="ticket-barcode">||||| | |||| ||| | |||</div>
+                <div class="ticket-logo">SIOMCINEMA</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="player-backdrop" id="player-bg"></div>
 <div class="player-overlay"></div>
@@ -250,15 +472,24 @@
         </div>
     </div>
     <div style="display: flex; gap: 15px; align-items: center;">
-        <button class="player-close-btn" id="btn-external-play" onclick="openExternal()" style="display: none; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #fff;">
-            🔗 Harici Kaynakta Aç
-        </button>
         <button class="player-close-btn" onclick="window.close()">✕ Kapat</button>
     </div>
 </header>
 
 <div class="player-canvas">
     <div class="player-container" id="video-container"></div>
+</div>
+
+<!-- ── Frosted Glass Details Dock ── -->
+<div class="details-dock" id="details-dock" style="display: none;">
+    <div class="dock-meta-row">
+        <span class="dock-match" id="dock-match">98% Eşleşme</span>
+        <span class="dock-year" id="dock-year">2024</span>
+        <span class="dock-quality" id="dock-quality">Full HD</span>
+        <span class="dock-rating-badge">⭐ <span id="dock-rating">8.5</span></span>
+    </div>
+    <p class="dock-desc" id="dock-desc">Yükleniyor...</p>
+    <div class="dock-highlights" id="dock-highlights">✨ highlights</div>
 </div>
 
 <script>
@@ -269,6 +500,12 @@
     const trailerUrl = params.get('trailer') || '';
     const movieTitle = params.get('title')   || 'Sinematik Deneyim';
     const moviePoster= params.get('poster')  || '';
+    const desc       = params.get('desc')       || '';
+    const year       = params.get('year')       || '';
+    const rating     = params.get('rating')     || '';
+    const match      = params.get('match')      || '';
+    const meta       = params.get('meta')       || '';
+    const highlights = params.get('highlights') || '';
 
     let currentMode = 'movie'; // 'movie' | 'trailer'
     let currentLang = 'dub';   // 'dub' | 'sub'
@@ -276,9 +513,48 @@
     /* ─── UI kurulumu ─── */
     document.getElementById('player-title').textContent = movieTitle;
 
+    // Golden Ticket bindings
+    document.getElementById('ticket-title-display').textContent = movieTitle;
+    document.getElementById('ticket-year').textContent = year || '2025';
+    document.getElementById('ticket-quality').textContent = meta || 'Full HD';
+
     if (moviePoster && moviePoster !== 'null') {
         document.getElementById('player-bg').style.backgroundImage = `url(${moviePoster})`;
+        document.getElementById('ticket-poster').style.backgroundImage = `url(${moviePoster})`;
     }
+
+    // Details Dock bindings
+    if (desc) {
+        document.getElementById('dock-desc').textContent = desc;
+        document.getElementById('dock-match').textContent = match ? `${match} Eşleşme` : '98% Eşleşme';
+        document.getElementById('dock-year').textContent = year || '2025';
+        document.getElementById('dock-quality').textContent = meta || 'Full HD';
+        document.getElementById('dock-rating').textContent = rating || '8.2';
+        
+        if (highlights) {
+            document.getElementById('dock-highlights').innerHTML = `✨ <strong>Öne Çıkan:</strong> ${highlights}`;
+            document.getElementById('dock-highlights').style.display = 'block';
+        } else {
+            document.getElementById('dock-highlights').style.display = 'none';
+        }
+        document.getElementById('details-dock').style.display = 'flex';
+    } else {
+        document.getElementById('details-dock').style.display = 'none';
+    }
+
+    // Ticket fadeout animation timer (2.5 seconds)
+    setTimeout(() => {
+        const ticket = document.getElementById('ticket-overlay');
+        if (ticket) {
+            ticket.classList.add('fade-out');
+            setTimeout(() => {
+                ticket.style.display = 'none';
+                // Add ambilight class to video container once ticket is gone
+                const vCon = document.getElementById('video-container');
+                if (vCon) vCon.classList.add('ambilight');
+            }, 1000);
+        }
+    }, 2500);
 
     // Fragman varsa toggle satırını göster
     if (fileUrl && trailerUrl) {
@@ -297,12 +573,19 @@
     
     function resetIdle() {
         header.classList.remove('hidden');
+        const dock = document.getElementById('details-dock');
+        if (dock && dock.style.display !== 'none') {
+            dock.classList.remove('hidden');
+        }
         document.body.style.cursor = 'default';
         if (mouseCatcher) mouseCatcher.style.pointerEvents = 'none';
         
         clearTimeout(idleTimer);
         idleTimer = setTimeout(() => {
             header.classList.add('hidden');
+            if (dock) {
+                dock.classList.add('hidden');
+            }
             document.body.style.cursor = 'none';
             if (mouseCatcher) mouseCatcher.style.pointerEvents = 'auto';
         }, 3500);

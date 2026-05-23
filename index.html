@@ -1884,6 +1884,14 @@ function launchPlayer(file, title, poster, trailer) {
   if (fileSub) {
     playerUrl += `&filesub=${encodeURIComponent(fileSub)}`;
   }
+  if (item) {
+    playerUrl += `&desc=${encodeURIComponent(item.desc || '')}`;
+    playerUrl += `&year=${encodeURIComponent(item.year || '')}`;
+    playerUrl += `&rating=${encodeURIComponent(item.rating || '')}`;
+    playerUrl += `&match=${encodeURIComponent(item.match || '')}`;
+    playerUrl += `&meta=${encodeURIComponent(item.meta || '')}`;
+    playerUrl += `&highlights=${encodeURIComponent(item.highlights || '')}`;
+  }
   window.open(playerUrl, '_blank');
 }
 
