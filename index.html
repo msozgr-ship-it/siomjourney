@@ -1062,13 +1062,9 @@ function initApp() {
           }
         };
 
-        if (item.collection) {
-          item.collection.forEach(sub => processItem(sub, item));
-        } else if (item.episodes) {
-          item.episodes.forEach(sub => processItem(sub, item));
-        } else {
-          processItem(item, null);
-        }
+        if (item.showOnlyInOrbital || (item.id && item.id.includes('-single'))) return;
+        if (item.isCategory) return;
+        processItem(item, null);
       });
       
       // Remove duplicates
@@ -1088,7 +1084,7 @@ function initApp() {
     allContent = [...allContent, ...categories];
     
     // DÖNME DOLAPTA ARTIK SADECE TEKLİ FİMLERİN AFİŞLERİ OLACAK (Seriler ve koleksiyonlar elendi!)
-    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper'];
+    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper', 'raya-ve-son-ejderha-movie'];
     orbitalContent = allContent.filter(item => orbitalAllowedIds.includes(item.id)); 
     filteredContent = [...allContent];
 
