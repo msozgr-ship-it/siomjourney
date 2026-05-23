@@ -1286,8 +1286,8 @@ function updateOrbitalTransforms() {
     const absOffset = Math.abs(offset);
 
     // Ekranda görünecek maksimum kart sayısı (Merkezin üstünde ve altında)
-    // Sınırı aşanları fiziksel olarak yok ediyoruz ki yansıma veya taşma yapmasın.
-    const visibleCount = isMobile ? 1.2 : 2.5; 
+    // PC ve mobil cihazlarda yalnızca 3 kartın (merkez + 1 üst + 1 alt) ön planda görünmesi için sınır 1.2 yapıldı!
+    const visibleCount = 1.2; 
     
     if (absOffset > visibleCount) {
         item.style.opacity = "0";
