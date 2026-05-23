@@ -2201,8 +2201,9 @@ function decodeSafeBase64(safeBase64) {
 function getMovieViews(id) {
   if (!id) return 0;
   const targetId = getViewsId(id);
-  if (typeof globalMovieViews[targetId] === 'number') {
-    return globalMovieViews[targetId];
+  const cloudVal = globalMovieViews[targetId];
+  if (cloudVal !== undefined && cloudVal !== null && cloudVal !== '') {
+    return parseInt(cloudVal, 10);
   }
   const key = `siom_views_${targetId}`;
   let count = localStorage.getItem(key);
@@ -2228,7 +2229,8 @@ function syncAllMovieViews() {
             
             Object.keys(DEFAULTS).forEach(id => {
               const oldViews = getMovieViews(id);
-              const newViews = typeof parsed[id] === 'number' ? parsed[id] : (DEFAULTS[id] || 0);
+              const cloudVal = parsed[id];
+              const newViews = (cloudVal !== undefined && cloudVal !== null && cloudVal !== '') ? parseInt(cloudVal, 10) : (DEFAULTS[id] || 0);
               localStorage.setItem(`siom_views_${id}`, newViews.toString());
               
               if (newViews !== oldViews) {
@@ -2283,8 +2285,10 @@ function incrementMovieViews(id) {
         } catch (e) {}
       }
       
-      // İzleme değerini küresel veri veya varsayılan değer üstünden güvenle artır
-      dbViews[targetId] = (typeof dbViews[targetId] === 'number' ? dbViews[targetId] : (DEFAULTS[targetId] || 0)) + 1;
+      // İzleme değerini küresel veri veya varsayılan değer üstünden güvenle artır (String/Number toleransı ile)
+      const currentCloudVal = dbViews[targetId];
+      const parsedVal = (currentCloudVal !== undefined && currentCloudVal !== null && currentCloudVal !== '') ? parseInt(currentCloudVal, 10) : (DEFAULTS[targetId] || 0);
+      dbViews[targetId] = parsedVal + 1;
       globalMovieViews[targetId] = dbViews[targetId];
       localStorage.setItem(localKey, dbViews[targetId].toString());
       
