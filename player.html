@@ -755,11 +755,20 @@
 
     function ensureVkHd(url) {
         if (!url.includes('vkvideo.ru') && !url.includes('vk.com')) return url;
-        // vkvideo.ru'yu daha hızlı ve engellenmemiş olan ana vk.com ile değiştir
-        let newUrl = url.replace('vkvideo.ru', 'vk.com');
-        if (/[?&]hd=3/.test(newUrl)) return newUrl;
-        if (/[?&]hd=[124]/.test(newUrl)) return newUrl.replace(/hd=[124]/, 'hd=3');
-        return newUrl + (newUrl.includes('?') ? '&' : '?') + 'hd=3';
+        
+        let newUrl = url;
+        // Eğer bazı ISS'lerde vk.com yavaş kalıyorsa, orijinal vkvideo.ru CDN sunucusunu muhafaza et
+        // Ancak hd=3 (1080p) ve autoplay=1 parametrelerini garanti altına al
+        if (/[?&]hd=[124]/.test(newUrl)) {
+            newUrl = newUrl.replace(/hd=[124]/, 'hd=3');
+        } else if (!/[?&]hd=3/.test(newUrl)) {
+            newUrl += (newUrl.includes('?') ? '&' : '?') + 'hd=3';
+        }
+        
+        if (!/[?&]autoplay=/.test(newUrl)) {
+            newUrl += '&autoplay=1';
+        }
+        return newUrl;
     }
 
     function setNativeVideo(src, onError) {
@@ -803,23 +812,24 @@
             setNativeVideo(currentFileUrl, () => setIframe(currentFileUrl, false));
             return;
         }
-        // Dailymotion → 1080p kalite
-        if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly')) {
-            if (currentFileUrl.includes('dailymotion.com/embed/')) {
-                let finalUrl = currentFileUrl;
-                if (!finalUrl.includes('?')) {
-                    finalUrl += '?' + DM_HD;
-                } else if (!finalUrl.includes('autoplay=')) {
-                    finalUrl += '&' + DM_HD;
-                }
-                setIframe(finalUrl, false);
-                return;
-            }
+        // Dailymotion → Modern Geo Player & Fullscreen Button Fix
+        if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly') || currentFileUrl.includes('geo.dailymotion.com')) {
             let dmId = '';
-            if (currentFileUrl.includes('video/')) dmId = currentFileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
-            else if (currentFileUrl.includes('dai.ly/')) dmId = currentFileUrl.split('dai.ly/')[1]?.split('?')[0];
+            if (currentFileUrl.includes('video/')) {
+                dmId = currentFileUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
+            } else if (currentFileUrl.includes('video=')) {
+                dmId = currentFileUrl.split('video=')[1]?.split('&')[0];
+            } else if (currentFileUrl.includes('dai.ly/')) {
+                dmId = currentFileUrl.split('dai.ly/')[1]?.split('?')[0];
+            } else if (currentFileUrl.includes('embed/video/')) {
+                dmId = currentFileUrl.split('embed/video/')[1]?.split('?')[0];
+            } else if (currentFileUrl.includes('embed/')) {
+                dmId = currentFileUrl.split('embed/')[1]?.split('?')[0];
+            }
+            
             if (dmId) {
-                setIframe(`https://www.dailymotion.com/embed/video/${dmId}?${DM_HD}`, false);
+                // geo.dailymotion.com is the modern HTML5 player, ensuring the fullscreen button is always visible
+                setIframe(`https://geo.dailymotion.com/player.html?video=${dmId}&${DM_HD}`, false);
                 return;
             }
             setIframe(currentFileUrl, false);
@@ -867,12 +877,37 @@
         setIframe(finalUrl, false);
     }
 
-    /* ─── Iframe kurucu ─── */
+    /* ─── Programmatik Iframe Kurucu (Güvenlik & Fullscreen İzinleri) ─── */
     function setIframe(url, showBlocker) {
-        const blockerHtml = showBlocker ? `<div class="logo-blocker"><span class="blocker-dot"></span></div>` : '';
-        container.innerHTML = `${blockerHtml}<iframe id="player-frame" src="${url}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture; screen-wake-lock" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>`;
-        const fr = document.getElementById('player-frame');
-        fr.addEventListener('load', fadeOutLoader, { once: true });
+        container.innerHTML = '';
+        if (showBlocker) {
+            const blocker = document.createElement('div');
+            blocker.className = 'logo-blocker';
+            blocker.innerHTML = '<span class="blocker-dot"></span>';
+            container.appendChild(blocker);
+        }
+        
+        const iframe = document.createElement('iframe');
+        iframe.id = 'player-frame';
+        iframe.src = url;
+        
+        // Tarayıcı izin politikaları ve donanım hızlandırma yetkileri
+        iframe.setAttribute('allow', 'autoplay; fullscreen; encrypted-media; picture-in-picture; screen-wake-lock');
+        iframe.setAttribute('allowfullscreen', 'true');
+        iframe.setAttribute('webkitallowfullscreen', 'true');
+        iframe.setAttribute('mozallowfullscreen', 'true');
+        
+        // Referrer politikası (VK Video gibi CDN servislerinin domain doğrulayıp tam hız vermesini sağlar)
+        iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        
+        // Yüksek öncelikli bant genişliği optimizasyonları (Çözünürlük düşmesini engeller)
+        iframe.setAttribute('loading', 'eager');
+        iframe.setAttribute('fetchpriority', 'high');
+        iframe.setAttribute('importance', 'high');
+        
+        container.appendChild(iframe);
+        
+        iframe.addEventListener('load', fadeOutLoader, { once: true });
         setTimeout(fadeOutLoader, 180);
     }
 
