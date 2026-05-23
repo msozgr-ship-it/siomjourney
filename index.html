@@ -1184,6 +1184,7 @@ function initApp() {
     setupSearch();
     setupDragEvents();
     initRealVisitCounter();
+    syncAllMovieViews();
     animate();
 
     window.addEventListener('keydown', (e) => {
@@ -2058,31 +2059,100 @@ function resetFilter() {
 document.addEventListener('DOMContentLoaded', initApp);
 
 // ==========================================
-// CANLI İZLENME SAYACI (LIVE MOVIE VIEW COUNTER)
+// KÜRESEL İZLENME SAYACI (GLOBAL MOVIE VIEW COUNTER)
 // ==========================================
+const COUNTER_NAMESPACE = 'siomjourney_movies';
+
 function getMovieViews(id) {
   if (!id) return 0;
   const key = `siom_views_${id}`;
   let count = localStorage.getItem(key);
-  if (count === null) {
-    localStorage.setItem(key, '0');
-    return 0;
-  }
-  return parseInt(count, 10);
+  return count === null ? 0 : parseInt(count, 10);
+}
+
+// Tüm filmlerin küresel izlenme sayılarını arka planda çek ve güncelle (Throttling'i önlemek için hafif gecikmeli)
+function syncAllMovieViews() {
+  const playableItems = [];
+  allContent.forEach(item => {
+    if (item.isCollection) {
+      if (item.collection) {
+        item.collection.forEach(sub => playableItems.push(sub.id));
+      }
+    } else if (item.episodes) {
+      item.episodes.forEach(sub => playableItems.push(sub.id));
+    } else if (!item.isCategory && !item.showOnlyInOrbital) {
+      playableItems.push(item.id);
+    }
+  });
+
+  const uniqueIds = [...new Set(playableItems.filter(Boolean))];
+
+  uniqueIds.forEach((id, index) => {
+    setTimeout(() => {
+      fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${id}`)
+        .then(res => {
+          if (res.status === 404) {
+            // Henüz sayaç oluşturulmamışsa 0 olarak başlat
+            return fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${id}/set?count=0`).then(r => r.json());
+          }
+          return res.json();
+        })
+        .then(data => {
+          if (data && typeof data.count === 'number') {
+            const oldViews = getMovieViews(id);
+            const newViews = data.count;
+            localStorage.setItem(`siom_views_${id}`, newViews.toString());
+            
+            const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
+            badges.forEach(badge => {
+              badge.innerText = newViews.toLocaleString('tr-TR');
+            });
+
+            // Eğer izlenme sayısı değiştiyse ve kütüphane render edilmişse sıralamayı güncelle
+            const input = document.getElementById('search-input');
+            const isSearching = input && input.value.trim().length > 0;
+            if (newViews !== oldViews && !isSearching) {
+              renderContent();
+            }
+          }
+        })
+        .catch(err => console.warn(`Global views sync error for ${id}:`, err));
+    }, index * 120); // rate limit engellemek için 120ms aralıklı
+  });
 }
 
 function incrementMovieViews(id) {
   if (!id) return;
-  const key = `siom_views_${id}`;
+  const localKey = `siom_views_${id}`;
   let count = getMovieViews(id);
-  count += 1;
-  localStorage.setItem(key, count.toString());
   
-  // Arayüzdeki ilgili tüm sayaçları anında güncelle
+  // Yerel olarak anında artır (anlık tepki için)
+  count += 1;
+  localStorage.setItem(localKey, count.toString());
+  
   const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
   badges.forEach(badge => {
     badge.innerText = count.toLocaleString('tr-TR');
   });
+
+  // Küresel olarak artır
+  fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${id}/up`)
+    .then(res => res.json())
+    .then(data => {
+      if (data && typeof data.count === 'number') {
+        localStorage.setItem(localKey, data.count.toString());
+        badges.forEach(badge => {
+          badge.innerText = data.count.toLocaleString('tr-TR');
+        });
+        
+        // Sıralamayı güncelle
+        const input = document.getElementById('search-input');
+        if (!input || input.value.trim().length === 0) {
+          renderContent();
+        }
+      }
+    })
+    .catch(err => console.error(`Global view increment error for ${id}:`, err));
 }
 
 // ==========================================
@@ -2094,13 +2164,10 @@ function initRealVisitCounter() {
 
   countElement.style.transition = 'opacity 0.3s ease';
 
-  // api.counterapi.dev üzerinden gerçek görüntülenme sayısını çeker ve her girişte +1 artırır.
   fetch('https://api.counterapi.dev/v1/siomjourney/mainpage/up')
     .then(response => response.json())
     .then(data => {
-        // Gerçek sayaç 0'dan başlıyor
         const realCount = data.count; 
-        
         countElement.style.opacity = 0;
         setTimeout(() => {
             countElement.innerText = realCount.toLocaleString('tr-TR');
@@ -2109,7 +2176,7 @@ function initRealVisitCounter() {
     })
     .catch(err => {
         console.error("Ziyaretçi sayacı yüklenemedi:", err);
-        countElement.innerText = "0"; // Hata durumunda yedek (fallback) değer
+        countElement.innerText = "0";
     });
 }
 </script>
