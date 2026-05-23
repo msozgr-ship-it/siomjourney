@@ -71,9 +71,19 @@ body {
     min-width: 100%;
     min-height: 100%;
 }
-/* iframe içindeki platform letterbox'ını kırp — hafif zoom ile tam çerçeve */
+/* Arka plan fragman videosunu belirtilen alana tam sığdırır, kesilme ve taşmayı önler */
 .hero-video-bg iframe {
-    transform: translate(-50%, -50%) scale(1.12);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    transform: none !important;
+    aspect-ratio: auto !important;
 }
 
 /* PREMIUM TOP NAVIGATION */
