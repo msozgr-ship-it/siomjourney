@@ -1511,7 +1511,9 @@ function renderContent() {
 
   // Seri ve tekli filmleri filtrele (Sadece dönme dolapta görünmesi gereken tekli filmler elendi, kategoriler de elendi!)
   const collections = filteredContent.filter(item => (item.isCollection || item.episodes) && !item.isCategory);
-  const singles = filteredContent.filter(item => !(item.isCollection || item.episodes || item.showOnlyInOrbital || item.isCategory));
+  const singles = filteredContent
+    .filter(item => !(item.isCollection || item.episodes || item.showOnlyInOrbital || item.isCategory))
+    .sort((a, b) => getMovieViews(b.id) - getMovieViews(a.id));
 
   // Kart HTML oluşturucu yardımcı fonksiyon
   const makeCardHtml = (item) => {
