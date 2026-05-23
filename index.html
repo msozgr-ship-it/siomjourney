@@ -1380,13 +1380,9 @@ function renderOrbital() {
   if (!container) return;
   container.innerHTML = orbitalContent.map((item, index) => {
     const isColl = item.isCollection || item.episodes;
-    // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
-    const isUpcoming = !item.file || item.file.includes('ID') || item.file.includes('coming') || item.file.includes('COMING');
     
     return `
       <div class="cf-item ${isColl ? 'collection-stack' : ''}" id="orb-${index}" onclick="handleOrbitalClick(${index}, '${item.id}')">
-        ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
-        ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
         <div class="neon-rim"></div>
         <img src="${item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
       </div>
