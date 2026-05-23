@@ -1006,6 +1006,7 @@ let currentRotation = 0;
 let autoRotateSpeed = 0.003; // İnanılmaz yavaşlatıldı (0.05'ten 0.003'e düştü - 1 fragman bitene kadar ancak 1 kart döner)
 let isDragging = false;
 let startX = 0;
+let startY = 0;
 let startRotation = 0;
 let pauseAutoRotate = false;
 let pauseTimeout = null;
@@ -1140,6 +1141,7 @@ function setupDragEvents() {
     isDragging = true;
     dragArea.classList.add('dragging'); // Sürükleme esnasında CSS geçişlerini kapatarak 0ms gecikme sağlarız!
     startX = e.pageX || (e.touches && e.touches[0] ? e.touches[0].pageX : 0);
+    startY = e.pageY || (e.touches && e.touches[0] ? e.touches[0].pageY : 0);
     startRotation = currentRotation;
     clearTimeout(pauseTimeout);
     pauseAutoRotate = true; // Sürüklerken durdur
@@ -1148,13 +1150,19 @@ function setupDragEvents() {
   const onMove = (e) => {
     if (!isDragging) return;
     
-    // Mobilde yatay yörünge sürüklemesi yaparken tüm ekranın sağa sola kaymasını önlüyoruz!
+    // Mobilde sürükleme esnasında sayfa kaymasını önlüyoruz!
     if (e.cancelable) {
       e.preventDefault();
     }
     
     const x = e.pageX || (e.touches && e.touches[0] ? e.touches[0].pageX : 0);
-    const diff = (x - startX) * 0.1;
+    const y = e.pageY || (e.touches && e.touches[0] ? e.touches[0].pageY : 0);
+    
+    const diffX = x - startX;
+    const diffY = y - startY;
+    
+    // Dikey ve yatay hareketi birleştirip hassasiyeti 0.35'e yükselterek çok daha hızlı ve akıcı yapıyoruz!
+    const diff = (diffX + diffY) * 0.35;
     currentRotation = startRotation + diff;
     updateOrbitalTransforms();
   };
@@ -1439,7 +1447,6 @@ function renderContent() {
     return `
       <div class="card-wrapper category-card" onclick="handleItemClick('${cat.id}')">
         <div class="card">
-          <div class="collection-badge" style="background: linear-gradient(135deg, #00d2ff, #0066ff); border-color: #00d2ff;">KATEGORİ</div>
           <img src="${cat.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
           <div class="category-overlay-title">${cat.title}</div>
         </div>
