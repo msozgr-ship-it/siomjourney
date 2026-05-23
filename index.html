@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.35">
+    <link rel="stylesheet" href="css/style.css?v=5.36">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -2103,8 +2103,48 @@ const DEFAULTS = {
   "hayalet-filmler-movie": 0,
   "kpop-iblis-avilari-movie": 0,
   "dag1-single": 0,
-  "dag2-single": 0
+  "dag2-single": 0,
+  "s1e1": 0,
+  "s1e2": 0
 };
+
+function getViewsId(id) {
+  if (!id) return '';
+  // Map nested collection movie IDs to their standalone single counterparts for storage
+  if (id.endsWith('-movie')) return id.replace('-movie', '-single');
+  if (/^m\df\d$/.test(id)) return id + '-single';
+  return id;
+}
+
+function getAlternativeId(id) {
+  if (!id) return '';
+  if (id.endsWith('-single')) {
+    if (id.startsWith('dag')) return id.replace('-single', '-movie');
+    return id.replace('-single', '');
+  }
+  if (id.endsWith('-movie')) {
+    return id.replace('-movie', '-single');
+  }
+  if (/^m\df\d$/.test(id)) {
+    return id + '-single';
+  }
+  return '';
+}
+
+function updateBadges(id, count) {
+  const targetId = getViewsId(id);
+  const altId = getAlternativeId(targetId);
+  
+  let selectors = `[data-views-id="${targetId}"] .view-count-val`;
+  if (altId) {
+    selectors += `, [data-views-id="${altId}"] .view-count-val`;
+  }
+  
+  const badges = document.querySelectorAll(selectors);
+  badges.forEach(badge => {
+    badge.innerText = count.toLocaleString('tr-TR');
+  });
+}
 
 function encodeSafeBase64(obj) {
   const str = JSON.stringify(obj);
@@ -2131,12 +2171,13 @@ function decodeSafeBase64(safeBase64) {
 
 function getMovieViews(id) {
   if (!id) return 0;
-  if (typeof globalMovieViews[id] === 'number') {
-    return globalMovieViews[id];
+  const targetId = getViewsId(id);
+  if (typeof globalMovieViews[targetId] === 'number') {
+    return globalMovieViews[targetId];
   }
-  const key = `siom_views_${id}`;
+  const key = `siom_views_${targetId}`;
   let count = localStorage.getItem(key);
-  return count === null ? (DEFAULTS[id] || 0) : parseInt(count, 10);
+  return count === null ? (DEFAULTS[targetId] || 0) : parseInt(count, 10);
 }
 
 // Tüm filmlerin küresel izlenme sayılarını tek bir ağ isteğiyle çeker ve günceller
@@ -2165,10 +2206,7 @@ function syncAllMovieViews() {
                 needsRender = true;
               }
               
-              const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
-              badges.forEach(badge => {
-                badge.innerText = newViews.toLocaleString('tr-TR');
-              });
+              updateBadges(id, newViews);
             });
             
             if (needsRender) {
@@ -2185,18 +2223,16 @@ function syncAllMovieViews() {
 
 function incrementMovieViews(id) {
   if (!id) return;
-  const localKey = `siom_views_${id}`;
-  let count = getMovieViews(id);
+  const targetId = getViewsId(id);
+  const localKey = `siom_views_${targetId}`;
+  let count = getMovieViews(targetId);
   
   // Yerel anlık görsel güncelleme (sıfır gecikmeli reaksiyon)
   count += 1;
-  globalMovieViews[id] = count;
+  globalMovieViews[targetId] = count;
   localStorage.setItem(localKey, count.toString());
   
-  const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
-  badges.forEach(badge => {
-    badge.innerText = count.toLocaleString('tr-TR');
-  });
+  updateBadges(targetId, count);
 
   const input = document.getElementById('search-input');
   if (!input || input.value.trim().length === 0) {
@@ -2219,9 +2255,9 @@ function incrementMovieViews(id) {
       }
       
       // İzleme değerini küresel veri veya varsayılan değer üstünden güvenle artır
-      dbViews[id] = (typeof dbViews[id] === 'number' ? dbViews[id] : (DEFAULTS[id] || 0)) + 1;
-      globalMovieViews[id] = dbViews[id];
-      localStorage.setItem(localKey, dbViews[id].toString());
+      dbViews[targetId] = (typeof dbViews[targetId] === 'number' ? dbViews[targetId] : (DEFAULTS[targetId] || 0)) + 1;
+      globalMovieViews[targetId] = dbViews[targetId];
+      localStorage.setItem(localKey, dbViews[targetId].toString());
       
       const safePayload = encodeSafeBase64(dbViews);
       fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${IM_APP_KEY}/${IM_KEY_NAME}/${safePayload}`, {
