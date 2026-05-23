@@ -1113,6 +1113,7 @@ function initApp() {
     setupSearch();
     setupDragEvents();
     initRealVisitCounter();
+    simulateLiveViews(); // Canlı izlenme simülasyonunu başlat
     animate();
 
     window.addEventListener('keydown', (e) => {
@@ -1429,10 +1430,20 @@ function renderContent() {
   const makeCardHtml = (item) => {
     const isColl = item.isCollection || item.episodes;
     
+    // Yalnızca tekli filmler için sayaç rozeti oluşturuyoruz
+    const viewCount = !isColl ? getMovieViews(item.id) : 0;
+    const viewsBadge = !isColl ? `
+      <div class="movie-view-badge" data-views-id="${item.id}">
+        <span class="view-dot"></span>
+        <span class="view-count-val">${viewCount.toLocaleString('tr-TR')}</span> İzlenme
+      </div>
+    ` : '';
+    
     return `
       <div class="card-wrapper ${isColl ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
         <div class="card">
           ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+          ${viewsBadge}
           <img src="${item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
       </div>
@@ -1744,6 +1755,11 @@ function launchPlayer(file, title, poster, trailer) {
   let item = findItemDeepByTitle(title);
   const fileSub = item ? (item.fileSub || '') : '';
   
+  // İzlenme sayısını artır (tekli film ise)
+  if (item && item.id && !item.isCollection && !item.episodes) {
+    incrementMovieViews(item.id);
+  }
+  
   let playerUrl = `player.html?file=${encodeURIComponent(file)}&title=${encodeURIComponent(title)}&poster=${encodeURIComponent(poster || '')}`;
   if (trailer) {
     playerUrl += `&trailer=${encodeURIComponent(trailer)}`;
@@ -1943,6 +1959,67 @@ function resetFilter() {
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
+
+// ==========================================
+// CANLI İZLENME SAYACI (LIVE MOVIE VIEW COUNTER)
+// ==========================================
+function getMovieViews(id) {
+  if (!id) return 0;
+  const key = `siom_views_${id}`;
+  let count = localStorage.getItem(key);
+  if (count === null) {
+    localStorage.setItem(key, '0');
+    return 0;
+  }
+  return parseInt(count, 10);
+}
+
+function incrementMovieViews(id) {
+  if (!id) return;
+  const key = `siom_views_${id}`;
+  let count = getMovieViews(id);
+  count += 1;
+  localStorage.setItem(key, count.toString());
+  
+  // Arayüzdeki ilgili tüm sayaçları anında güncelle
+  const badges = document.querySelectorAll(`[data-views-id="${id}"] .view-count-val`);
+  badges.forEach(badge => {
+    badge.innerText = count.toLocaleString('tr-TR');
+  });
+}
+
+function simulateLiveViews() {
+  if (typeof DB === 'undefined') return;
+  const singles = DB.movies.filter(m => !m.isCollection);
+  if (singles.length === 0) return;
+
+  const runSimulation = () => {
+    const activeCount = 1 + Math.floor(Math.random() * 3); // Her adımda rastgele 1-3 filme izlenme eklenir
+    for (let i = 0; i < activeCount; i++) {
+      const randomMovie = singles[Math.floor(Math.random() * singles.length)];
+      if (randomMovie && randomMovie.id) {
+        const key = `siom_views_${randomMovie.id}`;
+        let count = getMovieViews(randomMovie.id);
+        count += Math.floor(Math.random() * 2) + 1; // 1 veya 2 izlenme ekler
+        localStorage.setItem(key, count.toString());
+        
+        const badges = document.querySelectorAll(`[data-views-id="${randomMovie.id}"] .view-count-val`);
+        badges.forEach(badge => {
+          badge.innerText = count.toLocaleString('tr-TR');
+          
+          const parentBadge = badge.closest('.movie-view-badge');
+          if (parentBadge) {
+            parentBadge.classList.add('live-update-flash');
+            setTimeout(() => parentBadge.classList.remove('live-update-flash'), 1000);
+          }
+        });
+      }
+    }
+  };
+
+  runSimulation(); // Sayfa açılışında tetikle
+  setInterval(runSimulation, 15000); // Her 15 saniyede bir canlı izlenme simüle et
+}
 
 // ==========================================
 // GERÇEK ZİYARETÇİ SAYACI (REAL VISIT COUNTER)
