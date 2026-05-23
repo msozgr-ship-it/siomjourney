@@ -907,7 +907,7 @@ const DB = {
       id: "raya-ve-son-ejderha-movie",
       title: "Raya ve Son Ejderha",
       poster: "assets/img/rayavesonejderha.webp",
-      file: "COMING_SOON",
+      file: "https://www.dailymotion.com/embed/video/k2bE4Z2YeOBB6LGaaBs?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false",
       trailer: "https://youtu.be/Lyy5nRgjODs?si=uoRsX1MwQNfXSW3i",
       searchTags: "raya ve son ejderha, raya, sisu, son ejderha, disney, animasyon, macera, fantastik",
       desc: "Kumandra dünyasında insanlar ve ejderhalar uyum içinde yaşardı. Kötü bir güç ülkeyi tehdit ettiğinde, Raya adlı yalnız bir savaşçı efsanevi son ejderhayı bulmak için yola çıkar.",
@@ -991,31 +991,51 @@ function initApp() {
           const tags = ((sub.searchTags || '') + ' ' + (parent ? (parent.searchTags || '') : '')).toLowerCase();
           const title = ((sub.title || '') + ' ' + (parent ? (parent.title || '') : '')).toLowerCase();
           
-          let assignedKey = 'aksiyon';
+          let assignedKey = '';
           
-          // 1. ANİMASYON
-          if (tags.includes('animasyon') || tags.includes('sincap') || tags.includes('karınca') || tags.includes('mario') || tags.includes('ejderha') || tags.includes('coco') || tags.includes('saftirik') || title.includes('alvin') || title.includes('ejderha') || title.includes('zooto') || title.includes('saftirik') || title.includes('coco') || title.includes('karınca') || title.includes('raya') || title.includes('elio') || title.includes('swapped') || title.includes('stitch') || title.includes('mario') || title.includes('arabalar') || title.includes('ant bully') || title.includes('anime')) {
+          // Özel Kullanıcı Atamaları (Explicit Overrides)
+          if (sub.id === 'karaya-movie' || title.includes('kayara')) {
             assignedKey = 'animasyon';
           }
-          // 2. GERİLİM-KORKU
-          else if (tags.includes('gerilim') || tags.includes('korku') || tags.includes('gizem') || title.includes('sleeper')) {
-            assignedKey = 'gerilim-korku';
-          }
-          // 3. TÜRK FİLMLERİ
-          else if (tags.includes('türk filmi') || tags.includes('türk') || tags.includes('dayı') || tags.includes('atatürk') || title.includes('atatürk') || title.includes('dayı') || title.includes('yanyana') || title.includes('rüyada')) {
+          else if (sub.id === 'the-sleeper' || title.includes('sleeper') || title.includes('uykucu')) {
             assignedKey = 'turk-filmleri';
           }
-          // 4. FANTASTİK-BİLİM KURGU
-          else if (tags.includes('fantastik') || tags.includes('bilim kurgu') || tags.includes('uzay') || tags.includes('vampir') || title.includes('vampire') || title.includes('avatar') || title.includes('mini') || title.includes('journey')) {
-            assignedKey = 'fantastik-bilim-kurgu';
+          else if (sub.id === 'the-wampire-hunter-movie' || title.includes('vampire hunter')) {
+            assignedKey = 'animasyon';
           }
-          // 5. BELGESEL
-          else if (tags.includes('belgesel') || title.includes('belgesel')) {
-            assignedKey = 'belgesel';
+          else if (sub.id === 'ancak-ruyada-olur-movie' || title.includes('rüyada') || title.includes('ruyada')) {
+            assignedKey = 'animasyon';
           }
-          // 6. AKSİYON (Varsayılan ve geri kalanlar)
-          else {
-            assignedKey = 'aksiyon';
+          else if (sub.id === 'yanyana-movie' || title.includes('yanyana')) {
+            assignedKey = 'turk-filmleri';
+          }
+          
+          // Genel Kural Eşleşmeleri
+          if (!assignedKey) {
+            // 1. ANİMASYON
+            if (tags.includes('animasyon') || tags.includes('sincap') || tags.includes('karınca') || tags.includes('mario') || tags.includes('ejderha') || tags.includes('coco') || tags.includes('saftirik') || title.includes('alvin') || title.includes('ejderha') || title.includes('zooto') || title.includes('saftirik') || title.includes('coco') || title.includes('karınca') || title.includes('raya') || title.includes('elio') || title.includes('swapped') || title.includes('stitch') || title.includes('mario') || title.includes('arabalar') || title.includes('ant bully') || title.includes('anime')) {
+              assignedKey = 'animasyon';
+            }
+            // 2. GERİLİM-KORKU
+            else if (tags.includes('gerilim') || tags.includes('korku') || tags.includes('gizem')) {
+              assignedKey = 'gerilim-korku';
+            }
+            // 3. TÜRK FİLMLERİ
+            else if (tags.includes('türk filmi') || tags.includes('türk') || tags.includes('dayı') || tags.includes('atatürk') || title.includes('atatürk') || title.includes('dayı')) {
+              assignedKey = 'turk-filmleri';
+            }
+            // 4. FANTASTİK-BİLİM KURGU
+            else if (tags.includes('fantastik') || tags.includes('bilim kurgu') || tags.includes('uzay') || tags.includes('vampir') || title.includes('avatar') || title.includes('mini') || title.includes('journey')) {
+              assignedKey = 'fantastik-bilim-kurgu';
+            }
+            // 5. BELGESEL
+            else if (tags.includes('belgesel') || title.includes('belgesel')) {
+              assignedKey = 'belgesel';
+            }
+            // 6. AKSİYON (Varsayılan ve geri kalanlar)
+            else {
+              assignedKey = 'aksiyon';
+            }
           }
           
           if (assignedKey === cat.key) {
