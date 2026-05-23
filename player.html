@@ -812,7 +812,7 @@
             setNativeVideo(currentFileUrl, () => setIframe(currentFileUrl, false));
             return;
         }
-        // Dailymotion → Modern Geo Player & Fullscreen Button Fix
+        // Dailymotion → Standard working HTML5 Embed (Fullscreen fixed programmatically via setIframe)
         if (currentFileUrl.includes('dailymotion.com') || currentFileUrl.includes('dai.ly') || currentFileUrl.includes('geo.dailymotion.com')) {
             let dmId = '';
             if (currentFileUrl.includes('video/')) {
@@ -828,8 +828,8 @@
             }
             
             if (dmId) {
-                // geo.dailymotion.com is the modern HTML5 player, ensuring the fullscreen button is always visible
-                setIframe(`https://geo.dailymotion.com/player.html?video=${dmId}&${DM_HD}`, false);
+                // Evrensel Dailymotion embed yapısına geri dönüldü. Tam ekran butonu programmatic setIframe ile başarıyla korundu.
+                setIframe(`https://www.dailymotion.com/embed/video/${dmId}?${DM_HD}`, false);
                 return;
             }
             setIframe(currentFileUrl, false);
