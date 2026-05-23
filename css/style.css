@@ -975,7 +975,7 @@ body {
       padding-left: 0;
   }
   .orbital-belt {
-      transform: rotateX(45deg) translateY(70px);
+      transform: rotateX(45deg) translateY(-15px);
       justify-content: center;
       padding-left: 0;
       margin-left: 0;
