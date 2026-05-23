@@ -423,8 +423,21 @@
 
         showLoader();
 
-        // Archive.org → doğrudan embed kullan (metadata API'si yerine)
+        // Archive.org → Metadata API'den en yüksek kaliteli stream linkini çek, doğrudan <video> tagında oynat!
         if (currentFileUrl.includes('archive.org')) {
+            try {
+                const hdStreamUrl = await getArchiveHdStreamUrl(currentFileUrl);
+                if (hdStreamUrl) {
+                    setNativeVideo(hdStreamUrl, () => {
+                        // Hata durumunda embed player'a güvenli geri dönüş (fallback)
+                        console.warn('Direct stream failed, falling back to embed player.');
+                        setIframe(getArchiveEmbedUrl(currentFileUrl), true);
+                    });
+                    return;
+                }
+            } catch(e) {
+                console.warn('Archive HD stream failed, falling back to embed:', e);
+            }
             setIframe(getArchiveEmbedUrl(currentFileUrl), true);
             return;
         }
