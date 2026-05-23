@@ -920,9 +920,39 @@ const DB = {
       isYoutube: false
     }
   ]
-};
+const CATEGORIES = [
+  {
+    id: 'cat-animasyon',
+    title: 'Animasyon Dünyası',
+    poster: 'assets/img/zootopia_main.jpg.jpg',
+    desc: 'En sevilen, ödüllü animasyon ve aile filmleri bir arada.',
+    filter: (item) => item.searchTags && (item.searchTags.includes('animasyon') || item.searchTags.includes('sincap') || item.searchTags.includes('karınca') || item.searchTags.includes('mario') || item.searchTags.includes('ejderha') || item.searchTags.includes('coco') || item.searchTags.includes('saftirik'))
+  },
+  {
+    id: 'cat-aksiyon-macera',
+    title: 'Aksiyon & Macera',
+    poster: 'assets/img/dayımain.jpg',
+    desc: 'Nefes kesen aksiyon sahneleri ve destansı maceralar.',
+    filter: (item) => item.searchTags && (item.searchTags.includes('aksiyon') || item.searchTags.includes('macera') || item.searchTags.includes('avcı') || item.searchTags.includes('atatürk') || item.searchTags.includes('dayı') || item.searchTags.includes('yarış'))
+  },
+  {
+    id: 'cat-dram-tarih',
+    title: 'Dram & Tarih / Biyografi',
+    poster: 'assets/img/atatürkmain.jpg',
+    desc: 'Tarihe yön veren karakterler ve duygusal derinliğe sahip dramatik yapıtlar.',
+    filter: (item) => item.searchTags && (item.searchTags.includes('tarih') || item.searchTags.includes('biyografi') || item.searchTags.includes('dram') || item.searchTags.includes('atatürk') || item.searchTags.includes('dayı'))
+  },
+  {
+    id: 'cat-gizem-gerilim',
+    title: 'Gizem & Gerilim',
+    poster: 'assets/img/thesleeper.jpg',
+    desc: 'Gizem dolu olaylar, sürükleyici gerilim ve karanlık sırlar.',
+    filter: (item) => item.searchTags && (item.searchTags.includes('gerilim') || item.searchTags.includes('korku') || item.searchTags.includes('gizem') || item.searchTags.includes('sleeper'))
+  }
+];
 
 let allContent = [];
+let categories = [];
 let orbitalContent = [];
 let filteredContent = [];
 let currentRotation = 0;
@@ -937,6 +967,38 @@ function initApp() {
   try {
     if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
+    
+    // Dinamik Kategori Oluşturucu
+    categories = CATEGORIES.map(cat => {
+      let matches = [];
+      allContent.forEach(item => {
+        if (item.collection) {
+          item.collection.forEach(sub => {
+            if (cat.filter(sub)) matches.push(sub);
+          });
+        } else if (item.episodes) {
+          item.episodes.forEach(sub => {
+            if (cat.filter(sub)) matches.push(sub);
+          });
+        } else {
+          if (cat.filter(item)) matches.push(item);
+        }
+      });
+      // Remove duplicates
+      matches = matches.filter((val, idx, self) => self.findIndex(t => t.id === val.id) === idx);
+      
+      return {
+        id: cat.id,
+        title: cat.title,
+        poster: cat.poster,
+        desc: cat.desc,
+        isCategory: true,
+        collection: matches
+      };
+    });
+
+    // Kategorileri allContent'e ekleyelim ki arama ve detay modalı bulabilsin
+    allContent = [...allContent, ...categories];
     
     // DÖNME DOLAPTA ARTIK SADECE TEKLİ FİMLERİN AFİŞLERİ OLACAK (Seriler ve koleksiyonlar elendi!)
     const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper'];
@@ -1253,9 +1315,9 @@ function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
 
-  // Seri ve tekli filmleri filtrele (Sadece dönme dolapta görünmesi gereken tekli filmler elendi!)
-  const collections = filteredContent.filter(item => item.isCollection || item.episodes);
-  const singles = filteredContent.filter(item => !(item.isCollection || item.episodes || item.showOnlyInOrbital));
+  // Seri ve tekli filmleri filtrele (Sadece dönme dolapta görünmesi gereken tekli filmler elendi, kategoriler de elendi!)
+  const collections = filteredContent.filter(item => (item.isCollection || item.episodes) && !item.isCategory);
+  const singles = filteredContent.filter(item => !(item.isCollection || item.episodes || item.showOnlyInOrbital || item.isCategory));
 
   // Kart HTML oluşturucu yardımcı fonksiyon
   const makeCardHtml = (item) => {
@@ -1274,7 +1336,31 @@ function renderContent() {
     `;
   };
 
+  // Kategori kartı oluşturucu
+  const makeCategoryCardHtml = (cat) => {
+    return `
+      <div class="card-wrapper category-card" onclick="handleItemClick('${cat.id}')">
+        <div class="card">
+          <div class="collection-badge" style="background: linear-gradient(135deg, #00d2ff, #0066ff); border-color: #00d2ff;">KATEGORİ</div>
+          <img src="${cat.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
+          <div class="category-overlay-title">${cat.title}</div>
+        </div>
+      </div>
+    `;
+  };
+
+  const isFiltered = filteredContent.length !== allContent.length;
+  const categoriesHtml = !isFiltered ? `
+    <div class="category-section">
+      <h3 class="matrix-column-title">FİLM KATEGORİLERİ</h3>
+      <div class="category-grid">
+        ${categories.map(makeCategoryCardHtml).join('')}
+      </div>
+    </div>
+  ` : '';
+
   content.innerHTML = `
+    ${categoriesHtml}
     <div class="split-matrix-container">
       <!-- SOL BLOK: SERİ FİLMLER & KOLEKSİYONLAR -->
       <div class="matrix-column">
@@ -1320,7 +1406,7 @@ function handleItemClick(id) {
   const item = findItemDeep(id);
   if (!item) return;
 
-  if (item.episodes || item.isCollection) {
+  if (item.episodes || item.isCollection || item.isCategory) {
     openDetails(id);
   } else {
     openPlayer(item.file, item.title, item.poster, item.trailer);
