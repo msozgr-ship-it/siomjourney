@@ -1189,3 +1189,26 @@ body {
     }
 }
 
+/* PREMIUM MODAL NAV BACK BUTTON STYLING */
+.modal-back-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    backdrop-filter: blur(10px);
+}
+.modal-back-btn:hover {
+    background: rgba(255, 15, 35, 0.15);
+    border-color: rgba(255, 15, 35, 0.35);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 15, 35, 0.3);
+    transform: scale(1.05);
+}
+

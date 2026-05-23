@@ -1621,22 +1621,48 @@ function clearSearchInput(event) {
   if (input) input.focus();
 }
 
-function openDetails(id) {
+let detailsHistory = [];
+let currentDetailsId = null;
+
+function openDetails(id, isBack = false) {
   const item = allContent.find(i => i.id === id);
   if (!item) return;
+
   const modal = document.getElementById('details-modal');
   const grid = document.getElementById('details-grid');
-  document.getElementById('details-title').textContent = item.title;
+  
+  // History stack management
+  if (!isBack && currentDetailsId && currentDetailsId !== id) {
+    detailsHistory.push(currentDetailsId);
+  }
+  currentDetailsId = id;
+
+  // Title & Back Button
+  const titleContainer = document.getElementById('details-title');
+  if (detailsHistory.length > 0) {
+    titleContainer.innerHTML = `
+      <div class="modal-nav-row" style="display: flex; align-items: center; gap: 15px; margin-bottom: 5px;">
+        <button class="modal-back-btn" onclick="handleDetailsBack(event)">← GERİ</button>
+        <span style="font-size: 14px; opacity: 0.3;">/</span>
+        <span>${item.title}</span>
+      </div>
+    `;
+  } else {
+    titleContainer.textContent = item.title;
+  }
+
   let subItems = item.episodes || item.collection || [];
   grid.innerHTML = subItems.map(sub => {
+    const isColl = sub.isCollection || sub.episodes;
     // Dosya linki olmayan, boş olan veya ID/coming/soon içerenler henüz yüklenmemiş (Yakında) kabul edilir
     const isUpcoming = !sub.file || sub.file.includes('ID') || sub.file.includes('coming') || sub.file.includes('COMING');
     
     return `
       <div class="series-item" data-sub-id="${sub.id}" role="button" tabindex="0">
-        <div class="card">
-          ${isUpcoming ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
-          <img src="${sub.poster || item.poster}" alt="">
+        <div class="card ${isColl ? 'collection-stack' : ''}">
+          ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+          ${isUpcoming && !isColl ? '<div class="collection-badge coming-soon-badge" style="background: rgba(255, 15, 35, 0.85); border-color: rgba(255, 15, 35, 0.3);">YAKINDA</div>' : ''}
+          <img src="${sub.poster || item.poster}" alt="" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
         <h3>${sub.title}</h3>
       </div>
@@ -1648,7 +1674,13 @@ function openDetails(id) {
       e.stopPropagation();
       const sub = subItems.find(s => s.id === el.dataset.subId);
       if (!sub) return;
-      openPlayer(sub.file, sub.title, sub.poster || item.poster, sub.trailer || item.trailer || '');
+      
+      // Eger seri veya koleksiyon ise, pencere icinde yeni ayrintiyi ac
+      if (sub.episodes || sub.isCollection) {
+        openDetails(sub.id);
+      } else {
+        openPlayer(sub.file, sub.title, sub.poster || item.poster, sub.trailer || item.trailer || '');
+      }
     });
   });
 
@@ -1656,9 +1688,25 @@ function openDetails(id) {
   setTimeout(() => modal.classList.add('active'), 10);
 }
 
+function handleDetailsBack(event) {
+  if (event) event.stopPropagation();
+  if (detailsHistory.length > 0) {
+    const prevId = detailsHistory.pop();
+    openDetails(prevId, true);
+  }
+}
+
 function closeDetails() {
   const modal = document.getElementById('details-modal');
-  if (modal) { modal.classList.remove('active'); setTimeout(() => modal.style.display = 'none', 500); }
+  if (modal) { 
+    modal.classList.remove('active'); 
+    setTimeout(() => { 
+      modal.style.display = 'none'; 
+      // Modal tamamen kapatildiginda gecmisi temizle
+      detailsHistory = [];
+      currentDetailsId = null;
+    }, 500); 
+  }
 }
 
 function launchPlayer(file, title, poster, trailer) {
