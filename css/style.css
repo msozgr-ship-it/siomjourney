@@ -72,17 +72,18 @@ body {
     min-height: 100%;
 }
 /* Arka plan fragman videosunu belirtilen alana tam sığdırır, kesilme ve taşmayı önler */
+/* Devasa ekranlarda YouTube'un kaliteyi düşürmesini engellemek için 200% boyutlandırma ve scale(0.5) hilesi uygulanmıştır */
 .hero-video-bg iframe {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    min-width: 100% !important;
-    min-height: 100% !important;
-    max-width: 100% !important;
-    max-height: 100% !important;
-    transform: none !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 200% !important;
+    height: 200% !important;
+    min-width: 200% !important;
+    min-height: 200% !important;
+    max-width: 200% !important;
+    max-height: 200% !important;
+    transform: translate(-50%, -50%) scale(0.5) !important;
     aspect-ratio: auto !important;
 }
 
