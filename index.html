@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.38">
+    <link rel="stylesheet" href="css/style.css?v=5.39">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -1891,6 +1891,7 @@ function launchPlayer(file, title, poster, trailer) {
     playerUrl += `&match=${encodeURIComponent(item.match || '')}`;
     playerUrl += `&meta=${encodeURIComponent(item.meta || '')}`;
     playerUrl += `&highlights=${encodeURIComponent(item.highlights || '')}`;
+    playerUrl += `&id=${encodeURIComponent(item.id)}`;
   }
   window.open(playerUrl, '_blank');
 }
@@ -2269,41 +2270,6 @@ function incrementMovieViews(id) {
   if (!input || input.value.trim().length === 0) {
     renderContent();
   }
-
-  // Küresel veritabanını oku, değeri güvenli şekilde birleştir (merge) ve geri yaz
-  fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/${IM_APP_KEY}/${IM_KEY_NAME}`)
-    .then(res => res.json())
-    .then(data => {
-      let dbViews = {};
-      if (data && data !== '""' && data !== 'null') {
-        try {
-          let rawStr = data;
-          if (typeof rawStr === 'string' && rawStr.startsWith('"') && rawStr.endsWith('"')) {
-            rawStr = JSON.parse(rawStr);
-          }
-          dbViews = decodeSafeBase64(rawStr) || {};
-        } catch (e) {}
-      }
-      
-      // İzleme değerini küresel veri veya varsayılan değer üstünden güvenle artır (String/Number toleransı ile)
-      const currentCloudVal = dbViews[targetId];
-      const parsedVal = (currentCloudVal !== undefined && currentCloudVal !== null && currentCloudVal !== '') ? parseInt(currentCloudVal, 10) : (DEFAULTS[targetId] || 0);
-      dbViews[targetId] = parsedVal + 1;
-      globalMovieViews[targetId] = dbViews[targetId];
-      localStorage.setItem(localKey, dbViews[targetId].toString());
-      
-      const safePayload = encodeSafeBase64(dbViews);
-      fetch(`https://keyvalue.immanuel.co/api/KeyVal/UpdateValue/${IM_APP_KEY}/${IM_KEY_NAME}/${safePayload}`, {
-        method: 'POST'
-      })
-      .then(res => res.text())
-      .then(text => {
-        if (text && text.toLowerCase().includes('true')) {
-          syncAllMovieViews();
-        }
-      });
-    })
-    .catch(err => console.error("Global increment error:", err));
 }
 
 // ==========================================
