@@ -1113,7 +1113,6 @@ function initApp() {
     setupSearch();
     setupDragEvents();
     initRealVisitCounter();
-    simulateLiveViews(); // Canlı izlenme simülasyonunu başlat
     animate();
 
     window.addEventListener('keydown', (e) => {
@@ -1986,39 +1985,6 @@ function incrementMovieViews(id) {
   badges.forEach(badge => {
     badge.innerText = count.toLocaleString('tr-TR');
   });
-}
-
-function simulateLiveViews() {
-  if (typeof DB === 'undefined') return;
-  const singles = DB.movies.filter(m => !m.isCollection);
-  if (singles.length === 0) return;
-
-  const runSimulation = () => {
-    const activeCount = 1 + Math.floor(Math.random() * 3); // Her adımda rastgele 1-3 filme izlenme eklenir
-    for (let i = 0; i < activeCount; i++) {
-      const randomMovie = singles[Math.floor(Math.random() * singles.length)];
-      if (randomMovie && randomMovie.id) {
-        const key = `siom_views_${randomMovie.id}`;
-        let count = getMovieViews(randomMovie.id);
-        count += Math.floor(Math.random() * 2) + 1; // 1 veya 2 izlenme ekler
-        localStorage.setItem(key, count.toString());
-        
-        const badges = document.querySelectorAll(`[data-views-id="${randomMovie.id}"] .view-count-val`);
-        badges.forEach(badge => {
-          badge.innerText = count.toLocaleString('tr-TR');
-          
-          const parentBadge = badge.closest('.movie-view-badge');
-          if (parentBadge) {
-            parentBadge.classList.add('live-update-flash');
-            setTimeout(() => parentBadge.classList.remove('live-update-flash'), 1000);
-          }
-        });
-      }
-    }
-  };
-
-  runSimulation(); // Sayfa açılışında tetikle
-  setInterval(runSimulation, 15000); // Her 15 saniyede bir canlı izlenme simüle et
 }
 
 // ==========================================
