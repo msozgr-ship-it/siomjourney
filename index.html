@@ -918,6 +918,22 @@ const DB = {
       highlights: "Raya'nın dünyayı kurtarmak için son ejderha Sisu'yu arayışının büyüleyici destanı.",
       isNew: true,
       isYoutube: false
+    },
+    {
+      id: "hayalet-filmler-movie",
+      title: "Hayalet Filmler",
+      poster: "assets/img/hayaletfilmler.jpg",
+      file: "COMING_SOON",
+      trailer: "https://youtu.be/LXo8b8d00rM?si=cBbS_F30G3X0ion4",
+      searchTags: "hayalet filmler, hayalet, belgesel, sinema, tarih, kültür, gizem, turk belgesel",
+      desc: "Türk sinema tarihinin çekilemeyen, sansüre uğrayan veya kaybolan efsanevi 'hayalet' yapımlarının izini süren gizem dolu ve ufuk açıcı bir sinema belgeseli.",
+      year: "2024",
+      match: "95%",
+      meta: "Full HD",
+      rating: "8.2",
+      highlights: "Sinema tarihimizin kaybolmuş ve gün yüzüne çıkmamış gizemli yapıtlarının izinde büyüleyici bir yolculuk.",
+      isNew: true,
+      isYoutube: false
     }
   ]
 };
@@ -1008,6 +1024,9 @@ function initApp() {
           }
           else if (sub.id === 'yanyana-movie' || title.includes('yanyana')) {
             assignedKey = 'turk-filmleri';
+          }
+          else if (sub.id === 'hayalet-filmler-movie' || title.includes('hayalet filmler')) {
+            assignedKey = 'belgesel';
           }
           
           // Genel Kural Eşleşmeleri
