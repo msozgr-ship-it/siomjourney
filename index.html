@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.40">
+    <link rel="stylesheet" href="css/style.css?v=5.41">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -1034,6 +1034,22 @@ const DB = {
       highlights: 'Görme engelli bir kadın ve onun için hayatını tehlikeye atan eski bir boksörün unutulmaz aşk hikayesi.',
       isNew: true,
       isYoutube: false
+    },
+    {
+      id: 'bizim-icin-sampiyon-movie',
+      title: 'Bizim İçin Şampiyon',
+      poster: 'assets/img/bizimiçinşampiyon.jpeg',
+      file: 'COMING_SOON',
+      trailer: 'https://youtu.be/3s87gCHsm6c?si=E7LDMZMWTfjBtvbV',
+      searchTags: 'bizim için şampiyon, şampiyon, bold pilot, halis karataş, begüm atman, türk filmi, yerli sinema, yarış, dram, romantik, ekin koç, farah zeynep abdullah, fikret kuşkan, 2018',
+      desc: 'Efsanevi yarış atı Bold Pilot ve onun bir araya getirdiği jokey Halis Karataş ile Begüm Atman arasındaki unutulmaz aşk ve başarı hikayesini konu alan, yaşanmış gerçek bir dramatik başyapıt.',
+      year: '2018',
+      match: '99%',
+      meta: 'Full HD',
+      rating: '8.4',
+      highlights: 'Bold Pilot ve Halis Karataş\'ın tüm Türkiye\'yi birleştiren efsanevi zafer ve aşk öyküsü.',
+      isNew: true,
+      isYoutube: false
     }
   ]
 };
@@ -1133,6 +1149,9 @@ function initApp() {
             assignedKey = 'animasyon';
           }
           else if (sub.id === 'sadece-sen-movie' || title.includes('sadece sen')) {
+            assignedKey = 'turk-filmleri';
+          }
+          else if (sub.id === 'bizim-icin-sampiyon-movie' || title.includes('şampiyon') || title.includes('sampiyon')) {
             assignedKey = 'turk-filmleri';
           }
           else if (sub.id && (sub.id.includes('dag') || sub.id.includes('dağ'))) {
@@ -2144,6 +2163,8 @@ const DEFAULTS = {
   "kpop-iblis-avilari-movie": 0,
   "sadece-sen-movie": 0,
   "sadece-sen-single": 0,
+  "bizim-icin-sampiyon-movie": 0,
+  "bizim-icin-sampiyon-single": 0,
   "dag1-single": 0,
   "dag2-single": 0,
   "s1e1": 0,
