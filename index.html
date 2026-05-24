@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.39">
+    <link rel="stylesheet" href="css/style.css?v=5.40">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -1659,10 +1659,11 @@ function setupSearch() {
       }
     }
 
-    // Ana kütüphane grid filtreleme
+    // Ana kütüphane grid filtreleme (Dönme dolap kopyalarını eliyoruz!)
     filteredContent = allContent.filter(item => 
-      (item.title && item.title.toLowerCase().includes(q)) || 
-      (item.searchTags && item.searchTags.toLowerCase().includes(q))
+      !(item.showOnlyInOrbital || (item.id && item.id.includes('-single'))) &&
+      ((item.title && item.title.toLowerCase().includes(q)) || 
+       (item.searchTags && item.searchTags.toLowerCase().includes(q)))
     );
     renderContent();
 
@@ -1670,19 +1671,30 @@ function setupSearch() {
     if (q.length > 0 && resultsPanel) {
       const searchableItems = [];
       allContent.forEach(item => {
+        // Dönme dolap kopyalarını Spotlight önerilerinden de eliyoruz!
+        if (item.showOnlyInOrbital || (item.id && item.id.includes('-single'))) {
+          return;
+        }
+        
         searchableItems.push(item);
+        
         if (item.collection) {
           item.collection.forEach(sub => {
+            // Başlıktaki yılı bul (örn. "Zootopia 2 (2025)" -> "2025") veya ebeveyn nesnenin yılını miras al
+            const parsedYear = sub.title.match(/\d{4}/) ? sub.title.match(/\d{4}/)[0] : (item.year && item.year !== 'Koleksiyon' ? item.year : '2024');
             searchableItems.push({
               ...sub,
+              year: sub.year || parsedYear,
               searchTags: (sub.searchTags || '') + ' ' + (item.searchTags || '')
             });
           });
         }
         if (item.episodes) {
           item.episodes.forEach(sub => {
+            const parsedYear = sub.title.match(/\d{4}/) ? sub.title.match(/\d{4}/)[0] : (item.year && item.year !== 'Koleksiyon' ? item.year : '2024');
             searchableItems.push({
               ...sub,
+              year: sub.year || parsedYear,
               searchTags: (sub.searchTags || '') + ' ' + (item.searchTags || '')
             });
           });
