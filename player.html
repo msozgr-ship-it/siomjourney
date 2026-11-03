@@ -808,7 +808,7 @@
         }
 
         // Gerçek .mp4 / stream
-        if (currentFileUrl.endsWith('.mp4') || currentFileUrl.includes('.mp4?') || currentFileUrl.includes('.mkv') || currentFileUrl.includes('.webm')) {
+        if (currentFileUrl.endsWith('.mp4') || currentFileUrl.includes('.mp4?') || currentFileUrl.includes('/stream/') || currentFileUrl.includes('.mkv') || currentFileUrl.includes('.webm')) {
             setNativeVideo(currentFileUrl, () => setIframe(currentFileUrl, false));
             return;
         }
