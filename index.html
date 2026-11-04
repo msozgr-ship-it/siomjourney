@@ -257,6 +257,20 @@ const DB = {
       isNew: true
     },
     {
+      id: "sarkici-balina-movie",
+      title: "Şarkıcı Balina",
+      poster: "assets/img/thelastwhalesinger.webp",
+      file: "",
+      trailer: "https://youtu.be/OUsep4dkRdo?si=G3e-P3k8y2Lz547k&start=10",
+      searchTags: "şarkıcı balina, the last whale singer, balina, vincent, animasyon, macera, aile, 2025, 2026",
+      desc: "Okyanusların derinliklerinde, kambur balinaların son şarkıcısı olan genç balina Vincent, kadim bir canavarı durdurmak ve okyanusu kurtarmak için efsanevi bir maceraya atılır.",
+      year: "2025",
+      match: "96%",
+      meta: "Full HD",
+      rating: "8.2",
+      isNew: true
+    },
+    {
       id: "swapped-movie",
       title: "Swapped",
       poster: "assets/img/swapped.jpg",
@@ -1235,7 +1249,7 @@ function initApp() {
     allContent = [...allContent, ...categories];
     
     // DÖNME DOLAPTA ARTIK SADECE TEKLİ FİMLERİN AFİŞLERİ OLACAK (Seriler ve koleksiyonlar elendi!)
-    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper', 'raya-ve-son-ejderha-movie', 'dag1-single', 'dag2-single'];
+    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'sarkici-balina-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper', 'raya-ve-son-ejderha-movie', 'dag1-single', 'dag2-single'];
     orbitalContent = allContent.filter(item => orbitalAllowedIds.includes(item.id)); 
     filteredContent = [...allContent];
 
@@ -2331,6 +2345,7 @@ const DEFAULTS = {
   "kpop-iblis-avilari-movie": 150,
   "sadece-sen-movie": 135,
   "sadece-sen-single": 135,
+  "sarkici-balina-movie": 145,
   "bizim-icin-sampiyon-movie": 175,
   "bizim-icin-sampiyon-single": 175,
   "dag1-single": 140,
