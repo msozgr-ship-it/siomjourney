@@ -261,7 +261,7 @@ const DB = {
       title: "Şarkıcı Balina",
       poster: "assets/img/thelastwhalesinger.webp",
       file: "",
-      trailer: "https://youtu.be/fFkYgaK3Jlc?start=10",
+      trailer: "https://youtu.be/fFkYgaK3Jlc",
       searchTags: "şarkıcı balina, the last whale singer, balina, vincent, animasyon, macera, aile, 2025, 2026",
       desc: "Okyanusların derinliklerinde, kambur balinaların son şarkıcısı olan genç balina Vincent, kadim bir canavarı durdurmak ve okyanusu kurtarmak için efsanevi bir maceraya atılır.",
       year: "2025",
@@ -2249,13 +2249,14 @@ function openPlayerTrailerOnly(trailerUrl, title, poster) {
   `;
 
   let finalUrl = trailerUrl;
-  if (trailerUrl.includes("youtu.be")) {
-    let id = trailerUrl.split("youtu.be/")[1].split("?")[0];
-    let start = trailerUrl.includes("start=") ? "&start=" + trailerUrl.split("start=")[1] : "";
-    finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1&vq=hd1080&hd=1${start}`;
-  } else if (trailerUrl.includes("youtube.com")) {
-    let id = trailerUrl.split("v=")[1]?.split("&")[0];
-    finalUrl = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1&vq=hd1080&hd=1`;
+  let ytId = "";
+  if (trailerUrl.includes("youtu.be/")) ytId = trailerUrl.split("youtu.be/")[1].split("?")[0].split("&")[0];
+  else if (trailerUrl.includes("embed/")) ytId = trailerUrl.split("embed/")[1].split("?")[0].split("&")[0];
+  else if (trailerUrl.includes("v=")) ytId = trailerUrl.split("v=")[1].split("&")[0].split("?")[0];
+
+  if (ytId) {
+    // Kullanıcı 'Fragmanı İzle' dediğinde fragman KESİNLİKLE baştan (00:00) başlar
+    finalUrl = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1&vq=hd1080&hd=1&start=0`;
   }
   
   container.innerHTML += `
@@ -2536,10 +2537,15 @@ function initRealVisitCounter() {
             let currentMovieFileUrl = "";
 
             function formatTrailerUrl(url) {
-                if(url && url.includes("youtu.be")) {
-                    let id = url.split("youtu.be/")[1].split("?")[0];
-                    let start = url.includes("start=") ? "&start=" + url.split("start=")[1] : "";
-                    return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1&vq=hd1080&hd=1${start}`;
+                if(!url) return "";
+                let ytId = "";
+                if (url.includes("youtu.be/")) ytId = url.split("youtu.be/")[1].split("?")[0].split("&")[0];
+                else if (url.includes("embed/")) ytId = url.split("embed/")[1].split("?")[0].split("&")[0];
+                else if (url.includes("v=")) ytId = url.split("v=")[1].split("&")[0].split("?")[0];
+
+                if (ytId) {
+                    // Fragman moduna geçildiğinde KESİNLİKLE baştan (00:00) başlar
+                    return `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=0&controls=1&showinfo=0&modestbranding=1&rel=0&playsinline=1&vq=hd1080&hd=1&start=0`;
                 }
                 return url;
             }
