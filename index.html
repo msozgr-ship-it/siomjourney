@@ -1881,7 +1881,7 @@ function updateBackgroundVideo(item) {
           }
         })
         .catch(() => applyArchiveBg(`https://archive.org/download/${identifier}/${identifier}.mp4`));
-    } else if (sourceUrl.endsWith('.mp4') || sourceUrl.includes('.mp4?')) {
+    } else if (sourceUrl.endsWith('.mp4') || sourceUrl.includes('.mp4?') || sourceUrl.includes('/stream/')) {
       let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
       videoHtml = `<video class="hero-bg-video" src="${sourceUrl}${fragParam}" autoplay muted loop playsinline></video>`;
       loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, false);
