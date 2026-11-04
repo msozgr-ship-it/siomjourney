@@ -39,8 +39,8 @@ body {
     overflow: hidden;
     clip: rect(0, auto, auto, 0);
     clip-path: inset(0 0 0 0);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 75%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 68%, rgba(0,0,0,0.3) 84%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 68%, rgba(0,0,0,0.3) 84%, transparent 100%);
     background: #000;
 }
 
@@ -68,14 +68,14 @@ body {
 .bg-video-layer iframe,
 .bg-video-layer video {
     position: absolute;
-    top: 50%;
-    left: 50%;
     border: none;
     pointer-events: none;
 }
 
 .hero-video-bg video,
 .bg-video-layer video {
+    top: 50%;
+    left: 50%;
     object-fit: cover;
     width: 100%;
     height: 100%;
@@ -87,16 +87,17 @@ body {
 .hero-video-bg iframe,
 .bg-video-layer iframe {
     position: absolute;
-    top: 50% !important;
+    top: 48% !important;
     left: 50% !important;
-    width: 200% !important;
-    height: 200% !important;
-    min-width: 200% !important;
-    min-height: 200% !important;
-    max-width: 200% !important;
-    max-height: 200% !important;
-    /* Karakterlerin kesilmesini önleyen, doğal ve kristal netliğindeki orijinal 1:1 netlik ölçeklendirmesi */
-    transform: translate(-50%, -50%) scale(0.5) !important;
+    transform: translate(-50%, -50%) !important;
+    /* 16:9 oranını koruyarak yanlardaki siyah boşlukları (pillarbox) sıfırlayan,
+       karakterleri kesmeden 1:1 piksel Full HD 1080p netlikte oturtan profesyonel cover */
+    width: 100vw !important;
+    height: 56.25vw !important; /* 100vw * 9 / 16 (Tam 16:9) */
+    min-width: 177.77vh !important; /* 100vh * 16 / 9 (Tüm ekran yüksekliklerinde boşluksuz) */
+    min-height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
     aspect-ratio: auto !important;
     border: none;
     pointer-events: none;
