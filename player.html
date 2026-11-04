@@ -772,9 +772,11 @@
     }
 
     function setNativeVideo(src, onError) {
-        container.innerHTML = `<video id="player-video" src="${src}" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;"></video>`;
+        container.innerHTML = `<video id="player-video" src="${src}" controls autoplay playsinline preload="auto" x-webkit-airplay="allow" style="width:100%;height:100%;object-fit:contain;"></video>`;
         const v = document.getElementById('player-video');
         v.addEventListener('canplay', fadeOutLoader);
+        v.addEventListener('playing', fadeOutLoader);
+        v.addEventListener('waiting', showLoader);
         if (onError) v.addEventListener('error', onError, { once: true });
         
         // Tarayıcı otomatik oynatma (autoplay) engeline takılırsa yükleniyorda kalmaması için 1.5 sn yedek zaman aşımı
