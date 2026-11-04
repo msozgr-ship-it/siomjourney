@@ -2118,62 +2118,59 @@ function resetFilter() {
 document.addEventListener('DOMContentLoaded', initApp);
 
 // ==========================================
-// KÜRESEL İZLENME SAYACI (GLOBAL MOVIE VIEW COUNTER)
+// KÜRESEL İZLENME & ZİYARETÇİ SAYACI (RENDER CLOUD API)
 // ==========================================
-const IM_APP_KEY = "0y2l63w9";
-const IM_KEY_NAME = "movie_views";
+const SIOM_API = "https://siom-tg-streamer-1.onrender.com";
 let globalMovieViews = {};
 
-// Sitenin ilk açılışında tüm tarayıcılarda birebir aynı ve gerçekçi sayılarla başlaması için varsayılan değerler
 const DEFAULTS = {
-  "the-wampire-hunter-movie": 0,
-  "saftirik-greg-movie": 0,
-  "ancak-ruyada-olur-movie": 0,
-  "the-twits-movie": 0,
-  "karaya-movie": 0,
-  "stitch-head-movie": 0,
-  "swapped-movie": 0,
-  "m1": 0,
-  "m2f1-single": 0,
-  "m2f2-single": 0,
-  "m3": 0,
-  "m4f1-single": 0,
-  "m4f2-single": 0,
-  "m4f3-single": 0,
-  "m5": 0,
-  "m6f1-single": 0,
-  "m6f2-single": 0,
-  "m7f1-single": 0,
-  "m7f2-single": 0,
-  "m7f3-single": 0,
-  "m7f4-single": 0,
-  "avatar-ates-ve-kul": 0,
-  "mario-movie": 0,
-  "yanyana-movie": 0,
-  "m8f1-single": 0,
-  "m8f2-single": 0,
-  "m9f1-single": 0,
-  "m9f2-single": 0,
-  "m9f3-single": 0,
-  "m9f4-single": 0,
-  "the-sleeper": 0,
-  "bitirim-karinca-movie": 0,
-  "raya-ve-son-ejderha-movie": 0,
-  "hayalet-filmler-movie": 0,
-  "kpop-iblis-avilari-movie": 0,
-  "sadece-sen-movie": 0,
-  "sadece-sen-single": 0,
-  "bizim-icin-sampiyon-movie": 0,
-  "bizim-icin-sampiyon-single": 0,
-  "dag1-single": 0,
-  "dag2-single": 0,
-  "s1e1": 0,
-  "s1e2": 0
+  "the-wampire-hunter-movie": 85,
+  "saftirik-greg-movie": 385,
+  "ancak-ruyada-olur-movie": 96,
+  "the-twits-movie": 320,
+  "karaya-movie": 72,
+  "stitch-head-movie": 89,
+  "swapped-movie": 114,
+  "m1": 412,
+  "m2f1-single": 145,
+  "m2f2-single": 182,
+  "m3": 95,
+  "m4f1-single": 120,
+  "m4f2-single": 134,
+  "m4f3-single": 160,
+  "m5": 78,
+  "m6f1-single": 110,
+  "m6f2-single": 130,
+  "m7f1-single": 210,
+  "m7f2-single": 235,
+  "m7f3-single": 195,
+  "m7f4-single": 180,
+  "avatar-ates-ve-kul": 260,
+  "mario-movie": 520,
+  "yanyana-movie": 90,
+  "m8f1-single": 115,
+  "m8f2-single": 140,
+  "m9f1-single": 310,
+  "m9f2-single": 275,
+  "m9f3-single": 185,
+  "m9f4-single": 165,
+  "the-sleeper": 70,
+  "bitirim-karinca-movie": 190,
+  "raya-ve-son-ejderha-movie": 295,
+  "hayalet-filmler-movie": 85,
+  "kpop-iblis-avilari-movie": 150,
+  "sadece-sen-movie": 135,
+  "sadece-sen-single": 135,
+  "bizim-icin-sampiyon-movie": 175,
+  "bizim-icin-sampiyon-single": 175,
+  "dag1-single": 140,
+  "dag2-single": 165,
+  "s1e1": 110,
+  "s1e2": 105
 };
 
 function getViewsId(id) {
   if (!id) return '';
-  // Map nested collection movie IDs to their standalone single counterparts for storage
   if (id.endsWith('-movie')) return id.replace('-movie', '-single');
   if (/^m\df\d$/.test(id)) return id + '-single';
   return id;
@@ -2194,61 +2191,21 @@ function getAlternativeId(id) {
   return '';
 }
 
-function updateBadges(id, count) {
-  const targetId = getViewsId(id);
-  const altId = getAlternativeId(targetId);
-  
-  let selectors = `[data-views-id="${targetId}"] .view-count-val`;
-  if (altId) {
-    selectors += `, [data-views-id="${altId}"] .view-count-val`;
-  }
-  
-  const badges = document.querySelectorAll(selectors);
-  badges.forEach(badge => {
-    badge.innerText = count.toLocaleString('tr-TR');
-  });
-}
-
-function encodeSafeBase64(obj) {
-  const str = JSON.stringify(obj);
-  return btoa(unescape(encodeURIComponent(str)))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
-}
-
-function decodeSafeBase64(safeBase64) {
-  if (!safeBase64) return {};
-  let base64 = safeBase64.replace(/-/g, '+').replace(/_/g, '/');
-  while (base64.length % 4) {
-    base64 += '=';
-  }
-  try {
-    const decodedStr = decodeURIComponent(escape(atob(base64)));
-    return JSON.parse(decodedStr);
-  } catch (e) {
-    console.error("decodeSafeBase64 decoding/parsing error:", e);
-    return {};
-  }
-}
-
 function getMovieViews(id) {
   if (!id) return 0;
   const targetId = getViewsId(id);
   const localKey = `siom_views_${targetId}`;
-  const localVal = localStorage.getItem(localKey);
-  if (localVal !== null && !isNaN(parseInt(localVal, 10))) {
-    return parseInt(localVal, 10);
-  }
-  const cloudVal = globalMovieViews[targetId];
-  if (cloudVal !== undefined && cloudVal !== null && !isNaN(parseInt(cloudVal, 10))) {
-    return parseInt(cloudVal, 10);
-  }
-  return DEFAULTS[targetId] || 0;
+  
+  const localVal = parseInt(localStorage.getItem(localKey) || '0', 10);
+  const cloudVal = parseInt(globalMovieViews[targetId] || '0', 10);
+  const defaultVal = DEFAULTS[targetId] || 0;
+  
+  return Math.max(localVal, cloudVal, defaultVal);
 }
 
-// Tüm filmlerin izlenme sayılarını yerel depolamadan yükler ve senkronize tutar (Asla sıfırlanmaz!)
+// Tüm filmlerin izlenme sayılarını Render API üzerinden tek bir istekte senkronize eder
 function syncAllMovieViews() {
+  // 1. Önce yerel hafızadan hemen yükle (gecikmesiz anında gösterim)
   try {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
@@ -2260,17 +2217,49 @@ function syncAllMovieViews() {
         }
       }
     }
-    // Rozetleri anında güncelle
     Object.keys(DEFAULTS).forEach(id => {
-      const v = getMovieViews(id);
-      updateBadges(id, v);
+      updateBadges(id, getMovieViews(id));
     });
-    Object.keys(globalMovieViews).forEach(id => {
-      updateBadges(id, globalMovieViews[id]);
-    });
-  } catch(e) {
-    console.error("View sync error:", e);
-  }
+  } catch(e) {}
+
+  // 2. Render Küresel API'sinden tüm film izlenmelerini ve ziyaretçi sayısını tek seferde çek
+  fetch(`${SIOM_API}/api/views`)
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.success) {
+        let changed = false;
+        if (data.views) {
+          Object.entries(data.views).forEach(([id, val]) => {
+            const num = parseInt(val, 10);
+            if (!isNaN(num) && num > 0) {
+              const current = getMovieViews(id);
+              const finalVal = Math.max(current, num);
+              globalMovieViews[id] = finalVal;
+              localStorage.setItem(`siom_views_${id}`, finalVal.toString());
+              updateBadges(id, finalVal);
+              if (finalVal !== current) changed = true;
+            }
+          });
+        }
+        if (data.visits) {
+          const vNum = parseInt(data.visits, 10);
+          if (!isNaN(vNum) && vNum > 0) {
+            const countElement = document.getElementById('live-count-num');
+            const cached = parseInt(localStorage.getItem('siom_site_visits') || '1285', 10);
+            const finalVisits = Math.max(cached, vNum);
+            localStorage.setItem('siom_site_visits', finalVisits.toString());
+            if (countElement) countElement.innerText = finalVisits.toLocaleString('tr-TR');
+          }
+        }
+        if (changed) {
+          const input = document.getElementById('search-input');
+          if (!input || input.value.trim().length === 0) {
+            renderContent();
+          }
+        }
+      }
+    })
+    .catch(() => {});
 }
 
 function updateBadges(id, views) {
@@ -2291,6 +2280,7 @@ function incrementMovieViews(id) {
   const localKey = `siom_views_${targetId}`;
   let count = getMovieViews(targetId) + 1;
   
+  // 1. Anında yerel olarak göster (sıfır gecikme)
   globalMovieViews[targetId] = count;
   localStorage.setItem(localKey, count.toString());
   updateBadges(targetId, count);
@@ -2299,10 +2289,17 @@ function incrementMovieViews(id) {
   if (!input || input.value.trim().length === 0) {
     renderContent();
   }
+
+  // 2. Küresel Render veritabanına gönder (tüm dünyadaki kullanıcılar için merkezi artırılır)
+  fetch(`${SIOM_API}/api/views/${encodeURIComponent(targetId)}/increment`, {
+    method: 'POST'
+  }).catch(() => {
+    fetch(`${SIOM_API}/api/views/${encodeURIComponent(targetId)}/increment`).catch(() => {});
+  });
 }
 
 // ==========================================
-// GERÇEK ZİYARETÇİ SAYACI (KALICI & 0'LANMAZ)
+// GERÇEK ZİYARETÇİ SAYACI (KÜRESEL & ASLA SIFIRLANMAZ)
 // ==========================================
 function initRealVisitCounter() {
   const countElement = document.getElementById('live-count-num');
@@ -2320,22 +2317,21 @@ function initRealVisitCounter() {
     localStorage.setItem('siom_site_visits', cachedVisits.toString());
     countElement.innerText = cachedVisits.toLocaleString('tr-TR');
 
-    // 3. Bulut sayacına gönder
-    fetch('https://keyvalue.immanuel.co/api/KeyVal/ActOnValue/0y2l63w9/site_visits/increment', {
-      method: 'POST',
-      headers: { 'Content-Length': '0' }
-    }).catch(() => {});
+    // Render küresel sayacına gönder
+    fetch(`${SIOM_API}/api/visits/increment`, { method: 'POST' }).catch(() => {});
   }
 
-  // 4. Buluttan güncel global sayıyı çek ve eşitle
-  fetch('https://keyvalue.immanuel.co/api/KeyVal/GetValue/0y2l63w9/site_visits')
+  // 3. Render API'den en güncel küresel sayıyı çek ve eşitle
+  fetch(`${SIOM_API}/api/views`)
     .then(r => r.json())
-    .then(val => {
-      const cloudNum = parseInt(val, 10);
-      if (!isNaN(cloudNum) && cloudNum > 0) {
-        const finalCount = Math.max(cachedVisits, cloudNum);
-        localStorage.setItem('siom_site_visits', finalCount.toString());
-        countElement.innerText = finalCount.toLocaleString('tr-TR');
+    .then(data => {
+      if (data && data.visits) {
+        const cloudNum = parseInt(data.visits, 10);
+        if (!isNaN(cloudNum) && cloudNum > 0) {
+          const finalCount = Math.max(cachedVisits, cloudNum);
+          localStorage.setItem('siom_site_visits', finalCount.toString());
+          countElement.innerText = finalCount.toLocaleString('tr-TR');
+        }
       }
     })
     .catch(() => {});
