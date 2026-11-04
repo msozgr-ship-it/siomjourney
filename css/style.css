@@ -89,18 +89,17 @@ body {
     position: absolute;
     top: 50% !important;
     left: 50% !important;
+    width: 200% !important;
+    height: 200% !important;
+    min-width: 200% !important;
+    min-height: 200% !important;
+    max-width: 200% !important;
+    max-height: 200% !important;
+    /* Karakterlerin kesilmesini önleyen, doğal ve kristal netliğindeki orijinal 1:1 netlik ölçeklendirmesi */
+    transform: translate(-50%, -50%) scale(0.5) !important;
+    aspect-ratio: auto !important;
     border: none;
     pointer-events: none;
-    /* 16:9 en-boy oranını bozmadan alanı uçtan uca (edge-to-edge) cover ile kaplar.
-       Tüm videolarda yanlardaki siyah boşlukları (pillarbox) sıfırlayarak
-       Dağ 2'deki gibi sinematik, geniş ve tam ekran görünüm sunar. Kaliteyi asla bozmaz. */
-    width: 108vw !important;
-    height: 60.75vw !important; /* 108vw * 9 / 16 (Tam 16:9) */
-    min-width: 192vh !important; /* 108 * 16 / 9 vh */
-    min-height: 108% !important;
-    max-width: none !important;
-    max-height: none !important;
-    transform: translate(-50%, -48%) !important;
 }
 
 /* PREMIUM TOP NAVIGATION */
