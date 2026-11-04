@@ -83,7 +83,8 @@ body {
     min-height: 200% !important;
     max-width: 200% !important;
     max-height: 200% !important;
-    transform: translate(-50%, -50%) scale(0.5) !important;
+    /* Zoom scale(0.58) ve translate(-50%, -46%) ile alt YouTube altyazı alanı tamamen maskenin dışına atılır */
+    transform: translate(-50%, -46%) scale(0.58) !important;
     aspect-ratio: auto !important;
 }
 
@@ -152,6 +153,7 @@ body {
     flex-grow: 1;
     display: flex;
     align-items: center;
+    gap: 15px;
     width: 100%;
 }
 
@@ -1263,3 +1265,87 @@ body {
     transform: scale(1.05);
 }
 
+
+
+/* ==========================================
+   FRAGMAN SES AÇ/KAPAT BUTONU (SAĞ ÜST)
+   ========================================== */
+.bg-sound-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 18px;
+    background: rgba(18, 18, 24, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 40px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    flex-shrink: 0;
+    user-select: none;
+    z-index: 100;
+}
+
+.bg-sound-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
+}
+
+.bg-sound-btn.sound-on {
+    border-color: rgba(0, 230, 118, 0.5);
+    color: #00e676;
+    box-shadow: 0 0 20px rgba(0, 230, 118, 0.25), 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.bg-sound-btn.sound-off {
+    border-color: rgba(255, 68, 68, 0.4);
+    color: #ff5252;
+}
+
+.sound-wave-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5px;
+    height: 14px;
+}
+
+.sound-wave-bars .sw-bar {
+    width: 2.5px;
+    background: #00e676;
+    border-radius: 2px;
+    animation: soundWaveAnim 1s ease-in-out infinite alternate;
+}
+
+.sound-wave-bars .sw-bar:nth-child(1) { height: 6px; animation-delay: 0.1s; }
+.sound-wave-bars .sw-bar:nth-child(2) { height: 13px; animation-delay: 0.3s; }
+.sound-wave-bars .sw-bar:nth-child(3) { height: 8px; animation-delay: 0.5s; }
+
+.sound-wave-bars.paused .sw-bar {
+    animation: none !important;
+    height: 3px !important;
+    background: #ff5252 !important;
+}
+
+@keyframes soundWaveAnim {
+    0% { height: 4px; }
+    50% { height: 14px; }
+    100% { height: 6px; }
+}
+
+@media (max-width: 768px) {
+    .bg-sound-btn {
+        padding: 8px 12px;
+    }
+    .bg-sound-btn .sound-label {
+        display: none;
+    }
+}
