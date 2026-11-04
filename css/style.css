@@ -44,14 +44,14 @@ body {
     background: #000;
 }
 
-/* ÇİFT KATMANLI KESİNTİSİZ CROSS-FADE (A/B BUFFERING) */
+/* CIFT KATMANLI KESINTISIZ CROSS-FADE (A/B BUFFERING) */
 .bg-video-layer {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.85s cubic-bezier(0.25, 1, 0.5, 1);
     pointer-events: none;
     overflow: hidden;
     z-index: 1;
@@ -62,7 +62,7 @@ body {
     z-index: 2;
 }
 
-/* Tüm arka plan medyası: hero alanını tam doldur (crop, ortalı, kesilmeden cover) */
+/* Tum arka plan medyasi: hero alanini tam doldur (crop, ortali, kesilmeden cover) */
 .hero-video-bg iframe,
 .hero-video-bg video,
 .bg-video-layer iframe,
@@ -87,15 +87,15 @@ body {
 .hero-video-bg iframe,
 .bg-video-layer iframe {
     position: absolute;
-    top: 48% !important;
+    top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    /* 16:9 oranını koruyarak yanlardaki siyah boşlukları (pillarbox) sıfırlayan,
+    /* 16:9 oranini koruyarak yanlardaki siyah bosluklari (pillarbox) sifirlayan,
        karakterleri kesmeden 1:1 piksel Full HD 1080p netlikte oturtan profesyonel cover */
     width: 100vw !important;
     height: 56.25vw !important; /* 100vw * 9 / 16 (Tam 16:9) */
-    min-width: 177.77vh !important; /* 100vh * 16 / 9 (Tüm ekran yüksekliklerinde boşluksuz) */
-    min-height: 100% !important;
+    min-width: 115.56vh !important; /* 65vh * 16 / 9 (Tum ekran yuksekliklerinde bosluksuz) */
+    min-height: 65vh !important;
     max-width: none !important;
     max-height: none !important;
     aspect-ratio: auto !important;

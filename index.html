@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomJourney | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.44">
+    <link rel="stylesheet" href="css/style.css?v=5.45">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -762,7 +762,7 @@ const DB = {
       searchTags: 'alvin ve sincaplar, alvin, simon, theodore, animasyon, komedi, müzikal',
       desc: 'Dünyanın en ünlü şarkıcı sincaplarının eğlenceli ve müzik dolu maceraları.',
       poster: 'assets/img/alvinvesincaplarmain.jpg',
-      trailer: 'https://youtu.be/3M7R01bB9S8',
+      trailer: 'https://youtu.be/iPZHlclFpCs',
       isCollection: true,
       year: 'Koleksiyon',
       match: '98%',
@@ -776,7 +776,7 @@ const DB = {
           title: 'Alvin ve Sincaplar 1',
           desc: 'Dünyanın en ünlü şarkıcı sincaplarının ilk efsanevi macerası.',
           poster: 'assets/img/alvinvesincaplar1.avif',
-          trailer: 'https://youtu.be/3M7R01bB9S8',
+          trailer: 'https://youtu.be/iPZHlclFpCs',
           file: 'https://siom-tg-streamer-1.onrender.com/stream/15.mp4',
           isYoutube: false
         },
@@ -806,7 +806,7 @@ const DB = {
           title: 'Alvin ve Sincaplar: Yol Macerası',
           desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
           poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
-          trailer: 'https://youtu.be/3M7R01bB9S8',
+          trailer: 'https://youtu.be/iPZHlclFpCs',
           file: 'https://siom-tg-streamer-1.onrender.com/stream/24.mp4',
           isYoutube: false
         }
@@ -850,7 +850,7 @@ const DB = {
       searchTags: 'alvin ve sincaplar 1, alvin, simon, theodore, animasyon, komedi, müzikal',
       desc: 'Dünyanın en ünlü şarkıcı sincaplarının ilk efsanevi macerası.',
       poster: 'assets/img/alvinvesincaplar1.avif',
-      trailer: 'https://youtu.be/3M7R01bB9S8',
+      trailer: 'https://youtu.be/iPZHlclFpCs',
       year: '2007',
       match: '98%',
       meta: '4K Ultra HD',
@@ -898,7 +898,7 @@ const DB = {
       searchTags: 'alvin ve sincaplar 4, yol macerası, alvin, simon, theodore, animasyon, komedi, müzikal',
       desc: 'Sincaplar yola çıkıyor ve başlarını yine birbirinden komik belalara sokuyorlar.',
       poster: 'assets/img/alvinvesincaplaryolmaceraları.jpg',
-      trailer: 'https://youtu.be/3M7R01bB9S8',
+      trailer: 'https://youtu.be/iPZHlclFpCs',
       year: '2015',
       match: '98%',
       meta: '4K Ultra HD',
@@ -1248,9 +1248,22 @@ function initApp() {
     // Kategorileri allContent'e ekleyelim ki arama ve detay modalı bulabilsin
     allContent = [...allContent, ...categories];
     
-    // DÖNME DOLAPTA ARTIK SADECE TEKLİ FİMLERİN AFİŞLERİ OLACAK (Seriler ve koleksiyonlar elendi!)
-    const orbitalAllowedIds = ['m2f1-single', 'm2f2-single', 'm6f1-single', 'm6f2-single', 'm8f1-single', 'm8f2-single', 'm4f3-single', 'm9f3-single', 'ancak-ruyada-olur-movie', 'stitch-head-movie', 'swapped-movie', 'sarkici-balina-movie', 'm1', 'm3', 'avatar-ates-ve-kul', 'mario-movie', 'yanyana-movie', 'the-sleeper', 'raya-ve-son-ejderha-movie', 'dag1-single', 'dag2-single'];
-    orbitalContent = allContent.filter(item => orbitalAllowedIds.includes(item.id)); 
+    // DONME DOLAPTA ARTIK SADECE KULLANICININ ISTEDIGI 10 FILM (Tam sirali ve eksiksiz!)
+    const orbitalOrder = [
+      'm8f1-single',
+      'm8f2-single',
+      'dag2-single',
+      'm6f2-single',
+      'bizim-icin-sampiyon-movie',
+      'sadece-sen-movie',
+      'swapped-movie',
+      'm2f2-single',
+      'm4f3-single',
+      'm9f4-single'
+    ];
+    orbitalContent = orbitalOrder
+      .map(id => allContent.find(item => item.id === id))
+      .filter(Boolean);
     filteredContent = [...allContent];
 
     renderOrbital();
@@ -1433,14 +1446,13 @@ function updateOrbitalTransforms() {
 
 
 // ==========================================
-// ARKA PLAN FRAGMAN SES, ALTYAZI & KESİNTİSİZ CROSS-FADE (A/B BUFFER)
+// ARKA PLAN FRAGMAN SES, ALTYAZI & KESINTISIZ CROSS-FADE (A/B BUFFER)
 // ==========================================
 let isBgMuted = false;
 let currentBgLayer = 'a';
 let bgVideoTimeout = null;
-let crossFadeTimeout = null;
-let cleanupTimeout = null;
 let currentBgVideoId = null;
+let bgLoadToken = 0;
 
 function sendYtBgCommand(func, args = [], targetEl = null) {
   const container = targetEl || document.querySelector('.bg-video-layer.active') || document.getElementById('hero-video-bg');
@@ -1470,14 +1482,14 @@ function updateSoundButtonUI() {
     if (svgOn) svgOn.style.display = 'none';
     if (svgOff) svgOff.style.display = 'block';
     if (bars) bars.classList.add('paused');
-    if (label) label.textContent = 'SESSİZ';
+    if (label) label.textContent = 'SESSIZ';
   } else {
     btn.classList.remove('sound-off');
     btn.classList.add('sound-on');
     if (svgOn) svgOn.style.display = 'block';
     if (svgOff) svgOff.style.display = 'none';
     if (bars) bars.classList.remove('paused');
-    if (label) label.textContent = 'SES AÇIK';
+    if (label) label.textContent = 'SES ACIK';
   }
 }
 
@@ -1531,6 +1543,62 @@ function initBgSoundControl() {
   window.addEventListener('touchstart', onUserGesture, { passive: true });
 }
 
+// Global YouTube message listener for instant cross-fade & seamless loop
+window.addEventListener('message', (e) => {
+  try {
+    let data = e.data;
+    if (typeof data === 'string') {
+      try { data = JSON.parse(data); } catch(ex) { return; }
+    }
+    if (!data) return;
+
+    if (data.event === 'infoDelivery' && data.info) {
+      const pState = data.info.playerState;
+
+      // 1: PLAYING -> Video rendered actual frames! Start crossfade immediately!
+      if (pState === 1 && window._bgPendingCrossFade) {
+        const pending = window._bgPendingCrossFade;
+        const incomingIframe = pending.incomingLayer ? pending.incomingLayer.querySelector('iframe') : null;
+        if (incomingIframe && e.source === incomingIframe.contentWindow) {
+          pending.trigger();
+        }
+      }
+      // 0: ENDED -> Seamlessly loop the active trailer without playlist navigation
+      else if (pState === 0) {
+        const activeIframe = document.querySelector('.bg-video-layer.active iframe');
+        if (activeIframe && e.source === activeIframe.contentWindow) {
+          activeIframe.contentWindow.postMessage(JSON.stringify({
+            event: 'command',
+            func: 'seekTo',
+            args: [10, true]
+          }), '*');
+          activeIframe.contentWindow.postMessage(JSON.stringify({
+            event: 'command',
+            func: 'playVideo',
+            args: []
+          }), '*');
+        }
+      }
+    }
+  } catch (err) {}
+});
+
+function enforceYtQualityAndCleanUI(layer) {
+  const commands = [
+    ['unloadModule', ['captions']],
+    ['unloadModule', ['cc']],
+    ['setOption', ['captions', 'track', {}]],
+    ['setOption', ['captions', 'fontSize', 0]],
+    ['setOption', ['captions', 'reload', false]],
+    ['setPlaybackQuality', ['hd1080']],
+    ['setPlaybackQualityRange', ['hd1080', 'highres']],
+    ['suggestPlaybackQuality', ['hd1080']]
+  ];
+  commands.forEach(([func, args]) => {
+    sendYtBgCommand(func, args, layer);
+  });
+}
+
 // BREATHTAKING DOUBLE-BUFFERED AMBIENT BACKDROP
 function updateBackgroundVideo(item) {
   if (!item) return;
@@ -1538,8 +1606,6 @@ function updateBackgroundVideo(item) {
   currentBgVideoId = item.id;
 
   clearTimeout(bgVideoTimeout);
-  clearTimeout(crossFadeTimeout);
-  clearTimeout(cleanupTimeout);
 
   bgVideoTimeout = setTimeout(() => {
     const layerA = document.getElementById('bg-layer-a');
@@ -1556,12 +1622,12 @@ function updateBackgroundVideo(item) {
       setTimeout(() => {
         outgoingLayer.innerHTML = '';
         incomingLayer.innerHTML = '';
-      }, 1200);
+      }, 900);
       return;
     }
 
-    const midPoint = 15; 
-    const muteVal = isBgMuted ? 1 : 0;
+    const midPoint = 10; 
+    const token = ++bgLoadToken;
     let videoHtml = '';
 
     if (sourceUrl.includes('youtube.com') || sourceUrl.includes('youtu.be')) {
@@ -1570,7 +1636,9 @@ function updateBackgroundVideo(item) {
       else ytId = sourceUrl.split('v=')[1]?.split('&')[0] || sourceUrl.split('youtu.be/')[1]?.split('?')[0];
 
       let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
-      videoHtml = `<iframe class="hero-bg-iframe" src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&enablejsapi=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&vq=hd1080&hd=1&cc_load_policy=0&cc_lang_pref=off${startParam}" allow="autoplay; encrypted-media"></iframe>`;
+      // 'playlist=${ytId}' parameter removed to permanently eliminate YouTube playlist controls (|<< || >>|)
+      videoHtml = `<iframe class="hero-bg-iframe" src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&enablejsapi=1&controls=0&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&vq=hd1080&hd=1&cc_load_policy=0&cc_lang_pref=off${startParam}" allow="autoplay; encrypted-media"></iframe>`;
+      loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, true);
     } else if (sourceUrl.includes('archive.org')) {
       let identifier = '';
       if (sourceUrl.includes('archive.org/embed/')) identifier = sourceUrl.split('archive.org/embed/')[1]?.split('?')[0];
@@ -1578,10 +1646,9 @@ function updateBackgroundVideo(item) {
       let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
 
       const applyArchiveBg = (streamUrl) => {
-        if (!streamUrl) return;
-        const mAttr = isBgMuted ? 'muted' : '';
-        videoHtml = `<video class="hero-bg-video" src="${streamUrl}${fragParam}" autoplay ${mAttr} loop playsinline></video>`;
-        loadIntoLayer(incomingLayer, outgoingLayer, videoHtml);
+        if (!streamUrl || token !== bgLoadToken) return;
+        videoHtml = `<video class="hero-bg-video" src="${streamUrl}${fragParam}" autoplay muted loop playsinline></video>`;
+        loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, false);
       };
 
       fetch(`https://archive.org/metadata/${identifier}`)
@@ -1597,11 +1664,10 @@ function updateBackgroundVideo(item) {
           }
         })
         .catch(() => applyArchiveBg(`https://archive.org/download/${identifier}/${identifier}.mp4`));
-      return;
     } else if (sourceUrl.endsWith('.mp4') || sourceUrl.includes('.mp4?')) {
       let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
-      const mAttr = isBgMuted ? 'muted' : '';
-      videoHtml = `<video class="hero-bg-video" src="${sourceUrl}${fragParam}" autoplay ${mAttr} loop playsinline></video>`;
+      videoHtml = `<video class="hero-bg-video" src="${sourceUrl}${fragParam}" autoplay muted loop playsinline></video>`;
+      loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, false);
     } else if (sourceUrl.includes('dailymotion.com') || sourceUrl.includes('dai.ly')) {
       let dmId = '';
       if (sourceUrl.includes('video/')) dmId = sourceUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
@@ -1609,66 +1675,91 @@ function updateBackgroundVideo(item) {
 
       if (dmId) {
         let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
-        const muteDm = isBgMuted ? 'mute=1&muted=1' : 'mute=0&muted=0';
-        videoHtml = `<iframe class="hero-bg-iframe" src="https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&${muteDm}&controls=0&ui-logo=0&ui-start-screen-info=0&ui-highlight=000000&quality=best&queue-enable=false&sharing-enable=false&watchlater-enable=false${startParam}" allow="autoplay"></iframe>`;
+        videoHtml = `<iframe class="hero-bg-iframe" src="https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&mute=1&controls=0&ui-logo=0&ui-start-screen-info=0&ui-highlight=000000&quality=best&queue-enable=false&sharing-enable=false&watchlater-enable=false${startParam}" allow="autoplay"></iframe>`;
+        loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, false);
       }
     }
-
-    if (videoHtml) {
-      loadIntoLayer(incomingLayer, outgoingLayer, videoHtml);
-    }
-  }, 350); // Hızlı carousel dönüşlerinde kasmayı önleyen 350ms akıllı debounce
+  }, 260);
 }
 
-function loadIntoLayer(incomingLayer, outgoingLayer, videoHtml) {
-  // 1. Yeni video görünmez katmanda (opacity: 0) sessizce başlatılır
+function loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, isYt) {
+  // 1. Yeni video gorunmez katmanda (opacity: 0) sessizce baslatilir
   incomingLayer.classList.remove('active');
   incomingLayer.innerHTML = videoHtml;
 
-  // Altyazıları YouTube API üzerinden peş peşe kaldır ve 1080p Full HD kaliteyi kilitle
-  for (let delay of [150, 400, 800, 1500, 2200]) {
-    setTimeout(() => {
-      sendYtBgCommand('unloadModule', ['captions'], incomingLayer);
-      sendYtBgCommand('unloadModule', ['cc'], incomingLayer);
-      sendYtBgCommand('setOption', ['captions', 'track', {}], incomingLayer);
-      sendYtBgCommand('setOption', ['captions', 'fontSize', 0], incomingLayer);
-      sendYtBgCommand('setOption', ['captions', 'reload', false], incomingLayer);
-      sendYtBgCommand('setPlaybackQuality', ['hd1080'], incomingLayer);
-      sendYtBgCommand('setPlaybackQualityRange', ['hd1080', 'highres'], incomingLayer);
-      sendYtBgCommand('suggestPlaybackQuality', ['hd1080'], incomingLayer);
-    }, delay);
+  if (isYt) {
+    [150, 450, 900, 1600].forEach(d => {
+      setTimeout(() => {
+        if (token === bgLoadToken) enforceYtQualityAndCleanUI(incomingLayer);
+      }, d);
+    });
   }
 
-  // 2. Video oynatmaya başlayıp YouTube kontrolleri kaybolana kadar (1.6 sn) arka planda bekletilir
-  // Bu sayede "|<< || >>|" butonları kullanıcıya KESİNLİKLE GÖRÜNMEZ!
-  // Bu sırada eski video kesintisiz oynamaya devam eder, ASLA SİYAH EKRAN OLUŞMAZ!
-  crossFadeTimeout = setTimeout(() => {
-    // 3. Muazzam yumuşak cross-fade geçişi başlar (1.2 saniye erime)
-    incomingLayer.classList.add('active');
-    outgoingLayer.classList.remove('active');
-    currentBgLayer = (currentBgLayer === 'a') ? 'b' : 'a';
+  let executed = false;
+  const triggerCrossFade = () => {
+    if (executed || token !== bgLoadToken) return;
+    executed = true;
+    window._bgPendingCrossFade = null;
 
-    // Ses senkronizasyonu
+    // 2. Incoming layer fades in smoothly (0.85s CSS ease)
+    incomingLayer.classList.add('active');
+
+    // 3. Audio synchronization
     if (!isBgMuted) {
-      sendYtBgCommand('unMute', [], incomingLayer);
-      sendYtBgCommand('setVolume', [55], incomingLayer);
-      const v = incomingLayer.querySelector('video');
-      if (v) {
-        v.muted = false;
-        v.volume = 0.55;
-        v.play().catch(() => {});
+      if (isYt) {
+        sendYtBgCommand('unMute', [], incomingLayer);
+        sendYtBgCommand('setVolume', [55], incomingLayer);
+      } else {
+        const v = incomingLayer.querySelector('video');
+        if (v) { v.muted = false; v.volume = 0.55; }
       }
+      // Mute outgoing audio immediately so there's no sound overlap
+      sendYtBgCommand('mute', [], outgoingLayer);
+      const ov = outgoingLayer.querySelector('video');
+      if (ov) ov.muted = true;
     } else {
       sendYtBgCommand('mute', [], incomingLayer);
       const v = incomingLayer.querySelector('video');
       if (v) v.muted = true;
     }
 
-    // 4. Geçiş tamamen eriyip bittikten sonra eski videoyu kaynak tüketmemesi için temizle
-    cleanupTimeout = setTimeout(() => {
-      outgoingLayer.innerHTML = '';
-    }, 1400);
-  }, 1600);
+    // 4. Outgoing layer remains fully visible until incoming layer has completely reached 100% opacity!
+    setTimeout(() => {
+      if (token !== bgLoadToken) return;
+      outgoingLayer.classList.remove('active');
+      currentBgLayer = (currentBgLayer === 'a') ? 'b' : 'a';
+
+      // 5. Clean up old video after transition completes so zero GPU memory is wasted
+      setTimeout(() => {
+        if (token !== bgLoadToken) return;
+        sendYtBgCommand('stopVideo', [], outgoingLayer);
+        outgoingLayer.innerHTML = '';
+      }, 400);
+    }, 850);
+  };
+
+  // Register pending trigger for YouTube postMessage
+  window._bgPendingCrossFade = {
+    token: token,
+    incomingLayer: incomingLayer,
+    trigger: triggerCrossFade
+  };
+
+  // HTML5 Video Events
+  const vid = incomingLayer.querySelector('video');
+  if (vid) {
+    vid.addEventListener('playing', triggerCrossFade, { once: true });
+    vid.addEventListener('timeupdate', () => {
+      if (vid.currentTime > 0.1) triggerCrossFade();
+    }, { once: true });
+  }
+
+  // Safety Fallback Timer (if network is slow or postMessage blocked)
+  setTimeout(() => {
+    if (token === bgLoadToken && !executed) {
+      triggerCrossFade();
+    }
+  }, 1900);
 }
 
 function handleOrbitalClick(index, id) {
