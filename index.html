@@ -2414,6 +2414,19 @@ function initRealVisitCounter() {
             }
         });
     </script>
+    <!-- ── Render Streamer Pre-warming & Keep-Alive ── -->
+    <script>
+        (function() {
+            const STREAMER_URL = 'https://siom-tg-streamer-1.onrender.com/';
+            function pingStreamer() {
+                fetch(STREAMER_URL, { cache: 'no-store', mode: 'no-cors' }).catch(() => {});
+            }
+            // Sayfa açıldığında sunucuyu hemen ısıt
+            pingStreamer();
+            // Sekme açık kaldığı sürece her 7 dakikada bir uyanık tut
+            setInterval(pingStreamer, 7 * 60 * 1000);
+        })();
+    </script>
 </body>
 </html>
 
