@@ -60,7 +60,10 @@
 
     <div class="main-container">
         <section class="hero-spatial" id="hero-drag-area">
-            <div class="hero-video-bg" id="hero-video-bg"></div>
+            <div class="hero-video-bg" id="hero-video-bg">
+                <div class="bg-video-layer" id="bg-layer-a"></div>
+                <div class="bg-video-layer" id="bg-layer-b"></div>
+            </div>
             <div class="orbital-wrapper">
 
 
@@ -1416,14 +1419,18 @@ function updateOrbitalTransforms() {
 
 
 // ==========================================
-// ARKA PLAN FRAGMAN SES & ALTYAZI YÖNETİMİ
+// ARKA PLAN FRAGMAN SES, ALTYAZI & KESİNTİSİZ CROSS-FADE (A/B BUFFER)
 // ==========================================
-let isBgMuted = false; // Varsayılan olarak sesli başlar
+let isBgMuted = false;
+let currentBgLayer = 'a';
 let bgVideoTimeout = null;
+let crossFadeTimeout = null;
+let cleanupTimeout = null;
 let currentBgVideoId = null;
 
-function sendYtBgCommand(func, args = []) {
-  const iframe = document.querySelector('.hero-bg-iframe');
+function sendYtBgCommand(func, args = [], targetEl = null) {
+  const container = targetEl || document.querySelector('.bg-video-layer.active') || document.getElementById('hero-video-bg');
+  const iframe = container ? container.querySelector('iframe') : null;
   if (iframe && iframe.contentWindow) {
     try {
       iframe.contentWindow.postMessage(JSON.stringify({
@@ -1462,18 +1469,17 @@ function updateSoundButtonUI() {
 
 function muteBgMedia() {
   sendYtBgCommand('mute');
-  const bgVideo = document.querySelector('.hero-bg-video');
-  if (bgVideo) bgVideo.muted = true;
+  document.querySelectorAll('.bg-video-layer video').forEach(v => { v.muted = true; });
 }
 
 function unmuteBgMedia() {
   sendYtBgCommand('unMute');
   sendYtBgCommand('setVolume', [55]);
-  const bgVideo = document.querySelector('.hero-bg-video');
-  if (bgVideo) {
-    bgVideo.muted = false;
-    bgVideo.volume = 0.55;
-    bgVideo.play().catch(() => {});
+  const activeVideo = document.querySelector('.bg-video-layer.active video');
+  if (activeVideo) {
+    activeVideo.muted = false;
+    activeVideo.volume = 0.55;
+    activeVideo.play().catch(() => {});
   }
 }
 
@@ -1501,7 +1507,6 @@ function initBgSoundControl() {
   }
   updateSoundButtonUI();
 
-  // Tarayıcı otomatik ses politikasını ilk kullanıcı hareketinde tetikle
   const onUserGesture = () => {
     if (!isBgMuted) {
       unmuteBgMedia();
@@ -1512,127 +1517,140 @@ function initBgSoundControl() {
   window.addEventListener('touchstart', onUserGesture, { passive: true });
 }
 
-// BREATHTAKING AMBIENT VIDEO BACKDROP GENERATOR
+// BREATHTAKING DOUBLE-BUFFERED AMBIENT BACKDROP
 function updateBackgroundVideo(item) {
   if (!item) return;
   if (currentBgVideoId === item.id) return;
   currentBgVideoId = item.id;
 
-  const bgContainer = document.getElementById('hero-video-bg');
-  if (!bgContainer) return;
-
-  bgContainer.classList.remove('active');
-
   clearTimeout(bgVideoTimeout);
+  clearTimeout(crossFadeTimeout);
+  clearTimeout(cleanupTimeout);
+
   bgVideoTimeout = setTimeout(() => {
-    let videoHtml = '';
+    const layerA = document.getElementById('bg-layer-a');
+    const layerB = document.getElementById('bg-layer-b');
+    if (!layerA || !layerB) return;
+
+    const incomingLayer = (currentBgLayer === 'a') ? layerB : layerA;
+    const outgoingLayer = (currentBgLayer === 'a') ? layerA : layerB;
+
     const sourceUrl = item.trailer;
-    
     if (!sourceUrl) {
-      bgContainer.innerHTML = '';
+      outgoingLayer.classList.remove('active');
+      incomingLayer.classList.remove('active');
+      setTimeout(() => {
+        outgoingLayer.innerHTML = '';
+        incomingLayer.innerHTML = '';
+      }, 1200);
       return;
     }
 
     const midPoint = 15; 
     const muteVal = isBgMuted ? 1 : 0;
+    let videoHtml = '';
 
-    if (sourceUrl) {
-      if (sourceUrl.includes('youtube.com') || sourceUrl.includes('youtu.be')) {
-        let ytId = '';
-        if (sourceUrl.includes('embed/')) ytId = sourceUrl.split('embed/')[1]?.split('?')[0];
-        else ytId = sourceUrl.split('v=')[1]?.split('&')[0] || sourceUrl.split('youtu.be/')[1]?.split('?')[0];
-        
-        let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
-        // enablejsapi=1 ile tam kontrol, cc_load_policy=0 ve hl kaldırıldı (altyazılar engellendi)
-        videoHtml = `<iframe class="hero-bg-iframe" src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=${muteVal}&enablejsapi=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&vq=highres&hd=1&cc_load_policy=0&cc_lang_pref=off${startParam}" allow="autoplay; encrypted-media"></iframe>`;
-      } else if (sourceUrl.includes('archive.org')) {
-        let identifier = '';
-        if (sourceUrl.includes('archive.org/embed/')) identifier = sourceUrl.split('archive.org/embed/')[1]?.split('?')[0];
-        else identifier = sourceUrl.split('archive.org/details/')[1]?.split('?')[0];
-        let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
-        const applyArchiveBg = (streamUrl) => {
-          if (!streamUrl) return;
-          const mAttr = isBgMuted ? 'muted' : '';
-          videoHtml = `<video class="hero-bg-video" src="${streamUrl}${fragParam}" autoplay ${mAttr} loop playsinline></video>`;
-          bgContainer.innerHTML = videoHtml;
-          setTimeout(() => {
-            bgContainer.classList.add('active');
-            const v = bgContainer.querySelector('video');
-            if (v) {
-              v.muted = isBgMuted;
-              v.volume = isBgMuted ? 0 : 0.55;
-              v.play().catch(() => {
-                v.muted = true;
-                v.play();
-              });
-            }
-          }, 150);
-        };
-        fetch(`https://archive.org/metadata/${identifier}`)
-          .then(r => r.json())
-          .then(data => {
-            const best = (data.files || [])
-              .filter(f => /\.(mp4|mkv|webm|ogv|m4v)$/i.test(f.name || '') && (f.size || 0) > 500000)
-              .sort((a, b) => (b.size || 0) - (a.size || 0))[0];
-            if (best) {
-              applyArchiveBg(`https://archive.org/download/${identifier}/${encodeURIComponent(best.name)}`);
-            } else {
-              applyArchiveBg(`https://archive.org/download/${identifier}/${identifier}.mp4`);
-            }
-          })
-          .catch(() => applyArchiveBg(`https://archive.org/download/${identifier}/${identifier}.mp4`));
-        return;
-      } else if (sourceUrl.endsWith('.mp4') || sourceUrl.includes('.mp4?')) {
-        let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
+    if (sourceUrl.includes('youtube.com') || sourceUrl.includes('youtu.be')) {
+      let ytId = '';
+      if (sourceUrl.includes('embed/')) ytId = sourceUrl.split('embed/')[1]?.split('?')[0];
+      else ytId = sourceUrl.split('v=')[1]?.split('&')[0] || sourceUrl.split('youtu.be/')[1]?.split('?')[0];
+
+      let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
+      videoHtml = `<iframe class="hero-bg-iframe" src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=${muteVal}&enablejsapi=1&controls=0&loop=1&playlist=${ytId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&vq=highres&hd=1&cc_load_policy=0&cc_lang_pref=off${startParam}" allow="autoplay; encrypted-media"></iframe>`;
+    } else if (sourceUrl.includes('archive.org')) {
+      let identifier = '';
+      if (sourceUrl.includes('archive.org/embed/')) identifier = sourceUrl.split('archive.org/embed/')[1]?.split('?')[0];
+      else identifier = sourceUrl.split('archive.org/details/')[1]?.split('?')[0];
+      let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
+
+      const applyArchiveBg = (streamUrl) => {
+        if (!streamUrl) return;
         const mAttr = isBgMuted ? 'muted' : '';
-        videoHtml = `<video class="hero-bg-video" src="${sourceUrl}${fragParam}" autoplay ${mAttr} loop playsinline></video>`;
-      } else if (sourceUrl.includes('dailymotion.com') || sourceUrl.includes('dai.ly')) {
-        let dmId = '';
-        if (sourceUrl.includes('video/')) dmId = sourceUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
-        else if (sourceUrl.includes('dai.ly/')) dmId = sourceUrl.split('dai.ly/')[1]?.split('?')[0];
-        
-        if (dmId) {
-          let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
-          const muteDm = isBgMuted ? 'mute=1&muted=1' : 'mute=0&muted=0';
-          videoHtml = `<iframe class="hero-bg-iframe" src="https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&${muteDm}&controls=0&ui-logo=0&ui-start-screen-info=0&ui-highlight=000000&quality=best&queue-enable=false&sharing-enable=false&watchlater-enable=false${startParam}" allow="autoplay"></iframe>`;
-        }
+        videoHtml = `<video class="hero-bg-video" src="${streamUrl}${fragParam}" autoplay ${mAttr} loop playsinline></video>`;
+        loadIntoLayer(incomingLayer, outgoingLayer, videoHtml);
+      };
+
+      fetch(`https://archive.org/metadata/${identifier}`)
+        .then(r => r.json())
+        .then(data => {
+          const best = (data.files || [])
+            .filter(f => /\.(mp4|mkv|webm|ogv|m4v)$/i.test(f.name || '') && (f.size || 0) > 500000)
+            .sort((a, b) => (b.size || 0) - (a.size || 0))[0];
+          if (best) {
+            applyArchiveBg(`https://archive.org/download/${identifier}/${encodeURIComponent(best.name)}`);
+          } else {
+            applyArchiveBg(`https://archive.org/download/${identifier}/${identifier}.mp4`);
+          }
+        })
+        .catch(() => applyArchiveBg(`https://archive.org/download/${identifier}/${identifier}.mp4`));
+      return;
+    } else if (sourceUrl.endsWith('.mp4') || sourceUrl.includes('.mp4?')) {
+      let fragParam = midPoint > 0 ? `#t=${midPoint}` : '';
+      const mAttr = isBgMuted ? 'muted' : '';
+      videoHtml = `<video class="hero-bg-video" src="${sourceUrl}${fragParam}" autoplay ${mAttr} loop playsinline></video>`;
+    } else if (sourceUrl.includes('dailymotion.com') || sourceUrl.includes('dai.ly')) {
+      let dmId = '';
+      if (sourceUrl.includes('video/')) dmId = sourceUrl.split('video/')[1]?.split('?')[0]?.split('&')[0];
+      else if (sourceUrl.includes('dai.ly/')) dmId = sourceUrl.split('dai.ly/')[1]?.split('?')[0];
+
+      if (dmId) {
+        let startParam = midPoint > 0 ? `&start=${midPoint}` : '';
+        const muteDm = isBgMuted ? 'mute=1&muted=1' : 'mute=0&muted=0';
+        videoHtml = `<iframe class="hero-bg-iframe" src="https://www.dailymotion.com/embed/video/${dmId}?autoplay=1&${muteDm}&controls=0&ui-logo=0&ui-start-screen-info=0&ui-highlight=000000&quality=best&queue-enable=false&sharing-enable=false&watchlater-enable=false${startParam}" allow="autoplay"></iframe>`;
       }
     }
 
     if (videoHtml) {
-      bgContainer.innerHTML = videoHtml;
-      setTimeout(() => {
-        bgContainer.classList.add('active');
-        
-        // Altyazıları YouTube API üzerinden kesinlikle kaldır ve ses durumunu senkronize et
-        for (let delay of [150, 400, 800, 1500, 2500, 4000]) {
-          setTimeout(() => {
-            sendYtBgCommand('unloadModule', ['captions']);
-            sendYtBgCommand('unloadModule', ['cc']);
-            sendYtBgCommand('setOption', ['captions', 'track', {}]);
-            sendYtBgCommand('setOption', ['captions', 'fontSize', 0]);
-            if (!isBgMuted) {
-              unmuteBgMedia();
-            } else {
-              muteBgMedia();
-            }
-          }, delay);
-        }
-
-        const v = bgContainer.querySelector('video');
-        if (v) {
-          v.muted = isBgMuted;
-          v.volume = isBgMuted ? 0 : 0.55;
-          v.play().catch(() => {
-            v.muted = true;
-            v.play();
-          });
-        }
-      }, 150);
-    } else {
-      bgContainer.innerHTML = '';
+      loadIntoLayer(incomingLayer, outgoingLayer, videoHtml);
     }
-  }, 300);
+  }, 350); // Hızlı carousel dönüşlerinde kasmayı önleyen 350ms akıllı debounce
+}
+
+function loadIntoLayer(incomingLayer, outgoingLayer, videoHtml) {
+  // 1. Yeni video görünmez katmanda (opacity: 0) sessizce başlatılır
+  incomingLayer.classList.remove('active');
+  incomingLayer.innerHTML = videoHtml;
+
+  // Altyazıları YouTube API üzerinden peş peşe kaldır
+  for (let delay of [150, 400, 800, 1500, 2200]) {
+    setTimeout(() => {
+      sendYtBgCommand('unloadModule', ['captions'], incomingLayer);
+      sendYtBgCommand('unloadModule', ['cc'], incomingLayer);
+      sendYtBgCommand('setOption', ['captions', 'track', {}], incomingLayer);
+      sendYtBgCommand('setOption', ['captions', 'fontSize', 0], incomingLayer);
+    }, delay);
+  }
+
+  // 2. Video oynatmaya başlayıp YouTube kontrolleri kaybolana kadar (1.6 sn) arka planda bekletilir
+  // Bu sayede "|<< || >>|" butonları kullanıcıya KESİNLİKLE GÖRÜNMEZ!
+  // Bu sırada eski video kesintisiz oynamaya devam eder, ASLA SİYAH EKRAN OLUŞMAZ!
+  crossFadeTimeout = setTimeout(() => {
+    // 3. Muazzam yumuşak cross-fade geçişi başlar (1.2 saniye erime)
+    incomingLayer.classList.add('active');
+    outgoingLayer.classList.remove('active');
+    currentBgLayer = (currentBgLayer === 'a') ? 'b' : 'a';
+
+    // Ses senkronizasyonu
+    if (!isBgMuted) {
+      sendYtBgCommand('unMute', [], incomingLayer);
+      sendYtBgCommand('setVolume', [55], incomingLayer);
+      const v = incomingLayer.querySelector('video');
+      if (v) {
+        v.muted = false;
+        v.volume = 0.55;
+        v.play().catch(() => {});
+      }
+    } else {
+      sendYtBgCommand('mute', [], incomingLayer);
+      const v = incomingLayer.querySelector('video');
+      if (v) v.muted = true;
+    }
+
+    // 4. Geçiş tamamen eriyip bittikten sonra eski videoyu kaynak tüketmemesi için temizle
+    cleanupTimeout = setTimeout(() => {
+      outgoingLayer.innerHTML = '';
+    }, 1400);
+  }, 1600);
 }
 
 function handleOrbitalClick(index, id) {

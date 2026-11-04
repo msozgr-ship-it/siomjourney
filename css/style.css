@@ -35,45 +35,57 @@ body {
     width: 100%;
     height: 100%;
     z-index: 0;
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out 1.2s;
     pointer-events: none;
     overflow: hidden;
     clip: rect(0, auto, auto, 0);
     clip-path: inset(0 0 0 0);
-    /* Sadece alt kenarda hafif solma — videonun tamamı çerçeveye cover ile oturur */
-    mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 75%, transparent 100%);
+    background: #000;
 }
-.hero-video-bg.active {
+
+/* ÇİFT KATMANLI KESİNTİSİZ CROSS-FADE (A/B BUFFERING) */
+.bg-video-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.bg-video-layer.active {
     opacity: 1;
+    z-index: 2;
 }
+
 /* Tüm arka plan medyası: hero alanını tam doldur (crop, ortalı, kesilmeden cover) */
 .hero-video-bg iframe,
-.hero-video-bg video {
+.hero-video-bg video,
+.bg-video-layer iframe,
+.bg-video-layer video {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     border: none;
     pointer-events: none;
-    aspect-ratio: 16 / 9;
-    width: auto;
-    height: auto;
-    min-width: 100%;
-    min-height: 100%;
-    max-width: none;
 }
-.hero-video-bg video {
+
+.hero-video-bg video,
+.bg-video-layer video {
     object-fit: cover;
     width: 100%;
     height: 100%;
     min-width: 100%;
     min-height: 100%;
+    transform: translate(-50%, -50%);
 }
-/* Arka plan fragman videosunu belirtilen alana tam sığdırır, kesilme ve taşmayı önler */
-/* Devasa ekranlarda YouTube'un kaliteyi düşürmesini engellemek için 200% boyutlandırma ve scale(0.5) hilesi uygulanmıştır */
-.hero-video-bg iframe {
+
+.hero-video-bg iframe,
+.bg-video-layer iframe {
     position: absolute;
     top: 50% !important;
     left: 50% !important;
