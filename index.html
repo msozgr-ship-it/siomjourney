@@ -193,7 +193,7 @@ const DB = {
       id: "saftirik-greg-movie",
       title: "Saftirik Greg'in Maceraları",
       poster: "assets/img/saftirikgrekinmaceraları.webp",
-      file: "https://www.dailymotion.com/embed/video/k5Oh2Kybe4itMzG4JyC?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false",
+      file: "https://siom-tg-streamer-1.onrender.com/stream/19.mp4",
       trailer: "https://youtu.be/zb4cQROwt74?si=FKBm5lckBWgB89Ps&start=10",
       searchTags: "saftirik greg'in maceraları, saftirik, greg, animasyon, komedi, aile, 2024",
       isNew: true
@@ -211,7 +211,7 @@ const DB = {
       id: "the-twits-movie",
       title: "The Twits",
       poster: "assets/img/thetwits.webp",
-      file: "https://archive.org/embed/the-twits_202605",
+      file: "https://siom-tg-streamer-1.onrender.com/stream/14.mp4",
       trailer: "https://youtu.be/dMZI0FkYLEs?si=8OcFu3bK3gh-5qKg&start=10",
       searchTags: "the twits, twits, belalılar, animasyon, komedi, roald dahl, netflix, 2025",
       isNew: true
@@ -238,7 +238,7 @@ const DB = {
       id: "swapped-movie",
       title: "Swapped",
       poster: "assets/img/swapped.jpg",
-      file: "https://www.dailymotion.com/embed/video/k2ZeOLXS6COHywG4KJ8?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false",
+      file: "https://siom-tg-streamer-1.onrender.com/stream/17.mp4",
       trailer: "https://youtu.be/h_ypav1tCHw?si=5iAbRUcYN0RfITVK&start=10",
       searchTags: "swapped, animasyon, macera, fantastik, aile, 2024",
       isNew: true
@@ -741,7 +741,7 @@ const DB = {
           desc: 'Dünyanın en ünlü şarkıcı sincaplarının ilk efsanevi macerası.',
           poster: 'assets/img/alvinvesincaplar1.avif',
           trailer: 'https://youtu.be/3M7R01bB9S8',
-          file: 'https://www.dailymotion.com/embed/video/k6OCXSvnoHhIpEG9erE?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false',
+          file: 'https://siom-tg-streamer-1.onrender.com/stream/15.mp4',
           isYoutube: false
         },
         {
@@ -751,7 +751,7 @@ const DB = {
           desc: 'Sincapların eğlence dolu maceraları okul sıralarında devam ediyor.',
           poster: 'assets/img/alvinvesincaplar2.avif',
           trailer: 'https://youtu.be/QqxVLpjMxE4?si=CVGKTvOHlklNK4Cx',
-          file: 'https://www.dailymotion.com/embed/video/k5FWF0kR4YgXqqG6NQ6?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false',
+          file: 'https://siom-tg-streamer-1.onrender.com/stream/16.mp4',
           isYoutube: false
         },
         {
@@ -820,7 +820,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '8.4',
       highlights: 'Müzik ve eğlence dolu Alvin ve Sincaplar macerasının başlangıcı.',
-      file: 'https://www.dailymotion.com/embed/video/k6OCXSvnoHhIpEG9erE?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false',
+      file: 'https://siom-tg-streamer-1.onrender.com/stream/15.mp4',
       isYoutube: false,
       showOnlyInOrbital: true
     },
@@ -836,7 +836,7 @@ const DB = {
       meta: '4K Ultra HD',
       rating: '8.2',
       highlights: 'Alvin ve Sincaplar geri dönüyor, bu sefer daha eğlenceli!',
-      file: 'https://www.dailymotion.com/embed/video/k5FWF0kR4YgXqqG6NQ6?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false',
+      file: 'https://siom-tg-streamer-1.onrender.com/stream/16.mp4',
       isYoutube: false,
       showOnlyInOrbital: true
     },
@@ -907,7 +907,7 @@ const DB = {
       id: "raya-ve-son-ejderha-movie",
       title: "Raya ve Son Ejderha",
       poster: "assets/img/rayavesonejderha.webp",
-      file: "https://www.dailymotion.com/embed/video/k2bE4Z2YeOBB6LGaaBs?autoplay=1&quality=best&queue-enable=false&queue-autoplay-next=false",
+      file: "https://siom-tg-streamer-1.onrender.com/stream/18.mp4",
       trailer: "https://youtu.be/Lyy5nRgjODs?si=uoRsX1MwQNfXSW3i",
       searchTags: "raya ve son ejderha, raya, sisu, son ejderha, disney, animasyon, macera, fantastik",
       desc: "Kumandra dünyasında insanlar ve ejderhalar uyum içinde yaşardı. Kötü bir güç ülkeyi tehdit ettiğinde, Raya adlı yalnız bir savaşçı efsanevi son ejderhayı bulmak için yola çıkar.",
@@ -2235,68 +2235,64 @@ function decodeSafeBase64(safeBase64) {
 function getMovieViews(id) {
   if (!id) return 0;
   const targetId = getViewsId(id);
+  const localKey = `siom_views_${targetId}`;
+  const localVal = localStorage.getItem(localKey);
+  if (localVal !== null && !isNaN(parseInt(localVal, 10))) {
+    return parseInt(localVal, 10);
+  }
   const cloudVal = globalMovieViews[targetId];
-  if (cloudVal !== undefined && cloudVal !== null && cloudVal !== '') {
+  if (cloudVal !== undefined && cloudVal !== null && !isNaN(parseInt(cloudVal, 10))) {
     return parseInt(cloudVal, 10);
   }
-  const key = `siom_views_${targetId}`;
-  let count = localStorage.getItem(key);
-  return count === null ? (DEFAULTS[targetId] || 0) : parseInt(count, 10);
+  return DEFAULTS[targetId] || 0;
 }
 
-// Tüm filmlerin küresel izlenme sayılarını tek bir ağ isteğiyle çeker ve günceller
+// Tüm filmlerin izlenme sayılarını yerel depolamadan yükler ve senkronize tutar (Asla sıfırlanmaz!)
 function syncAllMovieViews() {
-  fetch(`https://keyvalue.immanuel.co/api/KeyVal/GetValue/${IM_APP_KEY}/${IM_KEY_NAME}`)
-    .then(res => res.json())
-    .then(data => {
-      if (data && data !== '""' && data !== 'null') {
-        try {
-          let rawStr = data;
-          if (typeof rawStr === 'string' && rawStr.startsWith('"') && rawStr.endsWith('"')) {
-            rawStr = JSON.parse(rawStr);
-          }
-          
-          const parsed = decodeSafeBase64(rawStr);
-          if (parsed && typeof parsed === 'object') {
-            globalMovieViews = parsed;
-            let needsRender = false;
-            
-            Object.keys(DEFAULTS).forEach(id => {
-              const oldViews = getMovieViews(id);
-              const cloudVal = parsed[id];
-              const newViews = (cloudVal !== undefined && cloudVal !== null && cloudVal !== '') ? parseInt(cloudVal, 10) : (DEFAULTS[id] || 0);
-              localStorage.setItem(`siom_views_${id}`, newViews.toString());
-              
-              if (newViews !== oldViews) {
-                needsRender = true;
-              }
-              
-              updateBadges(id, newViews);
-            });
-            
-            if (needsRender) {
-              renderContent();
-            }
-          }
-        } catch (e) {
-          console.error("JSON parsing error for views:", e);
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('siom_views_')) {
+        const id = k.replace('siom_views_', '');
+        const val = parseInt(localStorage.getItem(k) || '0', 10);
+        if (!isNaN(val) && val > 0) {
+          globalMovieViews[id] = Math.max(globalMovieViews[id] || 0, val);
         }
       }
-    })
-    .catch(err => console.warn("Global views sync error:", err));
+    }
+    // Rozetleri anında güncelle
+    Object.keys(DEFAULTS).forEach(id => {
+      const v = getMovieViews(id);
+      updateBadges(id, v);
+    });
+    Object.keys(globalMovieViews).forEach(id => {
+      updateBadges(id, globalMovieViews[id]);
+    });
+  } catch(e) {
+    console.error("View sync error:", e);
+  }
+}
+
+function updateBadges(id, views) {
+  const targetId = getViewsId(id);
+  const altId = getAlternativeId(targetId);
+  const elements = document.querySelectorAll(`[data-views-id="${targetId}"], [data-views-id="${altId}"]`);
+  elements.forEach(el => {
+    const valSpan = el.querySelector('.view-count-val');
+    if (valSpan) {
+      valSpan.innerText = views.toLocaleString('tr-TR');
+    }
+  });
 }
 
 function incrementMovieViews(id) {
   if (!id) return;
   const targetId = getViewsId(id);
   const localKey = `siom_views_${targetId}`;
-  let count = getMovieViews(targetId);
+  let count = getMovieViews(targetId) + 1;
   
-  // Yerel anlık görsel güncelleme (sıfır gecikmeli reaksiyon)
-  count += 1;
   globalMovieViews[targetId] = count;
   localStorage.setItem(localKey, count.toString());
-  
   updateBadges(targetId, count);
 
   const input = document.getElementById('search-input');
@@ -2306,28 +2302,43 @@ function incrementMovieViews(id) {
 }
 
 // ==========================================
-// GERÇEK ZİYARETÇİ SAYACI (REAL VISIT COUNTER)
+// GERÇEK ZİYARETÇİ SAYACI (KALICI & 0'LANMAZ)
 // ==========================================
 function initRealVisitCounter() {
   const countElement = document.getElementById('live-count-num');
   if (!countElement) return;
 
-  countElement.style.transition = 'opacity 0.3s ease';
+  // 1. Önceki ziyaretçi sayısını localStorage'dan anında göster (ASLA 0 GÖZÜKMEZ)
+  let cachedVisits = parseInt(localStorage.getItem('siom_site_visits') || '1285', 10);
+  countElement.innerText = cachedVisits.toLocaleString('tr-TR');
 
-  fetch('https://api.counterapi.dev/v1/siomjourney/mainpage/up')
-    .then(response => response.json())
-    .then(data => {
-        const realCount = data.count; 
-        countElement.style.opacity = 0;
-        setTimeout(() => {
-            countElement.innerText = realCount.toLocaleString('tr-TR');
-            countElement.style.opacity = 1;
-        }, 300);
+  // 2. Bu oturumda (session) ziyaret artırılmadıysa artır
+  const hasVisitedSession = sessionStorage.getItem('siom_visited_session');
+  if (!hasVisitedSession) {
+    cachedVisits += 1;
+    sessionStorage.setItem('siom_visited_session', 'true');
+    localStorage.setItem('siom_site_visits', cachedVisits.toString());
+    countElement.innerText = cachedVisits.toLocaleString('tr-TR');
+
+    // 3. Bulut sayacına gönder
+    fetch('https://keyvalue.immanuel.co/api/KeyVal/ActOnValue/0y2l63w9/site_visits/increment', {
+      method: 'POST',
+      headers: { 'Content-Length': '0' }
+    }).catch(() => {});
+  }
+
+  // 4. Buluttan güncel global sayıyı çek ve eşitle
+  fetch('https://keyvalue.immanuel.co/api/KeyVal/GetValue/0y2l63w9/site_visits')
+    .then(r => r.json())
+    .then(val => {
+      const cloudNum = parseInt(val, 10);
+      if (!isNaN(cloudNum) && cloudNum > 0) {
+        const finalCount = Math.max(cachedVisits, cloudNum);
+        localStorage.setItem('siom_site_visits', finalCount.toString());
+        countElement.innerText = finalCount.toLocaleString('tr-TR');
+      }
     })
-    .catch(err => {
-        console.error("Ziyaretçi sayacı yüklenemedi:", err);
-        countElement.innerText = "0";
-    });
+    .catch(() => {});
 }
 </script>
     <script>
