@@ -4299,7 +4299,7 @@ function openDetails(id, isBack = false) {
       if (sub.seasons || sub.episodes || sub.isCollection) {
         openDetails(sub.id);
       } else {
-        openPlayer(sub.file, sub.title, sub.poster || item.poster, sub.trailer || item.trailer || '');
+        openPlayer(sub.file, sub.title, sub.poster || item.poster, sub.trailer || item.trailer || '', sub);
       }
     });
   });
@@ -4329,12 +4329,47 @@ function closeDetails() {
   }
 }
 
-function launchPlayer(file, title, poster, trailer) {
-  let item = findItemDeepByTitle(title);
+function findSeriesContextForEpisode(epId, epTitle, epFile) {
+  if (typeof DB === 'undefined' || !DB.series) return null;
+  for (const s of DB.series) {
+    if (s.seasons) {
+      for (const season of s.seasons) {
+        if (season.episodes) {
+          const match = season.episodes.find(e => 
+            (epId && e.id === epId) || 
+            (epTitle && e.title && e.title.toLowerCase().trim() === epTitle.toLowerCase().trim()) || 
+            (epFile && e.file && e.file === epFile)
+          );
+          if (match) {
+            return { series: s, season: season, episode: match };
+          }
+        }
+      }
+    }
+    if (s.episodes) {
+      const match = s.episodes.find(e => 
+        (epId && e.id === epId) || 
+        (epTitle && e.title && e.title.toLowerCase().trim() === epTitle.toLowerCase().trim()) || 
+        (epFile && e.file && e.file === epFile)
+      );
+      if (match) {
+        return { 
+          series: s, 
+          season: { id: s.id + '_s1', title: '1. Sezon', seasonNum: 1, episodes: s.episodes }, 
+          episode: match 
+        };
+      }
+    }
+  }
+  return null;
+}
+
+function launchPlayer(file, title, poster, trailer, directItem) {
+  let item = directItem || findItemDeepByTitle(title);
   const fileSub = item ? (item.fileSub || '') : '';
   
-  // İzlenme sayısını artır (tekli film ise)
-  if (item && item.id && !item.isCollection && !item.episodes) {
+  // İzlenme sayısını artır (tekli film veya bölüm ise)
+  if (item && item.id && !item.isCollection && !item.episodes && !item.seasons) {
     incrementMovieViews(item.id);
   }
   
@@ -4354,10 +4389,53 @@ function launchPlayer(file, title, poster, trailer) {
     playerUrl += `&highlights=${encodeURIComponent(item.highlights || '')}`;
     playerUrl += `&id=${encodeURIComponent(item.id)}`;
   }
+
+  // Dizi Bağlamı (Series Context) Kontrolü
+  const seriesCtx = findSeriesContextForEpisode(item ? item.id : null, title, file);
+  if (seriesCtx) {
+    const seriesPayload = {
+      seriesId: seriesCtx.series.id,
+      seriesTitle: seriesCtx.series.title,
+      currentSeasonId: seriesCtx.season.id,
+      currentEpisodeId: seriesCtx.episode.id,
+      poster: seriesCtx.series.poster,
+      seasons: seriesCtx.series.seasons ? seriesCtx.series.seasons.map(s => ({
+        id: s.id,
+        title: s.title,
+        seasonNum: s.seasonNum || 1,
+        poster: s.poster || seriesCtx.series.poster,
+        episodes: (s.episodes || []).map(e => ({
+          id: e.id,
+          epNum: e.epNum,
+          title: e.title,
+          desc: e.desc || '',
+          poster: e.poster || s.poster || seriesCtx.series.poster,
+          file: e.file || '',
+          fileSub: e.fileSub || '',
+          trailer: e.trailer || seriesCtx.series.trailer || ''
+        }))
+      })) : [{
+        id: seriesCtx.series.id + '_s1',
+        title: '1. Sezon',
+        seasonNum: 1,
+        poster: seriesCtx.series.poster,
+        episodes: seriesCtx.series.episodes || []
+      }]
+    };
+    try {
+      localStorage.setItem('siom_active_series', JSON.stringify(seriesPayload));
+    } catch(e) {}
+    playerUrl += `&isSeries=1&seriesId=${encodeURIComponent(seriesCtx.series.id)}&epId=${encodeURIComponent(seriesCtx.episode.id)}`;
+  } else {
+    try {
+      localStorage.removeItem('siom_active_series');
+    } catch(e) {}
+  }
+
   window.open(playerUrl, '_blank');
 }
 
-function openPlayer(file, title, poster, trailer) {
+function openPlayer(file, title, poster, trailer, directItem) {
   const isUpcoming = !file || file.includes('ID') || file.includes('coming') || file.includes('COMING');
 
   const modal = document.getElementById('coming-soon-modal');
@@ -4389,7 +4467,7 @@ function openPlayer(file, title, poster, trailer) {
   }
 
   // Database'den filmi derin arama ile bulup bilgileri çekiyoruz
-  const item = findItemDeepByTitle(title);
+  const item = directItem || findItemDeepByTitle(title);
   let resolvedTrailer = trailer || (item ? item.trailer : '');
   
   if (item) {
@@ -4424,11 +4502,16 @@ function openPlayer(file, title, poster, trailer) {
     if (csBadge) csBadge.textContent = "SİNEMATİK İZLEME";
     if (csPipelineWrapper) csPipelineWrapper.style.display = "none";
     if (csMovieBtn) {
+      const isEp = (item && (item.epNum || (item.title && /bölüm/i.test(item.title))));
+      csMovieBtn.innerHTML = `
+        <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" style="width:16px; height:16px;"><path d="M8 5v14l11-7z"/></svg>
+        ${isEp ? 'Bölümü İzle' : 'Filmi İzle'}
+      `;
       csMovieBtn.style.display = "inline-flex";
       csMovieBtn.onclick = (e) => {
         e.stopPropagation();
         closeComingSoon();
-        launchPlayer(file, title, poster, resolvedTrailer);
+        launchPlayer(file, title, poster, resolvedTrailer, item);
       };
     }
   }

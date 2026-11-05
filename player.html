@@ -465,6 +465,447 @@
             }
             .ticket-card::before, .ticket-card::after { display: none; }
         }
+    
+        /* ── Next Episode Dim Overlay (Loş Bildiri) ── */
+        .next-ep-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(8, 8, 14, 0.88) 0%, rgba(3, 3, 6, 0.96) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInNextOverlay 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        @keyframes fadeInNextOverlay {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .next-ep-card {
+            background: rgba(18, 18, 28, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 34px 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 45px rgba(255, 0, 85, 0.2);
+            max-width: 460px;
+            width: 90%;
+            text-align: center;
+        }
+        .next-ep-badge {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.2px;
+            color: #ff0055;
+            background: rgba(255, 0, 85, 0.12);
+            border: 1px solid rgba(255, 0, 85, 0.3);
+            padding: 4px 14px;
+            border-radius: 14px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.25);
+        }
+        .next-ep-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.4px;
+            margin: 4px 0 2px 0;
+            background: linear-gradient(135deg, #fff 60%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .next-ep-subtitle {
+            font-size: 13.5px;
+            color: rgba(255, 255, 255, 0.65);
+            font-weight: 500;
+        }
+        .next-ep-timer-bar {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        .next-ep-timer-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff0055, #ff5500, #ffd700);
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.7);
+            border-radius: 4px;
+        }
+        .next-ep-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .next-ep-btn {
+            padding: 11px 24px;
+            border-radius: 22px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        .next-ep-btn.play-now {
+            background: linear-gradient(135deg, #ff0055, #ff5500);
+            color: #fff;
+            box-shadow: 0 0 22px rgba(255, 0, 85, 0.45);
+        }
+        .next-ep-btn.play-now:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 32px rgba(255, 0, 85, 0.65);
+        }
+        .next-ep-btn.cancel {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: rgba(255, 255, 255, 0.75);
+        }
+        .next-ep-btn.cancel:hover {
+            background: rgba(255, 255, 255, 0.16);
+            color: #fff;
+        }
+
+        /* ── Series Mode Canvas Layout (Screen shifted left, side panel right) ── */
+        body.has-series .player-canvas {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            padding: 75px 36px 30px 36px;
+        }
+        body.has-series .player-screen-wrapper {
+            flex: 1;
+            max-width: 1040px;
+            max-height: 74vh;
+        }
+
+        /* ── Series Side Panel (Right Drawer) ── */
+        .series-side-panel {
+            width: 350px;
+            height: 74vh;
+            max-height: 74vh;
+            background: rgba(12, 12, 20, 0.78);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 65px rgba(0, 0, 0, 0.75), 0 0 30px rgba(255, 255, 255, 0.02) inset;
+            overflow: hidden;
+            z-index: 50;
+            transition: all 0.4s ease;
+        }
+        .series-panel-header {
+            padding: 20px 22px 16px 22px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+            position: relative;
+        }
+        .series-info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .series-tag {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #ff0055;
+            text-transform: uppercase;
+        }
+        .series-main-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -0.3px;
+        }
+
+        /* ── Season Selector & Dropdown ── */
+        .season-selector-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .season-select-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .season-select-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        .season-select-btn.active {
+            border-color: #ff0055;
+            box-shadow: 0 0 16px rgba(255, 0, 85, 0.3);
+        }
+        .dropdown-chevron {
+            transition: transform 0.3s ease;
+        }
+        .season-select-btn.active .dropdown-chevron {
+            transform: rotate(180deg);
+        }
+        .season-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            width: 100%;
+            background: rgba(16, 16, 26, 0.96);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 100;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        .season-opt-btn {
+            padding: 9px 14px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.75);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .season-opt-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+        .season-opt-btn.active {
+            background: linear-gradient(90deg, rgba(255, 0, 85, 0.2) 0%, rgba(255, 85, 0, 0.1) 100%);
+            color: #ff0055;
+            font-weight: 700;
+        }
+
+        /* ── Episodes List ── */
+        .episodes-list-header {
+            padding: 12px 22px 8px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .episodes-active-hint {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .episodes-scroll-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 14px 18px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scroll-behavior: smooth;
+        }
+        .episodes-scroll-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        .episodes-scroll-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .episodes-scroll-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+        }
+        .episodes-scroll-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* ── Episode Item Card ── */
+        .side-ep-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative;
+            user-select: none;
+        }
+        .side-ep-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateX(4px);
+        }
+        .side-ep-item.active {
+            background: linear-gradient(135deg, rgba(255, 0, 85, 0.14) 0%, rgba(20, 20, 32, 0.9) 100%);
+            border-color: rgba(255, 0, 85, 0.55);
+            box-shadow: 0 4px 20px rgba(255, 0, 85, 0.25), 0 0 15px rgba(255, 0, 85, 0.1) inset;
+        }
+        .side-ep-item.upcoming {
+            opacity: 0.55;
+        }
+        .side-ep-thumbnail {
+            width: 90px;
+            height: 54px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            flex-shrink: 0;
+        }
+        .side-ep-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .side-ep-item:hover .side-ep-thumbnail img {
+            transform: scale(1.08);
+        }
+        .side-ep-play-badge {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: background 0.2s ease;
+        }
+        .side-ep-item:hover .side-ep-play-badge {
+            background: rgba(255, 0, 85, 0.35);
+        }
+        .side-ep-item.active .side-ep-play-badge {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .active-pulse-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff66;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff66;
+            animation: activePulse 1.5s infinite;
+        }
+        @keyframes activePulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.4); opacity: 1; }
+        }
+        .side-ep-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .side-ep-title-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .side-ep-num {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #ffd700;
+        }
+        .side-ep-item.active .side-ep-num {
+            color: #ff0055;
+        }
+        .side-ep-playing-tag {
+            font-size: 8px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 6px;
+            background: #00ff66;
+            color: #050508;
+            letter-spacing: 0.5px;
+        }
+        .side-ep-coming-tag {
+            font-size: 8px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .side-ep-name {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .side-ep-desc {
+            font-size: 10.5px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.35;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        /* ── Mobile responsiveness for series mode ── */
+        @media (max-width: 1080px) {
+            body.has-series .player-canvas {
+                flex-direction: column;
+                overflow-y: auto;
+                padding: 70px 16px 30px 16px;
+                gap: 20px;
+            }
+            body.has-series .player-screen-wrapper {
+                max-width: 100%;
+                max-height: 50vh;
+            }
+            .series-side-panel {
+                width: 100%;
+                height: auto;
+                max-height: 380px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -523,12 +964,60 @@
     </div>
 </header>
 
-<div class="player-canvas">
+<div class="player-canvas" id="player-canvas">
     <div class="player-screen-wrapper" id="player-screen-wrapper">
         <div class="player-container" id="video-container"></div>
         <div class="player-glaze"></div>
         <div class="frame-led"></div>
+
+        <!-- Loş Bildiri: Sonraki Bölüm Overlay -->
+        <div class="next-ep-overlay" id="next-ep-overlay" style="display: none;">
+            <div class="next-ep-card">
+                <div class="next-ep-badge">OTOMATİK GEÇİŞ</div>
+                <h2 class="next-ep-title" id="next-ep-title">2. Bölüme Geçiliyor...</h2>
+                <p class="next-ep-subtitle" id="next-ep-subtitle">Vision Quest • 1. Sezon</p>
+                <div class="next-ep-timer-bar">
+                    <div class="next-ep-timer-fill" id="next-ep-timer-fill"></div>
+                </div>
+                <div class="next-ep-actions">
+                    <button class="next-ep-btn play-now" onclick="triggerNextEpisodeImmediate()">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        Hemen Başlat
+                    </button>
+                    <button class="next-ep-btn cancel" onclick="cancelNextEpisodeAuto()">
+                        ✕ İptal
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Sağ Yan Panel: Sezonlar & Bölümler -->
+    <aside class="series-side-panel" id="series-side-panel" style="display: none;">
+        <div class="series-panel-header">
+            <div class="series-info-group">
+                <span class="series-tag">DİZİ MENÜSÜ</span>
+                <h2 class="series-main-title" id="series-panel-title">Dizi Adı</h2>
+            </div>
+            <!-- Seçilebilir Sezon Butonu & Dropdown -->
+            <div class="season-selector-wrapper" id="season-selector-wrapper">
+                <button class="season-select-btn" id="season-select-btn" onclick="toggleSeasonDropdown(event)">
+                    <span id="season-btn-text">1. Sezon</span>
+                    <svg class="dropdown-chevron" id="season-chevron" viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                        <path d="M7 10l5 5 5-5z"/>
+                    </svg>
+                </button>
+                <div class="season-dropdown-menu" id="season-dropdown-menu" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="episodes-list-header">
+            <span id="episodes-count-text">Bölümler</span>
+            <span class="episodes-active-hint">Seçmek için tıkla</span>
+        </div>
+
+        <div class="episodes-scroll-list" id="episodes-scroll-list"></div>
+    </aside>
 </div>
 
 <!-- ── Frosted Glass Details Dock ── -->
@@ -776,10 +1265,11 @@
         const v = document.getElementById('player-video');
         v.addEventListener('canplay', fadeOutLoader);
         v.addEventListener('playing', fadeOutLoader);
-        v.addEventListener('waiting', showLoader);
+        // İleri/Geri sarmada 'Premium Sinema Yükleniyor' ekranının çıkmaması için waiting kaldırıldı
+        v.addEventListener('ended', onEpisodeEnded);
         if (onError) v.addEventListener('error', onError, { once: true });
         
-        // Tarayıcı otomatik oynatma (autoplay) engeline takılırsa yükleniyorda kalmaması için 1.5 sn yedek zaman aşımı
+        // Tarayıcı otomatik oynatma engeline takılırsa yükleniyorda kalmaması için yedek zaman aşımı
         setTimeout(fadeOutLoader, 1500);
     }
 
@@ -1058,6 +1548,322 @@
         incrementMovieViews(movieId);
       }
     }
+
+    // ==========================================
+    // DİZİ MODU: SEZON VE BÖLÜM YÖNETİMİ & OTOMATİK GEÇİŞ
+    // ==========================================
+    let activeSeriesData = null;
+    let currentSeasonId = null;
+    let currentEpisodeId = null;
+    let nextEpisodeTimer = null;
+    let pendingNextEpisode = null;
+    let pendingNextSeason = null;
+
+    function initSeriesMode() {
+        const isSeriesParam = params.get('isSeries') === '1';
+        let stored = null;
+        try {
+            stored = JSON.parse(localStorage.getItem('siom_active_series') || 'null');
+        } catch(e) {}
+
+        if (!stored && !isSeriesParam) return;
+        activeSeriesData = stored;
+        if (!activeSeriesData) return;
+
+        document.body.classList.add('has-series');
+        const panel = document.getElementById('series-side-panel');
+        if (panel) panel.style.display = 'flex';
+
+        // Başlık ve Badge güncelle
+        const panelTitle = document.getElementById('series-panel-title');
+        if (panelTitle) panelTitle.textContent = activeSeriesData.seriesTitle || 'Dizi';
+        
+        const badgeLabel = document.getElementById('badge-label');
+        if (badgeLabel) badgeLabel.textContent = 'DİZİ MODU';
+
+        currentSeasonId = activeSeriesData.currentSeasonId || (activeSeriesData.seasons && activeSeriesData.seasons[0] ? activeSeriesData.seasons[0].id : null);
+        currentEpisodeId = activeSeriesData.currentEpisodeId || params.get('epId') || params.get('id');
+
+        setupSeasonDropdown();
+        renderEpisodesList();
+    }
+
+    function toggleSeasonDropdown(e) {
+        if (e) e.stopPropagation();
+        const menu = document.getElementById('season-dropdown-menu');
+        const btn = document.getElementById('season-select-btn');
+        if (!menu || !btn) return;
+        
+        const isVisible = menu.style.display === 'flex';
+        menu.style.display = isVisible ? 'none' : 'flex';
+        btn.classList.toggle('active', !isVisible);
+    }
+
+    // Dropdown dışına tıklanınca kapat
+    document.addEventListener('click', (e) => {
+        const menu = document.getElementById('season-dropdown-menu');
+        const btn = document.getElementById('season-select-btn');
+        if (menu && menu.style.display === 'flex') {
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.style.display = 'none';
+                if (btn) btn.classList.remove('active');
+            }
+        }
+    });
+
+    function setupSeasonDropdown() {
+        if (!activeSeriesData || !activeSeriesData.seasons) return;
+        const menu = document.getElementById('season-dropdown-menu');
+        const btnText = document.getElementById('season-btn-text');
+        if (!menu) return;
+
+        const seasons = activeSeriesData.seasons;
+        const curSeason = seasons.find(s => s.id === currentSeasonId) || seasons[0];
+        if (curSeason) {
+            currentSeasonId = curSeason.id;
+            if (btnText) btnText.textContent = curSeason.title;
+        }
+
+        menu.innerHTML = seasons.map(s => {
+            const isAct = s.id === currentSeasonId;
+            const epCount = (s.episodes || []).length;
+            return `
+                <button class="season-opt-btn ${isAct ? 'active' : ''}" onclick="selectSeason('${s.id}')">
+                    <span>${s.title}</span>
+                    <span style="font-size: 11px; opacity: 0.6;">${epCount} Bölüm</span>
+                </button>
+            `;
+        }).join('');
+    }
+
+    function selectSeason(seasonId) {
+        currentSeasonId = seasonId;
+        const season = activeSeriesData.seasons.find(s => s.id === seasonId);
+        if (season) {
+            const btnText = document.getElementById('season-btn-text');
+            if (btnText) btnText.textContent = season.title;
+        }
+        const menu = document.getElementById('season-dropdown-menu');
+        const btn = document.getElementById('season-select-btn');
+        if (menu) menu.style.display = 'none';
+        if (btn) btn.classList.remove('active');
+
+        setupSeasonDropdown();
+        renderEpisodesList();
+    }
+
+    function renderEpisodesList() {
+        const listEl = document.getElementById('episodes-scroll-list');
+        const countEl = document.getElementById('episodes-count-text');
+        if (!listEl || !activeSeriesData) return;
+
+        const season = activeSeriesData.seasons.find(s => s.id === currentSeasonId) || activeSeriesData.seasons[0];
+        if (!season) return;
+
+        const episodes = season.episodes || [];
+        if (countEl) countEl.textContent = `${episodes.length} Bölüm`;
+
+        listEl.innerHTML = episodes.map((ep, idx) => {
+            const isActive = ep.id === currentEpisodeId;
+            const epNum = ep.epNum || (idx + 1);
+            const hasFile = !!ep.file;
+
+            return `
+                <div class="side-ep-item ${isActive ? 'active' : ''} ${!hasFile ? 'upcoming' : ''}" 
+                     onclick="playEpisodeById('${ep.id}')"
+                     title="${ep.title}">
+                    <div class="side-ep-thumbnail">
+                        <img src="${ep.poster || season.poster || activeSeriesData.poster || ''}" 
+                             alt="" 
+                             onerror="this.src='https://via.placeholder.com/120x68?text=Bölüm+${epNum}'">
+                        <div class="side-ep-play-badge">
+                            ${isActive ? `
+                                <span class="active-pulse-dot"></span>
+                            ` : `
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            `}
+                        </div>
+                    </div>
+                    <div class="side-ep-info">
+                        <div class="side-ep-title-row">
+                            <span class="side-ep-num">${epNum}. BÖLÜM</span>
+                            ${isActive ? '<span class="side-ep-playing-tag">OYNATILIYOR</span>' : ''}
+                            ${!hasFile ? '<span class="side-ep-coming-tag">YAKINDA</span>' : ''}
+                        </div>
+                        <div class="side-ep-name">${ep.title}</div>
+                        ${ep.desc ? `<div class="side-ep-desc">${ep.desc}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        setTimeout(() => {
+            const activeItem = listEl.querySelector('.side-ep-item.active');
+            if (activeItem) {
+                activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }, 100);
+    }
+
+    function playEpisodeById(epId) {
+        if (!activeSeriesData) return;
+        for (const s of activeSeriesData.seasons) {
+            const found = (s.episodes || []).find(e => e.id === epId);
+            if (found) {
+                currentSeasonId = s.id;
+                setupSeasonDropdown();
+                playEpisode(found);
+                return;
+            }
+        }
+    }
+
+    function playEpisode(ep) {
+        if (!ep) return;
+        currentEpisodeId = ep.id;
+
+        // Devam eden otomatik sonraki bölüm sayacını durdur
+        cancelNextEpisodeAuto();
+
+        // Local storage senkronizasyonu
+        if (activeSeriesData) {
+            activeSeriesData.currentEpisodeId = ep.id;
+            activeSeriesData.currentSeasonId = currentSeasonId;
+            try {
+                localStorage.setItem('siom_active_series', JSON.stringify(activeSeriesData));
+            } catch(e) {}
+        }
+
+        // Başlık güncelle
+        document.getElementById('player-title').textContent = ep.title;
+        const curSeason = activeSeriesData ? activeSeriesData.seasons.find(s => s.id === currentSeasonId) : null;
+        document.getElementById('ticket-title-display').textContent = `${activeSeriesData ? activeSeriesData.seriesTitle : ''} - ${ep.title}`;
+
+        // Detay dock güncelle
+        const dock = document.getElementById('details-dock');
+        if (dock) {
+            if (ep.desc) {
+                document.getElementById('dock-desc').textContent = ep.desc;
+                dock.style.display = 'flex';
+            } else {
+                dock.style.display = 'none';
+            }
+        }
+
+        // Yan panel aktif kart güncelle
+        renderEpisodesList();
+
+        // İzlenme artır
+        if (typeof incrementMovieViews === 'function') {
+            incrementMovieViews(ep.id);
+        }
+
+        // Sayfa yenilemeden videoyu sorunsuz oynat
+        if (ep.file) {
+            const v = document.getElementById('player-video');
+            if (v) {
+                v.src = ep.file;
+                v.load();
+                v.play().catch(e => console.log('Autoplay:', e));
+            } else {
+                setNativeVideo(ep.file);
+            }
+        } else {
+            container.innerHTML = '<div style="color:rgba(255,255,255,0.4);font-size:16px;padding:30px;text-align:center;">Bu bölüm yakında yayınlanacaktır.</div>';
+        }
+    }
+
+    function onEpisodeEnded() {
+        if (!activeSeriesData) return;
+
+        // Mevcut sezondaki sonraki bölümü bul
+        const currentSeason = activeSeriesData.seasons.find(s => s.id === currentSeasonId);
+        if (!currentSeason || !currentSeason.episodes) return;
+
+        const currentIndex = currentSeason.episodes.findIndex(e => e.id === currentEpisodeId);
+        let nextEp = null;
+        let nextSeason = null;
+
+        if (currentIndex !== -1 && currentIndex < currentSeason.episodes.length - 1) {
+            nextEp = currentSeason.episodes[currentIndex + 1];
+            nextSeason = currentSeason;
+        } else {
+            // Sonraki sezona bak
+            const curIdx = activeSeriesData.seasons.findIndex(s => s.id === currentSeasonId);
+            if (curIdx !== -1 && curIdx < activeSeriesData.seasons.length - 1) {
+                nextSeason = activeSeriesData.seasons[curIdx + 1];
+                if (nextSeason.episodes && nextSeason.episodes.length > 0) {
+                    nextEp = nextSeason.episodes[0];
+                }
+            }
+        }
+
+        if (nextEp && nextEp.file) {
+            pendingNextEpisode = nextEp;
+            pendingNextSeason = nextSeason;
+            showNextEpisodeOverlay(nextEp, nextSeason);
+        }
+    }
+
+    function showNextEpisodeOverlay(nextEp, nextSeason) {
+        const overlay = document.getElementById('next-ep-overlay');
+        const titleEl = document.getElementById('next-ep-title');
+        const subtitleEl = document.getElementById('next-ep-subtitle');
+        const fillEl = document.getElementById('next-ep-timer-fill');
+
+        if (!overlay) return;
+
+        const epTitleText = nextEp.title || 'Sonraki Bölüm';
+        titleEl.textContent = `${epTitleText}'ne Geçiliyor...`;
+        subtitleEl.textContent = `${activeSeriesData.seriesTitle} • ${nextSeason ? nextSeason.title : ''}`;
+
+        fillEl.style.transition = 'none';
+        fillEl.style.width = '0%';
+
+        overlay.style.display = 'flex';
+
+        setTimeout(() => {
+            fillEl.style.transition = 'width 3.6s linear';
+            fillEl.style.width = '100%';
+        }, 50);
+
+        clearTimeout(nextEpisodeTimer);
+        nextEpisodeTimer = setTimeout(() => {
+            triggerNextEpisodeImmediate();
+        }, 3700);
+    }
+
+    function triggerNextEpisodeImmediate() {
+        clearTimeout(nextEpisodeTimer);
+        const overlay = document.getElementById('next-ep-overlay');
+        if (overlay) overlay.style.display = 'none';
+
+        if (pendingNextSeason) {
+            currentSeasonId = pendingNextSeason.id;
+            setupSeasonDropdown();
+        }
+
+        if (pendingNextEpisode) {
+            playEpisode(pendingNextEpisode);
+            pendingNextEpisode = null;
+            pendingNextSeason = null;
+        }
+    }
+
+    function cancelNextEpisodeAuto() {
+        clearTimeout(nextEpisodeTimer);
+        const overlay = document.getElementById('next-ep-overlay');
+        if (overlay) overlay.style.display = 'none';
+        const fillEl = document.getElementById('next-ep-timer-fill');
+        if (fillEl) {
+            fillEl.style.transition = 'none';
+            fillEl.style.width = '0%';
+        }
+        pendingNextEpisode = null;
+        pendingNextSeason = null;
+    }
+
+    initSeriesMode();
 </script>
 </body>
 </html>
