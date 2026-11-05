@@ -1914,11 +1914,18 @@ const CATEGORIES = [
 
 const SERIES_CATEGORIES = [
   {
-    id: 'cat-dizi-aksiyon-suc',
+    id: 'cat-dizi-aksiyon-macera',
+    title: 'Aksiyon & Macera',
+    poster: 'assets/img/kategori_aksiyon_macera.webp',
+    desc: 'Nefes kesen kovalamacalar, patlamalar ve yüksek tempolu destansı maceralar.',
+    key: 'dizi-aksiyon-macera'
+  },
+  {
+    id: 'cat-dizi-suc-polisiye',
     title: 'Suç & Polisiye',
     poster: 'assets/img/kategori_suc_polisiye.webp',
     desc: 'Sürükleyici çatışmalar, mafya dünyası, dedektif hikayeleri ve nefes kesen operasyonlar.',
-    key: 'dizi-aksiyon-suc'
+    key: 'dizi-suc-polisiye'
   },
   {
     id: 'cat-dizi-bilim-kurgu',
@@ -1930,23 +1937,16 @@ const SERIES_CATEGORIES = [
   {
     id: 'cat-dizi-yerli',
     title: 'Yerli Diziler',
-    poster: 'assets/img/türkfilmleri.png',
+    poster: 'assets/img/kategori_yerli_diziler.webp',
     desc: 'Türk televizyon ve dijital platform tarihine geçmiş efsane yapımlar.',
     key: 'dizi-yerli'
   },
   {
-    id: 'cat-dizi-animasyon',
-    title: 'Animasyon & Anime',
-    poster: 'assets/img/animasyondünyası.png',
-    desc: 'Göz alıcı görsel evrenler, yetişkin animasyonları ve çizgi seriler.',
-    key: 'dizi-animasyon'
-  },
-  {
-    id: 'cat-dizi-komedi',
-    title: 'Komedi & Absürt',
-    poster: 'assets/img/saftirikgrekinmaceraları.webp',
-    desc: 'Kahkaha tufanı yaratan durum komedileri ve kült absürt seriler.',
-    key: 'dizi-komedi'
+    id: 'cat-dizi-dram-romantik',
+    title: 'Dram & Romantik',
+    poster: 'assets/img/kategori_dram_romantik.webp',
+    desc: 'Duygusal derinlik, tutkulu aşklar, kalp kıran sırlar ve unutulmaz insan hikayeleri.',
+    key: 'dizi-dram-romantik'
   },
   {
     id: 'cat-dizi-gerilim',
@@ -1983,23 +1983,23 @@ function initApp() {
       let matches = [];
       DB.series.forEach(item => {
         const tags = ((item.searchTags || '') + ' ' + (item.title || '') + ' ' + (item.desc || '')).toLowerCase();
-        let assignedKey = '';
+        let matchesThisCat = false;
         
-        if (cat.key === 'dizi-yerli' && (tags.includes('yerli') || tags.includes('türk') || tags.includes('kurtlar vadisi') || tags.includes('ezel') || tags.includes('behzat') || tags.includes('gibi') || tags.includes('prens'))) {
-          assignedKey = 'dizi-yerli';
-        } else if (cat.key === 'dizi-bilim-kurgu' && (tags.includes('bilim kurgu') || tags.includes('dark') || tags.includes('stranger things') || tags.includes('fantastik') || tags.includes('house of the dragon') || tags.includes('game of thrones') || tags.includes('the last of us') || tags.includes('mini'))) {
-          assignedKey = 'dizi-bilim-kurgu';
-        } else if (cat.key === 'dizi-aksiyon-suc' && (tags.includes('aksiyon') || tags.includes('suç') || tags.includes('polisiye') || tags.includes('breaking bad') || tags.includes('the boys') || tags.includes('kurtlar vadisi') || tags.includes('ezel') || tags.includes('behzat'))) {
-          assignedKey = 'dizi-aksiyon-suc';
-        } else if (cat.key === 'dizi-animasyon' && (tags.includes('animasyon') || tags.includes('anime') || tags.includes('arcane') || tags.includes('çizgi'))) {
-          assignedKey = 'dizi-animasyon';
-        } else if (cat.key === 'dizi-komedi' && (tags.includes('komedi') || tags.includes('gibi') || tags.includes('prens') || tags.includes('mizah'))) {
-          assignedKey = 'dizi-komedi';
-        } else if (cat.key === 'dizi-gerilim' && (tags.includes('gerilim') || tags.includes('gizem') || tags.includes('korku') || tags.includes('chernobyl') || tags.includes('dark') || tags.includes('wednesday') || tags.includes('squid game'))) {
-          assignedKey = 'dizi-gerilim';
+        if (cat.key === 'dizi-aksiyon-macera') {
+          matchesThisCat = tags.includes('aksiyon') || tags.includes('macera') || tags.includes('the boys') || tags.includes('arcane') || item.id === 's1';
+        } else if (cat.key === 'dizi-suc-polisiye') {
+          matchesThisCat = tags.includes('suç') || tags.includes('polisiye') || tags.includes('breaking bad') || tags.includes('behzat') || tags.includes('kurtlar vadisi') || tags.includes('ezel');
+        } else if (cat.key === 'dizi-bilim-kurgu') {
+          matchesThisCat = tags.includes('bilim kurgu') || tags.includes('fantastik') || tags.includes('dark') || tags.includes('stranger things') || tags.includes('house of the dragon') || tags.includes('game of thrones') || tags.includes('the last of us') || tags.includes('arcane') || item.id === 's1';
+        } else if (cat.key === 'dizi-yerli') {
+          matchesThisCat = tags.includes('yerli') || tags.includes('türk') || tags.includes('kurtlar vadisi') || tags.includes('ezel') || tags.includes('behzat') || tags.includes('gibi') || tags.includes('prens');
+        } else if (cat.key === 'dizi-dram-romantik') {
+          matchesThisCat = tags.includes('dram') || tags.includes('romantik') || tags.includes('aşk') || tags.includes('ezel') || tags.includes('chernobyl') || tags.includes('breaking bad') || tags.includes('the last of us');
+        } else if (cat.key === 'dizi-gerilim') {
+          matchesThisCat = tags.includes('gerilim') || tags.includes('korku') || tags.includes('gizem') || tags.includes('chernobyl') || tags.includes('dark') || tags.includes('wednesday') || tags.includes('squid game');
         }
         
-        if (assignedKey === cat.key) {
+        if (matchesThisCat) {
           matches.push(item);
         }
       });
