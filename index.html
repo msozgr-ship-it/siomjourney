@@ -1891,15 +1891,15 @@ const CATEGORIES = [
   },
   {
     id: 'cat-gerilim-korku',
-    title: 'Gerilim - Korku',
-    poster: 'assets/img/gerilimkorku.png',
+    title: 'Gerilim & Korku',
+    poster: 'assets/img/kategori_gerilim_korku.webp',
     desc: 'Adrenalin dolu anlar, karanlık sırlar ve tüyler ürpertici gizemler.',
     key: 'gerilim-korku'
   },
   {
     id: 'cat-fantastik-bilim-kurgu',
-    title: 'Fantastik - Bilim Kurgu',
-    poster: 'assets/img/fantastikbilimkurgu.png',
+    title: 'Fantastik & Bilim Kurgu',
+    poster: 'assets/img/kategori_fantastik_bilimkurgu.webp',
     desc: 'Hayal gücünün sınırlarını zorlayan olağanüstü dünyalar ve gelecek vizyonları.',
     key: 'fantastik-bilim-kurgu'
   },
@@ -1915,16 +1915,16 @@ const CATEGORIES = [
 const SERIES_CATEGORIES = [
   {
     id: 'cat-dizi-aksiyon-suc',
-    title: 'Aksiyon & Suç',
-    poster: 'assets/img/aksiyon.png',
-    desc: 'Sürükleyici çatışmalar, mafya dünyası ve nefes kesen operasyonlar.',
+    title: 'Suç & Polisiye',
+    poster: 'assets/img/kategori_suc_polisiye.webp',
+    desc: 'Sürükleyici çatışmalar, mafya dünyası, dedektif hikayeleri ve nefes kesen operasyonlar.',
     key: 'dizi-aksiyon-suc'
   },
   {
     id: 'cat-dizi-bilim-kurgu',
-    title: 'Bilim Kurgu & Doğaüstü',
-    poster: 'assets/img/fantastikbilimkurgu.png',
-    desc: 'Zaman kırılmaları, gizemli güçler ve distopik gelecekler.',
+    title: 'Fantastik & Bilim Kurgu',
+    poster: 'assets/img/kategori_fantastik_bilimkurgu.webp',
+    desc: 'Zaman kırılmaları, gizemli güçler, destansı evrenler ve distopik gelecekler.',
     key: 'dizi-bilim-kurgu'
   },
   {
@@ -1950,9 +1950,9 @@ const SERIES_CATEGORIES = [
   },
   {
     id: 'cat-dizi-gerilim',
-    title: 'Gerilim & Gizem',
-    poster: 'assets/img/gerilimkorku.png',
-    desc: 'Zihin zorlayan gizemler, karanlık komplolar ve sırlar.',
+    title: 'Gerilim & Korku',
+    poster: 'assets/img/kategori_gerilim_korku.webp',
+    desc: 'Zihin zorlayan gizemler, karanlık komplolar ve tüyler ürpertici sırlar.',
     key: 'dizi-gerilim'
   }
 ];
@@ -1989,13 +1989,13 @@ function initApp() {
           assignedKey = 'dizi-yerli';
         } else if (cat.key === 'dizi-bilim-kurgu' && (tags.includes('bilim kurgu') || tags.includes('dark') || tags.includes('stranger things') || tags.includes('fantastik') || tags.includes('house of the dragon') || tags.includes('game of thrones') || tags.includes('the last of us') || tags.includes('mini'))) {
           assignedKey = 'dizi-bilim-kurgu';
-        } else if (cat.key === 'dizi-aksiyon-suc' && (tags.includes('aksiyon') || tags.includes('suç') || tags.includes('breaking bad') || tags.includes('the boys') || tags.includes('kurtlar vadisi') || tags.includes('ezel'))) {
+        } else if (cat.key === 'dizi-aksiyon-suc' && (tags.includes('aksiyon') || tags.includes('suç') || tags.includes('polisiye') || tags.includes('breaking bad') || tags.includes('the boys') || tags.includes('kurtlar vadisi') || tags.includes('ezel') || tags.includes('behzat'))) {
           assignedKey = 'dizi-aksiyon-suc';
         } else if (cat.key === 'dizi-animasyon' && (tags.includes('animasyon') || tags.includes('anime') || tags.includes('arcane') || tags.includes('çizgi'))) {
           assignedKey = 'dizi-animasyon';
         } else if (cat.key === 'dizi-komedi' && (tags.includes('komedi') || tags.includes('gibi') || tags.includes('prens') || tags.includes('mizah'))) {
           assignedKey = 'dizi-komedi';
-        } else if (cat.key === 'dizi-gerilim' && (tags.includes('gerilim') || tags.includes('gizem') || tags.includes('chernobyl') || tags.includes('dark') || tags.includes('wednesday') || tags.includes('squid game'))) {
+        } else if (cat.key === 'dizi-gerilim' && (tags.includes('gerilim') || tags.includes('gizem') || tags.includes('korku') || tags.includes('chernobyl') || tags.includes('dark') || tags.includes('wednesday') || tags.includes('squid game'))) {
           assignedKey = 'dizi-gerilim';
         }
         
@@ -2113,7 +2113,7 @@ function initApp() {
     });
 
     // Kategorileri allContent'e ekleyelim ki arama ve detay modalı bulabilsin
-    allContent = [...allContent, ...categories];
+    allContent = [...allContent, ...categories, ...seriesCategories];
     
     // DONME DOLAPTA ARTIK SADECE KULLANICININ ISTEDIGI 10 FILM (Tam sirali ve eksiksiz!)
     const orbitalOrder = [
@@ -3034,10 +3034,22 @@ function openDetails(id, isBack = false) {
       </div>
     ` : '';
     
+    let badgeHtml = '';
+    if (sub.isSeries) {
+      if (sub.isFinal || sub.status === 'final') {
+        badgeHtml = '<div class="series-badge badge-final">FİNAL YAPTI</div>';
+      } else {
+        const seasonNum = sub.season || (sub.totalSeasons ? sub.totalSeasons : '1');
+        badgeHtml = `<div class="series-badge badge-season">${seasonNum}. SEZON</div>`;
+      }
+    } else if (isColl) {
+      badgeHtml = '<div class="collection-badge">SERİ</div>';
+    }
+    
     return `
       <div class="series-item" data-sub-id="${sub.id}" role="button" tabindex="0">
         <div class="card ${isColl ? 'collection-stack' : ''}">
-          ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
+          ${badgeHtml}
           ${viewsBadge}
           <img src="${sub.poster || item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
