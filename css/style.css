@@ -1364,3 +1364,150 @@ body {
         display: none;
     }
 }
+
+
+/* ==========================================================================
+   CONTENT MODE SWITCHER & TV SERIES STYLING (FİLM / DİZİ KATEGORİLERİ)
+   ========================================================================== */
+
+.category-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.mode-switch-btn {
+    background: transparent;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    padding: 10px 18px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    border-radius: 6px;
+}
+
+.mode-switch-btn:hover {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.mode-switch-btn.active {
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255, 15, 35, 0.6);
+    background: rgba(255, 15, 35, 0.05);
+}
+
+.mode-switch-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 14px;
+    right: 14px;
+    height: 2.5px;
+    background: var(--accent);
+    border-radius: 3px;
+    box-shadow: 0 0 15px var(--accent);
+    opacity: 0;
+    transform: scaleX(0.3);
+    transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.mode-switch-btn.active::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+.category-header-line {
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 15, 35, 0.35), rgba(255, 255, 255, 0.08), rgba(255, 15, 35, 0.35));
+    margin: 0 25px;
+}
+
+/* TV SERIES POSTER BADGES (Final Yaptı & Sezon Bilgisi) */
+.series-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    background: rgba(10, 10, 16, 0.88);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 5px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateZ(10px);
+}
+
+/* Final Yaptı: Crimson Red Glow */
+.series-badge.badge-final {
+    border-color: rgba(255, 43, 43, 0.45);
+    color: #ffc4c4;
+    background: rgba(25, 6, 8, 0.85);
+}
+
+.series-badge.badge-final::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff2b2b;
+    box-shadow: 0 0 10px #ff2b2b, 0 0 20px rgba(255, 43, 43, 0.6);
+}
+
+/* Devam Eden Sezon: Electric Cyan / Turquoise Glow */
+.series-badge.badge-season {
+    border-color: rgba(0, 229, 255, 0.45);
+    color: #c9f9ff;
+    background: rgba(4, 20, 28, 0.85);
+}
+
+.series-badge.badge-season::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00e5ff;
+    box-shadow: 0 0 10px #00e5ff, 0 0 20px rgba(0, 229, 255, 0.6);
+}
+
+.card-wrapper:hover .series-badge {
+    transform: translateZ(15px) scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .mode-switch-btn {
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        padding: 6px 10px;
+    }
+    .category-header-line {
+        margin: 0 10px;
+    }
+}

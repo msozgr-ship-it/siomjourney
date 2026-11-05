@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomClip | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.45">
+    <link rel="stylesheet" href="css/style.css?v=5.50">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -170,40 +170,601 @@
     <script>
 const DB = {
   series: [
-    {
-      id: 's1',
-      title: 'Mini: The Journey',
-      searchTags: 'mini, the journey, orman',
-      desc: 'Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.',
-      poster: 'assets/img/mini.jpg.png',
-        trailer: 'https://siom-tg-streamer-1.onrender.com/stream/108.mp4',
-      year: '2026',
-      match: '98%',
-      meta: '4K HDR',
-      rating: '8.9',
-      highlights: 'Karanlık bir orman, gizemli bir ışık ve Mini\'nin destansı yolculuğu.',
-      episodes: [
-        {
-          id: 's1e1',
-          epNum: 1,
-          title: 'Karanlık Ormana Giriş',
-          desc: 'Mini karanlık ormanda yürür. Uzakta gizemli bir ışık görür ve peşine düşer.',
-            trailer: 'https://siom-tg-streamer-1.onrender.com/stream/108.mp4',
-          file: 'https://api.telegram.org/file/bot9139736297:AAGjYwmFGt6seuMnbb6qaBImVPv3VAii-hY/videos/file_0.mp4',
-          isYoutube: false
-        },
-        {
-          id: 's1e2',
-          epNum: 2,
-          title: 'Işığın Gizemi',
-          desc: 'Işığın gizemi derinleşir. Mini ormanın kalbindeki büyük kütüphaneye ulaşır.',
-            trailer: 'https://siom-tg-streamer-1.onrender.com/stream/108.mp4',
-          file: 'bolum2.mp4',
-          isYoutube: false
-        }
-      ]
-    }
-  ],
+  {
+    "id": "breaking-bad-series",
+    "title": "Breaking Bad",
+    "searchTags": "breaking bad, walter white, heisenberg, jesse pinkman, suç, dram, gerilim, efsane",
+    "desc": "Sıradan bir kimya öğretmeni olan Walter White, ölümcül bir kansere yakalandığını öğrenince ailesinin geleceğini garanti altına almak için metamfetamin üretimine başlar.",
+    "poster": "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+    "year": "2008 - 2013",
+    "match": "99%",
+    "meta": "5 Sezon (Final)",
+    "rating": "9.5",
+    "highlights": "Televizyon tarihinin en yüksek puanlı suç ve dönüşüm başyapıtı.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "bb_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Pilot",
+        "desc": "Walter White teşhisini öğrenir ve eski öğrencisi Jesse Pinkman ile metamfetamin üretimine adım atar.",
+        "poster": "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "bb_s1e2",
+        "epNum": 2,
+        "title": "1. Sezon 2. Bölüm - Cat's in the Bag...",
+        "desc": "Walt ve Jesse ilk krizleriyle yüzleşirken kanıtları yok etmeye çalışır.",
+        "poster": "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "bb_s5e14",
+        "epNum": 14,
+        "title": "5. Sezon 14. Bölüm - Ozymandias",
+        "desc": "Televizyon tarihinin en yüksek puanlı bölümü; Walter White'ın imparatorluğu çökerken nihai trajedi yaşanır.",
+        "poster": "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "bb_s5e16",
+        "epNum": 16,
+        "title": "5. Sezon 16. Bölüm - Felina (Büyük Final)",
+        "desc": "Walter White hesaplaşmasını tamamlar ve ardında bıraktığı dünyaya son kez bakar.",
+        "poster": "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "kurtlar-vadisi-series",
+    "title": "Kurtlar Vadisi",
+    "searchTags": "kurtlar vadisi, polat alemdar, çakır, memati, konsey, yerli dizi, mafya, aksiyon",
+    "desc": "Bu bir mafya dizisidir. Devlet adına çalışan istihbaratçı Ali Candan, yüzünü değiştirip Polat Alemdar kimliğiyle Türkiye'nin en tehlikeli mafya konseyine sızar.",
+    "poster": "https://image.tmdb.org/t/p/w500/8tU4f2V9B36VnQ7X1Xk34Xm4J5.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/97.mp4",
+    "year": "2003 - 2005",
+    "match": "99%",
+    "meta": "97 Bölüm (Efsane Final)",
+    "rating": "9.2",
+    "highlights": "Kurtlukta düşeni yemek kanundur. Türk televizyon tarihinin en kült mafya destanı.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "kv_e1",
+        "epNum": 1,
+        "title": "1. Bölüm: Kurtlukta Düşeni Yemek Kanundur",
+        "desc": "Ali Candan son görev emrini alır, ailesine veda ederek yüzünü ve kimliğini sonsuza dek değiştirir.",
+        "poster": "assets/img/aksiyon.png",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "kv_e2",
+        "epNum": 2,
+        "title": "2. Bölüm: Polat Alemdar Sahneye Çıkıyor",
+        "desc": "Duran Emmi'nin kahvesine adım atan Polat Alemdar yeraltı dünyasına ilk adımlarını atar.",
+        "poster": "assets/img/aksiyon.png",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "kv_e97",
+        "epNum": 97,
+        "title": "97. Bölüm: Büyük Final (Son Perde)",
+        "desc": "Kurtlar Vadisi operasyonu nihai hedefine ulaşırken Konsey üyeleri birer birer tarihe karışır.",
+        "poster": "assets/img/aksiyon.png",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "game-of-thrones-series",
+    "title": "Game of Thrones",
+    "searchTags": "game of thrones, taht oyunları, jon snow, daenerys, targaryen, lannister, fantastik",
+    "desc": "Westeros diyarında yedi krallığın efendisi olmak için asil aileler arasında acımasız bir taht savaşı sürerken, Kuzey Duvarı'nın ötesinden antik bir tehdit yaklaşır.",
+    "poster": "https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/119.mp4",
+    "year": "2011 - 2019",
+    "match": "98%",
+    "meta": "8 Sezon (Final)",
+    "rating": "9.2",
+    "highlights": "Kış geliyor! Dokuz asil hanedanın Demir Taht için verdiği destansı mücadele.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "got_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Winter Is Coming",
+        "desc": "Kral Robert Baratheon kış diyarına gelir ve Ned Stark'a Kral Eli görevini teklif eder.",
+        "poster": "https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "got_s6e9",
+        "epNum": 9,
+        "title": "6. Sezon 9. Bölüm - Battle of the Bastards",
+        "desc": "Jon Snow ve Ramsay Bolton Kışyarı'nın kontrolü için kanlı bir savaşa tutuşur.",
+        "poster": "https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "dark-series",
+    "title": "Dark",
+    "searchTags": "dark, zaman yolculuğu, winden, jonas, mikkel, bilim kurgu, gerilim, gizem",
+    "desc": "Almanya'nın Winden kasabasında kaybolan iki çocuk, dört ailenin üç nesile yayılan karanlık zaman yolculuğu sırlarını ve kader döngüsünü gün yüzüne çıkarır.",
+    "poster": "https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+    "year": "2017 - 2020",
+    "match": "97%",
+    "meta": "3 Sezon (Kusursuz Final)",
+    "rating": "8.8",
+    "highlights": "Soru nerede olduğu değil, NE ZAMAN olduğudur. Kusursuz bir kurgu şaheseri.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "dark_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Sırlar (Geheimnisse)",
+        "desc": "2019 yılında Winden kasabasında lise öğrencisi Erik Obendorf kaybolur; ormanda garip olaylar başlar.",
+        "poster": "https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "dark_s3e8",
+        "epNum": 8,
+        "title": "3. Sezon 8. Bölüm - Cennet (Das Paradies - Final)",
+        "desc": "Döngünün başlangıcı ve sonu birleşir; Jonas ve Martha köken dünyayı kurtarmak için harekete geçer.",
+        "poster": "https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "ezel-series",
+    "title": "Ezel",
+    "searchTags": "ezel, ramiz dayı, kenan imirzalıoğlu, eyşan, cengiz, kerpeten ali, yerli dizi, dram",
+    "desc": "En güvendiği dostları ve aşık olduğu kadın tarafından kumpasla cezaevine gönderilen Ömer, Ramiz Dayı'nın himayesinde Ezel olarak küllerinden doğar ve intikam için geri döner.",
+    "poster": "https://image.tmdb.org/t/p/w500/y6CjS8qYp3rG5h6c7aW8D8J5K7.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/110.mp4",
+    "year": "2009 - 2011",
+    "match": "99%",
+    "meta": "71 Bölüm (Final)",
+    "rating": "8.7",
+    "highlights": "Oysa herkes öldürür sevdiğini. Türk dizi tarihinin unutulmaz intikam başyapıtı.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "ezel_e1",
+        "epNum": 1,
+        "title": "1. Bölüm: İntikamın Başlangıcı",
+        "desc": "Kumarhane soygununun ardından cezaevine giren Ömer, yüz ameliyatı sonrası Ezel Bayraktar olarak döner.",
+        "poster": "assets/img/türkfilmleri.png",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "ezel_e71",
+        "epNum": 71,
+        "title": "71. Bölüm: Büyük Final",
+        "desc": "Ezel ve Eyşan'ın trajik aşkı tren yolculuğunda son bulurken fener bekçisi gizemli misafirini karşılar.",
+        "poster": "assets/img/türkfilmleri.png",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "chernobyl-series",
+    "title": "Chernobyl",
+    "searchTags": "chernobyl, çernobil, nükleer, felaket, dram, tarih, gerçek hikaye, hbo",
+    "desc": "1986 yılında Sovyetler Birliği'nde meydana gelen tarihin en büyük nükleer felaketinin perde arkası ve Avrupa'yı kurtarmak için hayatını feda eden kahramanların hikayesi.",
+    "poster": "https://image.tmdb.org/t/p/w500/hlLXt2tOPT6RRnjiUmoxyGgLTFi.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+    "year": "2019",
+    "match": "99%",
+    "meta": "5 Bölüm (Mini Dizi Final)",
+    "rating": "9.4",
+    "highlights": "Yalanların bedeli nedir? Çernobil patlamasının dehşetini anlatan sarsıcı mini dizi.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "ch_e1",
+        "epNum": 1,
+        "title": "1. Bölüm: 1:23:45",
+        "desc": "Çernobil Nükleer Santrali'nin 4 numaralı reaktöründe gece vardiyasında devasa bir patlama gerçekleşir.",
+        "poster": "https://image.tmdb.org/t/p/w500/hlLXt2tOPT6RRnjiUmoxyGgLTFi.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "ch_e5",
+        "epNum": 5,
+        "title": "5. Bölüm: Vichnaya Pamyat (Ebedi Hatıra - Final)",
+        "desc": "Valery Legasov Moskova mahkemesinde felaketin gizlenen tüm teknik ve insani nedenlerini açıklar.",
+        "poster": "https://image.tmdb.org/t/p/w500/hlLXt2tOPT6RRnjiUmoxyGgLTFi.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "behzat-c-series",
+    "title": "Behzat Ç.: Bir Ankara Polisiyesi",
+    "searchTags": "behzat ç, ankara cinayet, harun, ercüment çözer, hayalet, akbaba, yerli dizi, polisiye",
+    "desc": "Cinayet Büro Başkomiseri Behzat Ç. ve ekibinin Ankara sokaklarındaki cinayetleri bürokrasiden uzak, kendi kurallarıyla aydınlatma mücadelesi.",
+    "poster": "https://image.tmdb.org/t/p/w500/bL3kG9rNqN18G9wZ6U6p2B7fG2.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/96.mp4",
+    "year": "2010 - 2019",
+    "match": "98%",
+    "meta": "4 Sezon (Final)",
+    "rating": "8.9",
+    "highlights": "Saçma sapan konuşma la! Ankara ayazında adalet arayan efsane polis ekibi.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "bc_e1",
+        "epNum": 1,
+        "title": "1. Bölüm: Kızının Cinayeti",
+        "desc": "Başkomiser Behzat Ç. kızının şüpheli ölümünün peşine düşerken cinayet büro yeni vakayla sarsılır.",
+        "poster": "assets/img/aksiyon.png",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "bc_e96",
+        "epNum": 96,
+        "title": "96. Bölüm: Hesaplaşma ve Veda",
+        "desc": "Ercüment Çözer ile Behzat Ç. arasındaki kan davası son büyük yüzleşmeyle noktalanır.",
+        "poster": "assets/img/aksiyon.png",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "arcane-series",
+    "title": "Arcane",
+    "searchTags": "arcane, jinx, vi, league of legends, zaun, piltover, animasyon, bilim kurgu, aksiyon",
+    "desc": "Piltover ve Zaun şehirleri arasındaki derin uçurumda iki kardeş Vi ve Jinx'in karşıt saflarda yer aldığı görsel bir animasyon şaheseri.",
+    "poster": "https://image.tmdb.org/t/p/w500/fqldf2t8ztc9aiwn397rGG2yvg7.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/70.mp4",
+    "year": "2021 - 2024",
+    "match": "99%",
+    "meta": "2 Sezon (Nihai Final)",
+    "rating": "9.0",
+    "highlights": "Emmy ödüllü, görsel ve duygusal derinliğiyle animasyon dünyasında devrim yaratan başyapıt.",
+    "isFinal": true,
+    "status": "final",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "arc_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Canavara Hoş Geldiniz",
+        "desc": "Vi ve Powder Zaun'dan Piltover'a sızıp gizli bir atölyeyi soyar; patlama zincirleme felaketi başlatır.",
+        "poster": "https://image.tmdb.org/t/p/w500/fqldf2t8ztc9aiwn397rGG2yvg7.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "arc_s2e9",
+        "epNum": 9,
+        "title": "2. Sezon 9. Bölüm - Küller ve Miras (Büyük Final)",
+        "desc": "Zaun ve Piltover arasındaki nihai savaşta Vi ve Jinx kardeşliğin sınırlarıyla yüzleşir.",
+        "poster": "https://image.tmdb.org/t/p/w500/fqldf2t8ztc9aiwn397rGG2yvg7.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "s1",
+    "title": "Mini: The Journey",
+    "searchTags": "mini, the journey, orman, macera, bilim kurgu, 2026",
+    "desc": "Karanlık bir ormanda yalnız yürüyen Mini, gizemli bir ışığın peşine düşer. Bu destansı yolculuk onu ormanın kalbindeki büyük sırrı keşfetmeye götürecektir.",
+    "poster": "assets/img/mini.jpg.png",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+    "year": "2026",
+    "match": "98%",
+    "meta": "1. Sezon (Yeni)",
+    "rating": "8.9",
+    "highlights": "Karanlık bir orman, gizemli bir ışık ve Mini'nin destansı yolculuğu.",
+    "isFinal": false,
+    "currentSeason": 1,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "s1e1",
+        "epNum": 1,
+        "title": "1. Bölüm: Karanlık Ormana Giriş",
+        "desc": "Mini karanlık ormanda yürür. Uzakta gizemli bir ışık görür ve peşine düşer.",
+        "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+        "file": "https://api.telegram.org/file/bot9139736297:AAGjYwmFGt6seuMnbb6qaBImVPv3VAii-hY/videos/file_0.mp4",
+        "isYoutube": false
+      },
+      {
+        "id": "s1e2",
+        "epNum": 2,
+        "title": "2. Bölüm: Işığın Gizemi",
+        "desc": "Işığın gizemi derinleşir. Mini ormanın kalbindeki büyük kütüphaneye ulaşır.",
+        "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+        "file": "bolum2.mp4",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "stranger-things-series",
+    "title": "Stranger Things",
+    "searchTags": "stranger things, eleven, baş aşağı, upside down, hawkins, bilim kurgu, 80ler, korku",
+    "desc": "1980'lerin Hawkins kasabasında bir çocuğun gizemli kayboluşuyla başlayan ve Baş Aşağı (Upside Down) dünyasının dehşetiyle yüzleşen çocukların mücadelesi.",
+    "poster": "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+    "year": "2016 - 2025",
+    "match": "99%",
+    "meta": "5. Sezon (Devam Ediyor)",
+    "rating": "8.7",
+    "highlights": "Vecna ve Baş Aşağı dünyasının nihai savaşına doğru nefes kesen sezon.",
+    "isFinal": false,
+    "currentSeason": 5,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "st_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Will Byers'ın Kayboluşu",
+        "desc": "D&D oyunundan dönen Will Byers yolda karanlık bir gölge görür ve arkasında iz bırakmadan kaybolur.",
+        "poster": "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "st_s4e9",
+        "epNum": 9,
+        "title": "4. Sezon 9. Bölüm - The Piggyback",
+        "desc": "Grup Hawkins ve Upside Down'da aynı anda Vecna'ya karşı ölüm kalım savaşı verir.",
+        "poster": "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "the-boys-series",
+    "title": "The Boys",
+    "searchTags": "the boys, homelander, butcher, starlight, süper kahraman, aksiyon, vought",
+    "desc": "Şöhret ve güç sarhoşu süper kahramanların karanlık yüzünü ifşa etmek için and içmiş Billy Butcher ve 'The Boys' ekibinin amansız savaşı.",
+    "poster": "https://image.tmdb.org/t/p/w500/7Ns6tO3aYjppI5Lo0FceYZOT2Hs.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/119.mp4",
+    "year": "2019 - 2025",
+    "match": "98%",
+    "meta": "4. Sezon (Devam Ediyor)",
+    "rating": "8.7",
+    "highlights": "Kahramanlar her zaman göründükleri gibi değildir. Kanlı, cesur ve hiciv dolu aksiyon.",
+    "isFinal": false,
+    "currentSeason": 4,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "tb_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Oyunun Kuralı",
+        "desc": "Hughie kız arkadaşının bir kahraman yüzünden ölümüne tanık olur ve Butcher ile tanışır.",
+        "poster": "https://image.tmdb.org/t/p/w500/7Ns6tO3aYjppI5Lo0FceYZOT2Hs.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "the-last-of-us-series",
+    "title": "The Last of Us",
+    "searchTags": "the last of us, joel, ellie, salgın, zombi, tlou, hayatta kalma, hbo",
+    "desc": "Mantarlı bir salgınla harabeye dönen kıyamet sonrası Amerika'da, insanlığın tek umudu olan 14 yaşındaki Ellie'yi karantina bölgesinden çıkarma görevi.",
+    "poster": "https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2V7JMrHG.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+    "year": "2023 - 2025",
+    "match": "98%",
+    "meta": "2. Sezon (Devam Ediyor)",
+    "rating": "8.8",
+    "highlights": "Karanlıkta kaybolduğunda ışığı ara. İki yabancının hayatta kalma ve aile olma yolculuğu.",
+    "isFinal": false,
+    "currentSeason": 2,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "tlou_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Karanlıkta Kaybolduğunda",
+        "desc": "2003 salgın günü kaosunda Joel kızını kaybeder; 20 yıl sonra Ellie adında özel bir kızı koruma görevi alır.",
+        "poster": "https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2V7JMrHG.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "house-of-the-dragon-series",
+    "title": "House of the Dragon",
+    "searchTags": "house of the dragon, rhaenyra, daemon, targaryen, ejderha, taht oyunları, fantastik",
+    "desc": "Game of Thrones olaylarından 200 yıl önce, Targaryen Hanesi'nin taht veraseti yüzünden birbirine girdiği 'Ejderhaların Dansı' iç savaşı.",
+    "poster": "https://image.tmdb.org/t/p/w500/1X4h40fcB4WWUmIBK0auT4zRBAV.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/119.mp4",
+    "year": "2022 - 2025",
+    "match": "97%",
+    "meta": "2. Sezon (Devam Ediyor)",
+    "rating": "8.5",
+    "highlights": "Ateş ve Kan! Targaryen hanedanının en görkemli ve en kanlı iç savaşı.",
+    "isFinal": false,
+    "currentSeason": 2,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "hotd_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Ejderhanın Varisleri",
+        "desc": "Kral Viserys erkek varis ararken, kızı Rhaenyra'yı Demir Taht'ın ilk kadın varisi ilan eder.",
+        "poster": "https://image.tmdb.org/t/p/w500/1X4h40fcB4WWUmIBK0auT4zRBAV.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "gibi-series",
+    "title": "Gibi",
+    "searchTags": "gibi, feyyaz yiğit, ilkkan, yılmaz, ersoy, komedi, yerli dizi, absürt",
+    "desc": "Feyyaz Yiğit ve Kıvanç Kılınç'ın başrollerinde olduğu, hayatın olağan akışındaki minik absürtlükleri felsefi bir kargaşaya dönüştüren efsane Türk komedi serisi.",
+    "poster": "https://image.tmdb.org/t/p/w500/2G3uW5N1jL4j3n5V6c8v3m5P4k.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/111.mp4",
+    "year": "2021 - 2025",
+    "match": "99%",
+    "meta": "6. Sezon (Devam Ediyor)",
+    "rating": "9.0",
+    "highlights": "Ben senin hiçbir şeyin değilim Yılmaz! Türk absürt komedisinin zirve noktası.",
+    "isFinal": false,
+    "currentSeason": 6,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "gibi_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Kokariç",
+        "desc": "Yılmaz ve İlkkan gece kokoreççide başlayan tartışmayı hayatın varoluşsal çıkmazlarına taşır.",
+        "poster": "assets/img/türkfilmleri.png",
+        "file": "",
+        "isYoutube": false
+      },
+      {
+        "id": "gibi_s2e1",
+        "epNum": 1,
+        "title": "2. Sezon 1. Bölüm - Vücutçu Yalvaç",
+        "desc": "İlkkan spor salonunda vücut geliştirmeye merak sarar; işler beklenmedik şekilde çığırından çıkar.",
+        "poster": "assets/img/türkfilmleri.png",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "prens-series",
+    "title": "Prens",
+    "searchTags": "prens, giray altinok, bongomia, komedi, yerli dizi, tarihi komedi",
+    "desc": "Kimsenin umursamadığı Bongomia Krallığı'nın adını bile kimsenin hatırlamadığı ortanca prensinin absürt, bencil ve son derece eğlenceli taht serüveni.",
+    "poster": "https://image.tmdb.org/t/p/w500/7aZf8K1y9pCq4W4rYwL3ZgX3Yq9.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/111.mp4",
+    "year": "2023 - 2025",
+    "match": "98%",
+    "meta": "3. Sezon (Devam Ediyor)",
+    "rating": "8.6",
+    "highlights": "Bongomia halkı için bir şeyler yapmayacağım tabii ki! Son dönemin en sevilen tarihi komedisi.",
+    "isFinal": false,
+    "currentSeason": 3,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "prens_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Veliaht",
+        "desc": "Bongomia Kralı aniden zehirlenince ortanca prens istemeden veliaht koltuğuna oturur.",
+        "poster": "assets/img/türkfilmleri.png",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "wednesday-series",
+    "title": "Wednesday",
+    "searchTags": "wednesday, addams family, jenna ortega, nevermore, gizem, fantastik, gençlik",
+    "desc": "Nevermore Akademisi'ne başlayan Wednesday Addams'ın hem psişik güçlerini kontrol etme hem de kasabadaki gizemli canavar cinayetlerini çözme serüveni.",
+    "poster": "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/112.mp4",
+    "year": "2022 - 2025",
+    "match": "97%",
+    "meta": "2. Sezon (Devam Ediyor)",
+    "rating": "8.1",
+    "highlights": "Addams Ailesi'nin karanlık prensesi Wednesday Addams Nevermore koridorlarında.",
+    "isFinal": false,
+    "currentSeason": 2,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "wed_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Çarşamba Çocuğunun Hüznü",
+        "desc": "Havuzda pirana vakasından sonra Nevermore Akademisi'ne gönderilen Wednesday gizemli bir kehanet keşfeder.",
+        "poster": "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  },
+  {
+    "id": "squid-game-series",
+    "title": "Squid Game",
+    "searchTags": "squid game, gi-hun, kore dizisi, hayatta kalma, gerilim, yarışma, drama",
+    "desc": "45.6 milyar wonluk devasa ödül için ölümcül çocuk oyunlarında hayatta kalma mücadelesi veren çaresiz insanların gerilim dolu öyküsü.",
+    "poster": "https://image.tmdb.org/t/p/w500/dDlG01v0wKzZ131r8Bv6F4Q18w.jpg",
+    "trailer": "https://siom-tg-streamer-1.onrender.com/stream/108.mp4",
+    "year": "2021 - 2025",
+    "match": "98%",
+    "meta": "2. Sezon (Devam Ediyor)",
+    "rating": "8.0",
+    "highlights": "Kırmızı Işık, Yeşil Işık! Dünya çapında izlenme rekorları kıran küresel fenomen.",
+    "isFinal": false,
+    "currentSeason": 2,
+    "status": "ongoing",
+    "isSeries": true,
+    "episodes": [
+      {
+        "id": "sg_s1e1",
+        "epNum": 1,
+        "title": "1. Sezon 1. Bölüm - Kırmızı Işık, Yeşil Işık",
+        "desc": "Borç batağındaki Gi-hun metroda tanıştığı gizemli adamın davetiyle yarışmaya katılır.",
+        "poster": "https://image.tmdb.org/t/p/w500/dDlG01v0wKzZ131r8Bv6F4Q18w.jpg",
+        "file": "",
+        "isYoutube": false
+      }
+    ]
+  }
+],
   movies: [
     {
       id: "the-wampire-hunter-movie",
@@ -1351,6 +1912,54 @@ const CATEGORIES = [
   }
 ];
 
+const SERIES_CATEGORIES = [
+  {
+    id: 'cat-dizi-aksiyon-suc',
+    title: 'Aksiyon & Suç',
+    poster: 'assets/img/aksiyon.png',
+    desc: 'Sürükleyici çatışmalar, mafya dünyası ve nefes kesen operasyonlar.',
+    key: 'dizi-aksiyon-suc'
+  },
+  {
+    id: 'cat-dizi-bilim-kurgu',
+    title: 'Bilim Kurgu & Doğaüstü',
+    poster: 'assets/img/fantastikbilimkurgu.png',
+    desc: 'Zaman kırılmaları, gizemli güçler ve distopik gelecekler.',
+    key: 'dizi-bilim-kurgu'
+  },
+  {
+    id: 'cat-dizi-yerli',
+    title: 'Yerli Diziler',
+    poster: 'assets/img/türkfilmleri.png',
+    desc: 'Türk televizyon ve dijital platform tarihine geçmiş efsane yapımlar.',
+    key: 'dizi-yerli'
+  },
+  {
+    id: 'cat-dizi-animasyon',
+    title: 'Animasyon & Anime',
+    poster: 'assets/img/animasyondünyası.png',
+    desc: 'Göz alıcı görsel evrenler, yetişkin animasyonları ve çizgi seriler.',
+    key: 'dizi-animasyon'
+  },
+  {
+    id: 'cat-dizi-komedi',
+    title: 'Komedi & Absürt',
+    poster: 'assets/img/saftirikgrekinmaceraları.webp',
+    desc: 'Kahkaha tufanı yaratan durum komedileri ve kült absürt seriler.',
+    key: 'dizi-komedi'
+  },
+  {
+    id: 'cat-dizi-gerilim',
+    title: 'Gerilim & Gizem',
+    poster: 'assets/img/gerilimkorku.png',
+    desc: 'Zihin zorlayan gizemler, karanlık komplolar ve sırlar.',
+    key: 'dizi-gerilim'
+  }
+];
+
+let currentContentMode = 'film'; // 'film' veya 'dizi'
+let seriesCategories = [];
+
 let allContent = [];
 let categories = [];
 let orbitalContent = [];
@@ -1369,6 +1978,47 @@ function initApp() {
     if (typeof DB === 'undefined') return;
     allContent = [...DB.movies, ...DB.series];
     
+    // Dinamik Dizi Kategori Oluşturucu
+    seriesCategories = SERIES_CATEGORIES.map(cat => {
+      let matches = [];
+      DB.series.forEach(item => {
+        const tags = ((item.searchTags || '') + ' ' + (item.title || '') + ' ' + (item.desc || '')).toLowerCase();
+        let assignedKey = '';
+        
+        if (cat.key === 'dizi-yerli' && (tags.includes('yerli') || tags.includes('türk') || tags.includes('kurtlar vadisi') || tags.includes('ezel') || tags.includes('behzat') || tags.includes('gibi') || tags.includes('prens'))) {
+          assignedKey = 'dizi-yerli';
+        } else if (cat.key === 'dizi-bilim-kurgu' && (tags.includes('bilim kurgu') || tags.includes('dark') || tags.includes('stranger things') || tags.includes('fantastik') || tags.includes('house of the dragon') || tags.includes('game of thrones') || tags.includes('the last of us') || tags.includes('mini'))) {
+          assignedKey = 'dizi-bilim-kurgu';
+        } else if (cat.key === 'dizi-aksiyon-suc' && (tags.includes('aksiyon') || tags.includes('suç') || tags.includes('breaking bad') || tags.includes('the boys') || tags.includes('kurtlar vadisi') || tags.includes('ezel'))) {
+          assignedKey = 'dizi-aksiyon-suc';
+        } else if (cat.key === 'dizi-animasyon' && (tags.includes('animasyon') || tags.includes('anime') || tags.includes('arcane') || tags.includes('çizgi'))) {
+          assignedKey = 'dizi-animasyon';
+        } else if (cat.key === 'dizi-komedi' && (tags.includes('komedi') || tags.includes('gibi') || tags.includes('prens') || tags.includes('mizah'))) {
+          assignedKey = 'dizi-komedi';
+        } else if (cat.key === 'dizi-gerilim' && (tags.includes('gerilim') || tags.includes('gizem') || tags.includes('chernobyl') || tags.includes('dark') || tags.includes('wednesday') || tags.includes('squid game'))) {
+          assignedKey = 'dizi-gerilim';
+        }
+        
+        if (assignedKey === cat.key) {
+          matches.push(item);
+        }
+      });
+      
+      // Fallback
+      if (matches.length === 0) {
+        matches = DB.series.slice(0, 3);
+      }
+      
+      return {
+        id: cat.id,
+        title: cat.title,
+        poster: cat.poster,
+        desc: cat.desc,
+        isCategory: true,
+        collection: matches
+      };
+    });
+
     // Dinamik Kategori Oluşturucu (Karşılıklı Özel - Mutually Exclusive)
     categories = CATEGORIES.map(cat => {
       let matches = [];
@@ -2036,34 +2686,62 @@ function renderOrbital() {
   }).join('');
 }
 
+function switchContentMode(mode) {
+  if (currentContentMode === mode) return;
+  currentContentMode = mode;
+  renderContent();
+}
+
 function renderContent() {
   const content = document.getElementById('content-matrix');
   if (!content) return;
 
-  // Seri ve tekli filmleri filtrele (Sadece dönme dolapta görünmesi gereken tekli filmler elendi, kategoriler de elendi!)
-  const collections = filteredContent.filter(item => (item.isCollection || item.episodes) && !item.isCategory);
+  const isFilm = currentContentMode === 'film';
+
+  // 1. Film Modu Listeleri
+  const collections = filteredContent.filter(item => (item.isCollection) && !item.isSeries && !item.isCategory);
   const singles = filteredContent
-    .filter(item => !(item.isCollection || item.episodes || item.showOnlyInOrbital || item.isCategory))
+    .filter(item => !(item.isCollection || item.isSeries || item.showOnlyInOrbital || item.isCategory))
+    .sort((a, b) => getMovieViews(b.id) - getMovieViews(a.id));
+
+  // 2. Dizi Modu Listeleri (Final Yapmış & Devam Eden)
+  const finalSeries = filteredContent
+    .filter(item => item.isSeries && (item.isFinal || item.status === 'final') && !item.isCategory)
+    .sort((a, b) => getMovieViews(b.id) - getMovieViews(a.id));
+  const ongoingSeries = filteredContent
+    .filter(item => item.isSeries && (!item.isFinal && item.status !== 'final') && !item.isCategory)
     .sort((a, b) => getMovieViews(b.id) - getMovieViews(a.id));
 
   // Kart HTML oluşturucu yardımcı fonksiyon
   const makeCardHtml = (item) => {
-    const isColl = item.isCollection || item.episodes;
+    let badgeHtml = '';
     
-    // Yalnızca tekli filmler için sayaç rozeti oluşturuyoruz
-    const viewCount = !isColl ? getMovieViews(item.id) : 0;
-    const viewsBadge = !isColl ? `
-      <div class="movie-view-badge" data-views-id="${item.id}">
-        <span class="view-dot"></span>
-        <span class="view-count-val">${viewCount.toLocaleString('tr-TR')}</span> İzlenme
-      </div>
-    ` : '';
+    if (item.isSeries) {
+      if (item.isFinal || item.status === 'final') {
+        badgeHtml = '<div class="series-badge badge-final">FİNAL YAPTI</div>';
+      } else {
+        const seasonNum = item.currentSeason || 1;
+        badgeHtml = `<div class="series-badge badge-season">${seasonNum}. SEZON</div>`;
+      }
+    } else {
+      const isColl = item.isCollection || item.episodes;
+      if (isColl) {
+        badgeHtml = '<div class="collection-badge">SERİ</div>';
+      } else {
+        const viewCount = getMovieViews(item.id);
+        badgeHtml = `
+          <div class="movie-view-badge" data-views-id="${item.id}">
+            <span class="view-dot"></span>
+            <span class="view-count-val">${viewCount.toLocaleString('tr-TR')}</span> İzlenme
+          </div>
+        `;
+      }
+    }
     
     return `
-      <div class="card-wrapper ${isColl ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
+      <div class="card-wrapper ${item.isCollection ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
         <div class="card">
-          ${isColl ? '<div class="collection-badge">SERİ</div>' : ''}
-          ${viewsBadge}
+          ${badgeHtml}
           <img src="${item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
       </div>
@@ -2083,31 +2761,48 @@ function renderContent() {
   };
 
   const isFiltered = filteredContent.length !== allContent.length;
+  const activeCategories = isFilm ? categories : seriesCategories;
+
   const categoriesHtml = !isFiltered ? `
     <div class="category-section">
-      <h3 class="matrix-column-title">FİLM KATEGORİLERİ</h3>
+      <div class="category-header-row">
+        <button class="mode-switch-btn ${isFilm ? 'active' : ''}" id="btn-mode-film" onclick="switchContentMode('film')" title="Film Kategorileri">
+          FİLM KATEGORİLERİ
+        </button>
+        <div class="category-header-line"></div>
+        <button class="mode-switch-btn ${!isFilm ? 'active' : ''}" id="btn-mode-dizi" onclick="switchContentMode('dizi')" title="Dizi Kategorileri">
+          DİZİ KATEGORİLERİ
+        </button>
+      </div>
       <div class="category-grid">
-        ${categories.map(makeCategoryCardHtml).join('')}
+        ${activeCategories.map(makeCategoryCardHtml).join('')}
       </div>
     </div>
   ` : '';
 
+  const col1Title = isFilm ? 'SERİ FİLMLER & KOLEKSİYONLAR' : 'FİNAL YAPMIŞ DİZİLER';
+  const col2Title = isFilm ? 'TEKLİ FİLMLER' : 'DEVAM EDEN DİZİLER';
+  const col1List = isFilm ? collections : finalSeries;
+  const col2List = isFilm ? singles : ongoingSeries;
+  const col1Empty = isFilm ? 'Seri film bulunamadı.' : 'Final yapmış dizi bulunamadı.';
+  const col2Empty = isFilm ? 'Tekli film bulunamadı.' : 'Devam eden dizi bulunamadı.';
+
   content.innerHTML = `
     ${categoriesHtml}
     <div class="split-matrix-container">
-      <!-- SOL BLOK: SERİ FİLMLER & KOLEKSİYONLAR -->
+      <!-- SOL BLOK: SERİ FİLMLER veya FİNAL YAPMIŞ DİZİLER -->
       <div class="matrix-column">
-        <h3 class="matrix-column-title">SERİ FİLMLER & KOLEKSİYONLAR</h3>
+        <h3 class="matrix-column-title">${col1Title}</h3>
         <div class="split-grid">
-          ${collections.length > 0 ? collections.map(makeCardHtml).join('') : '<div class="no-results-text">Seri film bulunamadı.</div>'}
+          ${col1List.length > 0 ? col1List.map(makeCardHtml).join('') : `<div class="no-results-text">${col1Empty}</div>`}
         </div>
       </div>
 
-      <!-- SAĞ BLOK: TEKLİ FİLMLER -->
+      <!-- SAĞ BLOK: TEKLİ FİLMLER veya DEVAM EDEN DİZİLER -->
       <div class="matrix-column">
-        <h3 class="matrix-column-title">TEKLİ FİLMLER</h3>
+        <h3 class="matrix-column-title">${col2Title}</h3>
         <div class="split-grid">
-          ${singles.length > 0 ? singles.map(makeCardHtml).join('') : '<div class="no-results-text">Tekli film bulunamadı.</div>'}
+          ${col2List.length > 0 ? col2List.map(makeCardHtml).join('') : `<div class="no-results-text">${col2Empty}</div>`}
         </div>
       </div>
     </div>
