@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomClip | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.50">
+    <link rel="stylesheet" href="css/style.css?v=5.51">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -3832,8 +3832,7 @@ function renderContent() {
     return `
       <div class="card-wrapper category-card" onclick="handleItemClick('${cat.id}')">
         <div class="card">
-          <img src="${cat.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
-          <div class="category-overlay-title">${cat.title}</div>
+          <img src="${cat.poster}" alt="${cat.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
         </div>
       </div>
     `;
