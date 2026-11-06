@@ -968,7 +968,7 @@
 
 <div class="player-loader" id="player-loader">
     <div class="loader-spinner"></div>
-    <div class="loader-text">Premium Sinema Yükleniyor...</div>
+    <div class="loader-text" id="loader-text">Premium Sinema Yükleniyor...</div>
 </div>
 
 <div id="mouse-catcher" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:90; pointer-events:none;"></div>
@@ -1290,16 +1290,33 @@
     }
 
     function setNativeVideo(src, onError) {
-        container.innerHTML = `<video id="player-video" src="${src}" controls autoplay playsinline preload="auto" x-webkit-airplay="allow" style="width:100%;height:100%;object-fit:contain;"></video>`;
+        container.innerHTML = `<video id="player-video" src="${src}" controls autoplay playsinline preload="metadata" x-webkit-airplay="allow" style="width:100%;height:100%;object-fit:contain;"></video>`;
         const v = document.getElementById('player-video');
-        v.addEventListener('canplay', fadeOutLoader);
-        v.addEventListener('playing', fadeOutLoader);
-        // İleri/Geri sarmada 'Premium Sinema Yükleniyor' ekranının çıkmaması için waiting kaldırıldı
+
+        let coldStartTimer = setTimeout(() => {
+            const txt = document.getElementById('loader-text');
+            const l = document.getElementById('player-loader');
+            if (txt && l && l.style.display !== 'none') {
+                txt.textContent = 'Sunucu uyanıyor, sinema akışı bağlanıyor...';
+            }
+        }, 2600);
+
+        const onReady = () => {
+            clearTimeout(coldStartTimer);
+            fadeOutLoader();
+        };
+
+        v.addEventListener('canplay', onReady);
+        v.addEventListener('playing', onReady);
+        v.addEventListener('loadeddata', onReady);
         v.addEventListener('ended', onEpisodeEnded);
-        if (onError) v.addEventListener('error', onError, { once: true });
+        if (onError) v.addEventListener('error', (err) => {
+            clearTimeout(coldStartTimer);
+            onError(err);
+        }, { once: true });
         
         // Tarayıcı otomatik oynatma engeline takılırsa yükleniyorda kalmaması için yedek zaman aşımı
-        setTimeout(fadeOutLoader, 1500);
+        setTimeout(onReady, 2500);
     }
 
     /* ─── Film yükleyici (HD öncelikli, hızlı açılış) ─── */
@@ -1435,8 +1452,12 @@
     /* ─── Loader helpers ─── */
     function showLoader() {
         const l = document.getElementById('player-loader');
-        l.style.opacity = '1';
-        l.style.display = 'flex';
+        const txt = document.getElementById('loader-text');
+        if (txt) txt.textContent = 'Premium Sinema Yükleniyor...';
+        if (l) {
+            l.style.opacity = '1';
+            l.style.display = 'flex';
+        }
     }
     function fadeOutLoader() {
         const l = document.getElementById('player-loader');

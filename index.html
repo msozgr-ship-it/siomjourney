@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>SiomClip | Spatial Cinema</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=5.51">
+    <link rel="stylesheet" href="css/style.css?v=6.0.0">
     <link rel="prefetch" href="player.html">
 </head>
 <body>
@@ -3506,9 +3506,14 @@ function initApp() {
     setupSearch();
     setupDragEvents();
     initRealVisitCounter();
-  initBgSoundControl();
+    initBgSoundControl();
     syncAllMovieViews();
     animate();
+
+    // Render streamer cold-boot prewarmer (free tier sleeps after 15m)
+    try {
+      fetch('https://siom-tg-streamer-1.onrender.com/', { mode: 'no-cors', cache: 'no-store' }).catch(() => {});
+    } catch(e) {}
 
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { closePlayer(); closeDetails(); }
@@ -3729,26 +3734,47 @@ function updateSoundButtonUI() {
 }
 
 function muteBgMedia() {
-  sendYtBgCommand('mute');
-  document.querySelectorAll('.bg-video-layer video').forEach(v => { v.muted = true; });
+  document.querySelectorAll('.bg-video-layer iframe, #hero-video-bg iframe').forEach(iframe => {
+    if (iframe && iframe.contentWindow) {
+      try {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'mute', args: [] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [0] }), '*');
+      } catch (e) {}
+    }
+  });
+  document.querySelectorAll('.bg-video-layer video, #hero-video-bg video').forEach(v => {
+    v.muted = true;
+    v.volume = 0;
+  });
 }
 
 function unmuteBgMedia() {
-  sendYtBgCommand('unMute');
-  sendYtBgCommand('setVolume', [55]);
-  const activeVideo = document.querySelector('.bg-video-layer.active video');
-  if (activeVideo) {
+  if (isBgMuted) return;
+  document.querySelectorAll('.bg-video-layer.active iframe').forEach(iframe => {
+    if (iframe && iframe.contentWindow) {
+      try {
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'unMute', args: [] }), '*');
+        iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'setVolume', args: [55] }), '*');
+      } catch (e) {}
+    }
+  });
+  document.querySelectorAll('.bg-video-layer.active video').forEach(activeVideo => {
     activeVideo.muted = false;
     activeVideo.volume = 0.55;
     activeVideo.play().catch(() => {});
-  }
+  });
 }
 
+let lastSoundToggleTime = 0;
 function toggleBgSound(e) {
   if (e) {
     e.preventDefault();
     e.stopPropagation();
   }
+  const now = Date.now();
+  if (now - lastSoundToggleTime < 300) return;
+  lastSoundToggleTime = now;
+
   isBgMuted = !isBgMuted;
   localStorage.setItem('siom_bg_muted', isBgMuted ? 'true' : 'false');
   if (isBgMuted) {
@@ -3768,10 +3794,14 @@ function initBgSoundControl() {
   }
   updateSoundButtonUI();
 
-  const onUserGesture = () => {
+  const onUserGesture = (evt) => {
+    if (evt && evt.target && evt.target.closest('#bg-sound-btn')) return;
     if (!isBgMuted) {
       unmuteBgMedia();
     }
+    window.removeEventListener('click', onUserGesture);
+    window.removeEventListener('keydown', onUserGesture);
+    window.removeEventListener('touchstart', onUserGesture);
   };
   window.addEventListener('click', onUserGesture, { passive: true });
   window.addEventListener('keydown', onUserGesture, { passive: true });
@@ -3850,6 +3880,24 @@ function updateBackgroundVideo(item) {
     const incomingLayer = (currentBgLayer === 'a') ? layerB : layerA;
     const outgoingLayer = (currentBgLayer === 'a') ? layerA : layerB;
 
+    // Mobile performance optimization: load lightweight blurred backdrop poster instead of heavy 1080p stream/iframe
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      const posterUrl = item.poster || '';
+      if (posterUrl) {
+        incomingLayer.innerHTML = `<div class="hero-bg-poster" style="position:absolute;inset:0;background-image:url('${posterUrl}');background-size:cover;background-position:center;filter:blur(32px) brightness(0.28);transform:scale(1.15);transition:opacity 0.6s ease;"></div>`;
+      } else {
+        incomingLayer.innerHTML = '';
+      }
+      incomingLayer.classList.add('active');
+      outgoingLayer.classList.remove('active');
+      currentBgLayer = (currentBgLayer === 'a') ? 'b' : 'a';
+      setTimeout(() => {
+        outgoingLayer.innerHTML = '';
+      }, 600);
+      return;
+    }
+
     const sourceUrl = item.trailer;
     if (!sourceUrl) {
       outgoingLayer.classList.remove('active');
@@ -3914,7 +3962,7 @@ function updateBackgroundVideo(item) {
         loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, false);
       }
     }
-  }, 260);
+  }, 350);
 }
 
 function loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, isYt) {
@@ -4143,6 +4191,15 @@ function renderContent() {
   const ongoingSeries = col2YearFilter === 'all' ? rawOngoingSeries : rawOngoingSeries.filter(item => matchItemYear(item, col2YearFilter));
 
   // Kart HTML oluşturucu yardımcı fonksiyon
+  window.prewarmStream = function(url) {
+    if (url && url.includes('onrender.com') && !window._renderWarmed) {
+      window._renderWarmed = true;
+      try {
+        fetch('https://siom-tg-streamer-1.onrender.com/', { mode: 'no-cors', cache: 'no-store' }).catch(() => {});
+      } catch (e) {}
+    }
+  };
+
   const makeCardHtml = (item) => {
     let badgeHtml = '';
     
@@ -4169,7 +4226,7 @@ function renderContent() {
     }
     
     return `
-      <div class="card-wrapper ${item.isCollection ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')">
+      <div class="card-wrapper ${item.isCollection ? 'collection-stack' : ''}" onclick="handleItemClick('${item.id}')" onmouseenter="prewarmStream('${item.file || ''}')" ontouchstart="prewarmStream('${item.file || ''}')">
         <div class="card">
           ${badgeHtml}
           <img src="${item.poster}" alt="" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=Afiş+Yok'">
@@ -4659,7 +4716,6 @@ function launchPlayer(file, title, poster, trailer, directItem) {
   }
 
   // Dizi Bağlamı (Series Context) Kontrolü
-  const seriesCtx = findSeriesContextForEpisode(item ? item.id : null, title, file);
   if (seriesCtx) {
     const seriesPayload = {
       seriesId: seriesCtx.series.id,
