@@ -5833,6 +5833,7 @@ function updateBackgroundVideo(item) {
     const staticPoster = document.getElementById('hero-static-poster');
     if (staticPoster && item.poster) {
       staticPoster.style.backgroundImage = 'url("' + item.poster + '")';
+      staticPoster.style.opacity = '1';
     }
   } catch(e) {}
 
@@ -5952,6 +5953,10 @@ function loadIntoLayer(incomingLayer, outgoingLayer, videoHtml, token, isYt) {
 
     // 2. Incoming layer fades in smoothly (0.85s CSS ease)
     incomingLayer.classList.add('active');
+    try {
+      const staticPoster = document.getElementById('hero-static-poster');
+      if (staticPoster) staticPoster.style.opacity = '0';
+    } catch(e) {}
 
     // 3. Audio synchronization
     if (!isBgMuted) {

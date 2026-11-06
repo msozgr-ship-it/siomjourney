@@ -53,11 +53,12 @@ body {
     height: 100%;
     background-size: cover;
     background-position: center;
-    filter: blur(28px) brightness(0.35);
-    transform: scale(1.15);
-    transition: background-image 0.5s ease, opacity 0.6s ease;
-    z-index: 3;
+    filter: blur(20px) brightness(0.35);
+    transform: scale(1.12);
+    transition: opacity 0.7s ease, background-image 0.4s ease;
+    z-index: 0;
     pointer-events: none;
+    opacity: 1;
 }
 
 .bg-video-layer {
