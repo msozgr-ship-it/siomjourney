@@ -4007,9 +4007,65 @@ function renderOrbital() {
   }).join('');
 }
 
+let col1YearFilter = 'all';
+let col2YearFilter = 'all';
+
+function setCol1Year(year) {
+  col1YearFilter = year;
+  renderContent();
+}
+
+function setCol2Year(year) {
+  col2YearFilter = year;
+  renderContent();
+}
+
+function matchItemYear(item, targetYear) {
+  if (!targetYear || targetYear === 'all') return true;
+
+  const extractYears = (it) => {
+    const found = [];
+    if (it.year) {
+      const m = String(it.year).match(/\b(19\d{2}|20\d{2})\b/g);
+      if (m) found.push(...m.map(Number));
+    }
+    if (it.title) {
+      const m = String(it.title).match(/\b(19\d{2}|20\d{2})\b/g);
+      if (m) found.push(...m.map(Number));
+    }
+    if (it.searchTags) {
+      const m = String(it.searchTags).match(/\b(19\d{2}|20\d{2})\b/g);
+      if (m) found.push(...m.map(Number));
+    }
+    if (it.collection && Array.isArray(it.collection)) {
+      it.collection.forEach(sub => found.push(...extractYears(sub)));
+    }
+    if (it.seasons && Array.isArray(it.seasons)) {
+      it.seasons.forEach(s => found.push(...extractYears(s)));
+    }
+    return found;
+  };
+
+  const years = extractYears(item);
+  if (years.length === 0) {
+    return targetYear === 'pre';
+  }
+
+  const numYear = parseInt(targetYear, 10);
+  if (!isNaN(numYear)) {
+    return years.includes(numYear);
+  }
+  if (targetYear === 'pre') {
+    return years.some(y => y < 2023);
+  }
+  return true;
+}
+
 function switchContentMode(mode) {
   if (currentContentMode === mode) return;
   currentContentMode = mode;
+  col1YearFilter = 'all';
+  col2YearFilter = 'all';
   renderContent();
 }
 
@@ -4019,19 +4075,25 @@ function renderContent() {
 
   const isFilm = currentContentMode === 'film';
 
-  // 1. Film Modu Listeleri
-  const collections = filteredContent.filter(item => (item.isCollection) && !item.isSeries && !item.isCategory);
-  const singles = filteredContent
+  // 1. Film Modu Ham Listeleri
+  const rawCollections = filteredContent.filter(item => (item.isCollection) && !item.isSeries && !item.isCategory);
+  const rawSingles = filteredContent
     .filter(item => !(item.isCollection || item.isSeries || item.showOnlyInOrbital || item.isCategory))
     .sort((a, b) => getMovieViews(b.id) - getMovieViews(a.id));
 
-  // 2. Dizi Modu Listeleri (Final Yapmış & Devam Eden)
-  const finalSeries = filteredContent
+  // 2. Dizi Modu Ham Listeleri (Final Yapmış & Devam Eden)
+  const rawFinalSeries = filteredContent
     .filter(item => item.isSeries && (item.isFinal || item.status === 'final') && !item.isCategory)
     .sort((a, b) => getMovieViews(b.id) - getMovieViews(a.id));
-  const ongoingSeries = filteredContent
+  const rawOngoingSeries = filteredContent
     .filter(item => item.isSeries && (!item.isFinal && item.status !== 'final') && !item.isCategory)
     .sort((a, b) => getMovieViews(b.id) - getMovieViews(a.id));
+
+  // Yıl Filtreleri Uygulanmış Listeler
+  const collections = col1YearFilter === 'all' ? rawCollections : rawCollections.filter(item => matchItemYear(item, col1YearFilter));
+  const finalSeries = col1YearFilter === 'all' ? rawFinalSeries : rawFinalSeries.filter(item => matchItemYear(item, col1YearFilter));
+  const singles = col2YearFilter === 'all' ? rawSingles : rawSingles.filter(item => matchItemYear(item, col2YearFilter));
+  const ongoingSeries = col2YearFilter === 'all' ? rawOngoingSeries : rawOngoingSeries.filter(item => matchItemYear(item, col2YearFilter));
 
   // Kart HTML oluşturucu yardımcı fonksiyon
   const makeCardHtml = (item) => {
@@ -4104,15 +4166,38 @@ function renderContent() {
   const col2Title = isFilm ? 'TEKLİ FİLMLER' : 'DEVAM EDEN DİZİLER';
   const col1List = isFilm ? collections : finalSeries;
   const col2List = isFilm ? singles : ongoingSeries;
-  const col1Empty = isFilm ? 'Seri film bulunamadı.' : 'Final yapmış dizi bulunamadı.';
-  const col2Empty = isFilm ? 'Tekli film bulunamadı.' : 'Devam eden dizi bulunamadı.';
+  const col1Empty = col1YearFilter === 'all'
+    ? (isFilm ? 'Seri film bulunamadı.' : 'Final yapmış dizi bulunamadı.')
+    : (isFilm ? `${col1YearFilter === 'pre' ? '2023 öncesine ait' : col1YearFilter + ' yılı'} seri film bulunamadı.` : `${col1YearFilter === 'pre' ? '2023 öncesine ait' : col1YearFilter + ' yılı'} final yapmış dizi bulunamadı.`);
+  const col2Empty = col2YearFilter === 'all'
+    ? (isFilm ? 'Tekli film bulunamadı.' : 'Devam eden dizi bulunamadı.')
+    : (isFilm ? `${col2YearFilter === 'pre' ? '2023 öncesine ait' : col2YearFilter + ' yılı'} tekli film bulunamadı.` : `${col2YearFilter === 'pre' ? '2023 öncesine ait' : col2YearFilter + ' yılı'} devam eden dizi bulunamadı.`);
 
   content.innerHTML = `
     ${categoriesHtml}
+    <!-- YAPIM YILI: Tüm yatayı kaplayan başlık şeridi (Düz yazı) -->
+    <div class="production-year-strip">
+      <div class="pys-line"></div>
+      <span class="pys-title">YAPIM YILI</span>
+      <div class="pys-line"></div>
+    </div>
+
     <div class="split-matrix-container">
       <!-- SOL BLOK: SERİ FİLMLER veya FİNAL YAPMIŞ DİZİLER -->
       <div class="matrix-column">
-        <h3 class="matrix-column-title">${col1Title}</h3>
+        <div class="matrix-column-header">
+          <button class="matrix-title-btn ${col1YearFilter === 'all' ? 'active' : ''}" onclick="setCol1Year('all')" title="Tümünü Göster">
+            ${col1Title}
+          </button>
+          <div class="matrix-year-group">
+            <button class="matrix-year-btn ${col1YearFilter === '2026' ? 'active' : ''}" onclick="setCol1Year('2026')">2026</button>
+            <button class="matrix-year-btn ${col1YearFilter === '2025' ? 'active' : ''}" onclick="setCol1Year('2025')">2025</button>
+            <button class="matrix-year-btn ${col1YearFilter === '2024' ? 'active' : ''}" onclick="setCol1Year('2024')">2024</button>
+            <button class="matrix-year-btn ${col1YearFilter === '2023' ? 'active' : ''}" onclick="setCol1Year('2023')">2023</button>
+            <button class="matrix-year-btn ${col1YearFilter === 'pre' ? 'active' : ''}" onclick="setCol1Year('pre')">ÖNCESİ</button>
+          </div>
+          <div class="matrix-column-line"></div>
+        </div>
         <div class="split-grid">
           ${col1List.length > 0 ? col1List.map(makeCardHtml).join('') : `<div class="no-results-text">${col1Empty}</div>`}
         </div>
@@ -4120,7 +4205,19 @@ function renderContent() {
 
       <!-- SAĞ BLOK: TEKLİ FİLMLER veya DEVAM EDEN DİZİLER -->
       <div class="matrix-column">
-        <h3 class="matrix-column-title">${col2Title}</h3>
+        <div class="matrix-column-header">
+          <button class="matrix-title-btn ${col2YearFilter === 'all' ? 'active' : ''}" onclick="setCol2Year('all')" title="Tümünü Göster">
+            ${col2Title}
+          </button>
+          <div class="matrix-year-group">
+            <button class="matrix-year-btn ${col2YearFilter === '2026' ? 'active' : ''}" onclick="setCol2Year('2026')">2026</button>
+            <button class="matrix-year-btn ${col2YearFilter === '2025' ? 'active' : ''}" onclick="setCol2Year('2025')">2025</button>
+            <button class="matrix-year-btn ${col2YearFilter === '2024' ? 'active' : ''}" onclick="setCol2Year('2024')">2024</button>
+            <button class="matrix-year-btn ${col2YearFilter === '2023' ? 'active' : ''}" onclick="setCol2Year('2023')">2023</button>
+            <button class="matrix-year-btn ${col2YearFilter === 'pre' ? 'active' : ''}" onclick="setCol2Year('pre')">ÖNCESİ</button>
+          </div>
+          <div class="matrix-column-line"></div>
+        </div>
         <div class="split-grid">
           ${col2List.length > 0 ? col2List.map(makeCardHtml).join('') : `<div class="no-results-text">${col2Empty}</div>`}
         </div>
