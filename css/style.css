@@ -403,36 +403,10 @@ body {
     background: linear-gradient(to right, rgba(255, 15, 35, 0.4), transparent);
 }
 
-/* ── YAPIM YILI: Tüm Yatayı Kaplayan Başlık Şeridi ── */
-.production-year-strip {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    max-width: 1600px;
-    margin: 10px auto 26px auto;
-    padding: 0 4px;
-}
-.pys-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), rgba(255, 15, 35, 0.35), rgba(255, 255, 255, 0.12), transparent);
-}
-.pys-title {
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
-    white-space: nowrap;
-    text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
-    user-select: none;
-}
-
-/* ── Matrix Kolon Başlığı & Yıl Filtre Butonları ── */
+/* ── Matrix Kolon Başlığı & Yıl Filtre Butonları (YAPIM YILI Butonların Üzerinde) ── */
 .matrix-column-header {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 12px;
     margin-bottom: 25px;
     flex-wrap: wrap;
@@ -452,6 +426,7 @@ body {
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     white-space: nowrap;
+    align-self: flex-end;
 }
 .matrix-title-btn:hover {
     color: #fff;
@@ -464,6 +439,23 @@ body {
     border-color: rgba(255, 15, 35, 0.5);
     box-shadow: 0 0 16px rgba(255, 15, 35, 0.28);
     text-shadow: 0 0 10px rgba(255, 15, 35, 0.4);
+}
+.matrix-year-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+.matrix-year-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    text-align: center;
+    width: 100%;
+    user-select: none;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.12);
 }
 .matrix-year-group {
     display: flex;
@@ -503,23 +495,25 @@ body {
     min-width: 20px;
     height: 1px;
     background: linear-gradient(to right, rgba(255, 15, 35, 0.45), transparent);
+    margin-bottom: 14px;
+    align-self: flex-end;
 }
 
 @media (max-width: 768px) {
-    .production-year-strip {
-        margin: 5px auto 18px auto;
-    }
-    .pys-title {
-        font-size: 11px;
-        letter-spacing: 3px;
-    }
     .matrix-title-btn {
         font-size: 13px;
         padding: 5px 10px;
     }
+    .matrix-year-label {
+        font-size: 9px;
+        letter-spacing: 1.5px;
+    }
     .matrix-year-btn {
         font-size: 10.5px;
         padding: 4px 8px;
+    }
+    .matrix-column-line {
+        margin-bottom: 12px;
     }
 }
 .split-grid { 

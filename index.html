@@ -477,7 +477,8 @@ const DB = {
                       "title": "11. Bölüm: Mandala",
                       "desc": "Combo'nun ölümü sonrası Saul, Walt'u büyük dağıtıcı Gustavo Fring ile buluşturur.",
                       "poster": "https://static.tvmaze.com/uploads/images/original_untouched/405/1012792.jpg",
-                      "file": "",
+                      "file": "https://siom-tg-streamer-1.onrender.com/stream/189.mp4",
+                      "fileSub": "https://siom-tg-streamer-1.onrender.com/stream/188.mp4",
                       "isYoutube": false
             },
             {
@@ -487,6 +488,7 @@ const DB = {
                       "desc": "Walter White sınırlarını aşarak affedilmez bir kayıtsızlığa ve trajediye imza atar.",
                       "poster": "https://static.tvmaze.com/uploads/images/original_untouched/405/1012792.jpg",
                       "file": "",
+                      "fileSub": "https://siom-tg-streamer-1.onrender.com/stream/190.mp4",
                       "isYoutube": false
             },
             {
@@ -4175,12 +4177,6 @@ function renderContent() {
 
   content.innerHTML = `
     ${categoriesHtml}
-    <!-- YAPIM YILI: Tüm yatayı kaplayan başlık şeridi (Düz yazı) -->
-    <div class="production-year-strip">
-      <div class="pys-line"></div>
-      <span class="pys-title">YAPIM YILI</span>
-      <div class="pys-line"></div>
-    </div>
 
     <div class="split-matrix-container">
       <!-- SOL BLOK: SERİ FİLMLER veya FİNAL YAPMIŞ DİZİLER -->
@@ -4189,12 +4185,15 @@ function renderContent() {
           <button class="matrix-title-btn ${col1YearFilter === 'all' ? 'active' : ''}" onclick="setCol1Year('all')" title="Tümünü Göster">
             ${col1Title}
           </button>
-          <div class="matrix-year-group">
-            <button class="matrix-year-btn ${col1YearFilter === '2026' ? 'active' : ''}" onclick="setCol1Year('2026')">2026</button>
-            <button class="matrix-year-btn ${col1YearFilter === '2025' ? 'active' : ''}" onclick="setCol1Year('2025')">2025</button>
-            <button class="matrix-year-btn ${col1YearFilter === '2024' ? 'active' : ''}" onclick="setCol1Year('2024')">2024</button>
-            <button class="matrix-year-btn ${col1YearFilter === '2023' ? 'active' : ''}" onclick="setCol1Year('2023')">2023</button>
-            <button class="matrix-year-btn ${col1YearFilter === 'pre' ? 'active' : ''}" onclick="setCol1Year('pre')">ÖNCESİ</button>
+          <div class="matrix-year-wrapper">
+            <span class="matrix-year-label">YAPIM YILI</span>
+            <div class="matrix-year-group">
+              <button class="matrix-year-btn ${col1YearFilter === '2026' ? 'active' : ''}" onclick="setCol1Year('2026')">2026</button>
+              <button class="matrix-year-btn ${col1YearFilter === '2025' ? 'active' : ''}" onclick="setCol1Year('2025')">2025</button>
+              <button class="matrix-year-btn ${col1YearFilter === '2024' ? 'active' : ''}" onclick="setCol1Year('2024')">2024</button>
+              <button class="matrix-year-btn ${col1YearFilter === '2023' ? 'active' : ''}" onclick="setCol1Year('2023')">2023</button>
+              <button class="matrix-year-btn ${col1YearFilter === 'pre' ? 'active' : ''}" onclick="setCol1Year('pre')">ÖNCESİ</button>
+            </div>
           </div>
           <div class="matrix-column-line"></div>
         </div>
@@ -4209,12 +4208,15 @@ function renderContent() {
           <button class="matrix-title-btn ${col2YearFilter === 'all' ? 'active' : ''}" onclick="setCol2Year('all')" title="Tümünü Göster">
             ${col2Title}
           </button>
-          <div class="matrix-year-group">
-            <button class="matrix-year-btn ${col2YearFilter === '2026' ? 'active' : ''}" onclick="setCol2Year('2026')">2026</button>
-            <button class="matrix-year-btn ${col2YearFilter === '2025' ? 'active' : ''}" onclick="setCol2Year('2025')">2025</button>
-            <button class="matrix-year-btn ${col2YearFilter === '2024' ? 'active' : ''}" onclick="setCol2Year('2024')">2024</button>
-            <button class="matrix-year-btn ${col2YearFilter === '2023' ? 'active' : ''}" onclick="setCol2Year('2023')">2023</button>
-            <button class="matrix-year-btn ${col2YearFilter === 'pre' ? 'active' : ''}" onclick="setCol2Year('pre')">ÖNCESİ</button>
+          <div class="matrix-year-wrapper">
+            <span class="matrix-year-label">YAPIM YILI</span>
+            <div class="matrix-year-group">
+              <button class="matrix-year-btn ${col2YearFilter === '2026' ? 'active' : ''}" onclick="setCol2Year('2026')">2026</button>
+              <button class="matrix-year-btn ${col2YearFilter === '2025' ? 'active' : ''}" onclick="setCol2Year('2025')">2025</button>
+              <button class="matrix-year-btn ${col2YearFilter === '2024' ? 'active' : ''}" onclick="setCol2Year('2024')">2024</button>
+              <button class="matrix-year-btn ${col2YearFilter === '2023' ? 'active' : ''}" onclick="setCol2Year('2023')">2023</button>
+              <button class="matrix-year-btn ${col2YearFilter === 'pre' ? 'active' : ''}" onclick="setCol2Year('pre')">ÖNCESİ</button>
+            </div>
           </div>
           <div class="matrix-column-line"></div>
         </div>
