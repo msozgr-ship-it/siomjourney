@@ -1084,7 +1084,7 @@
 
     // Golden Ticket bindings
     document.getElementById('ticket-title-display').textContent = movieTitle;
-    document.getElementById('ticket-year').textContent = year || '2025';
+    document.getElementById('ticket-year').textContent = year || (activeSeriesData && activeSeriesData.year) || '2024';
     document.getElementById('ticket-quality').textContent = meta || 'Full HD';
 
     if (moviePoster && moviePoster !== 'null') {
@@ -1096,7 +1096,7 @@
     if (desc) {
         document.getElementById('dock-desc').textContent = desc;
         document.getElementById('dock-match').textContent = match ? `${match} Eşleşme` : '98% Eşleşme';
-        document.getElementById('dock-year').textContent = year || '2025';
+        document.getElementById('dock-year').textContent = year || (activeSeriesData && activeSeriesData.year) || '2024';
         document.getElementById('dock-quality').textContent = meta || 'Full HD';
         document.getElementById('dock-rating').textContent = rating || '8.2';
         
@@ -1776,6 +1776,13 @@
                 dock.style.display = 'flex';
             } else {
                 dock.style.display = 'none';
+            }
+            const curYear = ep.year || (curSeason && curSeason.year) || (activeSeriesData && activeSeriesData.year) || '';
+            if (curYear) {
+                const dy = document.getElementById('dock-year');
+                if (dy) dy.textContent = curYear;
+                const ty = document.getElementById('ticket-year');
+                if (ty) ty.textContent = curYear;
             }
         }
 

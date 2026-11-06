@@ -403,11 +403,11 @@ body {
     background: linear-gradient(to right, rgba(255, 15, 35, 0.4), transparent);
 }
 
-/* ── Matrix Kolon Başlığı & Yıl Filtre Butonları (YAPIM YILI Butonların Üzerinde) ── */
+/* ── Matrix Kolon Başlığı & Yıl Filtre Butonları (Şık & Neonlu YAPIM YILI) ── */
 .matrix-column-header {
     display: flex;
     align-items: flex-end;
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 25px;
     flex-wrap: wrap;
     width: 100%;
@@ -421,7 +421,7 @@ body {
     font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
-    padding: 6px 14px;
+    padding: 7px 15px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
@@ -436,37 +436,60 @@ body {
 .matrix-title-btn.active {
     color: #fff;
     background: rgba(255, 15, 35, 0.14);
-    border-color: rgba(255, 15, 35, 0.5);
-    box-shadow: 0 0 16px rgba(255, 15, 35, 0.28);
-    text-shadow: 0 0 10px rgba(255, 15, 35, 0.4);
+    border-color: rgba(255, 15, 35, 0.55);
+    box-shadow: 0 0 18px rgba(255, 15, 35, 0.35);
+    text-shadow: 0 0 10px rgba(255, 15, 35, 0.5);
 }
 .matrix-year-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 12px 6px 12px;
+    background: linear-gradient(180deg, rgba(255, 15, 35, 0.04) 0%, rgba(10, 10, 16, 0.6) 100%);
+    border: 1px solid rgba(255, 15, 35, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 .matrix-year-label {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.45);
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     width: 100%;
+    font-size: 10.5px;
+    font-weight: 900;
+    letter-spacing: 2.8px;
+    text-transform: uppercase;
+    color: #ff3344;
+    text-align: center;
     user-select: none;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.12);
+    text-shadow: 0 0 8px rgba(255, 15, 35, 0.8), 0 0 18px rgba(255, 15, 35, 0.45);
+}
+.matrix-year-label::before,
+.matrix-year-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 15, 35, 0.75), rgba(255, 15, 35, 0.2));
+    box-shadow: 0 0 6px rgba(255, 15, 35, 0.5);
+}
+.matrix-year-label::after {
+    background: linear-gradient(90deg, rgba(255, 15, 35, 0.2), rgba(255, 15, 35, 0.75), transparent);
 }
 .matrix-year-group {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     flex-wrap: wrap;
+    width: 100%;
 }
 .matrix-year-btn {
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    color: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.75);
     font-family: inherit;
     font-size: 11.5px;
     font-weight: 700;
@@ -478,16 +501,17 @@ body {
     white-space: nowrap;
 }
 .matrix-year-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
     color: #fff;
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 .matrix-year-btn.active {
-    background: rgba(255, 15, 35, 0.22);
+    background: rgba(255, 15, 35, 0.25);
     border-color: #ff0f23;
     color: #fff;
-    box-shadow: 0 0 12px rgba(255, 15, 35, 0.45);
+    box-shadow: 0 0 14px rgba(255, 15, 35, 0.55), inset 0 0 6px rgba(255, 15, 35, 0.3);
     font-weight: 800;
 }
 .matrix-column-line {
@@ -495,7 +519,7 @@ body {
     min-width: 20px;
     height: 1px;
     background: linear-gradient(to right, rgba(255, 15, 35, 0.45), transparent);
-    margin-bottom: 14px;
+    margin-bottom: 20px;
     align-self: flex-end;
 }
 
@@ -504,16 +528,20 @@ body {
         font-size: 13px;
         padding: 5px 10px;
     }
+    .matrix-year-wrapper {
+        padding: 4px 6px;
+    }
     .matrix-year-label {
         font-size: 9px;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.8px;
+        gap: 6px;
     }
     .matrix-year-btn {
         font-size: 10.5px;
         padding: 4px 8px;
     }
     .matrix-column-line {
-        margin-bottom: 12px;
+        margin-bottom: 14px;
     }
 }
 .split-grid { 
